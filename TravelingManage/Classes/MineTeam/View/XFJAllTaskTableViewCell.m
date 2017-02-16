@@ -235,6 +235,10 @@
 {
     if (_taskStatus_label == nil) {
         _taskStatus_label = [[UILabel alloc] init];
+//        _taskStatus_label.text = [NSString stringWithFormat:<#(nonnull NSString *), ...#>]
+        
+        
+        
     }
     return _taskStatus_label;
 }
