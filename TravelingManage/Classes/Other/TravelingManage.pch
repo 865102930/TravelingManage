@@ -1,0 +1,61 @@
+//
+//  TravelingManage.pch
+//  TravelingManage
+//
+//  Created by 肖锋 on 2017/2/6.
+//  Copyright © 2017年 xiaoFeng. All rights reserved.
+//
+
+#import "UIImage+XFJOriginalImageView.h"
+#import "UIBarButtonItem+XFJItem.h"
+#import "UIView+Frame.h"
+#import "UIColor+Expanded.h"
+#import "UITextField+textField.h"
+#import "UIButton+button.h"
+#import <Masonry/Masonry.h>
+#import "NetWorkManager.h"
+#import "MJExtension.h"
+#define PingFang @"PingFang SC"
+#define iphone6P (SCREEN_HEIGHT == 736)
+#define iphone6 (SCREEN_HEIGHT == 667)
+#define iphone5 (SCREEN_HEIGHT == 568)
+#define iphone4and5 (SCREEN_WIDTH == 320.0)
+#define SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.width
+#define SCREEN_HEIGHT [[UIScreen mainScreen] bounds].size.height
+
+/**
+ *	生成RGB颜色
+ *
+ *	@param 	red 	red值（0~255）
+ *	@param 	green 	green值（0~255）
+ *	@param 	blue 	blue值（0~255）
+ *
+ *	@return	UIColor对象
+ */
+#define DEF_RGB_COLOR(_red, _green, _blue) [UIColor colorWithRed:(_red)/255.0f green:(_green)/255.0f blue:(_blue)/255.0f alpha:1]
+#define UIColorFromRGB(rgbValue) ([UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0])
+#define kBorderColor [UIColor colorWithRed:219/255.0 green:217/255.0 blue:216/255.0 alpha:1]
+#define kColor6565 [UIColor colorWithHexString:@"0x656565"]
+#define kColor2b2b [UIColor colorWithHexString:@"0x2b2b2b"]
+#define kColor2f2f [UIColor colorWithHexString:@"0x2f2f2f"]
+#define kColorF9F9 [UIColor colorWithHexString:@"0xF9F9F9"]
+#define kColorff47 [UIColor colorWithHexString:@"0xff4747"]
+#define kColor5858 [UIColor colorWithHexString:@"0x585859"]
+#define kColorFFFF [UIColor colorWithHexString:@"0xFFFFFF"]
+#define kColor6c6c [UIColor colorWithHexString:@"0x6C6C6C"]
+#define kColorC2C2 [UIColor colorWithHexString:@"0xC2C2C2"]
+#define RedColor [UIColor colorWithHexString:@"FF4747"]
+#define kColor959595 [UIColor colorWithHexString:@"959595"]
+#define kColoreeee [UIColor colorWithHexString:@"0xeeeeee"]
+#define kColorBCBC [UIColor colorWithHexString:@"0xBCBCBC"]
+#define kColor8383 [UIColor colorWithHexString:@"0x838383"]
+#define kColorD7D7D7 [UIColor colorWithHexString:@"D7D7D7"]
+#define BackgroudColor [UIColor colorWithHexString:@"EAEAEA"]
+#define kColorACAC [UIColor colorWithHexString:@"ACACAC"]
+#define kColorF7F7 [UIColor colorWithHexString:@"0xF7F7F7"]
+#define BASEURL @"http://cs.xundatong.net/teammgmtback"
+
+//公告列表
+#define ANNOUNCEMENTLIST (BASEURL@"/app/announcement/announcementList")
+//公告详情
+#define ANNOUNCEMENT (BASEURL@"/app/announcement/announcement")

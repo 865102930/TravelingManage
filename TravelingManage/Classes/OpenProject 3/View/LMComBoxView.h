@@ -1,0 +1,59 @@
+//
+//  LMComBoxView.h
+//  ComboBox
+//
+//  Created by tkinghr on 14-7-9.
+//  Copyright (c) 2014年 Eric Che. All rights reserved.
+//  实现下拉框ComBox
+
+#import <UIKit/UIKit.h>
+#define imgW 10
+#define imgH 10
+#define tableH 150
+#define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
+#define kBorderColor [UIColor colorWithRed:219/255.0 green:217/255.0 blue:216/255.0 alpha:1]
+#define kTextColor   [UIColor darkGrayColor]
+typedef NS_ENUM(NSUInteger, ButtonType) {
+    ButtonTypeNum1 = 0,
+    ButtonTypeNum2,
+    ButtonTypeNum3
+};
+
+@class LMComBoxView;
+@protocol LMComBoxViewDelegate <NSObject>
+
+-(void)selectAtIndex:(NSInteger)index inCombox:(LMComBoxView *)_combox;
+
+@end
+
+@interface LMComBoxView : UIView<UITableViewDataSource,UITableViewDelegate>
+{
+    UILabel *titleLabel;
+}
+@property (nonatomic, assign) BOOL isOpen;
+@property (nonatomic, strong) UITableView *listTable;
+@property (nonatomic, strong) NSMutableArray *titlesList;
+@property (nonatomic, assign) int defaultIndex;
+@property (nonatomic, assign) float tableHeight;
+@property (nonatomic, strong) UIImageView *arrow;
+@property (nonatomic, copy) NSString *arrowImgName;//箭头图标名称
+@property (nonatomic, assign) id<LMComBoxViewDelegate>delegate;
+@property (nonatomic, strong) UIView *supView;
+@property (nonatomic, strong) UIImageView *name_imageView;
+@property (nonatomic, strong) UILabel *name_label;
+@property (nonatomic, strong) UIButton *btn;
+@property (nonatomic, assign) NSUInteger ButtonTypeNum;
+@property (nonatomic, strong) UIImageView *star_imageView;
+
+-(void)defaultSettings;
+-(void)reloadData;
+-(void)closeOtherCombox;
+-(void)tapAction;
+
+@end
+
+
+/*
+    注意：
+    1.单元格默认跟控件本身的高度一致
+ */
