@@ -18,7 +18,7 @@
 
 @end
 
-@interface XFJUploadPhotosTableViewCell : UITableViewCell
+@interface XFJUploadPhotosTableViewCell : UIView
 
 @property (nonatomic, strong) void (^chosePhotosBlock)();
 

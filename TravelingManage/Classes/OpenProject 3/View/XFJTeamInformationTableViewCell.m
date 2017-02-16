@@ -40,10 +40,89 @@
 
 @implementation XFJTeamInformationTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+//{
+//    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+//        self.selectionStyle = UITableViewCellSelectionStyleNone;
+//        self.teamDescriptionArray = @[@"1. 独立团",
+//                                      @"2. 散拼团",
+//                                      @"3. 梦想团",
+//                                      @"4. 随机团",
+//                                      @"5. 大家团",
+//                                      @"6. 好团"
+//                                      ];
+//        [self addSubview:self.line_View];
+//        [self addSubview:self.teamInformation_imageView];
+//        [self addSubview:self.teamInformation_label];
+//        [self addSubview:self.teamNumber_field];
+//        [self addSubview:self.teamProperties_button];
+//        [self addSubview:self.teamProperties_label];
+//        [self addSubview:self.teamProperties_imageViewLeft];
+//        [self addSubview:self.teamPropertiesContent_label];
+//        [self addSubview:self.teamProperties_imageViewRight];
+//        [self addSubview:self.journeyDay_field];
+//        [self.line_View mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.mas_top);
+//            make.left.mas_equalTo(self.mas_left);
+//            make.height.mas_equalTo(3.0);
+//            make.right.mas_equalTo(self.mas_right);
+//        }];
+//        [self.teamInformation_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(24.0);
+//            make.left.mas_equalTo(18.0);
+//            make.height.mas_equalTo(15.0);
+//            make.width.mas_equalTo(13.0);
+//        }];
+//        [self.teamInformation_label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerY.mas_equalTo(self.teamInformation_imageView.mas_centerY);
+//            make.left.mas_equalTo(self.teamInformation_imageView.mas_right).mas_offset(10.0);
+//        }];
+//        [self.teamNumber_field mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.teamInformation_imageView.mas_bottom).mas_offset(16.0);
+//            make.left.mas_equalTo(self.teamInformation_imageView.mas_left);
+//            make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
+//            make.height.mas_equalTo(38.0);
+//        }];
+//        [self.teamProperties_button mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.teamNumber_field.mas_bottom).mas_offset(9.0);
+//            make.left.mas_equalTo(self.teamNumber_field.mas_left);
+//            make.right.mas_equalTo(self.teamNumber_field.mas_right);
+//            make.height.mas_equalTo(38.0);
+//        }];
+//        [self.teamProperties_label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerY.mas_equalTo(self.teamProperties_button.mas_centerY);
+//            make.left.mas_equalTo(self.teamProperties_button.mas_left).mas_offset(15.0);
+//        }];
+//        [self.teamProperties_imageViewLeft mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.teamProperties_button.mas_top).mas_offset(13.0);
+//            make.left.mas_equalTo(self.teamProperties_label.mas_right).mas_offset(1.0);
+//            make.height.mas_equalTo(5.0);
+//            make.width.mas_equalTo(5.0);
+//        }];
+//        [self.teamProperties_imageViewRight mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.right.mas_equalTo(self.teamProperties_button.mas_right).mas_offset(-2);
+//            make.centerY.mas_equalTo(self.teamProperties_button.mas_centerY);
+//            make.height.mas_equalTo(6.0);
+//            make.width.mas_equalTo(8.0);
+//        }];
+//        [self.teamPropertiesContent_label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(self.teamProperties_imageViewLeft.mas_right).mas_offset(18.0);
+//            make.centerY.mas_equalTo(self.teamProperties_label.mas_centerY);
+//        }];
+//        [self.journeyDay_field mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.teamProperties_button.mas_bottom).mas_offset(9.0);
+//            make.left.mas_equalTo(self.teamProperties_button.mas_left);
+//            make.right.mas_equalTo(self.teamProperties_button.mas_right);
+//            make.height.mas_equalTo(38.0);
+//        }];
+//    }
+//    return self;
+//}
+
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         self.teamDescriptionArray = @[@"1. 独立团",
                                       @"2. 散拼团",
                                       @"3. 梦想团",

@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XFJOtherInformationTableViewCell : UITableViewCell
+@interface XFJOtherInformationTableViewCell : UIView
 
 + (CGFloat)cellHeight;
 

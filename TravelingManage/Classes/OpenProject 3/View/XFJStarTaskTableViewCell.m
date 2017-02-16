@@ -18,9 +18,31 @@
 
 @implementation XFJStarTaskTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+//{
+//    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+//        [self addSubview:self.line_view];
+//        [self addSubview:self.startTask_button];
+//        [self.line_view mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.mas_top);
+//            make.left.mas_equalTo(self.mas_left);
+//            make.height.mas_equalTo(3.0);
+//            make.right.mas_equalTo(self.mas_right);
+//        }];
+//        [self.startTask_button mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(19.0);
+//            make.top.mas_equalTo(24.0);
+//            make.right.mas_equalTo(-19.0);
+//            make.height.mas_equalTo(42.0);
+//        }];
+//    }
+//    return self;
+//}
+
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.line_view];
         [self addSubview:self.startTask_button];
         [self.line_view mas_makeConstraints:^(MASConstraintMaker *make) {

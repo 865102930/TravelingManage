@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 #import "LMComBoxView.h"
 
-@interface XFJGuestSourceInformationTableViewCell : UITableViewCell <LMComBoxViewDelegate>
+@interface XFJGuestSourceInformationTableViewCell : UIView <LMComBoxViewDelegate>
 
 + (CGFloat)cellHeight;
 
