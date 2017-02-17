@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XFJCarNameTableViewCell : UITableViewCell
+@interface XFJCarNameTableViewCell : UIView
 
 @property (nonatomic, copy) void (^addCellBlock)(NSInteger);
 

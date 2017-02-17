@@ -1,14 +1,14 @@
 //
-//  XFJCarNameTableViewCell.m
+//  XFJMinusCarNumTableViewCell.m
 //  TravelingManage
 //
-//  Created by 肖锋 on 2017/2/13.
+//  Created by 肖锋 on 2017/2/16.
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#import "XFJCarNameTableViewCell.h"
+#import "XFJMinusCarNumTableViewCell.h"
 
-@interface XFJCarNameTableViewCell()
+@interface XFJMinusCarNumTableViewCell()
 
 @property (nonatomic, strong) UITextField *carName_field;
 
@@ -16,23 +16,13 @@
 
 @end
 
-@implementation XFJCarNameTableViewCell
+@implementation XFJMinusCarNumTableViewCell
 
-//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-//{
-//    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        self.backgroundColor = [UIColor whiteColor];
-//        self.selectionStyle = UITableViewCellSelectionStyleNone;
-//        [self initControlWithCarName];
-//        [self setUpConventionCarNameWithMas];
-//    }
-//    return self;
-//}
-
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    if (self = [super initWithFrame:frame]) {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.backgroundColor = [UIColor whiteColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self initControlWithCarName];
         [self setUpConventionCarNameWithMas];
     }
@@ -72,26 +62,22 @@
 {
     if (_carNmae_button == nil) {
         _carNmae_button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_carNmae_button setImage:[UIImage originalWithImage:@"add-"] forState:UIControlStateNormal];
-        [_carNmae_button addTarget:self action:@selector(addCarNameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_carNmae_button setImage:[UIImage originalWithImage:@"delete-"] forState:UIControlStateNormal];
+        [_carNmae_button addTarget:self action:@selector(minusCarNameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         _carNmae_button.tag = 0;
     }
     return _carNmae_button;
 }
 
-- (void)addCarNameButtonClick:(UIButton *)buttonTag
+- (void)minusCarNameButtonClick:(UIButton *)buttonTag
 {
-    if (self.addCellBlock) {
-        self.addCellBlock(buttonTag.tag);
-    }
-    
+    NSLog(@"主人,您点击了减少车辆按钮~~");
 }
 
 + (CGFloat)cellHeight
 {
     return 47;
 }
-
 
 
 @end

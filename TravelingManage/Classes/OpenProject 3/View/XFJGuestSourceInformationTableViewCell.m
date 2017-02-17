@@ -50,10 +50,76 @@
 
 @implementation XFJGuestSourceInformationTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+//{
+//    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+//        self.selectionStyle = UITableViewCellSelectionStyleNone;
+//        self.goalAttributeArray = @[@"1. 表演演出",
+//                                    @"2. 景区观光",
+//                                    @"3. 采摘基地",
+//                                    @"4. 乡村旅游点",
+//                                    @"5. 采购点",
+//                                    @"6. 宾馆酒店"
+//                                    ];
+//        [self initShu];
+//        [self addSubview:self.lineView];
+//        [self addSubview:self.guestSourceInformation_imageVeiw];
+//        [self addSubview:self.guestSourceInformation_label];
+//        [bgScrollView addSubview:self.goalAttribute_button];
+//        [self.goalAttribute_button addSubview:self.goalAttributeContent_label];
+//        [self.goalAttribute_button addSubview:self.goalAttribute_label];
+//        [self.goalAttribute_button addSubview:self.goalAttribute_imageViewLeft];
+//        [self.goalAttribute_button addSubview:self.goalAttribute_imageViewRight];
+//        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.mas_top);
+//            make.left.mas_equalTo(self.mas_left);
+//            make.height.mas_equalTo(3.0);
+//            make.right.mas_equalTo(self.mas_right);
+//        }];
+//        [self.guestSourceInformation_imageVeiw mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(24.0);
+//            make.left.mas_equalTo(18.0);
+//            make.height.mas_equalTo(15.0);
+//            make.width.mas_equalTo(13.0);
+//        }];
+//        [self.guestSourceInformation_label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerY.mas_equalTo(self.guestSourceInformation_imageVeiw.mas_centerY);
+//            make.left.mas_equalTo(self.guestSourceInformation_imageVeiw.mas_right).mas_offset(10.0);
+//        }];
+//        [self.goalAttribute_button mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.mas_top).mas_offset(101.0);
+//            make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
+//            make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
+//            make.height.mas_equalTo(38.0);
+//        }];
+//        [self.goalAttribute_label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerY.mas_equalTo(self.goalAttribute_button.mas_centerY);
+//            make.left.mas_equalTo(self.goalAttribute_button.mas_left).mas_offset(15.0);
+//        }];
+//        [self.goalAttribute_imageViewLeft mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.goalAttribute_button.mas_top).mas_offset(13.0);
+//            make.left.mas_equalTo(self.goalAttribute_label.mas_right).mas_offset(5.0);
+//            make.height.mas_equalTo(5.0);
+//            make.width.mas_equalTo(5.0);
+//        }];
+//        [self.goalAttribute_imageViewRight mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.right.mas_equalTo(self.goalAttribute_button.mas_right).mas_offset(-2);
+//            make.centerY.mas_equalTo(self.goalAttribute_button.mas_centerY);
+//            make.height.mas_equalTo(6.0);
+//            make.width.mas_equalTo(8.0);
+//        }];
+//        [self.goalAttributeContent_label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(self.goalAttribute_imageViewLeft.mas_right).mas_offset(18.0);
+//            make.centerY.mas_equalTo(self.goalAttribute_label.mas_centerY);
+//        }];
+//    }
+//    return self;
+//}
+
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         self.goalAttributeArray = @[@"1. 表演演出",
                                     @"2. 景区观光",
                                     @"3. 采摘基地",

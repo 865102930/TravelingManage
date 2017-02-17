@@ -31,10 +31,56 @@
 
 @implementation XFJUploadPhotosTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+//{
+//    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+//        self.selectionStyle = UITableViewCellSelectionStyleNone;
+//        [self addSubview:self.line_view];
+//        [self addSubview:self.uploadPhotos_imageView];
+//        [self addSubview:self.uploadPhotos_label];
+//        [self addSubview:self.star_imageView];
+//        [self addSubview:self.showPhotos_label];
+//        [self addSubview:self.collectionView];
+//        self.dataArr = [NSMutableArray array];
+//        [self.line_view mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.mas_top);
+//            make.left.mas_equalTo(self.mas_left);
+//            make.height.mas_equalTo(3.0);
+//            make.right.mas_equalTo(self.mas_right);
+//        }];
+//        [self.uploadPhotos_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(24.0);
+//            make.left.mas_equalTo(18.0);
+//            make.height.mas_equalTo(15.0);
+//            make.width.mas_equalTo(13.0);
+//        }];
+//        [self.uploadPhotos_label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerY.mas_equalTo(self.uploadPhotos_imageView.mas_centerY);
+//            make.left.mas_equalTo(self.uploadPhotos_imageView.mas_right).mas_offset(10.0);
+//        }];
+//        [self.star_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(self.uploadPhotos_imageView.mas_left);
+//            make.bottom.mas_equalTo(-25.0);
+//            make.height.width.mas_equalTo(5.0);
+//        }];
+//        [self.showPhotos_label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(self.star_imageView.mas_right).mas_offset(2.0);
+//            make.centerY.mas_equalTo(self.star_imageView.mas_centerY);
+//        }];
+//        [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.uploadPhotos_label.mas_bottom).mas_offset(15.0);
+//            make.left.mas_equalTo(self.uploadPhotos_imageView.mas_left);
+//            make.right.mas_equalTo(-18.0);
+//            make.bottom.mas_equalTo(self.showPhotos_label.mas_top).mas_offset(-20);
+//        }];
+//        [self.collectionView registerClass:[XFJUploadPhotosCollectionViewCell class] forCellWithReuseIdentifier:KCellIdentifier_XFJUploadPhotosCollectionViewCell];
+//    }
+//    return self;
+//}
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.line_view];
         [self addSubview:self.uploadPhotos_imageView];
         [self addSubview:self.uploadPhotos_label];

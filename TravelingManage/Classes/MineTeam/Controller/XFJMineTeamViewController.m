@@ -101,7 +101,7 @@
         [_subscribeTitleArray addObjectsFromArray:array];
         if (_subscribeTitleArray.count == 0) {
             [_subscribeTitleArray addObjectsFromArray:@[
-                                                        @"全部",
+                                                        @" 全部",
                                                         @"任务中",
                                                         @"待完善",
                                                         @"待审核",
@@ -181,10 +181,17 @@
 
 - (void)contentWithNameLabel:(UILabel *)nameLabel contentButton:(UIButton *)contentButton
 {
+    contentButton.titleEdgeInsets = UIEdgeInsetsMake(0, -9, 0, 0);
     [contentButton addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(contentButton.mas_centerY);
-        make.right.mas_equalTo(contentButton.mas_right).mas_offset(-3.0);
+        if (iphone6) {
+            make.right.mas_equalTo(contentButton.mas_right).mas_offset(0);
+        }else if (iphone5) {
+            make.right.mas_equalTo(contentButton.mas_right).mas_offset(0);
+        }else if (iphone6P) {
+            make.right.mas_equalTo(contentButton.mas_right).mas_offset(-3.0);
+        }
     }];
 }
 
@@ -193,20 +200,29 @@
 {
     if (_firest_label == nil) {
         _firest_label = [[UILabel alloc] init];
-        _firest_label.text = @"(2)";
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",@"(2)"]];
+        [self returnRangColorWithString:string];
+        _firest_label.attributedText = string;
         _firest_label.font = [UIFont systemFontOfSize:14.0];
-        _firest_label.textColor = kColor6565;
     }
     return _firest_label;
+}
+
+- (void)returnRangColorWithString:(NSMutableAttributedString *)string
+{
+    [string addAttribute:NSForegroundColorAttributeName value:kColorff47 range:NSMakeRange(1,1)];
+    [string addAttribute:NSForegroundColorAttributeName value:kColor6565 range:NSMakeRange(0,1)];
+    [string addAttribute:NSForegroundColorAttributeName value:kColor6565 range:NSMakeRange(2,1)];
 }
 
 - (UILabel *)second_label
 {
     if (_second_label == nil) {
         _second_label = [[UILabel alloc] init];
-        _second_label.text = @"(3)";
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",@"(3)"]];
+        [self returnRangColorWithString:string];
+        _second_label.attributedText = string;
         _second_label.font = [UIFont systemFontOfSize:14.0];
-        _second_label.textColor = kColor6565;
     }
     return _second_label;
 }
@@ -215,9 +231,10 @@
 {
     if (_third_label == nil) {
         _third_label = [[UILabel alloc] init];
-        _third_label.text = @"(4)";
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",@"(4)"]];
+        [self returnRangColorWithString:string];
+        _third_label.attributedText = string;
         _third_label.font = [UIFont systemFontOfSize:14.0];
-        _third_label.textColor = kColor6565;
     }
     return _third_label;
 }
@@ -226,9 +243,10 @@
 {
     if (_four_label == nil) {
         _four_label = [[UILabel alloc] init];
-        _four_label.text = @"(5)";
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",@"(5)"]];
+        [self returnRangColorWithString:string];
+        _four_label.attributedText = string;
         _four_label.font = [UIFont systemFontOfSize:14.0];
-        _four_label.textColor = kColor6565;
     }
     return _four_label;
 }
@@ -242,8 +260,14 @@
     NSInteger index = [self.titleView.subviews indexOfObject:button];
     __weak typeof (self) weakself = self;
     [UIView animateWithDuration:0.25 animations:^{
-        //点击按钮的时候线的移动
-        weakself.underLineVeiw.XFJ_Width = button.titleLabel.XFJ_Width + 5;
+        if (iphone5) {
+            //点击按钮的时候线的移动
+            weakself.underLineVeiw.XFJ_Width = 63.0;
+        }else if (iphone6P) {
+            weakself.underLineVeiw.XFJ_Width = 85.0;
+        }else if (iphone6) {
+            weakself.underLineVeiw.XFJ_Width = 75.0;
+        }
         weakself.underLineVeiw.XFJ_centerX = button.XFJ_centerX;
         //相应的控制器的移动
         NSInteger index = [weakself.titleView.subviews indexOfObject:button];
@@ -276,7 +300,13 @@
     firestButton.selected = YES;
     self.previousButton = firestButton;
     [firestButton.titleLabel sizeToFit];
-    self.underLineVeiw.XFJ_Width = firestButton.titleLabel.XFJ_Width + 5;
+    if (iphone5) {
+        self.underLineVeiw.XFJ_Width = 63.0;
+    }else if (iphone6P) {
+        self.underLineVeiw.XFJ_Width = 85.0;
+    }else if (iphone6) {
+        self.underLineVeiw.XFJ_Width = 75.0;
+    }
     self.underLineVeiw.XFJ_centerX = firestButton.XFJ_centerX;
 }
 

@@ -40,7 +40,7 @@
         _allTaskTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _allTaskTableView.delegate = self;
         _allTaskTableView.dataSource = self;
-        _allTaskTableView.contentInset = UIEdgeInsetsMake(0, 0, 4, 0);
+        _allTaskTableView.contentInset = UIEdgeInsetsMake(0, 0, 110, 0);
     }
     return _allTaskTableView;
 }
@@ -54,7 +54,7 @@
 #pragma mark - cell的个数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 6;
 }
 
 #pragma mark - cell的内容

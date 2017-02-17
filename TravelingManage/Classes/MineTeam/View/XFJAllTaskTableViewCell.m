@@ -34,6 +34,8 @@
 
 @property (nonatomic, strong) UIButton *status_button;
 
+@property (nonatomic, strong) UIButton *cancel_button;
+
 @end
 
 @implementation XFJAllTaskTableViewCell
@@ -61,6 +63,8 @@
     [self addSubview:self.startTeamTime_label2];
     [self addSubview:self.startTeamTime_label];
     [self addSubview:self.taskStatus_label];
+    [self addSubview:self.status_button];
+    [self addSubview:self.cancel_button];
 }
 
 - (void)setUpContentAllTaskWithMas
@@ -112,6 +116,22 @@
     [self.startTeamTime_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.startTeamTime_label2.mas_top);
         make.right.mas_equalTo(self.startTeamTime_label2.mas_left).mas_offset(-10);
+    }];
+    [self.taskStatus_label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(self.mas_right).mas_offset(-17.0);
+        make.top.mas_equalTo(self.line_view.mas_bottom).mas_offset(14.0);
+    }];
+    [self.status_button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.contentBackGround_view.mas_bottom).mas_offset(9.0);
+        make.right.mas_equalTo(self.mas_right).mas_offset(-17.0);
+        make.height.mas_equalTo(27.0);
+        make.width.mas_equalTo(72.0);
+    }];
+    [self.cancel_button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(self.status_button.mas_left).mas_offset(-7.0);
+        make.height.mas_equalTo(self.status_button.mas_height);
+        make.width.mas_equalTo(self.status_button.mas_width);
+        make.top.mas_equalTo(self.status_button.mas_top);
     }];
 }
 
@@ -235,12 +255,51 @@
 {
     if (_taskStatus_label == nil) {
         _taskStatus_label = [[UILabel alloc] init];
-//        _taskStatus_label.text = [NSString stringWithFormat:<#(nonnull NSString *), ...#>]
-        
-        
-        
+        _taskStatus_label.text = [NSString stringWithFormat:@"%@",@"任务进行中"];
+        _taskStatus_label.textColor = kColorff47;
+        _taskStatus_label.font = [UIFont systemFontOfSize:13.0];
     }
     return _taskStatus_label;
+}
+
+- (UIButton *)status_button
+{
+    if (_status_button == nil) {
+        _status_button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_status_button setTitle:[NSString stringWithFormat:@"%@",@"重新开始"] forState:UIControlStateNormal];
+        [_status_button setTitleColor:kColorff47 forState:UIControlStateNormal];
+        [_status_button addTarget:self action:@selector(againStartButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        _status_button.layer.cornerRadius = 2.0;
+        _status_button.layer.borderColor = kColorff47.CGColor;
+        _status_button.layer.borderWidth = 0.5;
+        _status_button.titleLabel.font = [UIFont systemFontOfSize:13.0];
+    }
+    return _status_button;
+}
+
+- (UIButton *)cancel_button
+{
+    if (_cancel_button == nil) {
+        _cancel_button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_cancel_button setTitle:[NSString stringWithFormat:@"%@",@"取消"] forState:UIControlStateNormal];
+        [_cancel_button setTitleColor:kColor9898 forState:UIControlStateNormal];
+        [_cancel_button addTarget:self action:@selector(cancelButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        _cancel_button.layer.cornerRadius = 2.0;
+        _cancel_button.layer.borderColor = kColor9898.CGColor;
+        _cancel_button.layer.borderWidth = 0.5;
+        _cancel_button.titleLabel.font = [UIFont systemFontOfSize:13.0];
+    }
+    return _cancel_button;
+}
+
+- (void)againStartButtonClick
+{
+    NSLog(@"主人,您点击了重新开始按钮~~");
+}
+
+- (void)cancelButtonClick
+{
+    NSLog(@"主人,您点击了取消按钮~~");
 }
 + (CGFloat)cellHeight
 {

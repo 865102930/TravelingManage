@@ -11,7 +11,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XFJTeamInformationTableViewCell : UITableViewCell
+@interface XFJTeamInformationTableViewCell : UIView
 
 
 + (CGFloat)cellHeight;

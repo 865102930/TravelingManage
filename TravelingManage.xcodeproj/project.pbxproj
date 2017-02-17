@@ -175,6 +175,13 @@
 		3AE2FF561E4D5FB200E380F9 /* kaishirenwukuang@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE2FF531E4D5FB200E380F9 /* kaishirenwukuang@2x.png */; };
 		3AE2FF571E4D5FB200E380F9 /* kaishirenwukuang@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE2FF541E4D5FB200E380F9 /* kaishirenwukuang@3x.png */; };
 		3AE2FF5A1E4D613B00E380F9 /* HyperlinksButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2FF591E4D613B00E380F9 /* HyperlinksButton.m */; };
+		3AE7FA3C1E55506C003E3505 /* hongse.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE7FA361E55506C003E3505 /* hongse.png */; };
+		3AE7FA3D1E55506C003E3505 /* hongse@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE7FA371E55506C003E3505 /* hongse@2x.png */; };
+		3AE7FA3E1E55506C003E3505 /* hongse@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE7FA381E55506C003E3505 /* hongse@3x.png */; };
+		3AE7FA3F1E55506C003E3505 /* huise.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE7FA391E55506C003E3505 /* huise.png */; };
+		3AE7FA401E55506C003E3505 /* huise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE7FA3A1E55506C003E3505 /* huise@2x.png */; };
+		3AE7FA411E55506C003E3505 /* huise@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE7FA3B1E55506C003E3505 /* huise@3x.png */; };
+		3AE7FA441E55A3C8003E3505 /* XFJMinusCarNumTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7FA431E55A3C8003E3505 /* XFJMinusCarNumTableViewCell.m */; };
 		3AE849DF1E54330900A71C5E /* XFJMineTeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849DE1E54330900A71C5E /* XFJMineTeamViewController.m */; };
 		3AE849E21E543DCA00A71C5E /* XFJAllTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849E11E543DCA00A71C5E /* XFJAllTaskViewController.m */; };
 		3AE849E51E543DF000A71C5E /* XFJTaskingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849E41E543DF000A71C5E /* XFJTaskingViewController.m */; };
@@ -436,6 +443,14 @@
 		3AE2FF541E4D5FB200E380F9 /* kaishirenwukuang@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kaishirenwukuang@3x.png"; sourceTree = "<group>"; };
 		3AE2FF581E4D613B00E380F9 /* HyperlinksButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyperlinksButton.h; sourceTree = "<group>"; };
 		3AE2FF591E4D613B00E380F9 /* HyperlinksButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HyperlinksButton.m; sourceTree = "<group>"; };
+		3AE7FA361E55506C003E3505 /* hongse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hongse.png; sourceTree = "<group>"; };
+		3AE7FA371E55506C003E3505 /* hongse@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hongse@2x.png"; sourceTree = "<group>"; };
+		3AE7FA381E55506C003E3505 /* hongse@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hongse@3x.png"; sourceTree = "<group>"; };
+		3AE7FA391E55506C003E3505 /* huise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huise.png; sourceTree = "<group>"; };
+		3AE7FA3A1E55506C003E3505 /* huise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "huise@2x.png"; sourceTree = "<group>"; };
+		3AE7FA3B1E55506C003E3505 /* huise@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "huise@3x.png"; sourceTree = "<group>"; };
+		3AE7FA421E55A3C8003E3505 /* XFJMinusCarNumTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJMinusCarNumTableViewCell.h; sourceTree = "<group>"; };
+		3AE7FA431E55A3C8003E3505 /* XFJMinusCarNumTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJMinusCarNumTableViewCell.m; sourceTree = "<group>"; };
 		3AE849DD1E54330900A71C5E /* XFJMineTeamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJMineTeamViewController.h; sourceTree = "<group>"; };
 		3AE849DE1E54330900A71C5E /* XFJMineTeamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJMineTeamViewController.m; sourceTree = "<group>"; };
 		3AE849E01E543DCA00A71C5E /* XFJAllTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJAllTaskViewController.h; sourceTree = "<group>"; };
@@ -570,6 +585,8 @@
 				1CFDFE081E542C65001D6300 /* LMContainsLMComboxScrollView.m */,
 				1CFDFE091E542C65001D6300 /* XFJCarNameTableViewCell.h */,
 				1CFDFE0A1E542C65001D6300 /* XFJCarNameTableViewCell.m */,
+				3AE7FA421E55A3C8003E3505 /* XFJMinusCarNumTableViewCell.h */,
+				3AE7FA431E55A3C8003E3505 /* XFJMinusCarNumTableViewCell.m */,
 				1CFDFE0B1E542C65001D6300 /* XFJConventionMessageTableViewCell.h */,
 				1CFDFE0C1E542C65001D6300 /* XFJConventionMessageTableViewCell.m */,
 				1CFDFE0D1E542C65001D6300 /* XFJGuestSourceInformationTableViewCell.h */,
@@ -836,6 +853,7 @@
 		3A993FA91E484F2E00F898D2 /* Picture */ = {
 			isa = PBXGroup;
 			children = (
+				3AE7FA351E555059003E3505 /* MineTeam */,
 				3ADDEFEE1E4DAC70003C838F /* OpenGroupImage */,
 				3A9474A71E4D92CA002F1F9B /* Assets.xcassets */,
 				3AE2FF341E4D48CD00E380F9 /* HomePicture */,
@@ -1009,6 +1027,19 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		3AE7FA351E555059003E3505 /* MineTeam */ = {
+			isa = PBXGroup;
+			children = (
+				3AE7FA361E55506C003E3505 /* hongse.png */,
+				3AE7FA371E55506C003E3505 /* hongse@2x.png */,
+				3AE7FA381E55506C003E3505 /* hongse@3x.png */,
+				3AE7FA391E55506C003E3505 /* huise.png */,
+				3AE7FA3A1E55506C003E3505 /* huise@2x.png */,
+				3AE7FA3B1E55506C003E3505 /* huise@3x.png */,
+			);
+			name = MineTeam;
+			sourceTree = "<group>";
+		};
 		3AE849DA1E5432F400A71C5E /* MineTeam */ = {
 			isa = PBXGroup;
 			children = (
@@ -1167,6 +1198,7 @@
 				3A7A51241E4B09FC004FFB0F /* message2@2x.png in Resources */,
 				3AE2FF571E4D5FB200E380F9 /* kaishirenwukuang@3x.png in Resources */,
 				3AE2FF551E4D5FB200E380F9 /* kaishirenwukuang.png in Resources */,
+				3AE7FA3E1E55506C003E3505 /* hongse@3x.png in Resources */,
 				3ADDF0111E4DAD02003C838F /* add-@2x.png in Resources */,
 				3A993FD51E495B2900F898D2 /* yonghu.png in Resources */,
 				3A9B892E1E4C45C4004E3B05 /* triangle@3x.png in Resources */,
@@ -1185,8 +1217,10 @@
 				3ADDF01E1E4DAD02003C838F /* drop-down-box1@3x.png in Resources */,
 				3AE2FF491E4D4FA100E380F9 /* laba@3x.png in Resources */,
 				3ADDF0291E4DAD02003C838F /* input-box3-@2x.png in Resources */,
+				3AE7FA411E55506C003E3505 /* huise@3x.png in Resources */,
 				3A993FD71E495B2900F898D2 /* yonghu@3x.png in Resources */,
 				3ADDF0391E4DBB5B003C838F /* xinghao@2x.png in Resources */,
+				3AE7FA3D1E55506C003E3505 /* hongse@2x.png in Resources */,
 				3ADDF0141E4DAD02003C838F /* add-img-@2x.png in Resources */,
 				3A7A51231E4B09FC004FFB0F /* message2.png in Resources */,
 				3ADDF01A1E4DAD02003C838F /* drop-down-box-2@2x.png in Resources */,
@@ -1199,16 +1233,19 @@
 				3A9B892D1E4C45C4004E3B05 /* triangle@2x.png in Resources */,
 				3AE2FF471E4D4FA100E380F9 /* laba.png in Resources */,
 				3ADDF02D1E4DAD02003C838F /* Triangle-@3x.png in Resources */,
+				3AE7FA3F1E55506C003E3505 /* huise.png in Resources */,
 				1CB5240C1E53082900A205C3 /* down_dark0.png in Resources */,
 				3ADDF03A1E4DBB5B003C838F /* xinghao@3x.png in Resources */,
 				3A993FDB1E495B3300F898D2 /* xinjian.png in Resources */,
 				3ADDF01D1E4DAD02003C838F /* drop-down-box1@2x.png in Resources */,
+				3AE7FA3C1E55506C003E3505 /* hongse.png in Resources */,
 				3ADDF0131E4DAD02003C838F /* add-img-.png in Resources */,
 				3ADDF0181E4DAD02003C838F /* delete-@3x.png in Resources */,
 				3A993FDC1E495B3300F898D2 /* xinjian@2x.png in Resources */,
 				3A7A51221E4B09FC004FFB0F /* message@3x.png in Resources */,
 				1CFDFE5E1E542D09001D6300 /* dele.png in Resources */,
 				1CFDFE1D1E542C65001D6300 /* TZImagePickerController.bundle in Resources */,
+				3AE7FA401E55506C003E3505 /* huise@2x.png in Resources */,
 				3A9B892C1E4C45C4004E3B05 /* triangle.png in Resources */,
 				3A9B89201E4C1C10004E3B05 /* quanbu.png in Resources */,
 				3A7A51181E4B04AF004FFB0F /* xiugai@2x.png in Resources */,
@@ -1356,6 +1393,7 @@
 				3AE849DF1E54330900A71C5E /* XFJMineTeamViewController.m in Sources */,
 				1CFDFE541E542C84001D6300 /* JFImagePickerController.m in Sources */,
 				1CFDFE3B1E542C78001D6300 /* WSImageBroswerVC.m in Sources */,
+				3AE7FA441E55A3C8003E3505 /* XFJMinusCarNumTableViewCell.m in Sources */,
 				1C1939BB1E4DB99100882B8C /* MessageListViewController.m in Sources */,
 				1CFDFE5A1E542CD3001D6300 /* UIBarButtonItem+Item.m in Sources */,
 				1CFDFE3D1E542C78001D6300 /* WSImagePickerView.m in Sources */,
