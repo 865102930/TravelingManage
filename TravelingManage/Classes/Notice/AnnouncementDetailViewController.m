@@ -7,6 +7,7 @@
 //
 
 #import "AnnouncementDetailViewController.h"
+#import "AnnouncementdetailImageCell.h"
 #import "AnnouncementDetailModel.h"
 #import "AnnouncementDetailCell.h"
 #define navBarHeight 64
@@ -39,7 +40,7 @@
     NSString *Id = [NSString stringWithFormat:@"%ld", (long)self.Id];
     NSDictionary *parameters = @{
                                  @"Id" : Id
-    };
+                                 };
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
     [mgr POST:ANNOUNCEMENT parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable responseObject) {
         NSArray *dictArr = responseObject[@"object"];
@@ -55,21 +56,34 @@
 #pragma mark   ----------tableViewDelegate datasource----------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AnnouncementDetailCell *cell = [AnnouncementDetailCell initWithTableView:tableView];
-    cell.titleLabel.text = self.announcementDetailModel.announcementTitle;
-    cell.timeLabel.text = self.announcementDetailModel.createtime;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.conentLabe.text = self.announcementDetailModel.announcementDetail;
-    return cell;
+    if (indexPath.row == 0) {
+        AnnouncementDetailCell *cell = [AnnouncementDetailCell initWithTableView:tableView];
+        cell.titleLabel.text = self.announcementDetailModel.announcementTitle;
+        cell.timeLabel.text = self.announcementDetailModel.createtime;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.conentLabe.text = self.announcementDetailModel.announcementDetail;
+        return cell;
+        
+    }else{
+        AnnouncementdetailImageCell *cell = [AnnouncementdetailImageCell initWithTableView:tableView];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return self.announcementDetailModel.cellHeight;
+    if (indexPath.row == 0) {
+        return self.announcementDetailModel.cellHeight;
+    }else{
+        return 200;
+    }
+    
 }
 
 @end

@@ -12,6 +12,8 @@
 		1C1939BB1E4DB99100882B8C /* MessageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C1939BA1E4DB99100882B8C /* MessageListViewController.m */; };
 		1C1939BE1E4DC1E600882B8C /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C1939BD1E4DC1E600882B8C /* MessageViewController.m */; };
 		1C1939C31E51476200882B8C /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C1939C21E51476200882B8C /* MessageCell.m */; };
+		1C210C711E558B0600689677 /* PersonalDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C210C701E558B0600689677 /* PersonalDetailCell.m */; };
+		1C210C741E559BDB00689677 /* PersonDetail2Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C210C731E559BDB00689677 /* PersonDetail2Cell.m */; };
 		1CB523DE1E5195C600A205C3 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523DD1E5195C600A205C3 /* MessageModel.m */; };
 		1CB523E11E51AA8900A205C3 /* AnnouncementCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523E01E51AA8900A205C3 /* AnnouncementCell.m */; };
 		1CB523E41E51ABA100A205C3 /* AnnouncementModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523E31E51ABA100A205C3 /* AnnouncementModel.m */; };
@@ -58,6 +60,7 @@
 		1CFDFE5E1E542D09001D6300 /* dele.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFDFE5B1E542D09001D6300 /* dele.png */; };
 		1CFDFE5F1E542D09001D6300 /* dele@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFDFE5C1E542D09001D6300 /* dele@2x.png */; };
 		1CFDFE601E542D09001D6300 /* dele@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFDFE5D1E542D09001D6300 /* dele@3x.png */; };
+		1CFDFE6C1E5571B1001D6300 /* AnnouncementdetailImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFDFE6B1E5571B1001D6300 /* AnnouncementdetailImageCell.m */; };
 		3A00E3141E545DE200525150 /* XFJAllTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A00E3131E545DE200525150 /* XFJAllTaskTableViewCell.m */; };
 		3A07C8F81E480B0A008A838D /* UIImage+XFJOriginalImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8F71E480B0A008A838D /* UIImage+XFJOriginalImageView.m */; };
 		3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8FF1E481A70008A838D /* UIBarButtonItem+XFJItem.m */; };
@@ -193,6 +196,10 @@
 		1C1939BD1E4DC1E600882B8C /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageViewController.m; path = TravelingManage/Classes/Category/MessageViewController.m; sourceTree = SOURCE_ROOT; };
 		1C1939C11E51476200882B8C /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageCell.h; path = TravelingManage/Classes/Category/MessageCell.h; sourceTree = SOURCE_ROOT; };
 		1C1939C21E51476200882B8C /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageCell.m; path = TravelingManage/Classes/Category/MessageCell.m; sourceTree = SOURCE_ROOT; };
+		1C210C6F1E558B0600689677 /* PersonalDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDetailCell.h; sourceTree = "<group>"; };
+		1C210C701E558B0600689677 /* PersonalDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDetailCell.m; sourceTree = "<group>"; };
+		1C210C721E559BDB00689677 /* PersonDetail2Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetail2Cell.h; sourceTree = "<group>"; };
+		1C210C731E559BDB00689677 /* PersonDetail2Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetail2Cell.m; sourceTree = "<group>"; };
 		1CB523DC1E5195C600A205C3 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		1CB523DD1E5195C600A205C3 /* MessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
 		1CB523DF1E51AA8900A205C3 /* AnnouncementCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnnouncementCell.h; path = TravelingManage/Classes/Notice/AnnouncementCell.h; sourceTree = SOURCE_ROOT; };
@@ -279,6 +286,8 @@
 		1CFDFE5B1E542D09001D6300 /* dele.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dele.png; sourceTree = "<group>"; };
 		1CFDFE5C1E542D09001D6300 /* dele@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dele@2x.png"; sourceTree = "<group>"; };
 		1CFDFE5D1E542D09001D6300 /* dele@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dele@3x.png"; sourceTree = "<group>"; };
+		1CFDFE6A1E5571B1001D6300 /* AnnouncementdetailImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnnouncementdetailImageCell.h; path = TravelingManage/Classes/Notice/AnnouncementdetailImageCell.h; sourceTree = SOURCE_ROOT; };
+		1CFDFE6B1E5571B1001D6300 /* AnnouncementdetailImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnnouncementdetailImageCell.m; path = TravelingManage/Classes/Notice/AnnouncementdetailImageCell.m; sourceTree = SOURCE_ROOT; };
 		3A00E3121E545DE200525150 /* XFJAllTaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJAllTaskTableViewCell.h; sourceTree = "<group>"; };
 		3A00E3131E545DE200525150 /* XFJAllTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJAllTaskTableViewCell.m; sourceTree = "<group>"; };
 		3A07C8F61E480B0A008A838D /* UIImage+XFJOriginalImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+XFJOriginalImageView.h"; sourceTree = "<group>"; };
@@ -468,6 +477,8 @@
 				1CB523E01E51AA8900A205C3 /* AnnouncementCell.m */,
 				1CFDFDE91E541CBB001D6300 /* AnnouncementDetailCell.h */,
 				1CFDFDEA1E541CBB001D6300 /* AnnouncementDetailCell.m */,
+				1CFDFE6A1E5571B1001D6300 /* AnnouncementdetailImageCell.h */,
+				1CFDFE6B1E5571B1001D6300 /* AnnouncementdetailImageCell.m */,
 			);
 			name = View;
 			path = Controller;
@@ -484,6 +495,24 @@
 				1CFDFDE71E53E3DD001D6300 /* AnnouncementDetailModel.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		1C210C6D1E558AF200689677 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1C210C6E1E558AF200689677 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1C210C6F1E558B0600689677 /* PersonalDetailCell.h */,
+				1C210C701E558B0600689677 /* PersonalDetailCell.m */,
+				1C210C721E559BDB00689677 /* PersonDetail2Cell.h */,
+				1C210C731E559BDB00689677 /* PersonDetail2Cell.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		1CFDFDEC1E542C65001D6300 /* OpenProject */ = {
@@ -740,8 +769,8 @@
 			isa = PBXGroup;
 			children = (
 				3A1B7AE71E48053C00A5B22D /* Controller */,
-				3A1B7AE81E48053C00A5B22D /* Model */,
-				3A1B7AE91E48053C00A5B22D /* View */,
+				1C210C6D1E558AF200689677 /* Model */,
+				1C210C6E1E558AF200689677 /* View */,
 			);
 			path = Register;
 			sourceTree = "<group>";
@@ -759,20 +788,6 @@
 				3A9474961E4D9137002F1F9B /* VerificationCodeViewController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		3A1B7AE81E48053C00A5B22D /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		3A1B7AE91E48053C00A5B22D /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		3A1B7AED1E4805B500A5B22D /* Resource */ = {
@@ -1295,16 +1310,19 @@
 				1CFDFE571E542C84001D6300 /* JFPhotoView.m in Sources */,
 				1CB523E41E51ABA100A205C3 /* AnnouncementModel.m in Sources */,
 				1CFDFE241E542C65001D6300 /* LMComBoxView.m in Sources */,
+				1C210C741E559BDB00689677 /* PersonDetail2Cell.m in Sources */,
 				3A9474A61E4D91BE002F1F9B /* UITextField+textField.m in Sources */,
 				3A993FE01E49711E00F898D2 /* UIColor+expanded.m in Sources */,
 				1CFDFE191E542C65001D6300 /* XFJOpenGroupViewController.m in Sources */,
 				1CFDFDEB1E541CBB001D6300 /* AnnouncementDetailCell.m in Sources */,
+				1CFDFE6C1E5571B1001D6300 /* AnnouncementdetailImageCell.m in Sources */,
 				3A9A2DA41E49A97800D89639 /* XFJNavigationController.m in Sources */,
 				1CFDFE501E542C84001D6300 /* JFAssetHelper.m in Sources */,
 				1CFDFE251E542C65001D6300 /* LMContainsLMComboxScrollView.m in Sources */,
 				3AE849EB1E543EE500A71C5E /* XFJPleaseCheckViewController.m in Sources */,
 				1CFDFE211E542C65001D6300 /* TZPhotoPreviewController.m in Sources */,
 				1CFDFE2B1E542C65001D6300 /* XFJTeamInformationTableViewCell.m in Sources */,
+				1C210C711E558B0600689677 /* PersonalDetailCell.m in Sources */,
 				3A9940331E499D1600F898D2 /* NetWorkManager.m in Sources */,
 				1C1939BE1E4DC1E600882B8C /* MessageViewController.m in Sources */,
 				3A9474971E4D9137002F1F9B /* PersonalDataViewController.m in Sources */,

@@ -173,7 +173,7 @@
 }
 //注册
 - (void)registButtonClick{
-    RegistViewController *registVC = [[RegistViewController alloc] init];
+    PersonalDataViewController *registVC = [[PersonalDataViewController alloc] init];
     JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:registVC];
     [self presentViewController:navVC animated:YES completion:nil];
 }

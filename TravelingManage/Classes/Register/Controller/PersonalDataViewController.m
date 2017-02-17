@@ -7,87 +7,74 @@
 //
 
 #import "PersonalDataViewController.h"
-
+#import "PersonalDetailCell.h"
+#import "PersonDetail2Cell.h"
 @interface PersonalDataViewController ()
-
+@property (nonatomic, strong) UILabel *title_label;
 @end
 
 @implementation PersonalDataViewController
 
+- (UILabel *)title_label {
+    if (_title_label == nil) {
+        _title_label = [[UILabel alloc] initWithFrame:CGRectMake(self.view.XFJ_centerX, 6, 100, 44)];
+        _title_label.text = @"我的账户";
+        _title_label.textColor = kColor6565;
+        _title_label.textAlignment = NSTextAlignmentCenter;
+    }
+    return _title_label;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self setupNavBar];
-}
-
-- (void)setupNavBar {
-  self.navigationItem.title = @"我的账户";
+    self.navigationItem.titleView = self.title_label;
+    self.tableView.tableFooterView = [[UITableView alloc] init];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 
-    return 0 ;
+    return 1 ;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return 0;
+    return 3;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 0) {
+        PersonalDetailCell *personDetailCell = [PersonalDetailCell initWithTableView:tableView];
+        personDetailCell.title.text = @"姓名";
+        personDetailCell.content.text = @"张三";
+        personDetailCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return personDetailCell;
+    }else if (indexPath.row == 1){
+        PersonalDetailCell *personDetailCell = [PersonalDetailCell initWithTableView:tableView];
+        personDetailCell.title.text = @"身份证号";
+        personDetailCell.content.text = @"123123123231231233";
+        personDetailCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return personDetailCell;
+    }else{
+        PersonDetail2Cell *personDetailCell = [PersonDetail2Cell initWithTableView:tableView];
+        personDetailCell.title.text = @"电话";
+        personDetailCell.content.text = @"12312312312";
+        return personDetailCell;
+    }
+    return nil;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 55;
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
