@@ -66,6 +66,7 @@
     }
     return nil;
 }
+// git rm files
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
