@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XFJStarTaskTableViewCell : UIView
+@interface XFJStarTaskTableViewCell : UITableViewCell
 
 @property (nonatomic, copy) void (^startTaskButtonBlock)();
 

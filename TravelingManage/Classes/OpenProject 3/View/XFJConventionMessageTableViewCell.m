@@ -25,26 +25,17 @@
 
 @implementation XFJConventionMessageTableViewCell
 
-//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-//{
-//    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        self.backgroundColor = [UIColor whiteColor];
-//        self.selectionStyle = UITableViewCellSelectionStyleNone;
-//        [self initControlWithConventionMessage];
-//        [self setUpConventionMessageWithMas];
-//    }
-//    return self;
-//}
-
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    if (self = [super initWithFrame:frame]) {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.backgroundColor = [UIColor whiteColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self initControlWithConventionMessage];
         [self setUpConventionMessageWithMas];
     }
     return self;
 }
+
 
 #pragma mark - 初始化控件
 - (void)initControlWithConventionMessage

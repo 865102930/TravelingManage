@@ -22,44 +22,10 @@
 
 @implementation XFJOtherInformationTableViewCell
 
-//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-//{
-//    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        self.selectionStyle = UITableViewCellSelectionStyleNone;
-//        [self addSubview:self.line_view];
-//        [self addSubview:self.otherInformation_imageView];
-//        [self addSubview:self.otherInformation_label];
-//        [self addSubview:self.quality_field];
-//        [self.line_view mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.mas_equalTo(self.mas_top);
-//            make.left.mas_equalTo(self.mas_left);
-//            make.height.mas_equalTo(3.0);
-//            make.right.mas_equalTo(self.mas_right);
-//        }];
-//        [self.otherInformation_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.mas_equalTo(24.0);
-//            make.left.mas_equalTo(18.0);
-//            make.height.mas_equalTo(15.0);
-//            make.width.mas_equalTo(13.0);
-//        }];
-//        [self.otherInformation_label mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.centerY.mas_equalTo(self.otherInformation_imageView.mas_centerY);
-//            make.left.mas_equalTo(self.otherInformation_imageView.mas_right).mas_offset(10.0);
-//        }];
-//        [self.quality_field mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.mas_equalTo(self.otherInformation_imageView.mas_bottom).mas_offset(16.0);
-//            make.left.mas_equalTo(self.otherInformation_imageView.mas_left);
-//            make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
-//            make.height.mas_equalTo(38.0);
-//        }];
-//    }
-//    return self;
-//}
-
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor whiteColor];
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self addSubview:self.line_view];
         [self addSubview:self.otherInformation_imageView];
         [self addSubview:self.otherInformation_label];

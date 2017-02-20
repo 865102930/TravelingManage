@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XFJConventionMessageTableViewCell : UIView
+@interface XFJConventionMessageTableViewCell : UITableViewCell
 
 + (CGFloat)cellHeight;
 

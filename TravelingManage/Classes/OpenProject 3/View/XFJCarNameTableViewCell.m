@@ -18,26 +18,17 @@
 
 @implementation XFJCarNameTableViewCell
 
-//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-//{
-//    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        self.backgroundColor = [UIColor whiteColor];
-//        self.selectionStyle = UITableViewCellSelectionStyleNone;
-//        [self initControlWithCarName];
-//        [self setUpConventionCarNameWithMas];
-//    }
-//    return self;
-//}
-
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    if (self = [super initWithFrame:frame]) {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.backgroundColor = [UIColor whiteColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self initControlWithCarName];
         [self setUpConventionCarNameWithMas];
     }
     return self;
 }
+
 
 - (void)initControlWithCarName
 {

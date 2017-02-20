@@ -17,6 +17,8 @@
 #import "XFJMineTeamViewController.h"
 #import "XFJTaskView.h"
 #import <Masonry.h>
+#import "XFJHomeTopTaskMessageVeiw.h"
+#import "XFJTeamMessageViewController.h"
 
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate>
@@ -40,6 +42,8 @@
 @property (nonatomic, strong) XFJAnnouncementView *announcementView;
 
 @property (nonatomic, strong) XFJTaskView *task_view;
+
+@property (nonatomic, strong) XFJHomeTopTaskMessageVeiw *homeTopTaskMessageVeiw;
 
 @end
 
@@ -66,9 +70,12 @@
     self.navigationItem.titleView = self.title_label;
     self.navigationItem.leftBarButtonItem = self.user_SttingButtonItem;
     self.navigationItem.rightBarButtonItem = self.projectButtonItem;
-    [self.view addSubview:self.announcementView];
+    //这是添加的公告
+//    [self.view addSubview:self.announcementView];
     [self.view addSubview:self.task_view];
     [self.maskView1 addSubview:self.leftView];
+    //这是添加的home顶部的任务
+    [self.view addSubview:self.homeTopTaskMessageVeiw];
     [self setUpPanGes];
 }
 
@@ -90,6 +97,10 @@
         [wself remoSubViews];
         XFJMineTeamViewController *mineTeamController = [[XFJMineTeamViewController alloc] init];
         [wself.navigationController pushViewController:mineTeamController animated:YES];
+    };
+    self.homeTopTaskMessageVeiw.jumpWithTeamMessageBlock = ^() {
+        XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
+        [wself.navigationController pushViewController:teamMessageViewController animated:YES];
     };
 }
 
@@ -179,6 +190,14 @@
         _task_view = [[XFJTaskView alloc] initWithFrame:CGRectMake(9, SCREEN_HEIGHT - 98, SCREEN_WIDTH - 15, 98.0)];
     }
     return _task_view;
+}
+
+- (XFJHomeTopTaskMessageVeiw *)homeTopTaskMessageVeiw
+{
+    if (_homeTopTaskMessageVeiw == nil) {
+        _homeTopTaskMessageVeiw = [[XFJHomeTopTaskMessageVeiw alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 98.0)];
+    }
+    return _homeTopTaskMessageVeiw;
 }
 
 - (void)jumpToUserController
