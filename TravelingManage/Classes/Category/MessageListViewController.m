@@ -111,7 +111,7 @@
     
     // 下划线
     [firstTitleButton.titleLabel sizeToFit];
-    self.titleUnderline.XFJ_Width = firstTitleButton.titleLabel.XFJ_Width + 10;
+    self.titleUnderline.XFJ_Width =firstTitleButton.titleLabel.XFJ_Width + 10;
     self.titleUnderline.XFJ_centerX = firstTitleButton.XFJ_centerX;
 }
 

@@ -36,11 +36,11 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
 //    XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[LoginViewController alloc] init]];
-//    self.window.rootViewController = nav;
-//    [self.window makeKeyAndVisible];
-    LoginViewController * login = [[LoginViewController alloc]init];
-    self.window.rootViewController = login;
+    self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
+//    LoginViewController * login = [[LoginViewController alloc]init];
+  //  self.window.rootViewController = login;
+    //[self.window makeKeyAndVisible];
 }
 
 
