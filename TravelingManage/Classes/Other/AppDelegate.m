@@ -41,6 +41,9 @@
     //LoginViewController * login = [[LoginViewController alloc]init];
     //self.window.rootViewController = login;
     [self.window makeKeyAndVisible];
+//    LoginViewController * login = [[LoginViewController alloc]init];
+  //  self.window.rootViewController = login;
+    //[self.window makeKeyAndVisible];
 }
 
 
