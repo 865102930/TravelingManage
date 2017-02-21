@@ -14,6 +14,8 @@
 
 @property (nonatomic, copy) void (^addCellBlock)(NSInteger);
 
+@property (nonatomic, strong) NSString *userLocation;
+
 + (CGFloat)cellHeight;
 
 @end

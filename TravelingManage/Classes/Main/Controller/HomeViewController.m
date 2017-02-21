@@ -19,9 +19,10 @@
 #import <Masonry.h>
 #import "XFJHomeTopTaskMessageVeiw.h"
 #import "XFJTeamMessageViewController.h"
+#import <CoreLocation/CoreLocation.h>
 
 
-@interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate>
+@interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate>
 
 @property (nonatomic, strong) MAMapView *mapView;
 
@@ -44,6 +45,11 @@
 @property (nonatomic, strong) XFJTaskView *task_view;
 
 @property (nonatomic, strong) XFJHomeTopTaskMessageVeiw *homeTopTaskMessageVeiw;
+
+@property (nonatomic, strong) CLLocationManager *manager;
+
+//当前的城市
+@property (nonatomic, strong) NSString *currentCity;
 
 @end
 
@@ -77,6 +83,9 @@
     //这是添加的home顶部的任务
     [self.view addSubview:self.homeTopTaskMessageVeiw];
     [self setUpPanGes];
+    
+    //获取当前用户的位置信息
+    [self getUserLocation];
 }
 
 #pragma mark - 给按钮添加一个滑动手势
@@ -264,6 +273,7 @@
 {
     NSLog(@"点击了新建按钮");
     XFJOpenGroupViewController *openGroupViewController = [[XFJOpenGroupViewController alloc] init];
+    openGroupViewController.locationWithUser = self.currentCity;
     [self.navigationController pushViewController:openGroupViewController animated:YES];
 }
 
@@ -301,7 +311,87 @@
 #pragma mark - 定位失败后调用此方法
 - (void)mapView:(MAMapView *)mapView didFailToLocateUserWithError:(NSError *)error
 {
-    NSLog(@"%s",__func__);
+    NSString *errorString;
+    NSLog(@"Error: %@",[error localizedDescription]);
+    switch([error code]) {
+        case kCLErrorDenied:
+            errorString = @"Access to Location Services denied by user";
+        {
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请在系统设置中打开定位服务" delegate:self cancelButtonTitle:@"忽略" otherButtonTitles:@"去设置", nil];
+            [alertView setTag:100];
+            [alertView show];
+        }
+            break;
+        case kCLErrorLocationUnknown:
+            errorString = @"Location data unavailable";
+            [MBProgressHUD showHudTipStr:@"定位失败" contentColor:HidWithColorContentBlack];
+            break;
+        default:
+            errorString = @"An unknown error has occurred";
+            [MBProgressHUD showHudTipStr:@"定位失败" contentColor:HidWithColorContentBlack];
+            break;
+    }
 }
+
+- (void)getUserLocation
+{
+    self.manager = [[CLLocationManager alloc] init];
+    //设置准确度的；
+    self.manager.desiredAccuracy=kCLLocationAccuracyBest;
+    //设置距离（距离单位是米）
+    self.manager.distanceFilter = 10;
+    //设置代理
+    self.manager.delegate = self;
+    //持续定位；
+    [self.manager requestAlwaysAuthorization];
+    //开始定位
+    [self.manager startUpdatingLocation];
+    [self.manager stopUpdatingLocation];
+    // 判断的手机的定位功能是否开启
+    // 开启定位:设置 > 隐私 > 位置 > 定位服务
+    if ([CLLocationManager locationServicesEnabled]) {
+        // 启动位置更新
+        // 开启位置更新需要与服务器进行轮询所以会比较耗电，在不需要时用stopUpdatingLocation方法关闭;
+        [self.manager startUpdatingLocation];
+    }else {
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"“请在设置 > 隐私 > 位置 > 定位服务”中打开定位服务" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:@"设置", nil];
+        [alertView setTag:100];
+        [alertView show];
+    }
+}
+
+#pragma mark - 获取到用户的精度和纬度转换为具体的位置信息
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+{
+    //停止更新定位
+    [self.manager stopUpdatingLocation];
+    //旧的值
+    CLLocation *currentLocation = [locations lastObject];
+    CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        if (placemarks.count > 0) {
+            CLPlacemark *placeMark = placemarks[0];
+            self.currentCity = placeMark.locality;
+            if (!self.currentCity) {
+                self.currentCity = @"无法定位当前城市";
+            }
+            NSLog(@"--------定位的当前城市是:%@",self.currentCity);
+        }else if (error == nil && placemarks.count == 0) {
+            NSLog(@"No location and error return");
+        }else if (error) {
+            NSLog(@"location error :%@",error);
+        }
+    }];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (alertView.tag == 100) {
+        NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        if([[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    }
+}
+
 
 @end

@@ -10,4 +10,6 @@
 
 @interface VerificationCodeViewController : UIViewController
 
+@property (nonatomic, strong) NSString *registTextField_text;
+
 @end

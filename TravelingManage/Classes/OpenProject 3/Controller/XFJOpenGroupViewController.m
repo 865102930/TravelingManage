@@ -138,7 +138,11 @@
     [self.openGroupTableView registerClass:[XFJUploadPhotosTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJUploadPhotosTableViewCell];
 //    [self.openGroupTableView registerClass:[XFJStarTaskTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJStarTaskTableViewCell];
     [self.openGroupTableView registerClass:[XFJVoucherPhotosTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJVoucherPhotosTableViewCell];
+    NSLog(@"++++++=========-----获取到的用户当前的城市是:%@",self.locationWithUser);
+    
 }
+
+#pragma mark - 加载 0：目的属性 1: 团队性质请求
 
 - (UIBarButtonItem *)pushToLeftViewButton
 {
@@ -187,6 +191,7 @@
         return cell;
     }else if (indexPath.row == 1) {
         XFJCarNameTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJCarNameTableViewCell forIndexPath:indexPath];
+        cell.userLocation = self.locationWithUser;
         __weak __typeof(self)wself = self;
         cell.addCellBlock = ^(NSInteger buttonTag) {
             NSLog(@"主人,您点击了添加车牌按钮~~");
@@ -225,14 +230,22 @@
         if (cell == nil) {
             cell = [[XFJStarTaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         }
+        __weak __typeof(self)wself = self;
         cell.startTaskButtonBlock = ^(){
-            HomeViewController *homeController = [[HomeViewController alloc]init];
-            [self.navigationController pushViewController:homeController animated:YES];
+            //该处提交用户填写的创建团队时候的参数
+            [wself requestWithOpenTeam];
         };
         return cell;
     }
     return nil;
 }
+
+#pragma mark - 发送请求
+- (void)requestWithOpenTeam
+{
+    
+}
+
 
 #pragma makr - 访问照相机
 - (void)chooseImage:(XFJUploadPhotosTableViewCell *)SerPhotoCell

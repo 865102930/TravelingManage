@@ -66,6 +66,8 @@
 		3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8FF1E481A70008A838D /* UIBarButtonItem+XFJItem.m */; };
 		3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C9011E481A70008A838D /* UIImage+XFJColor.m */; };
 		3A07C9061E481A70008A838D /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C9031E481A70008A838D /* UIView+Frame.m */; };
+		3A10CFDC1E5BD04F00592564 /* UITextField+XFJTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10CFDB1E5BD04F00592564 /* UITextField+XFJTextField.m */; };
+		3A10CFDF1E5BDBD200592564 /* NSObject+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10CFDE1E5BDBD200592564 /* NSObject+Common.m */; };
 		3A1B7AEA1E48053C00A5B22D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B7AE31E48053C00A5B22D /* AppDelegate.m */; };
 		3A1B7AEB1E48053C00A5B22D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A1B7AE41E48053C00A5B22D /* Info.plist */; };
 		3A48BABE1E5A816D00910789 /* XFJVoucherPhotosTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A48BABD1E5A816D00910789 /* XFJVoucherPhotosTableViewCell.m */; };
@@ -132,6 +134,9 @@
 		3A9B892C1E4C45C4004E3B05 /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A9B89291E4C45C4004E3B05 /* triangle.png */; };
 		3A9B892D1E4C45C4004E3B05 /* triangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A9B892A1E4C45C4004E3B05 /* triangle@2x.png */; };
 		3A9B892E1E4C45C4004E3B05 /* triangle@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A9B892B1E4C45C4004E3B05 /* triangle@3x.png */; };
+		3A9EB5CF1E5C495C0064E61B /* XFJPurposeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EB5CE1E5C495C0064E61B /* XFJPurposeItem.m */; };
+		3A9EB5D21E5C50C90064E61B /* XFJTeamPropertiesItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EB5D11E5C50C90064E61B /* XFJTeamPropertiesItem.m */; };
+		3A9EB5D51E5C64750064E61B /* XFJCarNumberItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EB5D41E5C64750064E61B /* XFJCarNumberItem.m */; };
 		3AA6E8851E48458500FC34A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B7AE51E48053C00A5B22D /* main.m */; };
 		3ABA4A4D1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABA4A4C1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m */; };
 		3ADDF0101E4DAD02003C838F /* add-.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFEF1E4DAD02003C838F /* add-.png */; };
@@ -316,6 +321,10 @@
 		3A07C9011E481A70008A838D /* UIImage+XFJColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+XFJColor.m"; sourceTree = "<group>"; };
 		3A07C9021E481A70008A838D /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
 		3A07C9031E481A70008A838D /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
+		3A10CFDA1E5BD04F00592564 /* UITextField+XFJTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+XFJTextField.h"; sourceTree = "<group>"; };
+		3A10CFDB1E5BD04F00592564 /* UITextField+XFJTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+XFJTextField.m"; sourceTree = "<group>"; };
+		3A10CFDD1E5BDBD200592564 /* NSObject+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Common.h"; sourceTree = "<group>"; };
+		3A10CFDE1E5BDBD200592564 /* NSObject+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Common.m"; sourceTree = "<group>"; };
 		3A1B7ABD1E48028600A5B22D /* TravelingManage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelingManage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A1B7AE21E48053C00A5B22D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3A1B7AE31E48053C00A5B22D /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -414,6 +423,12 @@
 		3A9B89291E4C45C4004E3B05 /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
 		3A9B892A1E4C45C4004E3B05 /* triangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "triangle@2x.png"; sourceTree = "<group>"; };
 		3A9B892B1E4C45C4004E3B05 /* triangle@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "triangle@3x.png"; sourceTree = "<group>"; };
+		3A9EB5CD1E5C495C0064E61B /* XFJPurposeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJPurposeItem.h; sourceTree = "<group>"; };
+		3A9EB5CE1E5C495C0064E61B /* XFJPurposeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJPurposeItem.m; sourceTree = "<group>"; };
+		3A9EB5D01E5C50C90064E61B /* XFJTeamPropertiesItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamPropertiesItem.h; sourceTree = "<group>"; };
+		3A9EB5D11E5C50C90064E61B /* XFJTeamPropertiesItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamPropertiesItem.m; sourceTree = "<group>"; };
+		3A9EB5D31E5C64750064E61B /* XFJCarNumberItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJCarNumberItem.h; sourceTree = "<group>"; };
+		3A9EB5D41E5C64750064E61B /* XFJCarNumberItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCarNumberItem.m; sourceTree = "<group>"; };
 		3ABA4A4B1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamMessageBottomTableViewCell.h; sourceTree = "<group>"; };
 		3ABA4A4C1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessageBottomTableViewCell.m; sourceTree = "<group>"; };
 		3ADDEFEF1E4DAD02003C838F /* add-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-.png"; sourceTree = "<group>"; };
@@ -560,8 +575,8 @@
 		1CFDFDEC1E542C65001D6300 /* OpenProject */ = {
 			isa = PBXGroup;
 			children = (
+				3A9EB5CC1E5C491B0064E61B /* Model */,
 				1CFDFDED1E542C65001D6300 /* Controller */,
-				1CFDFDF01E542C65001D6300 /* TZImagePickerController */,
 				1CFDFE041E542C65001D6300 /* View */,
 			);
 			name = OpenProject;
@@ -600,7 +615,8 @@
 				1CFDFE021E542C65001D6300 /* UIView+Layout.h */,
 				1CFDFE031E542C65001D6300 /* UIView+Layout.m */,
 			);
-			path = TZImagePickerController;
+			name = TZImagePickerController;
+			path = "OpenProject 3/TZImagePickerController";
 			sourceTree = "<group>";
 		};
 		1CFDFE041E542C65001D6300 /* View */ = {
@@ -725,6 +741,7 @@
 		3A1B7AD71E48053C00A5B22D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1CFDFDF01E542C65001D6300 /* TZImagePickerController */,
 				1CFDFE3F1E542C84001D6300 /* JFImagePickerController */,
 				1CFDFE2E1E542C78001D6300 /* WSImagebroswerVC */,
 				1CFDFDEC1E542C65001D6300 /* OpenProject */,
@@ -744,6 +761,8 @@
 		3A1B7AD81E48053C00A5B22D /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				3A10CFDD1E5BDBD200592564 /* NSObject+Common.h */,
+				3A10CFDE1E5BDBD200592564 /* NSObject+Common.m */,
 				1CFDFE581E542CC6001D6300 /* UIBarButtonItem+Item.h */,
 				1CFDFE591E542CD3001D6300 /* UIBarButtonItem+Item.m */,
 				3A94749E1E4D91BE002F1F9B /* UIButton+button.h */,
@@ -752,6 +771,8 @@
 				3A9474A11E4D91BE002F1F9B /* UITextField+Placeholder.m */,
 				3A9474A21E4D91BE002F1F9B /* UITextField+textField.h */,
 				3A9474A31E4D91BE002F1F9B /* UITextField+textField.m */,
+				3A10CFDA1E5BD04F00592564 /* UITextField+XFJTextField.h */,
+				3A10CFDB1E5BD04F00592564 /* UITextField+XFJTextField.m */,
 				3A993FDE1E49711E00F898D2 /* UIColor+expanded.h */,
 				3A993FDF1E49711E00F898D2 /* UIColor+expanded.m */,
 				3A07C8F61E480B0A008A838D /* UIImage+XFJOriginalImageView.h */,
@@ -987,6 +1008,19 @@
 				3A48BAC31E5A949600910789 /* XFJHomeTopTaskMessageVeiw.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		3A9EB5CC1E5C491B0064E61B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3A9EB5CD1E5C495C0064E61B /* XFJPurposeItem.h */,
+				3A9EB5CE1E5C495C0064E61B /* XFJPurposeItem.m */,
+				3A9EB5D01E5C50C90064E61B /* XFJTeamPropertiesItem.h */,
+				3A9EB5D11E5C50C90064E61B /* XFJTeamPropertiesItem.m */,
+				3A9EB5D31E5C64750064E61B /* XFJCarNumberItem.h */,
+				3A9EB5D41E5C64750064E61B /* XFJCarNumberItem.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		3AA6E87E1E483DB900FC34A2 /* RequestTool */ = {
@@ -1399,6 +1433,7 @@
 				3A48BABE1E5A816D00910789 /* XFJVoucherPhotosTableViewCell.m in Sources */,
 				1C1939B81E4DB71B00882B8C /* PageButton.m in Sources */,
 				1CFDFE2A1E542C65001D6300 /* XFJStarTaskTableViewCell.m in Sources */,
+				3A10CFDC1E5BD04F00592564 /* UITextField+XFJTextField.m in Sources */,
 				3A48BAD61E5AB7E300910789 /* XFJTitleMessageTableViewCell.m in Sources */,
 				3A94749A1E4D9137002F1F9B /* VerificationCodeViewController.m in Sources */,
 				3AA6E8851E48458500FC34A2 /* main.m in Sources */,
@@ -1414,6 +1449,7 @@
 				1CFDFE1B1E542C65001D6300 /* TZAssetModel.m in Sources */,
 				3A48BAD21E5AAE1100910789 /* XFJTeamMessageViewController.m in Sources */,
 				3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */,
+				3A9EB5D21E5C50C90064E61B /* XFJTeamPropertiesItem.m in Sources */,
 				1CFDFE2C1E542C65001D6300 /* XFJUploadPhotosCollectionViewCell.m in Sources */,
 				1CFDFE3A1E542C78001D6300 /* WSImageBroserCell.m in Sources */,
 				3A7A51281E4B1C72004FFB0F /* XFJLeftViewTableViewCell.m in Sources */,
@@ -1433,10 +1469,12 @@
 				3AE849EB1E543EE500A71C5E /* XFJPleaseCheckViewController.m in Sources */,
 				1CFDFE211E542C65001D6300 /* TZPhotoPreviewController.m in Sources */,
 				3A48BAD91E5AB7FB00910789 /* XFJTitleMessageContentTableViewCell.m in Sources */,
+				3A10CFDF1E5BDBD200592564 /* NSObject+Common.m in Sources */,
 				1CFDFE2B1E542C65001D6300 /* XFJTeamInformationTableViewCell.m in Sources */,
 				1C210C711E558B0600689677 /* PersonalDetailCell.m in Sources */,
 				3A9940331E499D1600F898D2 /* NetWorkManager.m in Sources */,
 				1C1939BE1E4DC1E600882B8C /* MessageViewController.m in Sources */,
+				3A9EB5D51E5C64750064E61B /* XFJCarNumberItem.m in Sources */,
 				3A9474971E4D9137002F1F9B /* PersonalDataViewController.m in Sources */,
 				3AE849E81E543E9B00A71C5E /* XFJPleaseDoITViewController.m in Sources */,
 				3A1B7AEA1E48053C00A5B22D /* AppDelegate.m in Sources */,
@@ -1473,6 +1511,7 @@
 				3AE7FA441E55A3C8003E3505 /* XFJMinusCarNumTableViewCell.m in Sources */,
 				3A48BAC11E5A830200910789 /* XFJVoucherPhotosCollectionViewCell.m in Sources */,
 				1C1939BB1E4DB99100882B8C /* MessageListViewController.m in Sources */,
+				3A9EB5CF1E5C495C0064E61B /* XFJPurposeItem.m in Sources */,
 				1CFDFE5A1E542CD3001D6300 /* UIBarButtonItem+Item.m in Sources */,
 				1CFDFE3D1E542C78001D6300 /* WSImagePickerView.m in Sources */,
 				1CB523E11E51AA8900A205C3 /* AnnouncementCell.m in Sources */,

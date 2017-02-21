@@ -18,6 +18,14 @@
 @property(nonatomic,strong)UILabel     *idCodeL;
 @property(nonatomic,strong)UILabel     *phoneNum;//手机号
 @property(nonatomic,strong)UIButton    *nextButton;//下一步
+//短信倒计时
+@property (nonatomic, assign) NSTimeInterval durationToValidity;
+//定时器
+@property (nonatomic, strong, readwrite) NSTimer *timer;
+//获取服务器返回的值
+@property (nonatomic, strong) NSString *msgStr;
+//获取用户填写的验证码
+@property (nonatomic, strong) NSString *pleaseInputVerification;
 
 @end
 
@@ -149,7 +157,7 @@
         make.top.equalTo(_backImage.mas_bottom).offset(21);
     }];
     
-    self.phoneNum.text = @"12345678900";
+    self.phoneNum.text = [NSString stringWithFormat:@"%@",self.registTextField_text];
     [self.phoneNum mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_idCodeL.mas_right).offset(5);
         make.top.equalTo(_backImage.mas_bottom).offset(21);
@@ -185,12 +193,65 @@
 #pragma mark ----- buttonClick
 //获取验证码
 - (void)idCodeButtonClick{
-    
+    NSDictionary *dictParament = @{
+                                   @"mobile":self.registTextField_text
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:REQUESTREGISTVERIFICATIONURL withParaments:dictParament withSuccessBlock:^(id object) {
+        if (object) {
+            [NSObject showHudTipStr:@"验证码发送成功" contentColor:HidWithColorContentBlack];
+            [wself startUpTimer];
+            //获取后台返回的mesg信息用来和用户输入的验证码进行匹配
+            NSString *msgStr = [object objectForKey:@"msg"];
+            wself.msgStr = msgStr;
+            NSLog(@"+++++++++++++msgStr的值是 :%@",msgStr);
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            //如果发送错误就直接销毁定时器
+            [wself invalidateTimer];
+        }
+    } progress:^(float progress) {
+    }];
 }
+
+- (void)startUpTimer{
+    _durationToValidity = 60;
+    [self.idCodeButton setTitle:[NSString stringWithFormat:@"%.0f 秒", _durationToValidity] forState:UIControlStateNormal];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                  target:self
+                                                selector:@selector(redrawTimer:)
+                                                userInfo:nil
+                                                 repeats:YES];
+}
+
+- (void)invalidateTimer{
+    [self.timer invalidate];
+    self.timer = nil;
+}
+
+- (void)redrawTimer:(NSTimer *)timer {
+    _durationToValidity--;
+    if (_durationToValidity > 0) {
+        self.idCodeButton.titleLabel.text = [NSString stringWithFormat:@"%.0f 秒", _durationToValidity];//防止 button_title 闪烁
+        [self.idCodeButton setTitle:[NSString stringWithFormat:@"%.0f 秒", _durationToValidity] forState:UIControlStateNormal];
+    }else{
+        [self invalidateTimer];
+        [self.idCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+    }
+}
+
 //下一步
 - (void)nextButtonClick{
-    PersonalInformationViewController *PersonalInformationVC = [[PersonalInformationViewController alloc] init];
-    [self.navigationController pushViewController:PersonalInformationVC animated:YES];
+    NSLog(@"+++++++++++++self.msgStr的值是 :%@=========self.pleaseInputVerification的值是 :%@",self.msgStr,self.pleaseInputVerification);
+    if (self.msgStr == self.pleaseInputVerification) {
+        NSLog(@"相等======+++++++");
+        PersonalInformationViewController *PersonalInformationVC = [[PersonalInformationViewController alloc] init];
+        [self.navigationController pushViewController:PersonalInformationVC animated:YES];
+    }else {
+        NSLog(@"不相等++++++-------");
+        [MBProgressHUD showHudTipStr:@"验证码不一致" contentColor:HidWithColorContentBlack];
+    }
 }
 //返回
 - (void)backButtonClick{
@@ -203,8 +264,9 @@
         [self.nextButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
         [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
         _nextButton.userInteractionEnabled = YES;
-    }
-    else {
+        self.pleaseInputVerification = sender.text;
+        NSLog(@"++++++-------用户输入的验证码是 :%@",sender.text);
+    }else {
         [self.nextButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
         [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
         _nextButton.userInteractionEnabled = NO;

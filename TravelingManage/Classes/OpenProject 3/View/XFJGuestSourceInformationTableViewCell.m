@@ -8,6 +8,7 @@
 
 #import "XFJGuestSourceInformationTableViewCell.h"
 #import "LMContainsLMComboxScrollView.h"
+#import "XFJPurposeItem.h"
 
 #define kDropDownListTag 1000
 
@@ -43,7 +44,8 @@
 
 @property (nonatomic, strong) UITableView *goalAttributeTableView;
 
-@property (nonatomic, strong) NSArray *goalAttributeArray;
+//创建一个可变数组用来装目的属性的种类
+@property (nonatomic, strong) NSMutableArray <XFJPurposeItem *> *purposeArray;
 
 
 @end
@@ -54,14 +56,8 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.goalAttributeArray = @[@"1. 表演演出",
-                                    @"2. 景区观光",
-                                    @"3. 采摘基地",
-                                    @"4. 乡村旅游点",
-                                    @"5. 采购点",
-                                    @"6. 宾馆酒店"
-                                    ];
         [self initShu];
+        [self requestPurposeAttribute];
         [self addSubview:self.lineView];
         [self addSubview:self.guestSourceInformation_imageVeiw];
         [self addSubview:self.guestSourceInformation_label];
@@ -114,6 +110,37 @@
         }];
     }
     return self;
+}
+
+- (NSMutableArray<XFJPurposeItem *> *)purposeArray
+{
+    if (_purposeArray == nil) {
+        _purposeArray = [NSMutableArray array];
+    }
+    return _purposeArray;
+}
+
+#pragma makr - 目的属性
+- (void)requestPurposeAttribute
+{
+    NSDictionary *dictParaments = @{
+                                    @"state":@"0"
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:TEAMNUMBERQUERYURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        NSLog(@"+++++++获取到的目的属性的值是 :%@",object);
+        if (object) {
+            //取出
+            NSMutableArray *purposeRows = [object objectForKey:@"rows"];
+            wself.purposeArray = [XFJPurposeItem mj_objectArrayWithKeyValuesArray:purposeRows];
+            [wself.goalAttributeTableView reloadData];
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"请求出错" contentColor:HidWithColorContentBlack];
+        }
+    } progress:^(float progress) {
+    }];
 }
 
 - (UIView *)lineView
@@ -193,7 +220,7 @@
 {
     if (_goalAttributeContent_label == nil) {
         _goalAttributeContent_label = [[UILabel alloc] init];
-        _goalAttributeContent_label.text = @"1. 景区观光";
+        _goalAttributeContent_label.text = @"请选择目的属性";
         _goalAttributeContent_label.textColor = kColor2f2f;
         _goalAttributeContent_label.font = [UIFont systemFontOfSize:14.0];
     }
@@ -427,7 +454,7 @@
 #pragma mark - 每组cell的个数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.goalAttributeArray count];
+    return [self.purposeArray count];
 }
 
 #pragma mark - cell的高度
@@ -439,13 +466,15 @@
 #pragma mark - cell的内容
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    static NSString *cellID = @"cellID";
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    }
     cell.preservesSuperviewLayoutMargins = NO;
     cell.separatorInset = UIEdgeInsetsZero;
     cell.layoutMargins = UIEdgeInsetsZero;
-    cell.textLabel.text = [self.goalAttributeArray objectAtIndex:indexPath.row];
-//    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
-//    cell.selectedBackgroundView.backgroundColor = kColorff47;
+    cell.textLabel.text = [NSString stringWithFormat:@"%@",self.purposeArray[indexPath.row].paramName];
     return cell;
 }
 
@@ -453,7 +482,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.goalAttribute_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
-    NSString *indeStr = [self.goalAttributeArray objectAtIndex:indexPath.row];
+    NSString *indeStr = [NSString stringWithFormat:@"%@",self.purposeArray[indexPath.row].paramName];
     self.goalAttributeContent_label.text = indeStr;
     [self.goalAttributeTableView removeFromSuperview];
     bgScrollView.frame = CGRectMake(-30, 15, SCREEN_WIDTH + 30, 228);

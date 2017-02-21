@@ -7,12 +7,15 @@
 //
 
 #import "XFJCarNameTableViewCell.h"
+#import "XFJCarNumberItem.h"
 
 @interface XFJCarNameTableViewCell()
 
 @property (nonatomic, strong) UITextField *carName_field;
 
 @property (nonatomic, strong) UIButton *carNmae_button;
+
+@property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberArray;
 
 @end
 
@@ -29,6 +32,13 @@
     return self;
 }
 
+- (NSMutableArray<XFJCarNumberItem *> *)carNumberArray
+{
+    if (_carNumberArray == nil) {
+        _carNumberArray = [NSMutableArray array];
+    }
+    return _carNumberArray;
+}
 
 - (void)initControlWithCarName
 {
@@ -81,6 +91,32 @@
 + (CGFloat)cellHeight
 {
     return 47;
+}
+
+- (void)setUserLocation:(NSString *)userLocation
+{
+    _userLocation = userLocation;
+    [self requestFindCarNumberWithUserlocation:userLocation];
+}
+
+- (void)requestFindCarNumberWithUserlocation:(NSString *)userLocation
+{
+    NSDictionary *dictParaments = @{
+                                    @"city": userLocation
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDCARNUMBERURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSMutableArray *carArray = [object objectForKey:@"rows"];
+            wself.carNumberArray = [XFJCarNumberItem mj_objectArrayWithKeyValuesArray:carArray];
+            wself.carName_field.placeholder = [NSString stringWithFormat:@"%@",self.carNumberArray[0].plateHead];
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"网络错误" contentColor:HidWithColorContentBlack];
+        }
+    } progress:^(float progress) {
+    }];
 }
 
 

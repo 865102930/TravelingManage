@@ -95,7 +95,7 @@
             [[NetWorkManager shareManager] GET:urlString parameters:paraments progress:^(NSProgress * _Nonnull downloadProgress) {
                 progress(downloadProgress.completedUnitCount / downloadProgress.totalUnitCount);
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                successBlock([weakSelf returnChaneseWithJson:responseObject]);
+                successBlock(responseObject);
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 failureBlock(error);
             }];
@@ -106,7 +106,7 @@
             [[NetWorkManager shareManager] POST:urlString parameters:paraments progress:^(NSProgress * _Nonnull uploadProgress) {
                 progress(uploadProgress.completedUnitCount / uploadProgress.totalUnitCount);
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                successBlock([weakSelf returnChaneseWithJson:responseObject]);
+                successBlock(responseObject);
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 failureBlock(error);
             }];
@@ -154,7 +154,7 @@
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         progress(uploadProgress.completedUnitCount / uploadProgress.totalUnitCount);
     } success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary *  _Nullable responseObject) {
-        successBlock([weakSelf returnChaneseWithJson:responseObject]);
+        successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failureBlock(error);
     }];
@@ -211,7 +211,7 @@
                 } progress:^(NSProgress * _Nonnull uploadProgress) {
                     progress(uploadProgress.completedUnitCount / uploadProgress.totalUnitCount);
                 } success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary *  _Nullable responseObject) {
-                    successBlock([weakSelf returnChaneseWithJson:responseObject]);
+                    successBlock(responseObject);
                 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                     failureBlock(error);
                 }];

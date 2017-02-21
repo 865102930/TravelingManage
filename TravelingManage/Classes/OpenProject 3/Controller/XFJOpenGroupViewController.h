@@ -10,4 +10,6 @@
 
 @interface XFJOpenGroupViewController : UIViewController
 
+@property (nonatomic, strong) NSString *locationWithUser;
+
 @end

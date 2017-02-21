@@ -12,14 +12,25 @@
 #import "PersonalDataViewController.h"
 #import "HomeViewController.h"
 @interface LoginViewController ()<UITextFieldDelegate>
-@property(nonatomic,strong)UIImageView *backgroundImage;//背景图片
-@property(nonatomic,strong)UIImageView *titleImage;//团队管理
-@property(nonatomic,strong)UITextField *phoneTextF;//手机号
-@property(nonatomic,strong)UITextField *idCodeTextF;//验证码
-@property(nonatomic,strong)UIButton    *idCodeButton;//验证码按钮
-@property(nonatomic,strong)UIButton    *loginButton;//登录
-@property(nonatomic,strong)UILabel     *registLabel;//注册
-@property(nonatomic,strong)UIButton    *registButton;//注册按钮
+@property(nonatomic, strong) UIImageView *backgroundImage;//背景图片
+@property(nonatomic, strong) UIImageView *titleImage;//团队管理
+@property(nonatomic, strong) UITextField *phoneTextF;//手机号
+@property(nonatomic, strong) UITextField *idCodeTextF;//验证码
+@property(nonatomic, strong) UIButton    *idCodeButton;//验证码按钮
+@property(nonatomic, strong) UIButton    *loginButton;//登录
+@property(nonatomic, strong) UILabel     *registLabel;//注册
+@property(nonatomic, strong) UIButton    *registButton;//注册按钮
+//接收用户输入的手机号
+@property (nonatomic, strong) NSString *phoneNum_str;
+//短信倒计时
+@property (nonatomic, assign) NSTimeInterval durationToValidity;
+//定时器
+@property (nonatomic, strong, readwrite) NSTimer *timer;
+
+@property (nonatomic, strong) NSString *strMsg;
+
+//获取用户输入的验证码
+@property (nonatomic, strong) NSString *inputVerification;
 @end
 
 @implementation LoginViewController
@@ -48,6 +59,11 @@
         [self.view addSubview:_phoneTextF];
     }
     return _phoneTextF;
+}
+
+- (void)textFieldDid_change:(UITextField *)textField
+{
+    self.phoneNum_str = textField.text;
 }
 
 - (UITextField *)idCodeTextF{
@@ -161,35 +177,109 @@
     self.idCodeTextF.delegate = self;
 }
 //登录
-- (void)loginBtnClick{
-    HomeViewController * PersonalDataVC = [[HomeViewController alloc] init];
-    [self.navigationController pushViewController:PersonalDataVC animated:YES];
-//    [UIApplication sharedApplication].keyWindow.rootViewController = PersonalDataVC;
-//    [self presentViewController:PersonalDataVC animated:YES completion:nil];
+- (void)loginBtnClick
+{
+    [self requestLogin];
+}
+
+//登录请求
+- (void)requestLogin
+{
+    NSDictionary *dictParaments = @{
+                                    @"UserMobile":self.phoneTextF.text,
+                                    @"registrationId":@"10"
+                                    };
+    NSLog(@"=======----+++++=加入的登录参数是:%@",self.phoneTextF.text);
+    NSLog(@"dictParaments参数是 : %@",dictParaments);
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:LOGINURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSLog(@"++++++=========登录后得到的参数是:%@",object);
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            NSLog(@"---------+++++++++++失败后的得到的参数是:%@",error);
+        }
+    } progress:^(float progress) {
+    }];
 }
 //获取验证码
 - (void)idCodeButtonClick{
-    
+    //如果输入的电话号码等于0或者不等于11,就直接走这个里面
+    if (self.phoneTextF.text.length != 11) {
+        [MBProgressHUD showHudTipStr:@"请输入正确的电话号码~~" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    [self.phoneTextF resignFirstResponder];
+    NSDictionary *dictParaments = @{
+                                    @"mobile":self.phoneNum_str
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:REQUESTREGISTVERIFICATIONURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            [NSObject showHudTipStr:@"验证码发送成功" contentColor:HidWithColorContentBlack];
+            [wself startUpTimer];
+            NSString *strMsg = [object objectForKey:@"msg"];
+            NSLog(@"+++++----------短信返回的恩信息是:%@",strMsg);
+            wself.strMsg = strMsg;
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            [wself invalidateTimer];
+        }
+    } progress:^(float progress) {
+        
+    }];
 }
+
+- (void)startUpTimer{
+    _durationToValidity = 60;
+    [self.idCodeButton setTitle:[NSString stringWithFormat:@"%.0f 秒", _durationToValidity] forState:UIControlStateNormal];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                  target:self
+                                                selector:@selector(redrawTimer:)
+                                                userInfo:nil
+                                                 repeats:YES];
+}
+
+- (void)invalidateTimer{
+    [self.timer invalidate];
+    self.timer = nil;
+}
+
+- (void)redrawTimer:(NSTimer *)timer {
+    _durationToValidity--;
+    if (_durationToValidity > 0) {
+        self.idCodeButton.titleLabel.text = [NSString stringWithFormat:@"%.0f 秒", _durationToValidity];//防止 button_title 闪烁
+        [self.idCodeButton setTitle:[NSString stringWithFormat:@"%.0f 秒", _durationToValidity] forState:UIControlStateNormal];
+    }else{
+        [self invalidateTimer];
+        [self.idCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+    }
+}
+
 //注册
 - (void)registButtonClick{
-    PersonalDataViewController *registVC = [[PersonalDataViewController alloc] init];
-    JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:registVC];
+    RegistViewController *registController = [[RegistViewController alloc] init];
+    JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:registController];
     [self presentViewController:navVC animated:YES completion:nil];
 }
 
 #pragma mark ----- textFieldDelegate
 - (void)textFieldDidChange:(UITextField *)sender {
-    if (self.phoneTextF.text.length == 11 && self.idCodeTextF.text.length > 0) {
+    if (self.idCodeTextF.text.length > 0 && self.phoneTextF.text.length == 11) {
         [self.loginButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
         [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
         _loginButton.userInteractionEnabled = YES;
-    }
-    else {
+        self.inputVerification = sender.text;
+    }else {
         [self.loginButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
         [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
         _loginButton.userInteractionEnabled = NO;
     }
+}
 
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    self.phoneNum_str = textField.text;
 }
 @end

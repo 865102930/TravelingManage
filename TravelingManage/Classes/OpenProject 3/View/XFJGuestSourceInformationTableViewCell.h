@@ -13,6 +13,7 @@
 
 @interface XFJGuestSourceInformationTableViewCell : UITableViewCell <LMComBoxViewDelegate>
 
+
 + (CGFloat)cellHeight;
 
 @end

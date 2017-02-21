@@ -17,6 +17,8 @@
 @property(nonatomic,strong)UIButton    *agreeButton;//已阅读
 @property(nonatomic,strong)UIButton    *backButton;//返回按钮
 @property(nonatomic,strong)UIButton    *nextButton;//下一步
+
+@property (nonatomic, strong) NSString *phoneNumber;
 @end
 
 @implementation RegistViewController
@@ -158,6 +160,7 @@
 //下一步
 - (void)nextButtonClick{
     VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
+    verificationCodeVC.registTextField_text = self.phoneNumber;
     [self.navigationController pushViewController:verificationCodeVC animated:YES];
 }
 //返回
@@ -171,8 +174,9 @@
         [self.nextButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
         [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
         _nextButton.userInteractionEnabled = YES;
-    }
-    else {
+        NSLog(@"------------sender的内容是 :%@",sender.text);
+        self.phoneNumber = sender.text;
+    }else {
         [self.nextButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
         [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
         _nextButton.userInteractionEnabled = NO;

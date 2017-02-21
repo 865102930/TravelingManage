@@ -11,10 +11,13 @@
 #import "UIView+Frame.h"
 #import "UIColor+Expanded.h"
 #import "UITextField+textField.h"
+#import "UITextField+XFJTextField.h"
 #import "UIButton+button.h"
 #import <Masonry/Masonry.h>
 #import "NetWorkManager.h"
 #import "MJExtension.h"
+#import "NSObject+Common.h"
+#import <MBProgressHUD.h>
 #define PingFang @"PingFang SC"
 #define iphone6P (SCREEN_HEIGHT == 736)
 #define iphone6 (SCREEN_HEIGHT == 667)
@@ -55,9 +58,20 @@
 #define kColorF7F7 [UIColor colorWithHexString:@"0xF7F7F7"]
 #define kColor9898 [UIColor colorWithHexString:@"0x989898"]
 #define kColorE9E9 [UIColor colorWithHexString:@"0xE9E9E9"]
-#define BASEURL @"http://cs.xundatong.net/teammgmtback"
 
-//公告列表
+#define BASEURL @"http://118.178.224.151/teammgmtback"
+
+//注册接口
+#define REGISTURL (BASEURL@"/app/user/userRegister")
+//获取注册验证码和登录验证码
+#define REQUESTREGISTVERIFICATIONURL (BASEURL@"/app/user/userCodeMsg")
+//登录接口
+#define LOGINURL (BASEURL@"/app/user/userLogin")
+//公告列表接口
 #define ANNOUNCEMENTLIST (BASEURL@"/app/announcement/announcementList")
-//公告详情
+//公告详情接口
 #define ANNOUNCEMENT (BASEURL@"/app/announcement/announcement")
+//团队参数查询(0:目的属性;1:团队性质;2:景点类型)
+#define TEAMNUMBERQUERYURL (BASEURL@"/app/params/findTeamParamList")
+//车牌查询
+#define FINDCARNUMBERURL (BASEURL@"/app/params/regionplateList")
