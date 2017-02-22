@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSString *groupTime_text;
 
 //旅行社名称
-@property (nonatomic, strong) NSString *travelName;
+@property (nonatomic, assign) NSInteger travelName;
 
 
 @end

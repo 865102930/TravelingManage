@@ -15,4 +15,6 @@
 
 @property (nonatomic, copy) void (^addCellBlock)(NSInteger,NSString *);
 
+@property (nonatomic, strong) NSString *str;
+
 @end

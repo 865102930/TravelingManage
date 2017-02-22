@@ -189,7 +189,6 @@
 #pragma mark - 当输入框有值的改变的时候调用
 - (void)textField_change:(UITextField *)text_field
 {
-    self.travelName = text_field.text;
     [self setUpCreatTraveTableView];
     NSDictionary *dictParaments = @{
                                     @"taName":text_field.text
@@ -261,6 +260,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.travelServiceName_field.text = self.findTravelAgencyList_array[indexPath.row].taName;
+    self.travelName = self.findTravelAgencyList_array[indexPath.row].findTravelAgencyList_id;
     [self.check_traveView removeFromSuperview];
 }
 

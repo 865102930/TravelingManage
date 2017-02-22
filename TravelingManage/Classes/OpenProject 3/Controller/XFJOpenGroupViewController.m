@@ -73,6 +73,8 @@
 
 @property (nonatomic, strong) NSString *voucherPicRoot;
 
+@property (nonatomic, strong) NSString *carNumber;
+
 @end
 
 @implementation XFJOpenGroupViewController
@@ -298,9 +300,6 @@
     //上传图片
     [self upLoadPic];
     [self upLoadVoucherPic];
-    
-    //开始任务的请求
-    [self startTaskButtonClick];
 }
 
 #pragma mark - 图片上传车辆照片
@@ -351,6 +350,10 @@
             NSString *root = dict[@"object"];
             wself.voucherPicRoot = root;
             NSLog(@"上传图片成功后的信息-------%@",root);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //开始任务的请求
+                [wself startTaskButtonClick];
+            });
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"上传图片失败--------%@",error);
         }];
@@ -360,22 +363,34 @@
 #pragma mark - 开始任务
 - (void)startTaskButtonClick
 {
-    NSDictionary *dict = @{
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@"",
-                           @"":@""
-                           };
+    NSDictionary *dictParaments = @{
+                                    @"userId":@7,//导游id
+                                   @"teamNo":self.conventionMessage_view.groupName_text,//团队编号
+                                   @"teamDate":self.conventionMessage_view.groupTime_text,//出团日期
+                                   @"travelAgencyId":[NSString stringWithFormat:@"%ld",self.conventionMessage_view.travelName],//旅行社id
+                                   @"teamVehicles":self.carName_view.str,//车牌
+                                   @"province":self.guestSourceInformation_view.selectedProvince,//用户所在省
+                                   @"city":self.guestSourceInformation_view.selectedCity,//用户所在市
+                                   @"area":self.guestSourceInformation_view.selectedArea,//用户所在区
+                                   @"teamAttr":self.guestSourceInformation_view.paramName,//团队目的属性
+                                   @"teamNature":self.teamInformation_view.teamNature,//团队性质
+                                   @"teamNum":self.teamInformation_view.teamPeople_number,//团队人数
+                                   @"teamDay":self.teamInformation_view.teamDay,//团队天数
+                                   @"createuser":@7,//创建记录的用户id
+                                   @"certificateImg":self.voucherPicRoot,//凭证图片路径
+                                   @"teamVehicleImages":self.root//车辆图片集合用,分割
+                                    };
+    NSLog(@"参数集合-----%@----%@---%@---%@---%@----%@---%@----%@----%@----%@---%@---%@---%@---%@---%@",@7,self.conventionMessage_view.groupName_text,self.conventionMessage_view.groupTime_text,[NSString stringWithFormat:@"%ld",self.conventionMessage_view.travelName],self.carName_view.str,self.guestSourceInformation_view.selectedProvince,self.guestSourceInformation_view.selectedCity,self.guestSourceInformation_view.selectedArea,self.guestSourceInformation_view.paramName,self.teamInformation_view.teamNature,self.teamInformation_view.teamPeople_number,self.teamInformation_view.teamDay,@7,self.voucherPicRoot,self.root);
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:MODIFYTEAMINFOURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSLog(@"+++++======---------团队创建成功,成功信息是:%@",object);
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            NSLog(@"+++++++++++++++++++++_______团队创建失败,失败信息是:%@",error);
+        }
+    } progress:^(float progress) {
+    }];
     
 }
 
@@ -394,6 +409,7 @@
             [wself minusTextFieldWithButtonClick];
         };
         minusCarNum_view.textFieldStr = str;
+        self.carNumber = str;
         self.scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2.2);
         [self.carName_view addSubview:minusCarNum_view];
     }

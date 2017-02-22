@@ -15,8 +15,6 @@
 
 @property (nonatomic, strong) UIButton *carNmae_button;
 
-@property (nonatomic, strong) NSString *str;
-
 @property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberArray;
 
 @end
@@ -58,16 +56,16 @@
 {
     if (_carName_field == nil) {
         _carName_field = [UITextField textBackGroundImage:@"input-box2-" titleName:@"车    牌    号" rightImage:@"xinghao" placeholder:@"请输入车牌号"];
-//        [_carName_field addTarget:self action:@selector(textFieldEditChanged:) forControlEvents:UIControlEventEditingChanged];
+        [_carName_field addTarget:self action:@selector(textFieldEditChanged:) forControlEvents:UIControlEventEditingDidEnd];
     }
     return _carName_field;
 }
 
-//- (void)textFieldEditChanged:(UITextField *)textField
-//{
-//    NSLog(@"主人,您获取到的输入框的值是 : %@",textField.text);
-//    self.str = textField.text;
-//}
+- (void)textFieldEditChanged:(UITextField *)textField
+{
+    NSLog(@"主人,您获取到的输入框的值是 : %@",textField.text);
+    self.str = textField.text;
+}
 
 - (UIButton *)carNmae_button
 {

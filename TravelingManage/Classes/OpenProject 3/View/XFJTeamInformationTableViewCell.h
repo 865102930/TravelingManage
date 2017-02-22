@@ -12,6 +12,14 @@
 
 @interface XFJTeamInformationTableViewCell : UIView
 
+//团队人数
+@property (nonatomic, strong) NSString *teamPeople_number;
+
+//团队性质
+@property (nonatomic, strong) NSString *teamNature;
+
+//行程天数
+@property (nonatomic, strong) NSString *teamDay;
 
 
 @end

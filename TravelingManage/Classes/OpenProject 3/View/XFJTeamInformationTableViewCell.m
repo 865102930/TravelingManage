@@ -169,6 +169,8 @@
 {
     if (_teamNumber_field == nil) {
         _teamNumber_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"团 队 人 数" rightImage:@"xinghao" placeholder:@"请输入团队人数"];
+        [_teamNumber_field addTarget:self action:@selector(teamNumber_endText:) forControlEvents:UIControlEventEditingDidEnd];
+        _teamNumber_field.tag = 10003;
     }
     return _teamNumber_field;
 }
@@ -270,8 +272,19 @@
 {
     if (_journeyDay_field == nil) {
         _journeyDay_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"行 程 天 数" rightImage:@"xinghao" placeholder:@"请输入行程天数"];
+        [_journeyDay_field addTarget:self action:@selector(teamNumber_endText:) forControlEvents:UIControlEventEditingDidEnd];
+        _journeyDay_field.tag = 10004;
     }
     return _journeyDay_field;
+}
+
+- (void)teamNumber_endText:(UITextField *)text_field
+{
+    if (text_field.tag == 10003) {
+        self.teamPeople_number = text_field.text;
+    }else {
+        self.teamDay = text_field.text;
+    }
 }
 
 #pragma mark - 组数
@@ -303,6 +316,7 @@
     self.teamProperties_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
     NSString *indeStr = [NSString stringWithFormat:@"%@",self.teamDescriptionArray[indexPath.row].paramName];
     self.teamPropertiesContent_label.text = indeStr;
+    self.teamNature = indeStr;
     [self.teamDescription_tablewView removeFromSuperview];
 }
 

@@ -81,3 +81,5 @@
 #define UPLOADIMAGE (BASEURL@"/file/imageNew")
 //查询旅行社名称
 #define CHECKOUTTRAVENAMEURL (BASEURL@"/app/teamInfo/findTravelAgencyList")
+//创建团队
+#define MODIFYTEAMINFOURL (BASEURL@"/app/teamInfo/modifyTeamInfo")

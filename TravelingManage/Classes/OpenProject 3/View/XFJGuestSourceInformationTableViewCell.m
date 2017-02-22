@@ -446,6 +446,9 @@
             break;
     }
     NSLog(@"===%@===%@===%@",selectedProvince,selectedCity,selectedArea);
+    self.selectedProvince = selectedProvince;
+    self.selectedCity = selectedCity;
+    self.selectedArea = selectedArea;
 }
 
 #pragma mark - 组数
@@ -487,6 +490,7 @@
     self.goalAttribute_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
     NSString *indeStr = [NSString stringWithFormat:@"%@",self.purposeArray[indexPath.row].paramName];
     self.goalAttributeContent_label.text = indeStr;
+    self.paramName = indeStr;
     [self.goalAttributeTableView removeFromSuperview];
     bgScrollView.frame = CGRectMake(-30, 15, SCREEN_WIDTH + 30, 228);
 }
