@@ -41,10 +41,10 @@
 
 @implementation XFJTeamInformationTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         [self requestTeamProperties];
         [self addSubview:self.line_View];
         [self addSubview:self.teamInformation_imageView];
@@ -114,6 +114,27 @@
     return self;
 }
 
+- (void)requestTeamProperties
+{
+    NSDictionary *dictParaments = @{
+                                    @"state":@"1"
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:TEAMNUMBERQUERYURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSLog(@"++++++==========----获取到的团队性质的值是:%@",object);
+            NSMutableArray *teamArray = [object objectForKey:@"rows"];
+            wself.teamDescriptionArray = [XFJTeamPropertiesItem mj_objectArrayWithKeyValuesArray:teamArray];
+            [wself.teamDescription_tablewView reloadData];
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"网络错误" contentColor:HidWithColorContentBlack];
+        }
+    } progress:^(float progress) {
+    }];
+}
+
 - (UIView *)line_View
 {
     if (_line_View == nil) {
@@ -122,14 +143,6 @@
     }
     return _line_View;
 }
-- (NSMutableArray<XFJTeamPropertiesItem *> *)teamDescriptionArray
-{
-    if (_teamDescriptionArray == nil) {
-        _teamDescriptionArray = [NSMutableArray array];
-    }
-    return _teamDescriptionArray;
-}
-
 
 - (UIImageView *)teamInformation_imageView
 {
@@ -184,27 +197,6 @@
         make.height.mas_equalTo(196.0);
     }];
     self.teamProperties_imageViewRight.image = [UIImage originalWithImage:@"triangle"];
-}
-
-- (void)requestTeamProperties
-{
-    NSDictionary *dictParaments = @{
-                                    @"state":@"1"
-                                    };
-    __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:TEAMNUMBERQUERYURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if (object) {
-            NSLog(@"++++++==========----获取到的团队性质的值是:%@",object);
-            NSMutableArray *teamArray = [object objectForKey:@"rows"];
-            wself.teamDescriptionArray = [XFJTeamPropertiesItem mj_objectArrayWithKeyValuesArray:teamArray];
-            [wself.teamDescription_tablewView reloadData];
-        }
-    } withFailureBlock:^(NSError *error) {
-        if (error) {
-            [MBProgressHUD showHudTipStr:@"网络错误" contentColor:HidWithColorContentBlack];
-        }
-    } progress:^(float progress) {
-    }];
 }
 
 - (UITableView *)teamDescription_tablewView
@@ -267,7 +259,7 @@
 {
     if (_teamPropertiesContent_label == nil) {
         _teamPropertiesContent_label = [[UILabel alloc] init];
-        _teamPropertiesContent_label.text = @"请选择团队性质";
+        _teamPropertiesContent_label.text = @"请输入团队性质";
         _teamPropertiesContent_label.textColor = kColor2f2f;
         _teamPropertiesContent_label.font = [UIFont systemFontOfSize:14.0];
     }
@@ -302,7 +294,6 @@
     cell.separatorInset = UIEdgeInsetsZero;
     cell.layoutMargins = UIEdgeInsetsZero;
     cell.textLabel.text = [NSString stringWithFormat:@"%@",self.teamDescriptionArray[indexPath.row].paramName];
-    
     return cell;
 }
 
@@ -313,10 +304,6 @@
     NSString *indeStr = [NSString stringWithFormat:@"%@",self.teamDescriptionArray[indexPath.row].paramName];
     self.teamPropertiesContent_label.text = indeStr;
     [self.teamDescription_tablewView removeFromSuperview];
-}
-+ (CGFloat)cellHeight
-{
-    return 208;
 }
 
 @end

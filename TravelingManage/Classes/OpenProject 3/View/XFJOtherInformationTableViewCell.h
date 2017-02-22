@@ -6,12 +6,10 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#define KCellIdentifier_XFJOtherInformationTableViewCell @"XFJOtherInformationTableViewCell"
 
 #import <UIKit/UIKit.h>
 
-@interface XFJOtherInformationTableViewCell : UITableViewCell
+@interface XFJOtherInformationTableViewCell : UIView
 
-+ (CGFloat)cellHeight;
 
 @end

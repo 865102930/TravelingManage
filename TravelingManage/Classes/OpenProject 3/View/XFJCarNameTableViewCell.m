@@ -15,29 +15,22 @@
 
 @property (nonatomic, strong) UIButton *carNmae_button;
 
+@property (nonatomic, strong) NSString *str;
+
 @property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberArray;
 
 @end
 
 @implementation XFJCarNameTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+    if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self initControlWithCarName];
         [self setUpConventionCarNameWithMas];
     }
     return self;
-}
-
-- (NSMutableArray<XFJCarNumberItem *> *)carNumberArray
-{
-    if (_carNumberArray == nil) {
-        _carNumberArray = [NSMutableArray array];
-    }
-    return _carNumberArray;
 }
 
 - (void)initControlWithCarName
@@ -49,7 +42,7 @@
 - (void)setUpConventionCarNameWithMas
 {
     [self.carName_field mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.mas_top);
+        make.top.mas_equalTo(self.mas_top).mas_offset(5.0);
         make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
         make.width.mas_equalTo(231);
         make.height.mas_equalTo(38.0);
@@ -65,9 +58,16 @@
 {
     if (_carName_field == nil) {
         _carName_field = [UITextField textBackGroundImage:@"input-box2-" titleName:@"车    牌    号" rightImage:@"xinghao" placeholder:@"请输入车牌号"];
+//        [_carName_field addTarget:self action:@selector(textFieldEditChanged:) forControlEvents:UIControlEventEditingChanged];
     }
     return _carName_field;
 }
+
+//- (void)textFieldEditChanged:(UITextField *)textField
+//{
+//    NSLog(@"主人,您获取到的输入框的值是 : %@",textField.text);
+//    self.str = textField.text;
+//}
 
 - (UIButton *)carNmae_button
 {
@@ -82,15 +82,12 @@
 
 - (void)addCarNameButtonClick:(UIButton *)buttonTag
 {
+    NSLog(@"添加一行车牌号码~~");
     if (self.addCellBlock) {
-        self.addCellBlock(buttonTag.tag);
+        self.addCellBlock(buttonTag.tag,self.carName_field.text);
     }
+    [self.carName_field setText:@""];
     
-}
-
-+ (CGFloat)cellHeight
-{
-    return 47;
 }
 
 - (void)setUserLocation:(NSString *)userLocation
@@ -109,7 +106,7 @@
         if (object) {
             NSMutableArray *carArray = [object objectForKey:@"rows"];
             wself.carNumberArray = [XFJCarNumberItem mj_objectArrayWithKeyValuesArray:carArray];
-            wself.carName_field.placeholder = [NSString stringWithFormat:@"%@",self.carNumberArray[0].plateHead];
+            wself.carName_field.text = [NSString stringWithFormat:@"%@",self.carNumberArray[0].plateHead];
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
@@ -118,6 +115,7 @@
     } progress:^(float progress) {
     }];
 }
+
 
 
 

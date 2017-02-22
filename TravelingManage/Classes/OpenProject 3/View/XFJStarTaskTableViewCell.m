@@ -18,9 +18,11 @@
 
 @implementation XFJStarTaskTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.line_view];
         [self addSubview:self.startTask_button];
         [self.line_view mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -70,9 +72,4 @@
         self.startTaskButtonBlock();
     }
 }
-+ (CGFloat)cellHeight
-{
-    return 100.0;
-}
-
 @end

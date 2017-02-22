@@ -6,14 +6,12 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#define KCellIdentifier_XFJTeamInformationTableViewCell @"XFJTeamInformationTableViewCell"
 
 
 #import <UIKit/UIKit.h>
 
-@interface XFJTeamInformationTableViewCell : UITableViewCell
+@interface XFJTeamInformationTableViewCell : UIView
 
 
-+ (CGFloat)cellHeight;
 
 @end

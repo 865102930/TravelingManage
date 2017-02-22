@@ -44,6 +44,8 @@
 
 @property (nonatomic, strong) UITableView *goalAttributeTableView;
 
+@property (nonatomic, strong) NSArray *goalAttributeArray;
+
 //创建一个可变数组用来装目的属性的种类
 @property (nonatomic, strong) NSMutableArray <XFJPurposeItem *> *purposeArray;
 
@@ -52,10 +54,10 @@
 
 @implementation XFJGuestSourceInformationTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         [self initShu];
         [self requestPurposeAttribute];
         [self addSubview:self.lineView];
@@ -143,6 +145,7 @@
     }];
 }
 
+
 - (UIView *)lineView
 {
     if (_lineView == nil) {
@@ -220,7 +223,7 @@
 {
     if (_goalAttributeContent_label == nil) {
         _goalAttributeContent_label = [[UILabel alloc] init];
-        _goalAttributeContent_label.text = @"请选择目的属性";
+        _goalAttributeContent_label.text = @"请输入目的属性";
         _goalAttributeContent_label.textColor = kColor2f2f;
         _goalAttributeContent_label.font = [UIFont systemFontOfSize:14.0];
     }
@@ -486,11 +489,6 @@
     self.goalAttributeContent_label.text = indeStr;
     [self.goalAttributeTableView removeFromSuperview];
     bgScrollView.frame = CGRectMake(-30, 15, SCREEN_WIDTH + 30, 228);
-}
-
-+ (CGFloat)cellHeight
-{
-    return 170;
 }
 
 

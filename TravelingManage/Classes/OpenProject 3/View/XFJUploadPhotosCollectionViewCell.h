@@ -8,7 +8,6 @@
 
 #define KCellIdentifier_XFJUploadPhotosCollectionViewCell @"XFJUploadPhotosCollectionViewCell"
 
-
 #import <UIKit/UIKit.h>
 
 @interface XFJUploadPhotosCollectionViewCell : UICollectionViewCell

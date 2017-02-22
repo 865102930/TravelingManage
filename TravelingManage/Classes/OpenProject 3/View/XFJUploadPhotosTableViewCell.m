@@ -31,10 +31,10 @@
 
 @implementation XFJUploadPhotosTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.line_view];
         [self addSubview:self.uploadPhotos_imageView];
         [self addSubview:self.uploadPhotos_label];
@@ -249,8 +249,5 @@
     _maxImageCount = maxImageCount;
 }
 
-+ (CGFloat)cellHeight
-{
-    return 300.0;
-}
+
 @end

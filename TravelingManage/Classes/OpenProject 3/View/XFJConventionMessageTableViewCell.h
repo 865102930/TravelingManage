@@ -6,12 +6,19 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#define KCellIdentifier_XFJConventionMessageTableViewCell @"XFJConventionMessageTableViewCell"
 
 #import <UIKit/UIKit.h>
 
-@interface XFJConventionMessageTableViewCell : UITableViewCell
+@interface XFJConventionMessageTableViewCell : UIView
 
-+ (CGFloat)cellHeight;
+//团队编号
+@property (nonatomic, strong) NSString *groupName_text;
+
+//出团日期
+@property (nonatomic, strong) NSString *groupTime_text;
+
+//旅行社名称
+@property (nonatomic, strong) NSString *travelName;
+
 
 @end

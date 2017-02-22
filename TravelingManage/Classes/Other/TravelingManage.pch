@@ -18,6 +18,7 @@
 #import "MJExtension.h"
 #import "NSObject+Common.h"
 #import <MBProgressHUD.h>
+#import "UIImage+image.h"
 #define PingFang @"PingFang SC"
 #define iphone6P (SCREEN_HEIGHT == 736)
 #define iphone6 (SCREEN_HEIGHT == 667)
@@ -61,6 +62,7 @@
 
 #define BASEURL @"http://118.178.224.151/teammgmtback"
 
+
 //注册接口
 #define REGISTURL (BASEURL@"/app/user/userRegister")
 //获取注册验证码和登录验证码
@@ -75,3 +77,7 @@
 #define TEAMNUMBERQUERYURL (BASEURL@"/app/params/findTeamParamList")
 //车牌查询
 #define FINDCARNUMBERURL (BASEURL@"/app/params/regionplateList")
+//图片上传
+#define UPLOADIMAGE (BASEURL@"/file/imageNew")
+//查询旅行社名称
+#define CHECKOUTTRAVENAMEURL (BASEURL@"/app/teamInfo/findTravelAgencyList")

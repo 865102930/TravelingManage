@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XFJMinusCarNumTableViewCell : UITableViewCell
+@interface XFJMinusCarNumTableViewCell : UIView
 
-+ (CGFloat)cellHeight;
+@property (nonatomic, copy) void (^minusCarNumBlock)();
+
+@property (nonatomic, strong) NSString *textFieldStr;
+
 
 @end

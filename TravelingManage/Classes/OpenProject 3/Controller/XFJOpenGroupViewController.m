@@ -21,15 +21,13 @@
 #import "WSImagePickerView.h"
 #import "WSPhotosBroseVC.h"
 #import "XFJMinusCarNumTableViewCell.h"
-#import "XFJVoucherPhotosTableViewCell.h"
+#import "XFJVoucherPhotosView.h"
 
-@interface XFJOpenGroupViewController ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJUploadPhotosTableViewCellDelegate,UIScrollViewDelegate,XFJVoucherPhotosTableViewCellDelegate>
+@interface XFJOpenGroupViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJUploadPhotosTableViewCellDelegate,UIScrollViewDelegate,XFJVoucherPhotosViewDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *pushToLeftViewButton;
 
 @property (nonatomic, strong) UILabel *title_label;
-
-@property (nonatomic, strong) UITableView *openGroupTableView;
 
 @property (nonatomic, strong) NSMutableArray *datas;
 
@@ -37,17 +35,43 @@
 
 @property (nonatomic, assign) NSInteger maxImageCount;
 
+@property (nonatomic, assign) NSInteger maxImageToCount;
+
 @property (nonatomic, strong) NSMutableArray *indexPaths;
 
 @property (nonatomic, assign) NSInteger totalCount;
 
 @property (nonatomic, strong) UIScrollView *scroll_view;
 
+@property (nonatomic, strong) XFJConventionMessageTableViewCell *conventionMessage_view;
+
+@property (nonatomic, strong) XFJCarNameTableViewCell *carName_view;
+
+@property (nonatomic, strong) XFJGuestSourceInformationTableViewCell *guestSourceInformation_view;
+
+@property (nonatomic, strong) XFJTeamInformationTableViewCell *teamInformation_view;
+
+@property (nonatomic, strong) XFJOtherInformationTableViewCell *otherInformation_view;
+
+@property (nonatomic, strong) XFJUploadPhotosTableViewCell *uploadPhotos_view;
+
+@property (nonatomic, strong) XFJStarTaskTableViewCell *starTask_view;
+
+@property (nonatomic, strong) XFJVoucherPhotosView *voucherPhotos_view;
+
+@property (nonatomic, strong) XFJMinusCarNumTableViewCell *minusCarNum_view;
+
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
-@property (nonatomic, strong) XFJVoucherPhotosTableViewCell *cell;
+@property (nonatomic, strong) UIView *backGroundView;
 
-@property (nonatomic, strong) XFJUploadPhotosTableViewCell *uploadPhotosTableViewCell;
+@property (nonatomic, assign) NSInteger remberButtonClick;//用来记住按钮的点击次数
+
+@property (nonatomic, strong) NSMutableArray *allRootImage;
+
+@property (nonatomic, strong) NSString *root;
+
+@property (nonatomic, strong) NSString *voucherPicRoot;
 
 @end
 
@@ -55,8 +79,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.view.backgroundColor = [UIColor redColor];
-    
     [self setUpLeftBarButtonItem];
     
     [self setUpOpenGroup];
@@ -73,21 +95,108 @@
     return _title_label;
 }
 
+- (NSMutableArray *)allRootImage
+{
+    if (_allRootImage == nil) {
+        _allRootImage = [NSMutableArray array];
+    }
+    return _allRootImage;
+}
+
 - (UIScrollView *)scroll_view
 {
     if (_scroll_view == nil) {
         _scroll_view = [[UIScrollView alloc] init];
-        _scroll_view.frame = CGRectMake(0, 67, self.view.bounds.size.width, 1.2 * self.view.XFJ_Height);
-        _scroll_view.pagingEnabled = YES;
+        _scroll_view.frame = CGRectMake(0, 64, self.view.bounds.size.width, 1.2 * self.view.XFJ_Height);
         _scroll_view.delegate = self;
-        _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 1.8);
-//        _scroll_view.backgroundColor = kColoreeee;
-//        _scroll_view.showsVerticalScrollIndicator = NO;
+        _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2);
+        _scroll_view.backgroundColor = [UIColor whiteColor];
         _scroll_view.showsHorizontalScrollIndicator = NO;
-//        _scroll_view.backgroundColor = [UIColor redColor];
         _scroll_view.scrollEnabled = YES;
     }
     return _scroll_view;
+}
+
+- (XFJConventionMessageTableViewCell *)conventionMessage_view
+{
+    if (_conventionMessage_view == nil) {
+        _conventionMessage_view = [[XFJConventionMessageTableViewCell alloc] init];
+    }
+    return _conventionMessage_view;
+}
+
+- (XFJCarNameTableViewCell *)carName_view
+{
+    if (_carName_view == nil) {
+        _carName_view = [[XFJCarNameTableViewCell alloc] initWithFrame:CGRectMake(0, 195, SCREEN_WIDTH, 50.0)];
+    }
+    return _carName_view;
+}
+
+- (XFJGuestSourceInformationTableViewCell *)guestSourceInformation_view
+{
+    if (_guestSourceInformation_view == nil) {
+        _guestSourceInformation_view = [[XFJGuestSourceInformationTableViewCell alloc] init];
+    }
+    return _guestSourceInformation_view;
+}
+
+- (XFJTeamInformationTableViewCell *)teamInformation_view
+{
+    if (_teamInformation_view == nil) {
+        _teamInformation_view = [[XFJTeamInformationTableViewCell alloc] init];
+    }
+    return _teamInformation_view;
+}
+
+- (XFJOtherInformationTableViewCell *)otherInformation_view
+{
+    if (_otherInformation_view == nil) {
+        _otherInformation_view = [[XFJOtherInformationTableViewCell alloc] init];
+    }
+    return _otherInformation_view;
+}
+
+- (XFJUploadPhotosTableViewCell *)uploadPhotos_view
+{
+    if (_uploadPhotos_view == nil) {
+        _uploadPhotos_view = [[XFJUploadPhotosTableViewCell alloc] initWithFrame:CGRectMake(0, 480, SCREEN_WIDTH, 200)];
+        _uploadPhotos_view.delegate = self;
+    }
+    return _uploadPhotos_view;
+}
+
+- (XFJStarTaskTableViewCell *)starTask_view
+{
+    if (_starTask_view == nil) {
+        _starTask_view = [[XFJStarTaskTableViewCell alloc] init];
+    }
+    return _starTask_view;
+}
+
+- (XFJVoucherPhotosView *)voucherPhotos_view
+{
+    if (_voucherPhotos_view == nil) {
+        _voucherPhotos_view = [[XFJVoucherPhotosView alloc] init];
+        _voucherPhotos_view.delegate = self;
+    }
+    return _voucherPhotos_view;
+}
+- (XFJMinusCarNumTableViewCell *)minusCarNum_view
+{
+    if (_minusCarNum_view == nil) {
+        _minusCarNum_view = [[XFJMinusCarNumTableViewCell alloc] init];
+    }
+    return _minusCarNum_view;
+}
+
+- (UIView *)backGroundView
+{
+    if (_backGroundView == nil) {
+        _backGroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 250, SCREEN_WIDTH, SCREEN_HEIGHT * 2)];
+        _backGroundView.backgroundColor = [UIColor whiteColor];
+    }
+    return _backGroundView;
 }
 
 #pragma mark - 处理左侧导航栏
@@ -98,7 +207,6 @@
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
     keyboardManager.keyboardDistanceFromTextField = 50;
-    self.maxImageCount = 6;
 }
 
 - (NSMutableArray *)dataArr
@@ -109,14 +217,6 @@
     return _dataArr;
 }
 
-- (NSMutableArray *)datas
-{
-    if (_datas == nil) {
-        _datas = [NSMutableArray array];
-    }
-    return _datas;
-}
-
 - (NSMutableArray *)dataArray
 {
     if (_dataArray == nil) {
@@ -125,24 +225,218 @@
     return _dataArray;
 }
 
+- (NSMutableArray *)datas
+{
+    if (_datas == nil) {
+        _datas = [NSMutableArray array];
+    }
+    return _datas;
+}
+
+
 #pragma mark - 添加主内容
 - (void)setUpOpenGroup
 {
-    [self.view addSubview:self.openGroupTableView];
+    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    [self.openGroupTableView registerClass:[XFJConventionMessageTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJConventionMessageTableViewCell];
-    [self.openGroupTableView registerClass:[XFJCarNameTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJCarNameTableViewCell];
-    [self.openGroupTableView registerClass:[XFJGuestSourceInformationTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJGuestSourceInformationTableViewCell];
-    [self.openGroupTableView registerClass:[XFJTeamInformationTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJTeamInformationTableViewCell];
-    [self.openGroupTableView registerClass:[XFJOtherInformationTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJOtherInformationTableViewCell];
-    [self.openGroupTableView registerClass:[XFJUploadPhotosTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJUploadPhotosTableViewCell];
-//    [self.openGroupTableView registerClass:[XFJStarTaskTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJStarTaskTableViewCell];
-    [self.openGroupTableView registerClass:[XFJVoucherPhotosTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJVoucherPhotosTableViewCell];
-    NSLog(@"++++++=========-----获取到的用户当前的城市是:%@",self.locationWithUser);
+    [self.view addSubview:self.scroll_view];
+    [self.scroll_view addSubview:self.backGroundView];
+    [self.scroll_view addSubview:self.conventionMessage_view];
+    [self.scroll_view addSubview:self.carName_view];
+    [self.backGroundView addSubview:self.otherInformation_view];
+    [self.backGroundView addSubview:self.uploadPhotos_view];
+    [self.backGroundView addSubview:self.teamInformation_view];
+    [self.backGroundView addSubview:self.guestSourceInformation_view];
+    [self.backGroundView addSubview:self.voucherPhotos_view];
+    [self.backGroundView addSubview:self.starTask_view];
+    [self.conventionMessage_view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(0);
+        make.width.mas_equalTo(SCREEN_WIDTH);
+        make.height.mas_equalTo(195);
+    }];
+    [self.guestSourceInformation_view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.backGroundView.mas_top);
+        make.width.mas_equalTo(SCREEN_WIDTH);
+        make.height.mas_equalTo(170.0);
+    }];
+    [self.teamInformation_view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.guestSourceInformation_view.mas_bottom);
+        make.width.mas_equalTo(SCREEN_WIDTH);
+        make.height.mas_equalTo(208.0);
+    }];
+    [self.otherInformation_view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.teamInformation_view.mas_bottom);
+        make.width.mas_equalTo(SCREEN_WIDTH);
+        make.height.mas_equalTo(110);
+    }];
+    [self.voucherPhotos_view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.uploadPhotos_view.mas_bottom);
+        make.width.mas_equalTo(SCREEN_WIDTH);
+        make.height.mas_equalTo(170.0);
+        make.left.mas_equalTo(self.uploadPhotos_view.mas_left);
+    }];
+    [self.starTask_view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.voucherPhotos_view.mas_bottom).mas_offset(0);
+        make.height.mas_equalTo(110);
+        make.width.mas_equalTo(SCREEN_WIDTH);
+    }];
+    __weak __typeof(self)wself = self;
+    self.starTask_view.startTaskButtonBlock = ^() {
+        //该处提交用户填写的创建团队时候的参数
+        [wself requestWithOpenTeam];
+    };
+    self.carName_view.addCellBlock = ^(NSInteger buttonTag, NSString *str) {
+        [wself addCarNumField:buttonTag str:str];
+    };
+    
+    self.carName_view.userLocation = self.locationWithUser;
+}
+
+#pragma mark - 发送请求
+- (void)requestWithOpenTeam
+{
+    //上传图片
+    [self upLoadPic];
+    [self upLoadVoucherPic];
+    
+    //开始任务的请求
+    [self startTaskButtonClick];
+}
+
+#pragma mark - 图片上传车辆照片
+- (void)upLoadPic
+{
+    if (self.dataArr.count == 0) {
+        NSLog(@"图片上传失败------");
+    }else {
+        for (int i = 0; i < _dataArr.count; i++) {
+            UIImage *image = _dataArr[i];
+            NSData *imageData = [UIImage compressImage:image maxSize:300];
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+            __weak __typeof(self)wself = self;
+            [manager POST:UPLOADIMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                [formData appendPartWithFileData:imageData name:@"file" fileName:@"image.jpg" mimeType:@"image/jpg"];
+            } progress:^(NSProgress * _Nonnull uploadProgress) {
+                
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                NSString *root = dict[@"object"];
+                [wself.allRootImage addObject:root];
+                wself.root = [wself.allRootImage componentsJoinedByString:@","];
+                NSLog(@"上传图片成功后的信息-------%@+++++++%@",root,wself.root);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"上传图片失败--------%@",error);
+            }];
+        }
+    }
+}
+
+#pragma mark - 上传凭证
+- (void)upLoadVoucherPic
+{
+    if (self.dataArray == 0) {
+        NSLog(@"图片丢失~~~~~~");
+    }else {
+        UIImage *image = self.dataArray[0];
+        NSData *imageData = [UIImage compressImage:image maxSize:300];
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        __weak __typeof(self)wself = self;
+        [manager POST:UPLOADIMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            [formData appendPartWithFileData:imageData name:@"file" fileName:@"image.jpg" mimeType:@"image/jpg"];
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            NSString *root = dict[@"object"];
+            wself.voucherPicRoot = root;
+            NSLog(@"上传图片成功后的信息-------%@",root);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"上传图片失败--------%@",error);
+        }];
+    }
+}
+
+#pragma mark - 开始任务
+- (void)startTaskButtonClick
+{
+    NSDictionary *dict = @{
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@"",
+                           @"":@""
+                           };
     
 }
 
-#pragma mark - 加载 0：目的属性 1: 团队性质请求
+- (void)addCarNumField:(NSInteger)buttonTag str:(NSString *)str
+{
+    self.remberButtonClick ++;
+    if (self.remberButtonClick == 1) {
+        NSLog(@"添加的第一个输入框~~");
+        self.carName_view.frame = CGRectMake(0, 195, SCREEN_WIDTH, 47 + 53 );
+        self.backGroundView.frame = CGRectMake(0, 250 + 52, SCREEN_WIDTH, SCREEN_HEIGHT * 1.2);
+        XFJMinusCarNumTableViewCell *minusCarNum_view = [[XFJMinusCarNumTableViewCell alloc] initWithFrame:CGRectMake(0, 47 , SCREEN_WIDTH, 45.0)];
+        self.minusCarNum_view = minusCarNum_view;
+        __weak __typeof(self)wself = self;
+        minusCarNum_view.minusCarNumBlock = ^() {
+            
+            [wself minusTextFieldWithButtonClick];
+        };
+        minusCarNum_view.textFieldStr = str;
+        self.scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2.2);
+        [self.carName_view addSubview:minusCarNum_view];
+    }
+//    else if (self.remberButtonClick == 2) {
+//        NSLog(@"添加的第二个输入框~~");
+//        self.carName_view.frame = CGRectMake(0, 195, SCREEN_WIDTH, 47 + 53 + 53 );
+//        self.backGroundView.frame = CGRectMake(0, 250 + 52 + 52, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
+//        XFJSecondFieldView *secondMinusCarNum_view = [[XFJSecondFieldView alloc] initWithFrame:CGRectMake(0, 47 + 47 , SCREEN_WIDTH, 45.0)];
+//        self.secondField_view = secondMinusCarNum_view;
+//        __weak __typeof(self)wself = self;
+//        secondMinusCarNum_view.secondCarNumBlock = ^() {
+//            
+//            [wself secondMinusTextFieldWithButtonClick];
+//        };
+//        secondMinusCarNum_view.textFieldStr = str;
+//        self.scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2.5);
+//        [self.carName_view addSubview:secondMinusCarNum_view];
+//    }
+}
+
+#pragma mark - 减少一行输入框
+- (void)minusTextFieldWithButtonClick
+{
+    NSLog(@"主人,您点击了减少按钮~~~~");
+    [self.minusCarNum_view setHidden:YES];
+    if (self.remberButtonClick == 1) {
+        self.carName_view.frame = CGRectMake(0, 195, SCREEN_WIDTH, 50 );
+        self.backGroundView.frame = CGRectMake(0, 250, SCREEN_WIDTH, SCREEN_HEIGHT);
+        self.remberButtonClick = 0;
+    }
+}
+
+#pragma mark - 点击第二个输入框的减少按钮
+- (void)secondMinusTextFieldWithButtonClick
+{
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animate;
+{
+    self.remberButtonClick = 1;
+}
+    
 
 - (UIBarButtonItem *)pushToLeftViewButton
 {
@@ -156,97 +450,6 @@
     NSLog(@"主人,您push到了侧滑栏~~");
 }
 
-- (UITableView *)openGroupTableView
-{
-    if (_openGroupTableView == nil) {
-        _openGroupTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
-        _openGroupTableView.backgroundColor = kColoreeee;
-        //去掉分割线
-        _openGroupTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _openGroupTableView.delegate = self;
-        _openGroupTableView.dataSource = self;
-        _openGroupTableView.contentInset = UIEdgeInsetsMake(0, 0, 64, 0);
-    }
-    return _openGroupTableView;
-}
-
-#pragma mark - 组数
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-#pragma mark - cell的行数
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSLog(@"self.indexPaths的数量是 : %ld",self.indexPaths.count);
-    return 8 + self.indexPaths.count;
-}
-
-#pragma amrk - cell的内容
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 0) {
-        XFJConventionMessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJConventionMessageTableViewCell forIndexPath:indexPath];
-        return cell;
-    }else if (indexPath.row == 1) {
-        XFJCarNameTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJCarNameTableViewCell forIndexPath:indexPath];
-        cell.userLocation = self.locationWithUser;
-        __weak __typeof(self)wself = self;
-        cell.addCellBlock = ^(NSInteger buttonTag) {
-            NSLog(@"主人,您点击了添加车牌按钮~~");
-            [wself addCarNameButton:buttonTag];
-        };
-        return cell;
-    }else if (indexPath.row == 2){
-        XFJGuestSourceInformationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJGuestSourceInformationTableViewCell forIndexPath:indexPath];
-        return cell;
-    }else if (indexPath.row == 3) {
-        XFJTeamInformationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTeamInformationTableViewCell forIndexPath:indexPath];
-        return cell;
-    }else if (indexPath.row == 4) {
-        XFJOtherInformationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJOtherInformationTableViewCell forIndexPath:indexPath];
-        return cell;
-    }else if (indexPath.row == 5) {
-        XFJUploadPhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJUploadPhotosTableViewCell forIndexPath:indexPath];
-        cell.dataArr = self.dataArr;
-        cell.delegate = self;
-        self.uploadPhotosTableViewCell = cell;
-        cell.maxImageCount = 6;
-//        __weak __typeof(self)wself = self;
-        cell.chosePhotosBlock = ^() {
-//            [wself chooseImage];
-        };
-        return cell;
-    }else if (indexPath.row == 6) {
-        XFJVoucherPhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJVoucherPhotosTableViewCell forIndexPath:indexPath];
-        cell.delegate = self;
-        self.cell = cell;
-        return cell;
-    }else {
-        //        XFJStarTaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJStarTaskTableViewCell forIndexPath:indexPath];
-        static NSString *cellID = @"cellID";
-        XFJStarTaskTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        if (cell == nil) {
-            cell = [[XFJStarTaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        }
-        __weak __typeof(self)wself = self;
-        cell.startTaskButtonBlock = ^(){
-            //该处提交用户填写的创建团队时候的参数
-            [wself requestWithOpenTeam];
-        };
-        return cell;
-    }
-    return nil;
-}
-
-#pragma mark - 发送请求
-- (void)requestWithOpenTeam
-{
-    
-}
-
-
 #pragma makr - 访问照相机
 - (void)chooseImage:(XFJUploadPhotosTableViewCell *)SerPhotoCell
 {
@@ -256,7 +459,7 @@
     
 }
 
-- (void)chooseVoucherPhotosImage:(XFJVoucherPhotosTableViewCell *)voucherPhotos
+- (void)chooseVoucherPhotosImage:(XFJVoucherPhotosView *)voucherPhotos
 {
     self.maxImageCount = 1;
     UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:@"请选择相机或者相册" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选择",nil];
@@ -282,9 +485,9 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_dataArr removeAllObjects];
                 [_dataArr addObjectsFromArray:array];
-                weakself.cell.dataArr = _dataArr;
+                weakself.uploadPhotos_view.dataArr = _dataArr;
                 if (_dataArr.count <= 4) {
-                    self.uploadPhotosTableViewCell.frame = CGRectMake(0, 480, SCREEN_WIDTH, 200);
+                    self.uploadPhotos_view.frame = CGRectMake(0, 480, SCREEN_WIDTH, 200);
                 }
             });
         };
@@ -293,7 +496,7 @@
     }
 }
 
-- (void)jumpToCell:(XFJVoucherPhotosTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+- (void)jumpToCell:(XFJVoucherPhotosView *)cell indexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray *tmpArray = [[NSMutableArray alloc] init];
     if(indexPath.row < _dataArray.count) {
@@ -310,10 +513,10 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_dataArray removeAllObjects];
                 [_dataArray addObjectsFromArray:array];
-                weakself.cell.dataArr = _dataArray;
-                //                if (_dataArr.count <= 4) {
-                //                    self.uploadPhotos_view.frame = CGRectMake(0, 728, SCREEN_WIDTH, 200);
-                //                }
+                weakself.voucherPhotos_view.dataArr = _dataArray;
+//                if (_dataArr.count <= 4) {
+//                    self.uploadPhotos_view.frame = CGRectMake(0, 728, SCREEN_WIDTH, 200);
+//                }
             });
         };
         
@@ -323,16 +526,16 @@
 
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            [self openCamera];
-            break;
-        case 1:
-            [self openAlbum];
-            break;
-        default:
-            break;
-    }
+        switch (buttonIndex) {
+            case 0:
+                [self openCamera];
+                break;
+            case 1:
+                [self openAlbum];
+                break;
+            default:
+                break;
+        }
 }
 
 - (void)openCamera
@@ -343,7 +546,7 @@
         ipc.delegate = self;
         [self presentViewController:ipc animated:YES completion:nil];
     } else {
-        //        [MBProgressHUD showHUDMsg: @"请打开允许访问相机权限"];
+//        [MBProgressHUD showHUDMsg: @"请打开允许访问相机权限"];
         NSLog(@"请打开允许访问相机权限");
     }
 }
@@ -355,7 +558,7 @@
         
         [self presentViewController:imagePickerVc animated:YES completion:nil];
     }else{
-        //        [MBProgressHUD showHUDMsg: @"请打开允许访问相册权限" ];
+//        [MBProgressHUD showHUDMsg: @"请打开允许访问相册权限" ];
     }
 }
 
@@ -366,17 +569,15 @@
         UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
         [self.dataArr addObject:image];
         [picker dismissViewControllerAnimated:YES completion:nil];
-        self.uploadPhotosTableViewCell.dataArr = self.dataArr;
-        self.uploadPhotosTableViewCell.maxImageCount = 6;
-        [self.openGroupTableView reloadData];
+        self.uploadPhotos_view.dataArr = self.dataArr;
+        self.uploadPhotos_view.maxImageCount = 6;
     }else {
         NSLog(@"self.maxImageCount == 1");
         UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
         [self.dataArray addObject:image];
         [picker dismissViewControllerAnimated:YES completion:nil];
-        self.cell.dataArr = self.dataArray;
-        self.cell.maxImageCount = 1;
-        [self.openGroupTableView reloadData];
+        self.voucherPhotos_view.dataArr = self.dataArray;
+        self.voucherPhotos_view.maxImageCount = 1;
     }
 }
 
@@ -387,72 +588,28 @@
 
 // 相册选的图片
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto{
-    if (self.maxImageCount == 6) {
+     if (self.maxImageCount == 6) {
         [self.dataArr addObjectsFromArray:photos];
-        self.uploadPhotosTableViewCell.dataArr = self.dataArr;
-        self.uploadPhotosTableViewCell.maxImageCount = 6;
-        if (self.dataArr.count < 4) {
-        }else {
-            self.uploadPhotosTableViewCell.frame = CGRectMake(0, 480, SCREEN_WIDTH, 290);
-        }
-        [self.openGroupTableView reloadData];
-    }else {
-        NSLog(@"self.maxImageCount == 1----------");
-        [self.dataArray addObjectsFromArray:photos];
-        self.cell.dataArr = self.dataArray;
-        self.cell.maxImageCount = 1;
-        [self.openGroupTableView reloadData];
-    }
+        self.uploadPhotos_view.dataArr = self.dataArr;
+        self.uploadPhotos_view.maxImageCount = 6;
+         if (self.dataArr.count < 4) {
+         }else {
+             self.uploadPhotos_view.frame = CGRectMake(0, 480, SCREEN_WIDTH, 290);
+         }
+     }else {
+         NSLog(@"self.maxImageCount == 1----------");
+         [self.dataArray addObjectsFromArray:photos];
+         self.voucherPhotos_view.dataArr = self.dataArray;
+         self.voucherPhotos_view.maxImageCount = 1;
+     }
 }
 
-- (void)addCarNameButton:(NSInteger)buttonTag
-{
-//    if (self.totalCount <= 6) {
-//        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-//        [indexPaths addObject: indexPath];
-//        self.indexPaths = indexPaths;
-//        [self.openGroupTableView beginUpdates];
-//        [self.openGroupTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-//        [self.openGroupTableView endUpdates];
-//        self.totalCount = self.totalCount + 1;
-//    }
-}
 
-#pragma mark - cell的点击事件
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
 
-#pragma mark - cell的高度
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 0) {
-        return [XFJConventionMessageTableViewCell cellHeight];
-    }else if (indexPath.row == 1) {
-        return [XFJCarNameTableViewCell cellHeight];
-    }else if (indexPath.row == 2) {
-        return [XFJGuestSourceInformationTableViewCell cellHeight];
-    }else if (indexPath.row == 3) {
-        return [XFJTeamInformationTableViewCell cellHeight];
-    }else if (indexPath.row == 4) {
-        return [XFJOtherInformationTableViewCell cellHeight];
-    }else if (indexPath.row == 5) {
-        if (iphone5) {
-            return self.dataArr.count >= 4 ? 240: 170;
-        }else if (iphone6P) {
-            return self.dataArr.count >= 4 ? 290: 200;
-        }else if (iphone6) {
-            return self.dataArr.count >= 4 ? 290: 200;
-        }
-    }if (indexPath.row == 6) {
-        return [XFJVoucherPhotosTableViewCell cellHeight];
-    }
-    else{
-        return [XFJStarTaskTableViewCell cellHeight];
-    }
-    return 0;
-}
+
+
+
+
+
 
 @end

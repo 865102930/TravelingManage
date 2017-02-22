@@ -1,15 +1,15 @@
 //
-//  XFJVoucherPhotosTableViewCell.m
+//  XFJVoucherPhotosView.m
 //  TravelingManage
 //
-//  Created by 肖锋 on 2017/2/20.
+//  Created by 肖锋 on 2017/2/17.
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#import "XFJVoucherPhotosTableViewCell.h"
+#import "XFJVoucherPhotosView.h"
 #import "XFJVoucherPhotosCollectionViewCell.h"
 
-@interface XFJVoucherPhotosTableViewCell() <UICollectionViewDelegate,UICollectionViewDataSource>
+@interface XFJVoucherPhotosView() <UICollectionViewDelegate,UICollectionViewDataSource>
 
 @property (nonatomic, strong) UIImageView *star_imageView;
 
@@ -21,12 +21,11 @@
 
 @end
 
-@implementation XFJVoucherPhotosTableViewCell
+@implementation XFJVoucherPhotosView
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.star_imageView];
         [self addSubview:self.showPhotos_label];
@@ -51,7 +50,6 @@
     }
     return self;
 }
-    
 
 - (UIImageView *)star_imageView
 {
@@ -177,10 +175,6 @@
     _maxImageCount = maxImageCount;
 }
 
-+ (CGFloat)cellHeight
-{
-    return 160;
-}
 
 
 @end

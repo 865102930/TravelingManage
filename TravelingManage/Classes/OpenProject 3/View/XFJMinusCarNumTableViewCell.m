@@ -6,6 +6,10 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+/*
+    这是加车牌的按钮
+ */
+
 #import "XFJMinusCarNumTableViewCell.h"
 
 @interface XFJMinusCarNumTableViewCell()
@@ -18,11 +22,10 @@
 
 @implementation XFJMinusCarNumTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+    if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self initControlWithCarName];
         [self setUpConventionCarNameWithMas];
     }
@@ -38,7 +41,7 @@
 - (void)setUpConventionCarNameWithMas
 {
     [self.carName_field mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.mas_top);
+        make.top.mas_equalTo(self.mas_top).mas_offset(5.0);
         make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
         make.width.mas_equalTo(231);
         make.height.mas_equalTo(38.0);
@@ -64,19 +67,24 @@
         _carNmae_button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_carNmae_button setImage:[UIImage originalWithImage:@"delete-"] forState:UIControlStateNormal];
         [_carNmae_button addTarget:self action:@selector(minusCarNameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        _carNmae_button.tag = 0;
     }
     return _carNmae_button;
 }
 
 - (void)minusCarNameButtonClick:(UIButton *)buttonTag
 {
-    NSLog(@"主人,您点击了减少车辆按钮~~");
+    if (self.minusCarNumBlock) {
+        self.minusCarNumBlock();
+    }
 }
 
-+ (CGFloat)cellHeight
+- (void)setTextFieldStr:(NSString *)textFieldStr
 {
-    return 47;
+    _textFieldStr = textFieldStr;
+    //限制输入框的内容
+    if (textFieldStr.length != 0) {
+        self.carName_field.text = [NSString stringWithFormat:@"%@",textFieldStr];
+    }
 }
 
 

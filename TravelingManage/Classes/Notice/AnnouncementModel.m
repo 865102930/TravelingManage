@@ -25,4 +25,5 @@ description与系统的冲突.换成大写D
              @"AnnouncementModel_id":@"id",
              };
 }
+
 @end

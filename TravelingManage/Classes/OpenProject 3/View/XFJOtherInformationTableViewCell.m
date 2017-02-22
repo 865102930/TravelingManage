@@ -22,10 +22,10 @@
 
 @implementation XFJOtherInformationTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.line_view];
         [self addSubview:self.otherInformation_imageView];
         [self addSubview:self.otherInformation_label];
@@ -92,10 +92,6 @@
         _quality_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"属          性" rightImage:@"xinghao" placeholder:@"请输入属性值"];
     }
     return _quality_field;
-}
-+ (CGFloat)cellHeight
-{
-    return 110.0;
 }
 
 @end

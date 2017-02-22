@@ -6,14 +6,11 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#define KCellIdentifier_XFJGuestSourceInformationTableViewCell @"XFJGuestSourceInformationTableViewCell"
 
 #import <UIKit/UIKit.h>
 #import "LMComBoxView.h"
 
-@interface XFJGuestSourceInformationTableViewCell : UITableViewCell <LMComBoxViewDelegate>
+@interface XFJGuestSourceInformationTableViewCell : UIView <LMComBoxViewDelegate>
 
-
-+ (CGFloat)cellHeight;
 
 @end
