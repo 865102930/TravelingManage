@@ -46,7 +46,7 @@
 #pragma mark - 初始化控件
 - (void)initControlWithConventionMessage
 {
-    [self addSubview:self.line_view];
+//    [self addSubview:self.line_view];
     [self addSubview:self.conventionMessage_imageView];
     [self addSubview:self.conventionMessage_label];
     [self addSubview:self.groupText_field];
@@ -57,12 +57,12 @@
 #pragma mark - 布局控件
 - (void)setUpConventionMessageWithMas
 {
-    [self.line_view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.mas_top);
-        make.left.mas_equalTo(self.mas_left);
-        make.height.mas_equalTo(3.0);
-        make.right.mas_equalTo(self.mas_right);
-    }];
+//    [self.line_view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(self.mas_top);
+//        make.left.mas_equalTo(self.mas_left);
+//        make.height.mas_equalTo(3.0);
+//        make.right.mas_equalTo(self.mas_right);
+//    }];
     [self.conventionMessage_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(24.0);
         make.left.mas_equalTo(18.0);

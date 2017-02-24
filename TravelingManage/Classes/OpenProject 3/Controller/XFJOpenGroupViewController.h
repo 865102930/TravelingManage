@@ -12,4 +12,6 @@
 
 @property (nonatomic, strong) NSString *locationWithUser;
 
+@property (nonatomic, copy) void (^signViewBlock)(NSString *);
+
 @end

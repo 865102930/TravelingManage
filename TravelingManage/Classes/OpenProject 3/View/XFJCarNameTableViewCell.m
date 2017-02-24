@@ -96,6 +96,9 @@
 
 - (void)requestFindCarNumberWithUserlocation:(NSString *)userLocation
 {
+    if (userLocation.length == 0) {
+        return;
+    }
     NSDictionary *dictParaments = @{
                                     @"city": userLocation
                                     };

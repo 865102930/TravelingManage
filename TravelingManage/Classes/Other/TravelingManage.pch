@@ -62,7 +62,6 @@
 
 #define BASEURL @"http://118.178.224.151/teammgmtback"
 
-
 //注册接口
 #define REGISTURL (BASEURL@"/app/user/userRegister")
 //获取注册验证码和登录验证码
@@ -83,3 +82,9 @@
 #define CHECKOUTTRAVENAMEURL (BASEURL@"/app/teamInfo/findTravelAgencyList")
 //创建团队
 #define MODIFYTEAMINFOURL (BASEURL@"/app/teamInfo/modifyTeamInfo")
+//团队签到
+#define TEAMSIGNURL (BASEURL@"/app/teamTask/teamSign")
+//团队签退
+#define TEAMSIGNOUTURL (BASEURL@"/app/teamTask/teamSignOut")
+//查询当前市的景区信息
+#define FINDATTRACTIONSLISTURL (BASEURL@"/app/attractions/findAttractionsList")

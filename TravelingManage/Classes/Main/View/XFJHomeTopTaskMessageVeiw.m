@@ -69,7 +69,7 @@
 {
     if (_carNumberContent_label == nil) {
         _carNumberContent_label = [[UILabel alloc] init];
-        _carNumberContent_label.text = @"浙A5474";
+        _carNumberContent_label.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"CARNUMBERSTR"]];
         _carNumberContent_label.textAlignment = NSTextAlignmentLeft;
         _carNumberContent_label.font = [UIFont systemFontOfSize:14.0];
         _carNumberContent_label.textColor = kColor2f2f;
@@ -81,7 +81,7 @@
 {
     if (_peopleMessageContent_label == nil) {
         _peopleMessageContent_label = [[UILabel alloc] init];
-        _peopleMessageContent_label.text = @"浙江杭州省余杭区";
+        _peopleMessageContent_label.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"PEOPLEWHEREFROMSTR"]];
         _peopleMessageContent_label.textAlignment = NSTextAlignmentLeft;
         _peopleMessageContent_label.font = [UIFont systemFontOfSize:14.0];
         _peopleMessageContent_label.textColor = kColor2f2f;
@@ -117,7 +117,7 @@
 {
     if (_openTeamContent_label == nil) {
         _openTeamContent_label = [[UILabel alloc] init];
-        _openTeamContent_label.text = @"2017-10-11 12:00";
+        _openTeamContent_label.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"OPENTEAMTIMESTR"]];
         _openTeamContent_label.textAlignment = NSTextAlignmentLeft;
         _openTeamContent_label.font = [UIFont systemFontOfSize:14.0];
         _openTeamContent_label.textColor = kColor2f2f;
@@ -161,7 +161,7 @@
     }];
     [self.peopleMessageContent_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(22.0);
-        make.right.mas_equalTo(self.mas_right).mas_offset(-66.0);
+        make.right.mas_equalTo(self.mas_right).mas_offset(-50.0);
     }];
     [self.peopleMessage_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(23.0);
@@ -177,7 +177,7 @@
     }];
     [self.state_button mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.peopleMessageContent_label.mas_bottom).mas_offset(14.0);
-        make.right.mas_equalTo(self.mas_right).mas_offset(-66.0);
+        make.right.mas_equalTo(self.mas_right).mas_offset(-50.0);
         make.width.mas_equalTo(62.0);
         make.height.mas_equalTo(25.0);
     }];

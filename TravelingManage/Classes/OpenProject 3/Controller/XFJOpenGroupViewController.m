@@ -22,6 +22,7 @@
 #import "WSPhotosBroseVC.h"
 #import "XFJMinusCarNumTableViewCell.h"
 #import "XFJVoucherPhotosView.h"
+#import "JTNavigationController.h"
 
 @interface XFJOpenGroupViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJUploadPhotosTableViewCellDelegate,UIScrollViewDelegate,XFJVoucherPhotosViewDelegate>
 
@@ -351,6 +352,10 @@
             wself.voucherPicRoot = root;
             NSLog(@"上传图片成功后的信息-------%@",root);
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (wself.root.length == 0) {
+                    [MBProgressHUD showHudTipStr:@"图片上传失败~~" contentColor:HidWithColorContentBlack];
+                    return ;
+                }
                 //开始任务的请求
                 [wself startTaskButtonClick];
             });
@@ -364,7 +369,6 @@
 - (void)startTaskButtonClick
 {
     NSDictionary *dictParaments = @{
-                                    @"userId":@7,//导游id
                                    @"teamNo":self.conventionMessage_view.groupName_text,//团队编号
                                    @"teamDate":self.conventionMessage_view.groupTime_text,//出团日期
                                    @"travelAgencyId":[NSString stringWithFormat:@"%ld",self.conventionMessage_view.travelName],//旅行社id
@@ -378,20 +382,39 @@
                                    @"teamDay":self.teamInformation_view.teamDay,//团队天数
                                    @"createuser":@7,//创建记录的用户id
                                    @"certificateImg":self.voucherPicRoot,//凭证图片路径
-                                   @"teamVehicleImages":self.root//车辆图片集合用,分割
+                                   @"teamVehicleImages":self.root,//车辆图片集合用,分割
+                                   @"userId":@7//导游id
                                     };
     NSLog(@"参数集合-----%@----%@---%@---%@---%@----%@---%@----%@----%@----%@---%@---%@---%@---%@---%@",@7,self.conventionMessage_view.groupName_text,self.conventionMessage_view.groupTime_text,[NSString stringWithFormat:@"%ld",self.conventionMessage_view.travelName],self.carName_view.str,self.guestSourceInformation_view.selectedProvince,self.guestSourceInformation_view.selectedCity,self.guestSourceInformation_view.selectedArea,self.guestSourceInformation_view.paramName,self.teamInformation_view.teamNature,self.teamInformation_view.teamPeople_number,self.teamInformation_view.teamDay,@7,self.voucherPicRoot,self.root);
+    __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:MODIFYTEAMINFOURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
             NSLog(@"+++++======---------团队创建成功,成功信息是:%@",object);
+            NSDictionary *dict = [object objectForKey:@"object"];
+            NSDictionary *dict1 = [dict objectForKey:@"id"];
+            NSLog(@"+++++===========提取到的id是:%@",dict1);
+            HomeViewController *homeController = [[HomeViewController alloc] init];
+            JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:homeController];
+            //将用户填写的信息保存起来
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.carName_view.str] forKey:@"CARNUMBERSTR"];
+            [userDefaults setObject:[NSString stringWithFormat:@"%@%@%@",wself.guestSourceInformation_view.selectedProvince,wself.guestSourceInformation_view.selectedCity,wself.guestSourceInformation_view.selectedArea] forKey:@"PEOPLEWHEREFROMSTR"];
+            [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.conventionMessage_view.groupTime_text] forKey:@"OPENTEAMTIMESTR"];
+            [userDefaults synchronize];
+            //将值传到home控制器中
+            if (wself.signViewBlock) {
+                wself.signViewBlock(wself.teamInformation_view.teamPeople_number);
+            }
+            [wself presentViewController:navVC animated:YES completion:nil];
+            
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
             NSLog(@"+++++++++++++++++++++_______团队创建失败,失败信息是:%@",error);
+            [MBProgressHUD showHudTipStr:@"网络请求失败~~" contentColor:HidWithColorContentBlack];
         }
     } progress:^(float progress) {
     }];
-    
 }
 
 - (void)addCarNumField:(NSInteger)buttonTag str:(NSString *)str
@@ -413,21 +436,6 @@
         self.scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2.2);
         [self.carName_view addSubview:minusCarNum_view];
     }
-//    else if (self.remberButtonClick == 2) {
-//        NSLog(@"添加的第二个输入框~~");
-//        self.carName_view.frame = CGRectMake(0, 195, SCREEN_WIDTH, 47 + 53 + 53 );
-//        self.backGroundView.frame = CGRectMake(0, 250 + 52 + 52, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
-//        XFJSecondFieldView *secondMinusCarNum_view = [[XFJSecondFieldView alloc] initWithFrame:CGRectMake(0, 47 + 47 , SCREEN_WIDTH, 45.0)];
-//        self.secondField_view = secondMinusCarNum_view;
-//        __weak __typeof(self)wself = self;
-//        secondMinusCarNum_view.secondCarNumBlock = ^() {
-//            
-//            [wself secondMinusTextFieldWithButtonClick];
-//        };
-//        secondMinusCarNum_view.textFieldStr = str;
-//        self.scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2.5);
-//        [self.carName_view addSubview:secondMinusCarNum_view];
-//    }
 }
 
 #pragma mark - 减少一行输入框

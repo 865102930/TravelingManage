@@ -20,7 +20,11 @@
 #import "XFJHomeTopTaskMessageVeiw.h"
 #import "XFJTeamMessageViewController.h"
 #import <CoreLocation/CoreLocation.h>
-
+#import "XFJFindAttractionsListItem.h"
+#import "XFJSignView.h"
+#import <IQKeyboardManager.h>
+#import "XFJSceneryAnnotation.h"
+#import "XFJSceneryAnnotationView.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate>
 
@@ -51,6 +55,20 @@
 //当前的城市
 @property (nonatomic, strong) NSString *currentCity;
 
+//定位到当前的省
+@property (nonatomic, strong) NSString *currentProvince;
+
+@property (nonatomic, strong) NSMutableArray <XFJFindAttractionsListItem *> *findAttractionsListArray;
+
+//定位按钮
+@property (nonatomic, strong) UIButton *location_button;
+
+@property (nonatomic, strong) XFJSignView *sign_view;
+
+//创建的数组用来装景点的大头针
+@property (nonatomic, strong) NSMutableArray *annotationArray;
+
+
 @end
 
 @implementation HomeViewController
@@ -78,15 +96,28 @@
     self.navigationItem.rightBarButtonItem = self.projectButtonItem;
     //这是添加的公告
 //    [self.view addSubview:self.announcementView];
-    [self.view addSubview:self.task_view];
+#warning 当用户一开始进入app的时候,由于不存在任务,那么就显示这个新建任务,如果有任务了,那么此界面就不存在
+//    [self.view addSubview:self.task_view];
+    
     [self.maskView1 addSubview:self.leftView];
     //这是添加的home顶部的任务
     [self.view addSubview:self.homeTopTaskMessageVeiw];
     [self setUpPanGes];
     
+    [self.view addSubview:self.location_button];
+    
     //获取当前用户的位置信息
     [self getUserLocation];
+    //此处的试图需要判断是否是第一次进来的时候运用(或者任务已经做完了)
+    [self.view addSubview:self.sign_view];
+    [self.view addSubview:self.location_button];
+    
+    IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
+    keyboardManager.shouldResignOnTouchOutside = YES;
+    keyboardManager.keyboardDistanceFromTextField = 50;
+    
 }
+
 
 #pragma mark - 给按钮添加一个滑动手势
 - (void)setUpPanGes
@@ -154,6 +185,14 @@
     return _user_SttingButtonItem;
 }
 
+- (NSMutableArray *)annotationArray
+{
+    if (_annotationArray == nil) {
+        _annotationArray = [NSMutableArray array];
+    }
+    return _annotationArray;
+}
+
 - (UIBarButtonItem *)projectButtonItem
 {
     if (_projectButtonItem == nil) {
@@ -193,6 +232,34 @@
     return _announcementView;
 }
 
+- (NSMutableArray <XFJFindAttractionsListItem *> *)findAttractionsListArray
+{
+    if (_findAttractionsListArray == nil) {
+        _findAttractionsListArray = [NSMutableArray array];
+    }
+    return _findAttractionsListArray;
+}
+
+#pragma mark - 定位的按钮
+- (UIButton *)location_button
+{
+    if (_location_button == nil) {
+        _location_button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_location_button setFrame:CGRectMake(11, SCREEN_HEIGHT - 200, 42, 41)];
+        [_location_button setBackgroundImage:[UIImage imageNamed:@"wodeweizhi"] forState:UIControlStateNormal];
+        [_location_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_location_button addTarget:self action:@selector(userButtonLocation) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _location_button;
+}
+
+#pragma mark - 更新定位
+- (void)userButtonLocation
+{
+    self.mapView.centerCoordinate = self.mapView.userLocation.location.coordinate;
+}
+
+#warning 当用户一开始进入app的时候,由于不存在任务,那么就显示这个新建任务,如果有任务了,那么此界面就不存在
 - (XFJTaskView *)task_view
 {
     if (_task_view == nil) {
@@ -204,7 +271,7 @@
 - (XFJHomeTopTaskMessageVeiw *)homeTopTaskMessageVeiw
 {
     if (_homeTopTaskMessageVeiw == nil) {
-        _homeTopTaskMessageVeiw = [[XFJHomeTopTaskMessageVeiw alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 98.0)];
+        _homeTopTaskMessageVeiw = [[XFJHomeTopTaskMessageVeiw alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 98.0)];
     }
     return _homeTopTaskMessageVeiw;
 }
@@ -274,7 +341,34 @@
     NSLog(@"点击了新建按钮");
     XFJOpenGroupViewController *openGroupViewController = [[XFJOpenGroupViewController alloc] init];
     openGroupViewController.locationWithUser = self.currentCity;
+    __weak __typeof(self)wself = self;
+    openGroupViewController.signViewBlock = ^(NSString *strNum) {
+        NSLog(@"====++++++++++++接收到的开团的人数是:%@",strNum);
+        //在此处创建底部的签到页面
+        [wself creatSignViewWithSignPeopleNumber:strNum];
+    };
     [self.navigationController pushViewController:openGroupViewController animated:YES];
+}
+
+- (void)loadView
+{
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.view = scrollView;
+}
+
+- (XFJSignView *)sign_view
+{
+    if (_sign_view == nil) {
+        _sign_view = [[XFJSignView alloc] initWithFrame:CGRectMake(6, SCREEN_HEIGHT - 150, SCREEN_WIDTH - 12, 78.0)];
+        _sign_view.backgroundColor = [UIColor whiteColor];
+    }
+    return _sign_view;
+}
+
+#pragma mark - 签到页面的创建
+- (void)creatSignViewWithSignPeopleNumber:(NSString *)signPeopleNumber
+{
+    NSLog(@"++++++========--------传过来的团队人数是 :%@",signPeopleNumber);
 }
 
 - (UILabel *)title_label
@@ -301,6 +395,9 @@
         [_mapView setRotateCameraEnabled:NO];
         //是否显示用户位置
         _mapView.showsUserLocation = YES;
+        
+        [_mapView setCompassImage:[UIImage imageNamed:@"wodeweizhi"]];
+        
         //追踪用户模式(实时更新)
          _mapView.userTrackingMode = MAUserTrackingModeFollow;
     }
@@ -358,6 +455,13 @@
         [alertView setTag:100];
         [alertView show];
     }
+    //纬度
+    NSString *latitude = [NSString stringWithFormat:@"%.6f",(float)self.manager.location.coordinate.latitude];
+    //经度
+    NSString *longitude = [NSString stringWithFormat:@"%.6f",(float)self.manager.location.coordinate.longitude];
+    
+    NSLog(@"获取到用户的纬度是 : %@---------精度是:%@",latitude,longitude);
+    
 }
 
 #pragma mark - 获取到用户的精度和纬度转换为具体的位置信息
@@ -368,14 +472,17 @@
     //旧的值
     CLLocation *currentLocation = [locations lastObject];
     CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+    __weak __typeof(self)wself = self;
     [geoCoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (placemarks.count > 0) {
             CLPlacemark *placeMark = placemarks[0];
-            self.currentCity = placeMark.locality;
-            if (!self.currentCity) {
-                self.currentCity = @"无法定位当前城市";
+            wself.currentCity = placeMark.locality;
+            wself.currentProvince = placeMark.administrativeArea;
+            if (!wself.currentCity) {
+                wself.currentCity = @"无法定位当前城市";
             }
-            NSLog(@"--------定位的当前城市是:%@",self.currentCity);
+        //发送获取当前位置用户周边的景区
+            [wself requestAttractionsListWithProvince:self.currentProvince city:wself.currentCity];
         }else if (error == nil && placemarks.count == 0) {
             NSLog(@"No location and error return");
         }else if (error) {
@@ -391,6 +498,94 @@
             [[UIApplication sharedApplication] openURL:url];
         }
     }
+}
+
+#pragma mark - 获取当前位置的景区信息
+- (void)requestAttractionsListWithProvince:(NSString *)province city:(NSString *)city
+{
+    NSLog(@"--------定位的当前城市是:%@-------当前省份是:%@",self.currentCity,self.currentProvince);
+    NSDictionary *dictParaments = @{
+                                    @"province":self.currentProvince,
+                                    @"city":self.currentCity
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:FINDATTRACTIONSLISTURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSMutableArray *findAttractionArray = [object objectForKey:@"rows"];
+            wself.findAttractionsListArray = [XFJFindAttractionsListItem mj_objectArrayWithKeyValuesArray:findAttractionArray];
+            NSLog(@"=======++++++++------------获取到的景点列表模型是:%@",object);
+//            for (NSInteger i = 0; i < self.findAttractionsListArray.count; i++) {
+//                NSString *item = self.findAttractionsListArray[i].locationPoints;
+//                NSLog(@"遍历获取出来的信息是 : %@",item);
+//            }
+            //获取周围景点的数据,并用大头针显示出来
+            [wself setSceneryInToMapView:wself.findAttractionsListArray];
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            NSLog(@"_______------+++++++++++++网络错误,打印错误信息是:%@",error);
+            [MBProgressHUD showHudTipStr:@"亲~~网络错误" contentColor:HidWithColorContentBlack];
+        }
+    } progress:^(float progress) {
+    }];
+}
+
+#pragma mark - 获取用户周围景点的信息显示在地图上
+- (void)setSceneryInToMapView:(NSMutableArray <XFJFindAttractionsListItem *> *)findAttractionsListArray
+{
+    //遍历所有的景点列表
+    for (NSInteger i = 0; i < findAttractionsListArray.count; i++) {
+        //取出每个景点
+        XFJFindAttractionsListItem *findAttractionsListItem = [findAttractionsListArray objectAtIndex:i];
+        //取出每个景点的坐标
+        XFJSceneryAnnotation *sceneryAnnotation = [[XFJSceneryAnnotation alloc] init];
+        //116.392893,39.905614;116.384783,39.922756;116.434736,39.921651;116.44083,39.863372;116.357659,39.880761
+        //定义一个字符串用来接收遍历的景点精度和纬度
+        NSString *locationPoint = findAttractionsListItem.locationPoints;
+        NSLog(@"遍历获取出来景点的坐标信息是 : %@",locationPoint);
+//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(@"该处填写纬度", @"该处填写精度");
+        //纬度和精度的赋值
+//        sceneryAnnotation.coordinate = coordinate;
+        
+        //将景点的大头针数组添加到数组中
+        [self.annotationArray addObject:sceneryAnnotation];
+        [self.mapView addAnnotation:sceneryAnnotation];
+    }
+    [self.mapView showAnnotations:self.annotationArray edgePadding:UIEdgeInsetsMake(80, 80, 80, 80) animated:YES];
+}
+
+#pragma mark - 标注点的代理方法(大头针类型)
+- (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id <MAAnnotation>)annotation
+{
+    if ([annotation isKindOfClass:[XFJSceneryAnnotation class]]) {
+        //创建用户的自定义大头针
+        static NSString *sceneryReuseIdentifier = @"loctionUserAnnotation";
+        XFJSceneryAnnotationView *annotationView = (XFJSceneryAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:sceneryReuseIdentifier];
+        XFJSceneryAnnotation *sceneryAnnotation = (XFJSceneryAnnotation *)annotation;
+        if (annotationView == nil) {
+            annotationView = [[XFJSceneryAnnotationView alloc] initWithAnnotation:sceneryAnnotation reuseIdentifier:sceneryReuseIdentifier];
+        }
+        annotationView.canShowCallout = YES;
+        annotationView.draggable = YES;
+        annotationView.enabled = YES;
+        return annotationView;
+    }else {
+        
+        //用户的大头针
+        static NSString *trackingReuseIndetifier = @"loctionUserAnnotation_1";
+        MAAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:trackingReuseIndetifier];
+        if (!annotationView) {
+            annotationView = [[MAAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:trackingReuseIndetifier];
+        }
+        annotationView.bounds = CGRectMake(0.f, 0.f, 40, 40);
+        UIImageView * myLoctionView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 13, 31)];
+        [myLoctionView setCenter:CGPointMake(20, 10)];
+        [myLoctionView setImage:[UIImage imageNamed:@"dingwei"]];
+        [myLoctionView setContentMode:UIViewContentModeScaleAspectFit];
+        [annotationView addSubview:myLoctionView];
+        return annotationView;
+    }
+    return nil;
 }
 
 
