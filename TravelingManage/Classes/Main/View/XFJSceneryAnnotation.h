@@ -8,7 +8,11 @@
 
 //显示景点的大头针视图
 #import <MAMapKit/MAMapKit.h>
+#import "XFJFindAttractionsListItem.h"
 
 @interface XFJSceneryAnnotation : MAPointAnnotation
+
+//景点名字
+@property (nonatomic, strong) NSString *attractionsName;
 
 @end

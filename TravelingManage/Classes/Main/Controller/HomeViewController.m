@@ -25,6 +25,8 @@
 #import <IQKeyboardManager.h>
 #import "XFJSceneryAnnotation.h"
 #import "XFJSceneryAnnotationView.h"
+#import <MapKit/MapKit.h>
+#import "XFJSignNoPeopleView.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate>
 
@@ -67,6 +69,20 @@
 
 //创建的数组用来装景点的大头针
 @property (nonatomic, strong) NSMutableArray *annotationArray;
+
+@property (strong, nonatomic) MKPolyline *myPolyline;
+
+@property (nonatomic, assign) CGFloat str1;
+
+@property (nonatomic, assign) CGFloat str2;
+
+@property (nonatomic, strong) NSString *latitude;
+
+//经度
+@property (nonatomic, strong) NSString *longitude;
+
+@property (nonatomic, strong) XFJSignNoPeopleView *signNoPeople_view;
+
 
 
 @end
@@ -142,6 +158,24 @@
         XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
         [wself.navigationController pushViewController:teamMessageViewController animated:YES];
     };
+    self.sign_view.signButtonClickBlock = ^() {
+        [wself.sign_view removeFromSuperview];
+        [wself setUpSignNoWithPeople];
+    };
+}
+
+- (XFJSignNoPeopleView *)signNoPeople_view
+{
+    if (_signNoPeople_view == nil) {
+        _signNoPeople_view = [[XFJSignNoPeopleView alloc] initWithFrame:CGRectMake(6, SCREEN_HEIGHT - 150, SCREEN_WIDTH - 12, 78.0)];
+    }
+    return _signNoPeople_view;
+}
+
+#pragma mark - 添加签退页面
+- (void)setUpSignNoWithPeople
+{
+    [self.view addSubview:self.signNoPeople_view];
 }
 
 - (void)panHandle:(UIPanGestureRecognizer *)panGesture
@@ -360,7 +394,6 @@
 {
     if (_sign_view == nil) {
         _sign_view = [[XFJSignView alloc] initWithFrame:CGRectMake(6, SCREEN_HEIGHT - 150, SCREEN_WIDTH - 12, 78.0)];
-        _sign_view.backgroundColor = [UIColor whiteColor];
     }
     return _sign_view;
 }
@@ -369,6 +402,7 @@
 - (void)creatSignViewWithSignPeopleNumber:(NSString *)signPeopleNumber
 {
     NSLog(@"++++++========--------传过来的团队人数是 :%@",signPeopleNumber);
+    self.sign_view.peopleNumberStr = signPeopleNumber;
 }
 
 - (UILabel *)title_label
@@ -457,9 +491,10 @@
     }
     //纬度
     NSString *latitude = [NSString stringWithFormat:@"%.6f",(float)self.manager.location.coordinate.latitude];
+    self.latitude = latitude;
     //经度
     NSString *longitude = [NSString stringWithFormat:@"%.6f",(float)self.manager.location.coordinate.longitude];
-    
+    self.longitude = latitude;
     NSLog(@"获取到用户的纬度是 : %@---------精度是:%@",latitude,longitude);
     
 }
@@ -533,26 +568,85 @@
 #pragma mark - 获取用户周围景点的信息显示在地图上
 - (void)setSceneryInToMapView:(NSMutableArray <XFJFindAttractionsListItem *> *)findAttractionsListArray
 {
+    [self.mapView removeAnnotations:self.annotationArray];
+    [self.annotationArray removeAllObjects];
     //遍历所有的景点列表
     for (NSInteger i = 0; i < findAttractionsListArray.count; i++) {
-        //取出每个景点
-        XFJFindAttractionsListItem *findAttractionsListItem = [findAttractionsListArray objectAtIndex:i];
-        //取出每个景点的坐标
-        XFJSceneryAnnotation *sceneryAnnotation = [[XFJSceneryAnnotation alloc] init];
-        //116.392893,39.905614;116.384783,39.922756;116.434736,39.921651;116.44083,39.863372;116.357659,39.880761
-        //定义一个字符串用来接收遍历的景点精度和纬度
-        NSString *locationPoint = findAttractionsListItem.locationPoints;
-        NSLog(@"遍历获取出来景点的坐标信息是 : %@",locationPoint);
-//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(@"该处填写纬度", @"该处填写精度");
-        //纬度和精度的赋值
-//        sceneryAnnotation.coordinate = coordinate;
-        
-        //将景点的大头针数组添加到数组中
-        [self.annotationArray addObject:sceneryAnnotation];
-        [self.mapView addAnnotation:sceneryAnnotation];
+        @autoreleasepool {
+            //取出每个景点
+            XFJFindAttractionsListItem *findAttractionsListItem = [findAttractionsListArray objectAtIndex:i];
+            //116.392893,39.905614;116.384783,39.922756;116.434736,39.921651;116.44083,39.863372;116.357659,39.880761
+            //定义一个字符串用来接收遍历的景点精度和纬度
+            NSString *locationPoint = findAttractionsListItem.locationPoints;
+            //先按分号截取并且装入数组中
+            NSArray *strarray = [locationPoint componentsSeparatedByString:@";"];
+             CLLocationCoordinate2D commonPolylineCoords[strarray.count + 1];//这是第一个折线对象i = 0;i = 1;i = 2
+            //这是一个景点的所有坐标
+            for (NSInteger i = 0; i < strarray.count; i++) {
+                //取出每个景点的坐标
+                XFJSceneryAnnotation *sceneryAnnotation = [[XFJSceneryAnnotation alloc] init];
+                NSString *str = [strarray objectAtIndex:i];
+                NSRange rang = [str rangeOfString:@","];
+                NSString *str1 = [str substringToIndex:rang.location];
+                NSString *str2 = [str substringFromIndex:rang.location + 1];
+                if (i == 0) {
+                    self.str1 = [str1 floatValue];
+                    self.str2 = [str2 floatValue];
+                }
+                NSLog(@"-------------遍历获取出来景点的坐标信息是 : %@--------%@",str1,str2);
+                CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([str2 floatValue], [str1 floatValue]);
+                NSLog(@"截取完毕后的字符串是 :%f--------%f------是第%ld个坐标",[str2 floatValue],[str1 floatValue],i);
+                //纬度和精度的赋值
+                sceneryAnnotation.coordinate = coordinate;
+                sceneryAnnotation.attractionsName = findAttractionsListItem.attractionsName;
+                //将景点的大头针数组添加到数组中
+                [self.annotationArray addObject:sceneryAnnotation];
+                NSLog(@"添加的大头针数组总共有%zd个",self.annotationArray.count);
+                [self.mapView addAnnotation:sceneryAnnotation];
+                //获取到景点所有的精度和纬度
+                //构造折线对象strarray.count有这么多折线对象(5)
+                commonPolylineCoords[i].latitude = [str2 floatValue];//0;1;2折线的纬度
+                commonPolylineCoords[i].longitude = [str1 floatValue];//0;1;2折线的精度
+            }
+            //构造折线对象
+            commonPolylineCoords[strarray.count + 1].latitude = self.str2 ;//0;1;2折线的纬度
+            commonPolylineCoords[strarray.count + 1].longitude = self.str1 ;
+            NSLog(@"当为第0个元素的时候纬度是 : %f--------精度是 : %f",self.str2,self.str1);
+            MAPolyline *commonPolyline = [MAPolyline polylineWithCoordinates:commonPolylineCoords count:strarray.count];
+            //判断是否在范围内
+            [self setContains:commonPolylineCoords];
+            [self.mapView addOverlay:commonPolyline];
+        }
     }
     [self.mapView showAnnotations:self.annotationArray edgePadding:UIEdgeInsetsMake(80, 80, 80, 80) animated:YES];
+    NSLog(@"------------添加的大头针数组是 : %@",self.annotationArray);
 }
+
+#pragma mark - 判断是否在折线范围内
+- (void)setContains:(CLLocationCoordinate2D *)polygon
+{
+    //108.924069,34.175223
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);
+    BOOL isContains = MAPolygonContainsCoordinate(location, polygon, 5);
+    NSLog(@"-----------经纬度是否在多边形内部 : %d",isContains);//0:标识不在 1:标识在
+    
+}
+
+- (MAOverlayRenderer *)mapView:(MAMapView *)mapView rendererForOverlay:(id<MAOverlay>)overlay
+{
+    if ([overlay isKindOfClass:[MAPolyline class]])
+    {
+        MAPolylineRenderer *polylineRenderer = [[MAPolylineRenderer alloc] initWithPolyline:overlay];
+        
+        polylineRenderer.lineWidth    = 3.f;
+        polylineRenderer.strokeColor  = [UIColor colorWithRed:0 green:1 blue:0 alpha:0.6];
+        polylineRenderer.lineJoinType = kMALineJoinRound;
+        polylineRenderer.lineCapType  = kMALineCapRound;
+        return polylineRenderer;
+    }
+    return nil;
+}
+
 
 #pragma mark - 标注点的代理方法(大头针类型)
 - (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id <MAAnnotation>)annotation

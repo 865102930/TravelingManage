@@ -29,12 +29,11 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.signNumber_label];
         [self addSubview:self.signPeople_text];
         [self addSubview:self.name_label];
         [self addSubview:self.sign_button];
-        
-        
         
         [self.signNumber_label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
@@ -78,9 +77,16 @@
         _signPeople_text = [[UITextField alloc] init];
         _signPeople_text.textColor = kColor8383;
         _signPeople_text.background = [UIImage originalWithImage:@"shurukuang"];
+        [_signPeople_text setFont:[UIFont fontWithName:PingFang size:14.0]];
+        [_signPeople_text addTarget:self action:@selector(signPeopleText:) forControlEvents:UIControlEventEditingDidEnd];
         _signPeople_text.textAlignment = NSTextAlignmentCenter;
     }
     return _signPeople_text;
+}
+
+- (void)signPeopleText:(UITextField *)textField
+{
+    NSLog(@"输入框的值发生了变化------------%@",textField.text);
 }
 
 - (UILabel *)name_label
@@ -106,9 +112,25 @@
         [_sign_button setTitle:@"签到" forState:UIControlStateNormal];
         [_sign_button setTitleColor:kColorFFFF forState:UIControlStateNormal];
         _sign_button.titleLabel.font = [UIFont fontWithName:PingFang size:14.0];
+        [_sign_button addTarget:self action:@selector(signButtonClick) forControlEvents:UIControlEventTouchUpInside];
         
     }
     return _sign_button;
+}
+
+- (void)signButtonClick
+{
+    if (self.signButtonClickBlock) {
+        self.signButtonClickBlock();
+    }
+}
+
+- (void)setPeopleNumberStr:(NSString *)peopleNumberStr
+{
+    _peopleNumberStr = peopleNumberStr;
+    self.signPeople_text.placeholder = [NSString stringWithFormat:@"%@",peopleNumberStr];
+    self.signPeople_text.text = [NSString stringWithFormat:@"%@",peopleNumberStr];
+    NSLog(@"传过来的人数值是:%@---------%@",peopleNumberStr,self.signPeople_text.text);
 }
 
 @end

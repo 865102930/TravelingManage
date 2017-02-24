@@ -112,7 +112,7 @@
         _scroll_view = [[UIScrollView alloc] init];
         _scroll_view.frame = CGRectMake(0, 64, self.view.bounds.size.width, 1.2 * self.view.XFJ_Height);
         _scroll_view.delegate = self;
-        _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2);
+        _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2.5);
         _scroll_view.backgroundColor = [UIColor whiteColor];
         _scroll_view.showsHorizontalScrollIndicator = NO;
         _scroll_view.scrollEnabled = YES;

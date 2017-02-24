@@ -10,4 +10,8 @@
 
 @interface XFJSignView : UIView
 
+@property (nonatomic, copy) void (^signButtonClickBlock)();
+
+@property (nonatomic, strong) NSString *peopleNumberStr;
+
 @end
