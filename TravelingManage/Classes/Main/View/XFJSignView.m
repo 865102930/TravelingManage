@@ -78,7 +78,7 @@
         _signPeople_text.textColor = kColor8383;
         _signPeople_text.background = [UIImage originalWithImage:@"shurukuang"];
         [_signPeople_text setFont:[UIFont fontWithName:PingFang size:14.0]];
-        [_signPeople_text addTarget:self action:@selector(signPeopleText:) forControlEvents:UIControlEventEditingDidEnd];
+        [_signPeople_text addTarget:self action:@selector(signPeopleText:) forControlEvents:UIControlEventEditingChanged];
         _signPeople_text.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
         _signPeople_text.textAlignment = NSTextAlignmentCenter;
     }
@@ -87,7 +87,11 @@
 
 - (void)signPeopleText:(UITextField *)textField
 {
+    self.isSingCount = YES;
     NSLog(@"输入框的值发生了变化------------%@",textField.text);
+    if (self.signModifyCount) {
+        self.signModifyCount(textField.text, self.isSingCount);
+    }
 }
 
 - (UILabel *)name_label
@@ -97,7 +101,7 @@
         _name_label.text = @"人";
         _name_label.font = [UIFont fontWithName:PingFang size:14.0];
         _name_label.textColor = kColor8383;
-        _name_label.textAlignment =NSTextAlignmentLeft;
+        _name_label.textAlignment = NSTextAlignmentLeft;
     }
     return _name_label;
 }
@@ -113,16 +117,19 @@
         [_sign_button setTitle:@"签到" forState:UIControlStateNormal];
         [_sign_button setTitleColor:kColorFFFF forState:UIControlStateNormal];
         _sign_button.titleLabel.font = [UIFont fontWithName:PingFang size:14.0];
-        [_sign_button addTarget:self action:@selector(signButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [_sign_button addTarget:self action:@selector(signButtonClick2) forControlEvents:UIControlEventTouchUpInside];
         
     }
     return _sign_button;
 }
 
-- (void)signButtonClick
+- (void)signButtonClick2
 {
-    if (self.signButtonClickBlock) {
-        self.signButtonClickBlock();
+//    if (self.signButtonClickBlock) {
+//        self.signButtonClickBlock();
+//    }
+    if ([self.delegate respondsToSelector:@selector(signButtonClick)]) {
+        [self.delegate signButtonClick];
     }
 }
 

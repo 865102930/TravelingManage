@@ -27,8 +27,9 @@
 #import "XFJSceneryAnnotationView.h"
 #import <MapKit/MapKit.h>
 #import "XFJSignNoPeopleView.h"
+#import "XFJHotelView.h"
 
-@interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate>
+@interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate>
 @property (nonatomic, strong) MAMapView *mapView;
 @property (nonatomic, strong) UILabel *title_label;
 @property (nonatomic, strong) UIBarButtonItem *user_SttingButtonItem;
@@ -58,8 +59,18 @@
 //经度
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) XFJSignNoPeopleView *signNoPeople_view;
-@property (nonatomic, assign) BOOL isInIt;
 @property (nonatomic, assign) NSInteger stateType;//景区类型
+@property (nonatomic, assign) NSInteger attractions_id;//景区id;
+//接收传过来的teamId
+@property (nonatomic, strong) NSString *teamId;
+//接收到的开团人数
+@property (nonatomic, strong) NSString *teamNumber;
+//修改的签到人数
+@property (nonatomic, strong) NSString *signModifyCount;
+//是否修改了
+@property (nonatomic, assign) BOOL isSignModify;
+@property (nonatomic, strong) XFJHotelView *hotel_view;
+
 
 @end
 
@@ -102,7 +113,6 @@
     
     [self.view addSubview:self.location_button];
 #warning 此处的试图需要判断是否是第一次进来的时候运用(或者任务已经做完了)
-//    [self.view addSubview:self.sign_view];
     [self.view addSubview:self.location_button];
     
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
@@ -135,43 +145,48 @@
         XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
         [wself.navigationController pushViewController:teamMessageViewController animated:YES];
     };
-    self.sign_view.signButtonClickBlock = ^() {
-        //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
+//    self.sign_view.signButtonClickBlock = ^() {
+//        NSLog(@"self.teamId是:%@-----self.teamNumber是:%@",wself.teamId,wself.teamNumber);
+//        //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
 //        [wself signButtonClick];
 //        [wself.sign_view removeFromSuperview];
 //        [wself setUpSignNoWithPeople];
+//    };
+    self.sign_view.signModifyCount = ^(NSString *signNum, BOOL isSign) {
+        wself.signModifyCount = signNum;
+        wself.isSignModify = isSign;
     };
-    CLLocationCoordinate2D commonPolylineCoords[5];
-    commonPolylineCoords[0].latitude = 30.167471;
-    commonPolylineCoords[0].longitude = 120.263568;
-    
-    commonPolylineCoords[1].latitude = 30.144019;
-    commonPolylineCoords[1].longitude = 120.210094;
-    
-    commonPolylineCoords[2].latitude = 30.128177;
-    commonPolylineCoords[2].longitude = 120.213356;
-    
-    commonPolylineCoords[3].latitude = 30.126544;
-    commonPolylineCoords[3].longitude = 120.235587;
-    
-    commonPolylineCoords[4].latitude = 30.167471;
-    commonPolylineCoords[4].longitude = 120.263568;
-    //构造折线对象
-    MAPolyline *commonPolyline = [MAPolyline polylineWithCoordinates:commonPolylineCoords count:5];
-    [self.mapView addOverlay:commonPolyline];
 }
 
-#pragma mark - 签到
+#pragma mark - 签到按钮的代理方法
 - (void)signButtonClick
 {
-    if (self.isInIt) {//如果为YES就进来就是在范围内
-        NSLog(@"self.isInIt1-----%zd",self.isInIt);
-    }else {//来此处就是否(NO)就是不在范围内
-        NSLog(@"self.isInIt2------%zd",self.isInIt);
-        [MBProgressHUD showHudTipStr:@"亲~~此处你签到的范围并不允许,是否仍然签到???" contentColor:HidWithColorContentBlack];
-    }
+    [self signButtonClick1];
+    [self.sign_view removeFromSuperview];
+    [self setUpSignNoWithPeople];
 }
 
+#pragma mark - 签到的接口
+- (void)signButtonClick1
+{
+//    NSDictionary *dictParaments = @{
+//                                    @"teamId":self.teamId,//团队
+//                                    @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractions_id],//景区id
+//                                    @"userIdList":@2,//管理员id(可能是多个)
+//                                    @"checkinNumber":self.isSignModify ? self.signModifyCount : self.teamNumber,//签到人数
+//                                    @"rooms":@0//房间数
+//                                    };
+//    NSLog(@"接入的签到参数是:%@",dictParaments);
+    NSLog(@"self.isSignModify的值是:%zd-----self.signModifyCount的值是:%@------self.teamNumber的值是:%@",self.isSignModify,self.signModifyCount,self.teamNumber);
+    NSLog(@"团队%@-----景区%@-----管理员%@-----签到人数%@-----房间数%@",self.teamId,[NSString stringWithFormat:@"%zd",self.attractions_id],@2,self.isSignModify ? self.signModifyCount : self.teamNumber,@0);
+//    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:TEAMSIGNURL withParaments:dictParaments withSuccessBlock:^(id object) {
+//        
+//    } withFailureBlock:^(NSError *error) {
+//        
+//    } progress:^(float progress) {
+//        
+//    }];
+}
 
 - (XFJSignNoPeopleView *)signNoPeople_view
 {
@@ -185,7 +200,7 @@
 #pragma mark - 添加签退页面
 - (void)setUpSignNoWithPeople
 {
-//    [self.view addSubview:self.signNoPeople_view];
+    [self.view addSubview:self.signNoPeople_view];
 }
 
 - (void)panHandle:(UIPanGestureRecognizer *)panGesture
@@ -297,6 +312,17 @@
     return _location_button;
 }
 
+#pragma mark - 酒店签到的view
+- (XFJHotelView *)hotel_view
+{
+    if (_hotel_view == nil) {
+        _hotel_view = [[XFJHotelView alloc] init];
+        _hotel_view.backgroundColor = [UIColor whiteColor];
+        _hotel_view.frame = CGRectMake(6, SCREEN_HEIGHT - 195, SCREEN_WIDTH - 12, 154);
+    }
+    return _hotel_view;
+}
+
 #pragma mark - 更新定位
 - (void)userButtonLocation
 {
@@ -384,14 +410,24 @@
 {
     NSLog(@"点击了新建按钮");
     XFJOpenGroupViewController *openGroupViewController = [[XFJOpenGroupViewController alloc] init];
+    openGroupViewController.delegate = self;
     openGroupViewController.locationWithUser = self.currentCity;
     __weak __typeof(self)wself = self;
-    openGroupViewController.signViewBlock = ^(NSString *strNum) {
-        NSLog(@"====++++++++++++接收到的开团的人数是:%@",strNum);
+    openGroupViewController.signViewBlock = ^(NSString *strNum,NSString *teamId) {
         //在此处创建底部的签到页面
-        [wself creatSignViewWithSignPeopleNumber:strNum];
+//        [wself creatSignViewWithSignPeopleNumber:strNum];
+//        self.teamNumber = strNum;
+//        self.teamId = teamId;
     };
     [self.navigationController pushViewController:openGroupViewController animated:YES];
+}
+
+#pragma makr - 实现开团页面的代理方法(用于传值)
+- (void)teamPeopleNumber:(NSString *)peopleNumber teamId:(NSString *)teamId
+{
+    self.teamNumber = [NSString stringWithFormat:@"%@",peopleNumber];
+    self.teamId = [NSString stringWithFormat:@"%@",teamId];
+    NSLog(@"====++++++++++++接收到的开团的人数是:%@-------开团id是:%@",self.teamNumber,self.teamId);
 }
 
 - (void)loadView
@@ -404,6 +440,7 @@
 {
     if (_sign_view == nil) {
         _sign_view = [[XFJSignView alloc] initWithFrame:CGRectMake(6, SCREEN_HEIGHT - 150, SCREEN_WIDTH - 12, 78.0)];
+        _sign_view.delegate = self;
     }
     return _sign_view;
 }
@@ -586,10 +623,14 @@
             NSString *locationPoint = findAttractionsListItem.locationPoints;
             //获取每个景点的景点类型值
             NSInteger stateType = findAttractionsListItem.typeState;
+            //这里获取到了每一个景点的id
+            NSInteger attractions_id = findAttractionsListItem.findAttractions_id;
             self.stateType = stateType;
+            self.attractions_id = attractions_id;
+            NSLog(@"-----------每一个景区的id是:%zd",self.attractions_id);
             //先按分号截取并且装入数组中
             NSArray *strarray = [locationPoint componentsSeparatedByString:@";"];
-            NSLog(@"安分号截取的字符串 组成数组是:%@",strarray);
+            NSLog(@"按分号截取的字符串 组成数组是:%@",strarray);
              CLLocationCoordinate2D commonPolylineCoords[strarray.count + 1];//这是第一个折线对象i = 0;i = 1;i = 2
             //这是一个景点的所有坐标
             for (NSInteger i = 0; i < strarray.count; i++) {
@@ -627,7 +668,8 @@
             MAPolyline *commonPolyline = [MAPolyline polylineWithCoordinates:commonPolylineCoords count:strarray.count];
             [self.mapView addOverlay:commonPolyline];
             //判断是否在范围内
-            [self setContains:commonPolylineCoords];
+            [self setContains:commonPolylineCoords strarryCount:strarray.count];
+            NSLog(@"一个景点的点数数量是:%zd--------",strarray.count);
         }
     }
     [self.mapView showAnnotations:self.annotationArray edgePadding:UIEdgeInsetsMake(80, 80, 80, 80) animated:YES];
@@ -636,26 +678,32 @@
 
 
 #pragma mark - 判断是否在折线范围内
-- (void)setContains:(CLLocationCoordinate2D *)polygon
+- (void)setContains:(CLLocationCoordinate2D *)polygon strarryCount:(NSInteger)strarryCount
 {
-    //108.924069,34.175223
-    CLLocationCoordinate2D location = CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);
-    BOOL isContains = MAPolygonContainsCoordinate(location, polygon, 5);
+    //108.924069,34.175223 [self.latitude floatValue], [self.longitude floatValue]
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(30.276601, 119.996597);//30.276601, 119.996597这是海创科技中心的经度和纬度
+    BOOL isContains = MAPolygonContainsCoordinate(location, polygon, strarryCount);
     NSLog(@"-----------经纬度是否在多边形内部 : %d",isContains);//0:标识不在 1:标识在
-    self.isInIt = isContains;
     //根据判断是否在范围内的值来做事情
     if (isContains) {//该处为YES则表示在
         //判断该范围的景点类型
-        if (self.stateType) {//1则表示酒店
+        if (!(self.stateType == 1)) {//1则表示酒店
             //该处加载的是有房间数量的签到页面(也就是酒店)
-//            NSLog(@"酒店的状态值是 :%zd",self.stateType);
-        }else {//1则表示是景区
+            NSLog(@"酒店的状态值是 :%zd",self.stateType);
+            //此处添加酒店的签到view
+            self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 250, 42, 41);
+            [self.view addSubview:self.hotel_view];
+        }else {//0则表示是景区
             //该出加载的是没有房间数量的签到页面(也就是景区)
-            NSLog(@"景点的状态值是:%zd",self.stateType);
+            NSLog(@"景区的状态值是:%zd------景区的id值是:%zd",self.stateType,self.attractions_id);
+            //此处添加景区的签到view
+            [self.view addSubview:self.sign_view];
         }
     }else {
         //不在该签到的范围内
-        NSLog(@"景点的状态值是:%zd",self.stateType);
+        NSLog(@"不在景点范围内景点的状态值是:%zd",self.stateType);
+        //提示还没到签到区域,让用户到签到区域进行签到
+        [MBProgressHUD showHudTipStr:@"亲~~您还没有到达签到区域,请考虑是否签到?" contentColor:HidWithColorContentBlack];
     }
 }
 
@@ -668,7 +716,6 @@
         polylineRenderer.lineWidth    = 3.f;
         polylineRenderer.strokeColor  = [UIColor colorWithRed:0 green:1 blue:0 alpha:0.6];
         polylineRenderer.lineJoinType = kMALineJoinMiter;
-//        polylineRenderer.lineCapType  = kMALineCapRound;
         return polylineRenderer;
     }
     return nil;

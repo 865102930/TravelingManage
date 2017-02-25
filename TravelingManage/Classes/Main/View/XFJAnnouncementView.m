@@ -23,7 +23,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self == [super initWithFrame:frame]) {
+    if (self = [super initWithFrame:frame]) {
         [self addSubview:self.backGroundImageView];
         [self.backGroundImageView addSubview:self.pictureImageView];
         [self.backGroundImageView addSubview:self.content_label];

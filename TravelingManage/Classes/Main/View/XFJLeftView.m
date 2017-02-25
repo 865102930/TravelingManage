@@ -28,7 +28,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self == [super initWithFrame:frame]) {
+    if (self = [super initWithFrame:frame]) {
         [self addSubview:self.backGroundView];
         [self addSubview:self.leftTableHeaderView];
         [self addSubview:self.leftTableView];

@@ -24,7 +24,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self == [super initWithFrame:frame]) {
+    if (self = [super initWithFrame:frame]) {
         [self addSubview:self.taskBackGroundImageView];
         [self.taskBackGroundImageView addSubview:self.noTask_label];
         [self.taskBackGroundImageView addSubview:self.links_button];

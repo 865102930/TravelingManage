@@ -23,7 +23,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self == [super initWithFrame:frame]) {
+    if (self = [super initWithFrame:frame]) {
         [self addSubview:self.headerImageView];
         [self addSubview:self.userName_label];
         [self addSubview:self.phoneNumber_label];

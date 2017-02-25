@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol XFJOpenGroupViewControllerDelegate <NSObject>
+
+- (void)teamPeopleNumber:(NSString *)peopleNumber teamId:(NSString *)teamId;
+
+@end
+
 @interface XFJOpenGroupViewController : UIViewController
 
 @property (nonatomic, strong) NSString *locationWithUser;
 
-@property (nonatomic, copy) void (^signViewBlock)(NSString *);
+@property (nonatomic, copy) void (^signViewBlock)(NSString *, NSString *);
+
+@property (nonatomic, weak) id <XFJOpenGroupViewControllerDelegate>delegate;
 
 @end

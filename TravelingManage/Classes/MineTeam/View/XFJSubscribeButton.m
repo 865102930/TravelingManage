@@ -17,7 +17,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self == [super initWithFrame:frame]) {
+    if (self = [super initWithFrame:frame]) {
         self.titleLabel.font = [UIFont systemFontOfSize:14.0];
         [self setTitleColor:kColor6565 forState:UIControlStateNormal];
         [self setTitleColor:kColorff47 forState:UIControlStateSelected];
