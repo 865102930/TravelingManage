@@ -8,6 +8,7 @@
 
 #import <MAMapKit/MAMapKit.h>
 
+
 @interface XFJSceneryAnnotationView : MAAnnotationView
 
 - (instancetype)initWithAnnotation:(id<MAAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier;

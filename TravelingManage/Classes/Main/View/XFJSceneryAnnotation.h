@@ -15,4 +15,7 @@
 //景点名字
 @property (nonatomic, strong) NSString *attractionsName;
 
+//景点类型分类
+@property (nonatomic, assign) NSInteger typeState;
+
 @end

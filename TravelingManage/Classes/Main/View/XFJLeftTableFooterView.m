@@ -24,9 +24,7 @@
 @property (nonatomic, strong) UIButton *secondMenuButton;
 //菜单三
 @property (nonatomic, strong) UIButton *thirdMenuButton;
-
 @property (nonatomic, assign) BOOL isclickMenuButton;
-
 @property (nonatomic, strong) UIView *bottomMenuView;
 //全部任务
 @property (nonatomic, strong) UIButton *allAssignment;

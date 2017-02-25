@@ -10,4 +10,7 @@
 
 @interface XFJSignNoPeopleView : UIView
 
+//签退时候调用的block
+@property (nonatomic, copy) void (^signNoButtonClickBlock)();
+
 @end

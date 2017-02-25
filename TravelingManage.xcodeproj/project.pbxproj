@@ -226,6 +226,7 @@
 		3AE849EB1E543EE500A71C5E /* XFJPleaseCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849EA1E543EE500A71C5E /* XFJPleaseCheckViewController.m */; };
 		3AE849EE1E543F1300A71C5E /* XFJPleaseAskingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849ED1E543F1300A71C5E /* XFJPleaseAskingViewController.m */; };
 		3AE849F11E54410F00A71C5E /* XFJSubscribeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849F01E54410F00A71C5E /* XFJSubscribeButton.m */; };
+		3AF04E0F1E61358F00D96984 /* XFJHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF04E0E1E61358F00D96984 /* XFJHeaderView.m */; };
 		D2818BC1C16899123CFFEBFB /* libPods-TravelingManage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B55613806B12752B343871BD /* libPods-TravelingManage.a */; };
 /* End PBXBuildFile section */
 
@@ -558,6 +559,8 @@
 		3AE849ED1E543F1300A71C5E /* XFJPleaseAskingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJPleaseAskingViewController.m; sourceTree = "<group>"; };
 		3AE849EF1E54410F00A71C5E /* XFJSubscribeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSubscribeButton.h; sourceTree = "<group>"; };
 		3AE849F01E54410F00A71C5E /* XFJSubscribeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSubscribeButton.m; sourceTree = "<group>"; };
+		3AF04E0D1E61358F00D96984 /* XFJHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJHeaderView.h; sourceTree = "<group>"; };
+		3AF04E0E1E61358F00D96984 /* XFJHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJHeaderView.m; sourceTree = "<group>"; };
 		68B76989437BBA39F7947CAC /* Pods-TravelingManage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.release.xcconfig"; sourceTree = "<group>"; };
 		7689CDD2E1CFC6736603A27A /* Pods-TravelingManage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.debug.xcconfig"; sourceTree = "<group>"; };
 		B55613806B12752B343871BD /* libPods-TravelingManage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TravelingManage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -699,6 +702,8 @@
 				3A18E5441E5D6FB400BFE891 /* XFJVoucherPhotosView.m */,
 				3A18E5451E5D6FB400BFE891 /* XFJVoucherPhotosCollectionViewCell.h */,
 				3A18E5461E5D6FB400BFE891 /* XFJVoucherPhotosCollectionViewCell.m */,
+				3AF04E0D1E61358F00D96984 /* XFJHeaderView.h */,
+				3AF04E0E1E61358F00D96984 /* XFJHeaderView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1532,6 +1537,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AF04E0F1E61358F00D96984 /* XFJHeaderView.m in Sources */,
 				3AE849E21E543DCA00A71C5E /* XFJAllTaskViewController.m in Sources */,
 				1C1939B81E4DB71B00882B8C /* PageButton.m in Sources */,
 				3A18E54B1E5D6FB400BFE891 /* XFJConventionMessageTableViewCell.m in Sources */,

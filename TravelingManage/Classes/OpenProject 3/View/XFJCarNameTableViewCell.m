@@ -9,21 +9,21 @@
 #import "XFJCarNameTableViewCell.h"
 #import "XFJCarNumberItem.h"
 
+
 @interface XFJCarNameTableViewCell()
 
 @property (nonatomic, strong) UITextField *carName_field;
 
 @property (nonatomic, strong) UIButton *carNmae_button;
 
-@property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberArray;
-
 @end
 
 @implementation XFJCarNameTableViewCell
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    if (self = [super initWithFrame:frame]) {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.backgroundColor = [UIColor whiteColor];
         [self initControlWithCarName];
         [self setUpConventionCarNameWithMas];
@@ -65,6 +65,9 @@
 {
     NSLog(@"主人,您获取到的输入框的值是 : %@",textField.text);
     self.str = textField.text;
+    if (self.carNumberBlock) {
+        self.carNumberBlock(textField.text);
+    }
 }
 
 - (UIButton *)carNmae_button
@@ -84,38 +87,20 @@
     if (self.addCellBlock) {
         self.addCellBlock(buttonTag.tag,self.carName_field.text);
     }
-    [self.carName_field setText:@""];
+//    [self.carName_field setText:@""];
     
 }
 
-- (void)setUserLocation:(NSString *)userLocation
-{
-    _userLocation = userLocation;
-    [self requestFindCarNumberWithUserlocation:userLocation];
-}
 
-- (void)requestFindCarNumberWithUserlocation:(NSString *)userLocation
+- (void)setCarNumberItemArray:(NSMutableArray<XFJCarNumberItem *> *)carNumberItemArray
 {
-    if (userLocation.length == 0) {
+    _carNumberItemArray = carNumberItemArray;
+    if (carNumberItemArray.count == 0) {
         return;
     }
-    NSDictionary *dictParaments = @{
-                                    @"city": userLocation
-                                    };
-    __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDCARNUMBERURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if (object) {
-            NSMutableArray *carArray = [object objectForKey:@"rows"];
-            wself.carNumberArray = [XFJCarNumberItem mj_objectArrayWithKeyValuesArray:carArray];
-            wself.carName_field.text = [NSString stringWithFormat:@"%@",self.carNumberArray[0].plateHead];
-        }
-    } withFailureBlock:^(NSError *error) {
-        if (error) {
-            [MBProgressHUD showHudTipStr:@"网络错误" contentColor:HidWithColorContentBlack];
-        }
-    } progress:^(float progress) {
-    }];
+    self.carName_field.text = [NSString stringWithFormat:@"%@",carNumberItemArray[0].plateHead];
 }
+
 
 
 

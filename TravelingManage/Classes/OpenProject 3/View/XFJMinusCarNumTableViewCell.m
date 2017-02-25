@@ -22,14 +22,28 @@
 
 @implementation XFJMinusCarNumTableViewCell
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    if (self = [super initWithFrame:frame]) {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.backgroundColor = [UIColor whiteColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self initControlWithCarName];
         [self setUpConventionCarNameWithMas];
     }
     return self;
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    UIView *view = [super hitTest:point withEvent:event];
+    UITableView *firTableView = [self viewWithTag:10004];
+    if (view == nil) {
+        CGPoint tempoint = [firTableView convertPoint:point fromView:self];
+        if (CGRectContainsPoint(firTableView.bounds, tempoint))
+        {
+            view = firTableView;
+        }
+    }
+    return view;
 }
 
 - (void)initControlWithCarName

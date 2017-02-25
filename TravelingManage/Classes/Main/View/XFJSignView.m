@@ -79,6 +79,7 @@
         _signPeople_text.background = [UIImage originalWithImage:@"shurukuang"];
         [_signPeople_text setFont:[UIFont fontWithName:PingFang size:14.0]];
         [_signPeople_text addTarget:self action:@selector(signPeopleText:) forControlEvents:UIControlEventEditingDidEnd];
+        _signPeople_text.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
         _signPeople_text.textAlignment = NSTextAlignmentCenter;
     }
     return _signPeople_text;
@@ -132,5 +133,6 @@
     self.signPeople_text.text = [NSString stringWithFormat:@"%@",peopleNumberStr];
     NSLog(@"传过来的人数值是:%@---------%@",peopleNumberStr,self.signPeople_text.text);
 }
+
 
 @end

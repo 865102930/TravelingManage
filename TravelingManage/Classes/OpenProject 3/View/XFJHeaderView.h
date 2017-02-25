@@ -1,16 +1,13 @@
 //
-//  HomeViewController.h
+//  XFJHeaderView.h
 //  TravelingManage
 //
-//  Created by 肖锋 on 2017/2/6.
+//  Created by 肖锋 on 2017/2/25.
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-
-@interface HomeViewController : UIViewController
-
-
+@interface XFJHeaderView : UIView
 
 @end

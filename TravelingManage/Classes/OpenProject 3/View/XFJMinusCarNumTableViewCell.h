@@ -6,11 +6,15 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+#define kReuseIdentifier_XFJMinusCarNumTableViewCell @"XFJMinusCarNumTableViewCell"
+
+
 #import <UIKit/UIKit.h>
 
-@interface XFJMinusCarNumTableViewCell : UIView
+@interface XFJMinusCarNumTableViewCell : UITableViewCell
 
 @property (nonatomic, copy) void (^minusCarNumBlock)();
+
 
 @property (nonatomic, strong) NSString *textFieldStr;
 

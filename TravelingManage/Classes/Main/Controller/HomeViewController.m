@@ -29,61 +29,37 @@
 #import "XFJSignNoPeopleView.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate>
-
 @property (nonatomic, strong) MAMapView *mapView;
-
 @property (nonatomic, strong) UILabel *title_label;
-
 @property (nonatomic, strong) UIBarButtonItem *user_SttingButtonItem;
-
 @property (nonatomic, strong) UIBarButtonItem *projectButtonItem;
-
 @property (nonatomic, strong) XFJMaskView *maskView1;
-
 @property (nonatomic, assign) BOOL isOpenLeftView;
-
 @property (nonatomic, strong) XFJLeftView *leftView;
-
 @property (nonatomic, assign) CGFloat beginX;
-
 @property (nonatomic, strong) XFJAnnouncementView *announcementView;
-
 @property (nonatomic, strong) XFJTaskView *task_view;
-
 @property (nonatomic, strong) XFJHomeTopTaskMessageVeiw *homeTopTaskMessageVeiw;
-
 @property (nonatomic, strong) CLLocationManager *manager;
-
 //当前的城市
 @property (nonatomic, strong) NSString *currentCity;
-
 //定位到当前的省
 @property (nonatomic, strong) NSString *currentProvince;
-
 @property (nonatomic, strong) NSMutableArray <XFJFindAttractionsListItem *> *findAttractionsListArray;
-
 //定位按钮
 @property (nonatomic, strong) UIButton *location_button;
-
 @property (nonatomic, strong) XFJSignView *sign_view;
-
 //创建的数组用来装景点的大头针
 @property (nonatomic, strong) NSMutableArray *annotationArray;
-
 @property (strong, nonatomic) MKPolyline *myPolyline;
-
 @property (nonatomic, assign) CGFloat str1;
-
 @property (nonatomic, assign) CGFloat str2;
-
 @property (nonatomic, strong) NSString *latitude;
-
 //经度
 @property (nonatomic, strong) NSString *longitude;
-
 @property (nonatomic, strong) XFJSignNoPeopleView *signNoPeople_view;
-
-
+@property (nonatomic, assign) BOOL isInIt;
+@property (nonatomic, assign) NSInteger stateType;//景区类型
 
 @end
 
@@ -112,20 +88,21 @@
     self.navigationItem.rightBarButtonItem = self.projectButtonItem;
     //这是添加的公告
 //    [self.view addSubview:self.announcementView];
+    
 #warning 当用户一开始进入app的时候,由于不存在任务,那么就显示这个新建任务,如果有任务了,那么此界面就不存在
 //    [self.view addSubview:self.task_view];
     
     [self.maskView1 addSubview:self.leftView];
+    //获取当前用户的位置信息
+    [self getUserLocation];
     //这是添加的home顶部的任务
     [self.view addSubview:self.homeTopTaskMessageVeiw];
+    
     [self setUpPanGes];
     
     [self.view addSubview:self.location_button];
-    
-    //获取当前用户的位置信息
-    [self getUserLocation];
-    //此处的试图需要判断是否是第一次进来的时候运用(或者任务已经做完了)
-    [self.view addSubview:self.sign_view];
+#warning 此处的试图需要判断是否是第一次进来的时候运用(或者任务已经做完了)
+//    [self.view addSubview:self.sign_view];
     [self.view addSubview:self.location_button];
     
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
@@ -159,10 +136,42 @@
         [wself.navigationController pushViewController:teamMessageViewController animated:YES];
     };
     self.sign_view.signButtonClickBlock = ^() {
-        [wself.sign_view removeFromSuperview];
-        [wself setUpSignNoWithPeople];
+        //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
+//        [wself signButtonClick];
+//        [wself.sign_view removeFromSuperview];
+//        [wself setUpSignNoWithPeople];
     };
+    CLLocationCoordinate2D commonPolylineCoords[5];
+    commonPolylineCoords[0].latitude = 30.167471;
+    commonPolylineCoords[0].longitude = 120.263568;
+    
+    commonPolylineCoords[1].latitude = 30.144019;
+    commonPolylineCoords[1].longitude = 120.210094;
+    
+    commonPolylineCoords[2].latitude = 30.128177;
+    commonPolylineCoords[2].longitude = 120.213356;
+    
+    commonPolylineCoords[3].latitude = 30.126544;
+    commonPolylineCoords[3].longitude = 120.235587;
+    
+    commonPolylineCoords[4].latitude = 30.167471;
+    commonPolylineCoords[4].longitude = 120.263568;
+    //构造折线对象
+    MAPolyline *commonPolyline = [MAPolyline polylineWithCoordinates:commonPolylineCoords count:5];
+    [self.mapView addOverlay:commonPolyline];
 }
+
+#pragma mark - 签到
+- (void)signButtonClick
+{
+    if (self.isInIt) {//如果为YES就进来就是在范围内
+        NSLog(@"self.isInIt1-----%zd",self.isInIt);
+    }else {//来此处就是否(NO)就是不在范围内
+        NSLog(@"self.isInIt2------%zd",self.isInIt);
+        [MBProgressHUD showHudTipStr:@"亲~~此处你签到的范围并不允许,是否仍然签到???" contentColor:HidWithColorContentBlack];
+    }
+}
+
 
 - (XFJSignNoPeopleView *)signNoPeople_view
 {
@@ -172,10 +181,11 @@
     return _signNoPeople_view;
 }
 
+
 #pragma mark - 添加签退页面
 - (void)setUpSignNoWithPeople
 {
-    [self.view addSubview:self.signNoPeople_view];
+//    [self.view addSubview:self.signNoPeople_view];
 }
 
 - (void)panHandle:(UIPanGestureRecognizer *)panGesture
@@ -494,7 +504,7 @@
     self.latitude = latitude;
     //经度
     NSString *longitude = [NSString stringWithFormat:@"%.6f",(float)self.manager.location.coordinate.longitude];
-    self.longitude = latitude;
+    self.longitude = longitude;
     NSLog(@"获取到用户的纬度是 : %@---------精度是:%@",latitude,longitude);
     
 }
@@ -549,10 +559,7 @@
             NSMutableArray *findAttractionArray = [object objectForKey:@"rows"];
             wself.findAttractionsListArray = [XFJFindAttractionsListItem mj_objectArrayWithKeyValuesArray:findAttractionArray];
             NSLog(@"=======++++++++------------获取到的景点列表模型是:%@",object);
-//            for (NSInteger i = 0; i < self.findAttractionsListArray.count; i++) {
-//                NSString *item = self.findAttractionsListArray[i].locationPoints;
-//                NSLog(@"遍历获取出来的信息是 : %@",item);
-//            }
+            
             //获取周围景点的数据,并用大头针显示出来
             [wself setSceneryInToMapView:wself.findAttractionsListArray];
         }
@@ -568,18 +575,21 @@
 #pragma mark - 获取用户周围景点的信息显示在地图上
 - (void)setSceneryInToMapView:(NSMutableArray <XFJFindAttractionsListItem *> *)findAttractionsListArray
 {
-    [self.mapView removeAnnotations:self.annotationArray];
-    [self.annotationArray removeAllObjects];
+//    [self.mapView removeAnnotations:self.annotationArray];
+//    [self.annotationArray removeAllObjects];
     //遍历所有的景点列表
     for (NSInteger i = 0; i < findAttractionsListArray.count; i++) {
         @autoreleasepool {
             //取出每个景点
             XFJFindAttractionsListItem *findAttractionsListItem = [findAttractionsListArray objectAtIndex:i];
-            //116.392893,39.905614;116.384783,39.922756;116.434736,39.921651;116.44083,39.863372;116.357659,39.880761
             //定义一个字符串用来接收遍历的景点精度和纬度
             NSString *locationPoint = findAttractionsListItem.locationPoints;
+            //获取每个景点的景点类型值
+            NSInteger stateType = findAttractionsListItem.typeState;
+            self.stateType = stateType;
             //先按分号截取并且装入数组中
             NSArray *strarray = [locationPoint componentsSeparatedByString:@";"];
+            NSLog(@"安分号截取的字符串 组成数组是:%@",strarray);
              CLLocationCoordinate2D commonPolylineCoords[strarray.count + 1];//这是第一个折线对象i = 0;i = 1;i = 2
             //这是一个景点的所有坐标
             for (NSInteger i = 0; i < strarray.count; i++) {
@@ -592,35 +602,38 @@
                 if (i == 0) {
                     self.str1 = [str1 floatValue];
                     self.str2 = [str2 floatValue];
+//                    NSLog(@"当为第0个元素的时候纬度是 : %f--------精度是 : %f",self.str2,self.str1);
                 }
-                NSLog(@"-------------遍历获取出来景点的坐标信息是 : %@--------%@",str1,str2);
+//                NSLog(@"-------------遍历获取出来景点的坐标信息是 : %@--------%@",str1,str2);
                 CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([str2 floatValue], [str1 floatValue]);
-                NSLog(@"截取完毕后的字符串是 :%f--------%f------是第%ld个坐标",[str2 floatValue],[str1 floatValue],i);
+//                NSLog(@"截取完毕后的字符串是 :%f--------%f------是第%ld个坐标",[str2 floatValue],[str1 floatValue],i);
                 //纬度和精度的赋值
                 sceneryAnnotation.coordinate = coordinate;
                 sceneryAnnotation.attractionsName = findAttractionsListItem.attractionsName;
                 //将景点的大头针数组添加到数组中
                 [self.annotationArray addObject:sceneryAnnotation];
-                NSLog(@"添加的大头针数组总共有%zd个",self.annotationArray.count);
+//                NSLog(@"添加的大头针数组总共有%zd个",self.annotationArray.count);
                 [self.mapView addAnnotation:sceneryAnnotation];
                 //获取到景点所有的精度和纬度
                 //构造折线对象strarray.count有这么多折线对象(5)
                 commonPolylineCoords[i].latitude = [str2 floatValue];//0;1;2折线的纬度
                 commonPolylineCoords[i].longitude = [str1 floatValue];//0;1;2折线的精度
+                NSLog(@"折线的纬度是:%f-----------折线的精度是:%f------第%zd个坐标",[str2 floatValue],[str1 floatValue],i);
             }
             //构造折线对象
-            commonPolylineCoords[strarray.count + 1].latitude = self.str2 ;//0;1;2折线的纬度
-            commonPolylineCoords[strarray.count + 1].longitude = self.str1 ;
-            NSLog(@"当为第0个元素的时候纬度是 : %f--------精度是 : %f",self.str2,self.str1);
+            commonPolylineCoords[strarray.count + 1].latitude = self.str2;//0;1;2折线的纬度
+            commonPolylineCoords[strarray.count + 1].longitude = self.str1;
+            NSLog(@"这是将数组中第0个纬度%f-----------和精度提取出来了-------------%f",self.str2,self.str1);
             MAPolyline *commonPolyline = [MAPolyline polylineWithCoordinates:commonPolylineCoords count:strarray.count];
+            [self.mapView addOverlay:commonPolyline];
             //判断是否在范围内
             [self setContains:commonPolylineCoords];
-            [self.mapView addOverlay:commonPolyline];
         }
     }
     [self.mapView showAnnotations:self.annotationArray edgePadding:UIEdgeInsetsMake(80, 80, 80, 80) animated:YES];
     NSLog(@"------------添加的大头针数组是 : %@",self.annotationArray);
 }
+
 
 #pragma mark - 判断是否在折线范围内
 - (void)setContains:(CLLocationCoordinate2D *)polygon
@@ -629,7 +642,21 @@
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);
     BOOL isContains = MAPolygonContainsCoordinate(location, polygon, 5);
     NSLog(@"-----------经纬度是否在多边形内部 : %d",isContains);//0:标识不在 1:标识在
-    
+    self.isInIt = isContains;
+    //根据判断是否在范围内的值来做事情
+    if (isContains) {//该处为YES则表示在
+        //判断该范围的景点类型
+        if (self.stateType) {//1则表示酒店
+            //该处加载的是有房间数量的签到页面(也就是酒店)
+//            NSLog(@"酒店的状态值是 :%zd",self.stateType);
+        }else {//1则表示是景区
+            //该出加载的是没有房间数量的签到页面(也就是景区)
+            NSLog(@"景点的状态值是:%zd",self.stateType);
+        }
+    }else {
+        //不在该签到的范围内
+        NSLog(@"景点的状态值是:%zd",self.stateType);
+    }
 }
 
 - (MAOverlayRenderer *)mapView:(MAMapView *)mapView rendererForOverlay:(id<MAOverlay>)overlay
@@ -640,8 +667,8 @@
         
         polylineRenderer.lineWidth    = 3.f;
         polylineRenderer.strokeColor  = [UIColor colorWithRed:0 green:1 blue:0 alpha:0.6];
-        polylineRenderer.lineJoinType = kMALineJoinRound;
-        polylineRenderer.lineCapType  = kMALineCapRound;
+        polylineRenderer.lineJoinType = kMALineJoinMiter;
+//        polylineRenderer.lineCapType  = kMALineCapRound;
         return polylineRenderer;
     }
     return nil;
