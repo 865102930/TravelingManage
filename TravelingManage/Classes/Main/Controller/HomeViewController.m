@@ -52,7 +52,7 @@
 @property (nonatomic, strong) XFJSignView *sign_view;
 //创建的数组用来装景点的大头针
 @property (nonatomic, strong) NSMutableArray *annotationArray;
-@property (strong, nonatomic) MKPolyline *myPolyline;
+@property (nonatomic, strong) MKPolyline *myPolyline;
 @property (nonatomic, assign) CGFloat str1;
 @property (nonatomic, assign) CGFloat str2;
 @property (nonatomic, strong) NSString *latitude;
@@ -61,16 +61,17 @@
 @property (nonatomic, strong) XFJSignNoPeopleView *signNoPeople_view;
 @property (nonatomic, assign) NSInteger stateType;//景区类型
 @property (nonatomic, assign) NSInteger attractions_id;//景区id;
-//接收传过来的teamId
-@property (nonatomic, strong) NSString *teamId;
 //接收到的开团人数
 @property (nonatomic, strong) NSString *teamNumber;
+//接收传过来的teamId
+@property (nonatomic, strong) NSString *teamId;
 //修改的签到人数
 @property (nonatomic, strong) NSString *signModifyCount;
 //是否修改了
 @property (nonatomic, assign) BOOL isSignModify;
 @property (nonatomic, strong) XFJHotelView *hotel_view;
-
+//签到的时候查询是否在指定的范围内
+@property (nonatomic, assign) BOOL isContains;
 
 @end
 
@@ -97,17 +98,18 @@
     self.navigationItem.titleView = self.title_label;
     self.navigationItem.leftBarButtonItem = self.user_SttingButtonItem;
     self.navigationItem.rightBarButtonItem = self.projectButtonItem;
-    //这是添加的公告
-//    [self.view addSubview:self.announcementView];
+    //这是添加的公告(如果开始进来的时候没有任务,就显示公告,后面则显示新建任务的标题栏)
+    self.isProjectItem == NO ? [self.view addSubview:self.announcementView] : [self.view addSubview:self.homeTopTaskMessageVeiw];
     
 #warning 当用户一开始进入app的时候,由于不存在任务,那么就显示这个新建任务,如果有任务了,那么此界面就不存在
-//    [self.view addSubview:self.task_view];
+    self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.sign_view];
     
     [self.maskView1 addSubview:self.leftView];
     //获取当前用户的位置信息
     [self getUserLocation];
+#warning 一开始是公告栏(此个页面是在后面添加的)
     //这是添加的home顶部的任务
-    [self.view addSubview:self.homeTopTaskMessageVeiw];
+//    [self.view addSubview:self.homeTopTaskMessageVeiw];
     
     [self setUpPanGes];
     
@@ -118,9 +120,19 @@
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
     keyboardManager.keyboardDistanceFromTextField = 50;
-    
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    __weak __typeof(self)wself = self;
+    self.sign_view.signButtonClickBlock = ^() {
+        //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
+        [wself signButtonClick1:wself.teamNumber teamId:wself.teamId];
+        [wself.sign_view removeFromSuperview];
+        [wself setUpSignNoWithPeople];
+    };
+}
 
 #pragma mark - 给按钮添加一个滑动手势
 - (void)setUpPanGes
@@ -133,9 +145,6 @@
         MessageListViewController *announcementController = [[MessageListViewController alloc] init];
         [wself.navigationController pushViewController:announcementController animated:YES];
     };
-    self.task_view.openGroupBlock = ^(){
-        [wself jumpNewProjectController];
-    };
     self.leftView.pushMineTeamBlock = ^() {
         [wself remoSubViews];
         XFJMineTeamViewController *mineTeamController = [[XFJMineTeamViewController alloc] init];
@@ -145,48 +154,46 @@
         XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
         [wself.navigationController pushViewController:teamMessageViewController animated:YES];
     };
-//    self.sign_view.signButtonClickBlock = ^() {
-//        NSLog(@"self.teamId是:%@-----self.teamNumber是:%@",wself.teamId,wself.teamNumber);
-//        //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
-//        [wself signButtonClick];
-//        [wself.sign_view removeFromSuperview];
-//        [wself setUpSignNoWithPeople];
-//    };
     self.sign_view.signModifyCount = ^(NSString *signNum, BOOL isSign) {
         wself.signModifyCount = signNum;
         wself.isSignModify = isSign;
     };
+    self.task_view.openGroupBlock = ^(){
+        [wself jumpNewProjectController];
+    };
+   
 }
+
 
 #pragma mark - 签到按钮的代理方法
 - (void)signButtonClick
 {
-    [self signButtonClick1];
+//    [self signButtonClick1];
     [self.sign_view removeFromSuperview];
     [self setUpSignNoWithPeople];
 }
 
-#pragma mark - 签到的接口
-- (void)signButtonClick1
+- (void)signButtonClick1:(NSString *)teamNumber teamId:(NSString *)teamId
 {
-//    NSDictionary *dictParaments = @{
-//                                    @"teamId":self.teamId,//团队
-//                                    @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractions_id],//景区id
-//                                    @"userIdList":@2,//管理员id(可能是多个)
-//                                    @"checkinNumber":self.isSignModify ? self.signModifyCount : self.teamNumber,//签到人数
-//                                    @"rooms":@0//房间数
-//                                    };
-//    NSLog(@"接入的签到参数是:%@",dictParaments);
+    //    NSDictionary *dictParaments = @{
+    //                                    @"teamId":self.teamId,//团队
+    //                                    @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractions_id],//景区id
+    //                                    @"userIdList":@2,//管理员id(可能是多个)
+    //                                    @"checkinNumber":self.isSignModify ? self.signModifyCount : self.teamNumber,//签到人数
+    //                                    @"rooms":@0//房间数
+    //                                    };
+    //    NSLog(@"接入的签到参数是:%@",dictParaments);
     NSLog(@"self.isSignModify的值是:%zd-----self.signModifyCount的值是:%@------self.teamNumber的值是:%@",self.isSignModify,self.signModifyCount,self.teamNumber);
-    NSLog(@"团队%@-----景区%@-----管理员%@-----签到人数%@-----房间数%@",self.teamId,[NSString stringWithFormat:@"%zd",self.attractions_id],@2,self.isSignModify ? self.signModifyCount : self.teamNumber,@0);
-//    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:TEAMSIGNURL withParaments:dictParaments withSuccessBlock:^(id object) {
-//        
-//    } withFailureBlock:^(NSError *error) {
-//        
-//    } progress:^(float progress) {
-//        
-//    }];
+    NSLog(@"团队%@-----景区%@-----管理员%@-----签到人数%@-----房间数%@",teamId,[NSString stringWithFormat:@"%zd",self.attractions_id],@2,self.isSignModify ? self.signModifyCount : teamNumber,@0);
+    //    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:TEAMSIGNURL withParaments:dictParaments withSuccessBlock:^(id object) {
+    //
+    //    } withFailureBlock:^(NSError *error) {
+    //
+    //    } progress:^(float progress) {
+    //        
+    //    }];
 }
+
 
 - (XFJSignNoPeopleView *)signNoPeople_view
 {
@@ -286,7 +293,7 @@
 - (XFJAnnouncementView *)announcementView
 {
     if (_announcementView == nil) {
-        _announcementView = [[XFJAnnouncementView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 49)];
+        _announcementView = [[XFJAnnouncementView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 49)];
     }
     return _announcementView;
 }
@@ -318,7 +325,7 @@
     if (_hotel_view == nil) {
         _hotel_view = [[XFJHotelView alloc] init];
         _hotel_view.backgroundColor = [UIColor whiteColor];
-        _hotel_view.frame = CGRectMake(6, SCREEN_HEIGHT - 195, SCREEN_WIDTH - 12, 154);
+        _hotel_view.frame = CGRectMake(6, SCREEN_HEIGHT - 240, SCREEN_WIDTH - 12, 164);
     }
     return _hotel_view;
 }
@@ -333,7 +340,7 @@
 - (XFJTaskView *)task_view
 {
     if (_task_view == nil) {
-        _task_view = [[XFJTaskView alloc] initWithFrame:CGRectMake(9, SCREEN_HEIGHT - 98, SCREEN_WIDTH - 15, 98.0)];
+        _task_view = [[XFJTaskView alloc] initWithFrame:CGRectMake(9, SCREEN_HEIGHT - 160, SCREEN_WIDTH - 15, 98.0)];
     }
     return _task_view;
 }
@@ -412,14 +419,20 @@
     XFJOpenGroupViewController *openGroupViewController = [[XFJOpenGroupViewController alloc] init];
     openGroupViewController.delegate = self;
     openGroupViewController.locationWithUser = self.currentCity;
+    [self.navigationController pushViewController:openGroupViewController animated:YES];
     __weak __typeof(self)wself = self;
     openGroupViewController.signViewBlock = ^(NSString *strNum,NSString *teamId) {
         //在此处创建底部的签到页面
-//        [wself creatSignViewWithSignPeopleNumber:strNum];
-//        self.teamNumber = strNum;
-//        self.teamId = teamId;
+        [wself setUpTeamNum:strNum teamId:teamId];
     };
-    [self.navigationController pushViewController:openGroupViewController animated:YES];
+}
+
+#pragma mark - 定义一个方法用来接收传递过来的参数
+- (void)setUpTeamNum:(NSString *)teamNum1 teamId:(NSString *)teamId
+{
+    self.teamNumber = teamNum1;
+    self.teamId = teamId;
+    NSLog(@"在这里获取到的团队数量是 : %@--------团队id是 :%@",self.teamNumber,self.teamId);
 }
 
 #pragma makr - 实现开团页面的代理方法(用于传值)
@@ -443,13 +456,6 @@
         _sign_view.delegate = self;
     }
     return _sign_view;
-}
-
-#pragma mark - 签到页面的创建
-- (void)creatSignViewWithSignPeopleNumber:(NSString *)signPeopleNumber
-{
-    NSLog(@"++++++========--------传过来的团队人数是 :%@",signPeopleNumber);
-    self.sign_view.peopleNumberStr = signPeopleNumber;
 }
 
 - (UILabel *)title_label
@@ -476,9 +482,6 @@
         [_mapView setRotateCameraEnabled:NO];
         //是否显示用户位置
         _mapView.showsUserLocation = YES;
-        
-        [_mapView setCompassImage:[UIImage imageNamed:@"wodeweizhi"]];
-        
         //追踪用户模式(实时更新)
          _mapView.userTrackingMode = MAUserTrackingModeFollow;
     }
@@ -681,21 +684,24 @@
 - (void)setContains:(CLLocationCoordinate2D *)polygon strarryCount:(NSInteger)strarryCount
 {
     //108.924069,34.175223 [self.latitude floatValue], [self.longitude floatValue]
-    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(30.276601, 119.996597);//30.276601, 119.996597这是海创科技中心的经度和纬度
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);//30.276601, 119.996597这是海创科技中心的经度和纬度
     BOOL isContains = MAPolygonContainsCoordinate(location, polygon, strarryCount);
+    self.isContains = isContains;
     NSLog(@"-----------经纬度是否在多边形内部 : %d",isContains);//0:标识不在 1:标识在
     //根据判断是否在范围内的值来做事情
     if (isContains) {//该处为YES则表示在
         //判断该范围的景点类型
-        if (!(self.stateType == 1)) {//1则表示酒店
+        if (self.stateType == 1) {//1则表示酒店
             //该处加载的是有房间数量的签到页面(也就是酒店)
             NSLog(@"酒店的状态值是 :%zd",self.stateType);
             //此处添加酒店的签到view
-            self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 250, 42, 41);
+            [self.task_view removeFromSuperview];
+            self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 290, 42, 41);
             [self.view addSubview:self.hotel_view];
         }else {//0则表示是景区
             //该出加载的是没有房间数量的签到页面(也就是景区)
             NSLog(@"景区的状态值是:%zd------景区的id值是:%zd",self.stateType,self.attractions_id);
+            [self.task_view removeFromSuperview];
             //此处添加景区的签到view
             [self.view addSubview:self.sign_view];
         }
@@ -714,7 +720,7 @@
         MAPolylineRenderer *polylineRenderer = [[MAPolylineRenderer alloc] initWithPolyline:overlay];
         
         polylineRenderer.lineWidth    = 3.f;
-        polylineRenderer.strokeColor  = [UIColor colorWithRed:0 green:1 blue:0 alpha:0.6];
+        polylineRenderer.strokeColor  = [UIColor clearColor];
         polylineRenderer.lineJoinType = kMALineJoinMiter;
         return polylineRenderer;
     }
@@ -738,7 +744,6 @@
         annotationView.enabled = YES;
         return annotationView;
     }else {
-        
         //用户的大头针
         static NSString *trackingReuseIndetifier = @"loctionUserAnnotation_1";
         MAAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:trackingReuseIndetifier];

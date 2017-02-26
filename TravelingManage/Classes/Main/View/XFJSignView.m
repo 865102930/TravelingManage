@@ -21,6 +21,7 @@
 
 //签到按钮
 @property (nonatomic, strong) UIButton *sign_button;
+@property (nonatomic, strong) NSString *teamNum;
 
 @end
 
@@ -41,7 +42,11 @@
         }];
         [self.signPeople_text mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(self.signNumber_label.mas_right).mas_offset(12.0);
-            make.width.mas_equalTo(97.0);
+            if (iphone5) {
+                make.width.mas_equalTo(67.0);
+            }else if (iphone6P) {
+                make.width.mas_equalTo(97.0);
+            }
             make.height.mas_equalTo(26.0);
             make.centerY.mas_equalTo(self.signNumber_label.mas_centerY);
         }];
@@ -88,7 +93,6 @@
 - (void)signPeopleText:(UITextField *)textField
 {
     self.isSingCount = YES;
-    NSLog(@"输入框的值发生了变化------------%@",textField.text);
     if (self.signModifyCount) {
         self.signModifyCount(textField.text, self.isSingCount);
     }
@@ -125,21 +129,11 @@
 
 - (void)signButtonClick2
 {
-//    if (self.signButtonClickBlock) {
-//        self.signButtonClickBlock();
-//    }
-    if ([self.delegate respondsToSelector:@selector(signButtonClick)]) {
-        [self.delegate signButtonClick];
+    if (self.signButtonClickBlock) {
+        self.signButtonClickBlock();
     }
 }
 
-- (void)setPeopleNumberStr:(NSString *)peopleNumberStr
-{
-    _peopleNumberStr = peopleNumberStr;
-    self.signPeople_text.placeholder = [NSString stringWithFormat:@"%@",peopleNumberStr];
-    self.signPeople_text.text = [NSString stringWithFormat:@"%@",peopleNumberStr];
-    NSLog(@"传过来的人数值是:%@---------%@",peopleNumberStr,self.signPeople_text.text);
-}
 
 
 @end

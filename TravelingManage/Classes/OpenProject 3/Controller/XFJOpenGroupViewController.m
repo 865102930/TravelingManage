@@ -169,7 +169,7 @@
 - (XFJUploadPhotosTableViewCell *)uploadPhotos_view
 {
     if (_uploadPhotos_view == nil) {
-        _uploadPhotos_view = [[XFJUploadPhotosTableViewCell alloc] initWithFrame:CGRectMake(0, 480, SCREEN_WIDTH, 200)];
+        _uploadPhotos_view = [[XFJUploadPhotosTableViewCell alloc] initWithFrame:CGRectMake(0, 500, SCREEN_WIDTH, 200)];
         _uploadPhotos_view.delegate = self;
     }
     return _uploadPhotos_view;
@@ -454,14 +454,14 @@
             [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.teamInformation_view.teamPeople_number] forKey:@"TEAMPEOPLENUMBER"];
             [userDefaults synchronize];
             //将值传到home控制器中
-//            if (wself.signViewBlock) {
-//                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,dict1);
-//            }
-            if ([self.delegate respondsToSelector:@selector(teamPeopleNumber:teamId:)]) {
-                [self.delegate teamPeopleNumber:wself.teamInformation_view.teamPeople_number teamId:dict1];
+            if (wself.signViewBlock) {
+                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,dict1);
             }
+//            if ([self.delegate respondsToSelector:@selector(teamPeopleNumber:teamId:)]) {
+//                [self.delegate teamPeopleNumber:wself.teamInformation_view.teamPeople_number teamId:dict1];
+//            }
+            homeController.isProjectItem = YES;
             [wself presentViewController:navVC animated:YES completion:nil];
-            
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
@@ -522,7 +522,7 @@
                 [_dataArr addObjectsFromArray:array];
                 weakself.uploadPhotos_view.dataArr = _dataArr;
                 if (_dataArr.count <= 4) {
-                    self.uploadPhotos_view.frame = CGRectMake(0, 480, SCREEN_WIDTH, 200);
+                    self.uploadPhotos_view.frame = CGRectMake(0, 500, SCREEN_WIDTH, 200);
                 }
             });
         };
@@ -629,7 +629,7 @@
         self.uploadPhotos_view.maxImageCount = 6;
          if (self.dataArr.count < 4) {
          }else {
-             self.uploadPhotos_view.frame = CGRectMake(0, 480, SCREEN_WIDTH, 290);
+             self.uploadPhotos_view.frame = CGRectMake(0, 500, SCREEN_WIDTH, 290);
          }
      }else {
          NSLog(@"self.maxImageCount == 1----------");
@@ -715,7 +715,10 @@
     }
 }
 
-
+- (void)dealloc
+{
+    NSLog(@"该控制器被销毁了~~~~~%s",__func__);
+}
 
 
 

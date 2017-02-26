@@ -75,7 +75,7 @@
             make.right.mas_equalTo(self.mas_right);
         }];
         [self.guestSourceInformation_imageVeiw mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(24.0);
+            make.top.mas_equalTo(30.0);
             make.left.mas_equalTo(18.0);
             make.height.mas_equalTo(15.0);
             make.width.mas_equalTo(13.0);
@@ -85,7 +85,7 @@
             make.left.mas_equalTo(self.guestSourceInformation_imageVeiw.mas_right).mas_offset(10.0);
         }];
         [self.goalAttribute_button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.mas_top).mas_offset(101.0);
+            make.top.mas_equalTo(self.mas_top).mas_offset(110.0);
             make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
             make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
             make.height.mas_equalTo(38.0);
@@ -233,7 +233,7 @@
 - (void)goalAttributeButtonClick
 {
     NSLog(@"主人,您点击了目的属性~~");
-    bgScrollView.frame = CGRectMake(-30, 15, SCREEN_WIDTH + 30, 350);
+    bgScrollView.frame = CGRectMake(-30, 0, SCREEN_WIDTH + 30, 350);
     [bgScrollView addSubview:self.goalAttributeTableView];
     [self.goalAttributeTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.goalAttribute_button.mas_left);
@@ -317,7 +317,7 @@
     selectedProvince = [province objectAtIndex:0];
     selectedArea = [district objectAtIndex:0];
     
-    bgScrollView = [[LMContainsLMComboxScrollView alloc]initWithFrame:CGRectMake(-30, 15, SCREEN_WIDTH + 30, 230)];
+    bgScrollView = [[LMContainsLMComboxScrollView alloc]initWithFrame:CGRectMake(-30, 0, SCREEN_WIDTH + 30, 250)];
     bgScrollView.backgroundColor = [UIColor clearColor];
     bgScrollView.showsVerticalScrollIndicator = NO;
     bgScrollView.showsHorizontalScrollIndicator = NO;
@@ -332,7 +332,7 @@
     NSArray *keys = [NSArray arrayWithObjects:@"province",@"city",@"area", nil];
     for(NSInteger i = 0; i < 3; i++)
     {
-        LMComBoxView *comBox = [[LMComBoxView alloc]initWithFrame:CGRectMake(50+((SCREEN_WIDTH - 44) / 3 + 3) * i, 40, (SCREEN_WIDTH - 44) / 3, 38.0)];
+        LMComBoxView *comBox = [[LMComBoxView alloc]initWithFrame:CGRectMake(50+((SCREEN_WIDTH - 44) / 3 + 3) * i, 60, (SCREEN_WIDTH - 44) / 3, 38.0)];
         comBox.backgroundColor = [UIColor whiteColor];
         if (i == 0) {
             comBox.ButtonTypeNum = 1;
@@ -492,7 +492,7 @@
     self.goalAttributeContent_label.text = indeStr;
     self.paramName = indeStr;
     [self.goalAttributeTableView removeFromSuperview];
-    bgScrollView.frame = CGRectMake(-30, 15, SCREEN_WIDTH + 30, 228);
+    bgScrollView.frame = CGRectMake(-30, 0, SCREEN_WIDTH + 30, 228);
 }
 
 

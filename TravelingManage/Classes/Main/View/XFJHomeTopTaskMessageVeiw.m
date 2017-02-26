@@ -85,6 +85,7 @@
         _peopleMessageContent_label.textAlignment = NSTextAlignmentLeft;
         _peopleMessageContent_label.font = [UIFont systemFontOfSize:14.0];
         _peopleMessageContent_label.textColor = kColor2f2f;
+        _peopleMessageContent_label.numberOfLines = 1;
     }
     return _peopleMessageContent_label;
 }
@@ -162,10 +163,11 @@
     [self.peopleMessageContent_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(22.0);
         make.right.mas_equalTo(self.mas_right).mas_offset(-50.0);
+        make.width.mas_equalTo(80.0);
     }];
     [self.peopleMessage_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(23.0);
-        make.right.mas_equalTo(self.peopleMessageContent_label.mas_left).mas_offset(-9.0);
+        make.right.mas_equalTo(self.peopleMessageContent_label.mas_left).mas_offset(-5.0);
     }];
     [self.openTeam_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.carNumber_label.mas_bottom).mas_offset(19.0);

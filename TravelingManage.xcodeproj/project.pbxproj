@@ -228,6 +228,10 @@
 		3AE849F11E54410F00A71C5E /* XFJSubscribeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849F01E54410F00A71C5E /* XFJSubscribeButton.m */; };
 		3AF04E0F1E61358F00D96984 /* XFJHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF04E0E1E61358F00D96984 /* XFJHeaderView.m */; };
 		3AF0D39A1E61FC4200EDECD1 /* XFJHotelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF0D3991E61FC4200EDECD1 /* XFJHotelView.m */; };
+		3AFC9A2A1E629D200049A758 /* input-box4-.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A271E629D200049A758 /* input-box4-.png */; };
+		3AFC9A2B1E629D200049A758 /* input-box4-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A281E629D200049A758 /* input-box4-@2x.png */; };
+		3AFC9A2C1E629D200049A758 /* input-box4-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A291E629D200049A758 /* input-box4-@3x.png */; };
+		3AFC9A2F1E62C4090049A758 /* XFJSignNoHotelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC9A2E1E62C4090049A758 /* XFJSignNoHotelView.m */; };
 		D2818BC1C16899123CFFEBFB /* libPods-TravelingManage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B55613806B12752B343871BD /* libPods-TravelingManage.a */; };
 /* End PBXBuildFile section */
 
@@ -564,6 +568,11 @@
 		3AF04E0E1E61358F00D96984 /* XFJHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJHeaderView.m; sourceTree = "<group>"; };
 		3AF0D3981E61FC4200EDECD1 /* XFJHotelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJHotelView.h; sourceTree = "<group>"; };
 		3AF0D3991E61FC4200EDECD1 /* XFJHotelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJHotelView.m; sourceTree = "<group>"; };
+		3AFC9A271E629D200049A758 /* input-box4-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box4-.png"; sourceTree = "<group>"; };
+		3AFC9A281E629D200049A758 /* input-box4-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box4-@2x.png"; sourceTree = "<group>"; };
+		3AFC9A291E629D200049A758 /* input-box4-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box4-@3x.png"; sourceTree = "<group>"; };
+		3AFC9A2D1E62C4090049A758 /* XFJSignNoHotelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignNoHotelView.h; sourceTree = "<group>"; };
+		3AFC9A2E1E62C4090049A758 /* XFJSignNoHotelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignNoHotelView.m; sourceTree = "<group>"; };
 		68B76989437BBA39F7947CAC /* Pods-TravelingManage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.release.xcconfig"; sourceTree = "<group>"; };
 		7689CDD2E1CFC6736603A27A /* Pods-TravelingManage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.debug.xcconfig"; sourceTree = "<group>"; };
 		B55613806B12752B343871BD /* libPods-TravelingManage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TravelingManage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1078,6 +1087,8 @@
 				3A4E704E1E60345D00547BCD /* XFJSignNoPeopleView.m */,
 				3AF0D3981E61FC4200EDECD1 /* XFJHotelView.h */,
 				3AF0D3991E61FC4200EDECD1 /* XFJHotelView.m */,
+				3AFC9A2D1E62C4090049A758 /* XFJSignNoHotelView.h */,
+				3AFC9A2E1E62C4090049A758 /* XFJSignNoHotelView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1167,6 +1178,9 @@
 		3AE2FF341E4D48CD00E380F9 /* HomePicture */ = {
 			isa = PBXGroup;
 			children = (
+				3AFC9A271E629D200049A758 /* input-box4-.png */,
+				3AFC9A281E629D200049A758 /* input-box4-@2x.png */,
+				3AFC9A291E629D200049A758 /* input-box4-@3x.png */,
 				3A4E70561E6034B900547BCD /* shijian.png */,
 				3A4E70571E6034B900547BCD /* shijian@2x.png */,
 				3A4E70581E6034B900547BCD /* shijian@3x.png */,
@@ -1374,6 +1388,7 @@
 				3ADDF02C1E4DAD02003C838F /* Triangle-@2x.png in Resources */,
 				3AE2FF3E1E4D491600E380F9 /* xinjianrenwukuang.png in Resources */,
 				3A7A51211E4B09FC004FFB0F /* message@2x.png in Resources */,
+				3AFC9A2C1E629D200049A758 /* input-box4-@3x.png in Resources */,
 				3A9B890F1E4C17FF004E3B05 /* changemenubutton@2x.png in Resources */,
 				3AA475181E5EAE5300FEB005 /* shurukuang@3x.png in Resources */,
 				3ADDF0211E4DAD02003C838F /* information-@3x.png in Resources */,
@@ -1398,6 +1413,7 @@
 				3A4E70551E6034AD00547BCD /* renshu@3x.png in Resources */,
 				3AE2FF561E4D5FB200E380F9 /* kaishirenwukuang@2x.png in Resources */,
 				3ADDF0271E4DAD02003C838F /* input-box2-@3x.png in Resources */,
+				3AFC9A2B1E629D200049A758 /* input-box4-@2x.png in Resources */,
 				3AA475171E5EAE5300FEB005 /* shurukuang@2x.png in Resources */,
 				3ADDF0261E4DAD02003C838F /* input-box2-@2x.png in Resources */,
 				3A7A51241E4B09FC004FFB0F /* message2@2x.png in Resources */,
@@ -1478,6 +1494,7 @@
 				3A7A51201E4B09FC004FFB0F /* message.png in Resources */,
 				3ADDF0161E4DAD02003C838F /* delete-.png in Resources */,
 				3A4E70591E6034B900547BCD /* shijian.png in Resources */,
+				3AFC9A2A1E629D200049A758 /* input-box4-.png in Resources */,
 				3A9B89241E4C1C10004E3B05 /* shenhe@2x.png in Resources */,
 				3A9B89281E4C1C10004E3B05 /* wanshan@3x.png in Resources */,
 				3A9B891F1E4C1C10004E3B05 /* pingjia@3x.png in Resources */,
@@ -1546,6 +1563,7 @@
 				3AE849E21E543DCA00A71C5E /* XFJAllTaskViewController.m in Sources */,
 				1C1939B81E4DB71B00882B8C /* PageButton.m in Sources */,
 				3A18E54B1E5D6FB400BFE891 /* XFJConventionMessageTableViewCell.m in Sources */,
+				3AFC9A2F1E62C4090049A758 /* XFJSignNoHotelView.m in Sources */,
 				3A10CFDC1E5BD04F00592564 /* UITextField+XFJTextField.m in Sources */,
 				3AA475241E5EF21500FEB005 /* XFJSceneryAnnotationView.m in Sources */,
 				3A48BAD61E5AB7E300910789 /* XFJTitleMessageTableViewCell.m in Sources */,

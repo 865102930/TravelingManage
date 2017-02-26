@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 
+
 @interface HomeViewController : UIViewController
 
-
+@property (nonatomic, assign) BOOL isProjectItem;
 
 @end
