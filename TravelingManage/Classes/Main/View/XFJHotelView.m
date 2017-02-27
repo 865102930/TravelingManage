@@ -204,7 +204,9 @@
 
 - (void)hotelSignButtonClick
 {
-    
+    if (self.hotelSignButtonClickBlock) {
+        self.hotelSignButtonClickBlock();
+    }
 }
 
 @end

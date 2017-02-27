@@ -24,6 +24,10 @@
 
 @property (nonatomic, strong) UIButton *signNo_button;
 
+@property (nonatomic, strong) UILabel *minuteContent_label;
+
+@property (nonatomic, strong) UILabel *minute_label;
+
 @end
 
 @implementation XFJSignNoPeopleView
@@ -39,15 +43,17 @@
         [self addSubview:self.timeCantent_label];
         [self addSubview:self.hour_label];
         [self addSubview:self.signNo_button];
+        [self addSubview:self.minuteContent_label];
+        [self addSubview:self.minute_label];
         self.backgroundColor = [UIColor whiteColor];
         [self.peopleNumber_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(29.0);
-            make.left.mas_equalTo(21.0);
+            make.left.mas_equalTo(20.0);
             make.height.width.mas_equalTo(16.0);
         }];
         [self.peopleNumber_label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(self.peopleNumber_imageView.mas_centerY);
-            make.left.mas_equalTo(self.peopleNumber_imageView.mas_right).mas_offset(16.0);
+            make.left.mas_equalTo(self.peopleNumber_imageView.mas_right).mas_offset(6.0);
         }];
         [self.peopleName_label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(self.peopleNumber_label.mas_right).mas_offset(3.0);
@@ -55,13 +61,13 @@
         }];
         [self.time_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(29.0);
-            make.left.mas_equalTo(self.peopleName_label.mas_right).mas_offset(15.0);
+            make.left.mas_equalTo(self.peopleName_label.mas_right).mas_offset(10.0);
             make.centerY.mas_equalTo(self.peopleNumber_imageView.mas_centerY);
             make.height.width.mas_equalTo(16.0);
         }];
         [self.timeCantent_label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(self.peopleNumber_imageView.mas_centerY);
-            make.left.mas_equalTo(self.time_imageView.mas_right).mas_offset(16.0);
+            make.left.mas_equalTo(self.time_imageView.mas_right).mas_offset(6.0);
         }];
         [self.hour_label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(self.timeCantent_label.mas_right).mas_offset(3.0);
@@ -72,6 +78,14 @@
             make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
             make.width.mas_equalTo(96.0);
             make.height.mas_equalTo(35.0);
+        }];
+        [self.minuteContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.peopleNumber_imageView.mas_centerY);
+            make.left.mas_equalTo(self.hour_label.mas_right).mas_offset(3.0);
+        }];
+        [self.minute_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.peopleNumber_imageView.mas_centerY);
+            make.left.mas_equalTo(self.minuteContent_label.mas_right).mas_offset(3.0);
         }];
     }
     return self;
@@ -92,7 +106,6 @@
 {
     if (_peopleNumber_label == nil) {
         _peopleNumber_label = [[UILabel alloc] init];
-        _peopleNumber_label.text = [NSString stringWithFormat:@"%@",@"40"];
         _peopleNumber_label.textColor = RedColor;
         _peopleNumber_label.font = [UIFont fontWithName:PingFang size:14.0];
         _peopleNumber_label.textAlignment = NSTextAlignmentCenter;
@@ -128,7 +141,7 @@
 {
     if (_timeCantent_label == nil) {
         _timeCantent_label = [[UILabel alloc] init];
-        _timeCantent_label.text = [NSString stringWithFormat:@"%@",@"1.5"];
+        _timeCantent_label.text = [NSString stringWithFormat:@"%@",@"00"];
         _timeCantent_label.textColor = RedColor;
         _timeCantent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _timeCantent_label.textAlignment = NSTextAlignmentCenter;
@@ -141,7 +154,7 @@
 {
     if (_hour_label == nil) {
         _hour_label = [[UILabel alloc] init];
-        _hour_label.text = [NSString stringWithFormat:@"%@",@"小时"];
+        _hour_label.text = [NSString stringWithFormat:@"%@",@"时"];
         _hour_label.textColor = kColor8383;
         _hour_label.font = [UIFont systemFontOfSize:14.0];
     }
@@ -159,9 +172,32 @@
         _signNo_button.layer.cornerRadius = 4.0;
         _signNo_button.layer.borderColor = kColorACAC.CGColor;
         _signNo_button.layer.borderWidth = 0.5;
-        [_signNo_button addTarget:self action:@selector(signNoButton) forControlEvents:UIControlStateNormal];
+        [_signNo_button addTarget:self action:@selector(signNoButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _signNo_button;
+}
+
+- (UILabel *)minuteContent_label
+{
+    if (_minuteContent_label == nil) {
+        _minuteContent_label = [[UILabel alloc] init];
+        _minuteContent_label.text = [NSString stringWithFormat:@"%@",@"01"];
+        _minuteContent_label.textColor = RedColor;
+        _minuteContent_label.font = [UIFont fontWithName:PingFang size:14.0];
+        _minuteContent_label.textAlignment = NSTextAlignmentCenter;
+    }
+    return _minuteContent_label;
+}
+
+- (UILabel *)minute_label
+{
+    if (_minute_label == nil) {
+        _minute_label = [[UILabel alloc] init];
+        _minute_label.text = [NSString stringWithFormat:@"%@",@"分"];
+        _minute_label.textColor = kColor8383;
+        _minute_label.font = [UIFont systemFontOfSize:14.0];
+    }
+    return _minute_label;
 }
 
 #pragma makr - 签退点击事件
@@ -171,6 +207,16 @@
         self.signNoButtonClickBlock();
     }
 }
+
+- (void)setSignNoPeopleArray:(NSMutableArray<XFJTeamSignListItem *> *)signNoPeopleArray
+{
+    _signNoPeopleArray = signNoPeopleArray;
+    self.peopleNumber_label.text = [NSString stringWithFormat:@"%zd",signNoPeopleArray[0].checkinNumber];
+}
+
+
+
+
 
 
 

@@ -10,4 +10,6 @@
 
 @interface XFJHotelView : UIView
 
+@property (nonatomic, copy) void (^hotelSignButtonClickBlock)();
+
 @end

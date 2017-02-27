@@ -227,7 +227,7 @@
 #pragma mark - 处理左侧导航栏
 - (void)setUpLeftBarButtonItem
 {
-    self.navigationItem.leftBarButtonItem = self.pushToLeftViewButton;
+//    self.navigationItem.leftBarButtonItem = self.pushToLeftViewButton;
     self.navigationItem.titleView = self.title_label;
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
@@ -420,16 +420,19 @@
 #pragma mark - 开始任务
 - (void)startTaskButtonClick
 {
+    NSNumber *traveName = [NSNumber numberWithInteger:self.conventionMessage_view.travelName];
+    NSNumber *paramName1 = [NSNumber numberWithInteger:self.guestSourceInformation_view.paramName1];
+    NSNumber *teamNature = [NSNumber numberWithInteger:self.teamInformation_view.teamNature];
     NSDictionary *dictParaments = @{
                                    @"teamNo":self.conventionMessage_view.groupName_text,//团队编号
                                    @"teamDate":self.conventionMessage_view.groupTime_text,//出团日期
-                                   @"travelAgencyId":[NSString stringWithFormat:@"%ld",self.conventionMessage_view.travelName],//旅行社id
+                                   @"travelAgencyId":traveName,//旅行社id
                                    @"teamVehicles":self.strNum,//车牌
                                    @"province":self.guestSourceInformation_view.selectedProvince,//用户所在省
                                    @"city":self.guestSourceInformation_view.selectedCity,//用户所在市
                                    @"area":self.guestSourceInformation_view.selectedArea,//用户所在区
-                                   @"teamAttr":self.guestSourceInformation_view.paramName,//团队目的属性
-                                   @"teamNature":self.teamInformation_view.teamNature,//团队性质
+                                   @"teamAttr":paramName1,//团队目的属性
+                                   @"teamNature":teamNature,//团队性质
                                    @"teamNum":self.teamInformation_view.teamPeople_number,//团队人数
                                    @"teamDay":self.teamInformation_view.teamDay,//团队天数
                                    @"createuser":@7,//创建记录的用户id
@@ -437,9 +440,9 @@
                                    @"teamVehicleImages":self.root,//车辆图片集合用,分割
                                    @"userId":@7//导游id
                                     };
-    NSLog(@"参数集合-----%@----%@---%@---%@---%@----%@---%@----%@----%@----%@---%@---%@---%@---%@---%@",@7,self.conventionMessage_view.groupName_text,self.conventionMessage_view.groupTime_text,[NSString stringWithFormat:@"%ld",self.conventionMessage_view.travelName],self.strNum,self.guestSourceInformation_view.selectedProvince,self.guestSourceInformation_view.selectedCity,self.guestSourceInformation_view.selectedArea,self.guestSourceInformation_view.paramName,self.teamInformation_view.teamNature,self.teamInformation_view.teamPeople_number,self.teamInformation_view.teamDay,@7,self.voucherPicRoot,self.root);
+    NSLog(@"参数集合-----%@----%@---%@---%zd---%@----%@---%@----%@----%zd----%zd---%@---%@---%@---%@---%@",@7,self.conventionMessage_view.groupName_text,self.conventionMessage_view.groupTime_text,traveName,self.strNum,self.guestSourceInformation_view.selectedProvince,self.guestSourceInformation_view.selectedCity,self.guestSourceInformation_view.selectedArea,paramName1,teamNature,self.teamInformation_view.teamPeople_number,self.teamInformation_view.teamDay,@7,self.voucherPicRoot,self.root);
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:MODIFYTEAMINFOURL withParaments:dictParaments withSuccessBlock:^(id object) {
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:MODIFYTEAMINFOURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
             NSLog(@"+++++======---------团队创建成功,成功信息是:%@",object);
             NSDictionary *dict = [object objectForKey:@"object"];
@@ -453,13 +456,11 @@
             [userDefaults setObject:[NSString stringWithFormat:@"%@%@%@",wself.guestSourceInformation_view.selectedProvince,wself.guestSourceInformation_view.selectedCity,wself.guestSourceInformation_view.selectedArea] forKey:@"PEOPLEWHEREFROMSTR"];
             [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.conventionMessage_view.groupTime_text] forKey:@"OPENTEAMTIMESTR"];
             [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.teamInformation_view.teamPeople_number] forKey:@"TEAMPEOPLENUMBER"];
+            [userDefaults setObject:[NSString stringWithFormat:@"%@",self.dict1]forKey:@"TEAMID"];
             [userDefaults synchronize];
             //将值传到home控制器中
-            if (wself.signViewBlock) {
-                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,dict1);
-            }
-//            if ([self.delegate respondsToSelector:@selector(teamPeopleNumber:teamId:)]) {
-//                [self.delegate teamPeopleNumber:wself.teamInformation_view.teamPeople_number teamId:dict1];
+//            if (wself.signViewBlock) {
+//                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,self.dict1);
 //            }
             homeController.isProjectItem = YES;
             [wself presentViewController:navVC animated:YES completion:nil];

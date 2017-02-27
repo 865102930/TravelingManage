@@ -260,7 +260,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.travelServiceName_field.text = self.findTravelAgencyList_array[indexPath.row].taName;
-    self.travelName = self.findTravelAgencyList_array[indexPath.row].findTravelAgencyList_id;
+    self.travelName = indexPath.row;
+    NSLog(@"self.travelName类型的值是:%zd",self.travelName);
     [self.check_traveView removeFromSuperview];
 }
 

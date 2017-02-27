@@ -12,7 +12,9 @@
 #import <AVFoundation/AVAssetExportSession.h>
 #import <AVFoundation/AVMediaFormat.h>
 
-#define BaseUrl @"http://118.178.224.151/liftManage"
+#define BaseUrl @"http://118.178.224.151/teammgmtback"
+
+//#define BaseUrl @"http://192.168.0.103:8080/teammgmtback"
 
 @implementation NetWorkManager
 

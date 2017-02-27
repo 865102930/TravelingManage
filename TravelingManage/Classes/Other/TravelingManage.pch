@@ -60,8 +60,11 @@
 #define kColor9898 [UIColor colorWithHexString:@"0x989898"]
 #define kColorE9E9 [UIColor colorWithHexString:@"0xE9E9E9"]
 #define kColor1EA8 [UIColor colorWithHexString:@"0x1EA8FF"]
+#define kColor6F6F [UIColor colorWithHexString:@"0x6F6F6F"]
 
 #define BASEURL @"http://118.178.224.151/teammgmtback"
+
+//#define BASEURL @"http://192.168.0.103:8080/teammgmtback"
 
 //注册接口
 #define REGISTURL (BASEURL@"/app/user/userRegister")
@@ -85,6 +88,8 @@
 #define MODIFYTEAMINFOURL (BASEURL@"/app/teamInfo/modifyTeamInfo")
 //团队签到
 #define TEAMSIGNURL (BASEURL@"/app/teamTask/teamSign")
+//获取团队任务列表(就是在签到的时候就需要调用这个接口)
+#define TEAMSIGNLISTURL (BASEURL@"/app/teamTask/teamSignList")
 //团队签退
 #define TEAMSIGNOUTURL (BASEURL@"/app/teamTask/teamSignOut")
 //查询当前市的景区信息

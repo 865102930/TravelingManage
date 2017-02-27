@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSString *teamPeople_number;
 
 //团队性质
-@property (nonatomic, strong) NSString *teamNature;
+@property (nonatomic, assign) NSInteger teamNature;
 
 //行程天数
 @property (nonatomic, strong) NSString *teamDay;

@@ -129,7 +129,7 @@
                                     @"state":@"0"
                                     };
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:TEAMNUMBERQUERYURL withParaments:dictParaments withSuccessBlock:^(id object) {
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMNUMBERQUERYURL withParaments:dictParaments withSuccessBlock:^(id object) {
         NSLog(@"+++++++获取到的目的属性的值是 :%@",object);
         if (object) {
             //取出
@@ -490,7 +490,7 @@
     self.goalAttribute_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
     NSString *indeStr = [NSString stringWithFormat:@"%@",self.purposeArray[indexPath.row].paramName];
     self.goalAttributeContent_label.text = indeStr;
-    self.paramName = indeStr;
+    self.paramName1 = indexPath.row;
     [self.goalAttributeTableView removeFromSuperview];
     bgScrollView.frame = CGRectMake(-30, 0, SCREEN_WIDTH + 30, 228);
 }

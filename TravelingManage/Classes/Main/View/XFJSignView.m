@@ -134,6 +134,12 @@
     }
 }
 
+- (void)setPeopleNumberStr:(NSString *)peopleNumberStr
+{
+    _peopleNumberStr = peopleNumberStr;
+    self.signPeople_text.text = [NSString stringWithFormat:@"%@",peopleNumberStr];
+}
+
 
 
 @end

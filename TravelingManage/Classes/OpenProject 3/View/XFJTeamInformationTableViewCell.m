@@ -120,7 +120,7 @@
                                     @"state":@"1"
                                     };
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:TEAMNUMBERQUERYURL withParaments:dictParaments withSuccessBlock:^(id object) {
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMNUMBERQUERYURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
             NSLog(@"++++++==========----获取到的团队性质的值是:%@",object);
             NSMutableArray *teamArray = [object objectForKey:@"rows"];
@@ -316,7 +316,8 @@
     self.teamProperties_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
     NSString *indeStr = [NSString stringWithFormat:@"%@",self.teamDescriptionArray[indexPath.row].paramName];
     self.teamPropertiesContent_label.text = indeStr;
-    self.teamNature = indeStr;
+    self.teamNature = indexPath.row;
+    NSLog(@"这里获取到的是用户点击的行号数:%zd",self.teamNature);
     [self.teamDescription_tablewView removeFromSuperview];
 }
 
