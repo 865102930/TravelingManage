@@ -57,6 +57,7 @@
 @property (nonatomic, strong) NSMutableArray *addArray;
 @property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberArray;
 @property (nonatomic, strong) NSString *strNum;
+@property (nonatomic, strong) NSString *dict1;
 
 @end
 
@@ -442,8 +443,8 @@
         if (object) {
             NSLog(@"+++++======---------团队创建成功,成功信息是:%@",object);
             NSDictionary *dict = [object objectForKey:@"object"];
-            NSString *dict1 = [dict objectForKey:@"id"];
-            NSLog(@"+++++===========提取到的id是:%@",dict1);
+            self.dict1 = [dict objectForKey:@"id"];
+            NSLog(@"+++++===========提取到的id是:%@",self.dict1);
             HomeViewController *homeController = [[HomeViewController alloc] init];
             JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:homeController];
             //将用户填写的信息保存起来
@@ -454,12 +455,12 @@
             [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.teamInformation_view.teamPeople_number] forKey:@"TEAMPEOPLENUMBER"];
             [userDefaults synchronize];
             //将值传到home控制器中
-//            if (wself.signViewBlock) {
-//                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,dict1);
-//            }
-            if ([self.delegate respondsToSelector:@selector(teamPeopleNumber:teamId:)]) {
-                [self.delegate teamPeopleNumber:wself.teamInformation_view.teamPeople_number teamId:dict1];
+            if (wself.signViewBlock) {
+                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,self.dict1);
             }
+//            if ([self.delegate respondsToSelector:@selector(teamPeopleNumber:teamId:)]) {
+//                [self.delegate teamPeopleNumber:wself.teamInformation_view.teamPeople_number teamId:dict1];
+//            }
             [wself presentViewController:navVC animated:YES completion:nil];
             
         }
@@ -470,6 +471,13 @@
         }
     } progress:^(float progress) {
     }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    if (self.signViewBlock != nil) {
+        self.signViewBlock(self.teamInformation_view.teamPeople_number,self.dict1);
+    }
 }
 
 

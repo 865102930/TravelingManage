@@ -687,7 +687,7 @@
     //根据判断是否在范围内的值来做事情
     if (isContains) {//该处为YES则表示在
         //判断该范围的景点类型
-        if (!(self.stateType == 1)) {//1则表示酒店
+        if (self.stateType == 1) {//1则表示酒店
             //该处加载的是有房间数量的签到页面(也就是酒店)
             NSLog(@"酒店的状态值是 :%zd",self.stateType);
             //此处添加酒店的签到view
