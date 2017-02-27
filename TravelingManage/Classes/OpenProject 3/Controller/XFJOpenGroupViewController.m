@@ -57,6 +57,7 @@
 @property (nonatomic, strong) NSMutableArray *addArray;
 @property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberArray;
 @property (nonatomic, strong) NSString *strNum;
+@property (nonatomic, strong) NSString *dict1;
 
 @end
 
@@ -442,8 +443,8 @@
         if (object) {
             NSLog(@"+++++======---------团队创建成功,成功信息是:%@",object);
             NSDictionary *dict = [object objectForKey:@"object"];
-            NSString *dict1 = [dict objectForKey:@"id"];
-            NSLog(@"+++++===========提取到的id是:%@",dict1);
+            self.dict1 = [dict objectForKey:@"id"];
+            NSLog(@"+++++===========提取到的id是:%@",self.dict1);
             HomeViewController *homeController = [[HomeViewController alloc] init];
             JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:homeController];
             //将用户填写的信息保存起来
@@ -470,6 +471,13 @@
         }
     } progress:^(float progress) {
     }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    if (self.signViewBlock != nil) {
+        self.signViewBlock(self.teamInformation_view.teamPeople_number,self.dict1);
+    }
 }
 
 
