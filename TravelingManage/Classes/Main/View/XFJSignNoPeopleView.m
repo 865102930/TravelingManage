@@ -141,7 +141,6 @@
 {
     if (_timeCantent_label == nil) {
         _timeCantent_label = [[UILabel alloc] init];
-        _timeCantent_label.text = [NSString stringWithFormat:@"%@",@"00"];
         _timeCantent_label.textColor = RedColor;
         _timeCantent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _timeCantent_label.textAlignment = NSTextAlignmentCenter;
@@ -181,7 +180,6 @@
 {
     if (_minuteContent_label == nil) {
         _minuteContent_label = [[UILabel alloc] init];
-        _minuteContent_label.text = [NSString stringWithFormat:@"%@",@"01"];
         _minuteContent_label.textColor = RedColor;
         _minuteContent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _minuteContent_label.textAlignment = NSTextAlignmentCenter;
@@ -214,6 +212,17 @@
     self.peopleNumber_label.text = [NSString stringWithFormat:@"%zd",signNoPeopleArray[0].checkinNumber];
 }
 
+- (void)setHourTeamTime:(NSString *)hourTeamTime
+{
+    _hourTeamTime = hourTeamTime;
+    self.timeCantent_label.text = [NSString stringWithFormat:@"%@",hourTeamTime];
+}
+
+- (void)setMinteTeamTime:(NSString *)minteTeamTime
+{
+    _minteTeamTime = minteTeamTime;
+    self.minuteContent_label.text = [NSString stringWithFormat:@"%@",minteTeamTime];
+}
 
 
 

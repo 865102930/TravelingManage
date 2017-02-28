@@ -14,5 +14,10 @@
 @property (nonatomic, copy) void (^signNoButtonClickBlock)();
 //签退页面的人数
 @property (nonatomic, strong) NSMutableArray<XFJTeamSignListItem *> *signNoPeopleArray;
+//获取到的小时
+@property (nonatomic, strong) NSString *hourTeamTime;
+//获取到的分钟
+@property (nonatomic, strong) NSString *minteTeamTime;
+
 
 @end

@@ -30,8 +30,12 @@
 #import "XFJHotelView.h"
 #import "XFJTeamSignListItem.h"
 #import "XFJSignNoHotelView.h"
+#import "XFJSingNoPeopleItem.h"
+#import "CoverView.h"
+#import "AlertView.h"
+#import "AlertView1.h"
 
-@interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate>
+@interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
 @property (nonatomic, strong) UILabel *title_label;
 @property (nonatomic, strong) UIBarButtonItem *user_SttingButtonItem;
@@ -77,6 +81,10 @@
 @property (nonatomic, strong) NSMutableArray <XFJTeamSignListItem *> *teamSignListArray;
 @property (nonatomic, assign) BOOL isTime;
 @property (nonatomic, strong) XFJSignNoHotelView *signNoHotel_view;
+@property (nonatomic, strong) NSString *nowDateTime;//这是时时获取的当前时间
+@property (nonatomic, strong) NSString *DateStartTime;//这是点击签到的时候获取的时间;
+@property (nonatomic, assign) BOOL isTaskTime;
+@property (nonatomic, strong) NSMutableArray <XFJSingNoPeopleItem *> *signNoPeople_array;
 
 @end
 
@@ -107,7 +115,7 @@
     self.isProjectItem == NO ? [self.view addSubview:self.announcementView] : [self.view addSubview:self.homeTopTaskMessageVeiw];
     
 #warning 当用户一开始进入app的时候,由于不存在任务,那么就显示这个新建任务,如果有任务了,那么此界面就不存在
-    self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.sign_view];
+    
     
     [self.maskView1 addSubview:self.leftView];
     //获取当前用户的位置信息
@@ -170,6 +178,144 @@
     self.hotel_view.hotelSignButtonClickBlock = ^() {
         [wself hotelSignButtonWithPeople];
     };
+    self.signNoPeople_view.signNoButtonClickBlock = ^() {
+        [wself signNoPeopleButtonClick1];
+    };
+}
+
+#pragma mark - 签退
+- (void)signNoPeopleButtonClick1
+{
+    //签到的时候判断是否在景区内
+    if (self.isContains) {//在景区范围内,可以签退
+        //时间是达到规定的时间(YES)
+        //遍历取出每个景点需要带的时间
+        //时间没有达到规定的时间(NO)
+        NSDictionary *dictParaments = @{
+                                        @"teamId":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
+                                        @"taskState":[NSString stringWithFormat:@"%@",@"0"]
+                                        };
+        NSLog(@"签退需要传递的参数是:%@",dictParaments);
+        __weak __typeof(self)wself = self;
+        [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNLISTURL withParaments:dictParaments withSuccessBlock:^(id object) {
+            if (object) {
+                NSLog(@"签退成功获取到后台返回的内容是:%@",object);
+                NSDictionary *dict = [object objectForKey:@"rows"];
+                //判断是否可以签退(此处一定是可以签退的,只是显示的签退的状态是否异常?)
+                wself.signNoPeople_array = [XFJSingNoPeopleItem mj_objectArrayWithKeyValuesArray:dict];
+               CGFloat restult = [wself.signNoPeople_view.hourTeamTime intValue] + (CGFloat)[wself.signNoPeople_view.minteTeamTime integerValue] / 60;
+                NSLog(@"-----计算的时间是------ : %.2f",restult);
+                for (NSInteger i = 0; i < wself.signNoPeople_array.count; i++) {
+                    NSString *signNoPeopleItem = wself.signNoPeople_array[i].attractionsTime;
+                    NSLog(@"显示每个景点的必须的签退时间:%@",signNoPeopleItem);
+                    if ((restult > [signNoPeopleItem floatValue]) || signNoPeopleItem.length == 0) {//如果时间大于景点的时间显示正确的签退框
+                        NSLog(@"如果时间大于景点的时间显示正确的签退框");
+                        [wself signNoPeopleVeiwButtonClick];
+                    }else {
+                        //这里表示时间小于景点签退的时间显示错误的签退框
+                        NSLog(@"这里表示时间小于景点签退的时间显示错误的签退框");
+                        [wself showErrorHidView];
+                    }
+                }
+            }
+        } withFailureBlock:^(NSError *error) {
+            if (error) {
+                NSLog(@"签退失败,获取后台给的团队列表信息失败:%@",error);
+            }
+        } progress:^(float progress) {
+        }];
+    }else {
+        NSLog(@"主人~~此时的签退为异常签退,是否还要执行签退??");
+    }
+    //判断是否到达了景区规定的时间
+    NSLog(@"主人~~您点击了签退按钮~~~~~~~~~~~~");
+}
+#warning 时间小于景点签退的时间显示错误的签退框
+#pragma mark - showErrorHidView
+- (void)showErrorHidView
+{
+    [CoverView show];
+    //显示popView
+    AlertView *popV =  [AlertView showInPoint:self.view.center];
+    popV.delegate = self;
+}
+
+//点击弹框上面的取消按钮
+- (void)presentViewClickBtn1:(AlertView1 *)alertView3
+{
+    //决定隐藏到哪个位置
+    [alertView3 hiddenInPoint:CGPointMake(187.5, 210) completion:^{
+        //移除遮盖
+        for (UIView *view in [UIApplication sharedApplication].keyWindow.subviews) {
+            //判断当前View是否是遮盖
+            if([view isKindOfClass:[CoverView class]]) {
+                [view removeFromSuperview];
+            }
+        }
+    }];
+}
+
+//点击弹框上面的确认按钮
+- (void)popViewClickBtn1:(AlertView1 *)alertView3
+{
+    //决定隐藏到哪个位置
+    [alertView3 hiddenInPoint:CGPointMake(187.5, 210) completion:^{
+        //移除遮盖
+        for (UIView *view in [UIApplication sharedApplication].keyWindow.subviews) {
+            //判断当前View是否是遮盖
+            if([view isKindOfClass:[CoverView class]]) {
+                [view removeFromSuperview];
+            }
+        }
+    }];
+}
+
+
+#warning 时间大于景点的时间显示正确的签退框
+#pragma mark - 签退接口调用
+- (void)signNoPeopleVeiwButtonClick
+{
+    [CoverView show];
+    //显示popView
+    AlertView *popV =  [AlertView showInPoint:self.view.center];
+    popV.delegate = self;
+}
+//点击弹框上面的取消按钮
+- (void)presentViewClickBtn:(AlertView *)alertView3
+{
+    //决定隐藏到哪个位置
+    [alertView3 hiddenInPoint:CGPointMake(187.5, 210) completion:^{
+        //移除遮盖
+        for (UIView *view in [UIApplication sharedApplication].keyWindow.subviews) {
+            //判断当前View是否是遮盖
+            if([view isKindOfClass:[CoverView class]]) {
+                [view removeFromSuperview];
+            }
+        }
+    }];
+}
+//点击弹框上面的确认按钮
+- (void)popViewClickBtn:(AlertView *)alertView3
+{
+    //决定隐藏到哪个位置
+    [alertView3 hiddenInPoint:CGPointMake(187.5, 210) completion:^{
+        //移除遮盖
+        for (UIView *view in [UIApplication sharedApplication].keyWindow.subviews) {
+            //判断当前View是否是遮盖
+            if([view isKindOfClass:[CoverView class]]) {
+                [view removeFromSuperview];
+            }
+        }
+    }];
+}
+
+
+- (NSMutableArray <XFJSingNoPeopleItem *> *)signNoPeople_array
+{
+    if (_signNoPeople_array == nil) {
+        _signNoPeople_array = [NSMutableArray array];
+    }
+    return _signNoPeople_array;
 }
 
 #pragma mark - 酒店签到任务
@@ -200,6 +346,7 @@
 
 - (void)signButtonClick1:(NSString *)teamNumber teamId:(NSString *)teamId
 {
+        self.isTaskTime = YES;
         NSDictionary *dictParaments = @{
                                         @"teamId":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
                                         @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractions_id],//景区id
@@ -586,7 +733,7 @@
 {
     self.manager = [[CLLocationManager alloc] init];
     //设置准确度的；
-    self.manager.desiredAccuracy=kCLLocationAccuracyBest;
+    self.manager.desiredAccuracy = kCLLocationAccuracyBest;
     //设置距离（距离单位是米）
     self.manager.distanceFilter = 10;
     //设置代理
@@ -752,6 +899,47 @@
 {
     //在这里一直获取用户的时间使用app的时间
     [self setUpUserTimeWithUseApp:YES];
+    if (self.isTaskTime) {
+        NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.DateStartTime];
+        NSString *hourTime = [dict objectForKey:@"hourString"];
+        self.signNoPeople_view.hourTeamTime = hourTime;
+        NSString *minteTime = [dict objectForKey:@"minuteString"];
+        self.signNoPeople_view.minteTeamTime = minteTime;
+        NSLog(@"---------------时时获取的差值是 :%@",dict);
+    }else {
+        NSLog(@"亲~~在合理就不再调用时时获取时间了!!!");
+    }
+    
+}
+
+#pragma mark - 时时获取用户在景区呆的时间
+- (NSDictionary *)timeStrChangeWithFormatterStr:(NSString *)severTimeStr
+{
+    NSString *dayString = @"0";
+    NSString *hourString = @"0";
+    NSString *minuteString = @"0";
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd hh:mm:ss"]; // ----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
+    NSDate* date = [formatter dateFromString:severTimeStr];//------------将字符串@"2017-01-01 08:40:00"按formatter转成nsdate
+    double severTime = [date timeIntervalSince1970];
+    double localSeverTime = [[NSDate date] timeIntervalSince1970];
+    double poorTime = localSeverTime - severTime;
+    NSNumber *numStage =  [NSNumber numberWithDouble:poorTime];
+    NSString *numStr = [NSString stringWithFormat:@"%0.0lf",[numStage doubleValue]];//将double类型数据取整
+    NSInteger timeInt = [numStr integerValue];
+    if (timeInt >= 86400)
+    {
+        dayString = [NSString stringWithFormat:@"%d", timeInt / 86400];
+        timeInt -= [dayString integerValue] * 86400;
+    }
+    if (timeInt >= 3600 && timeInt < 86400) {
+        hourString = [NSString stringWithFormat:@"%d", timeInt / 3600];
+        timeInt -= [hourString integerValue] * 3600;
+    }
+    if (timeInt < 3600) {
+        minuteString = [NSString stringWithFormat:@"%d", timeInt / 60];
+    }
+    return @{@"dayString":dayString,@"hourString":hourString,@"minuteString":minuteString};
 }
 
 #pragma mark - 获取当前的时间
@@ -769,13 +957,15 @@
     //如果是真
     if (isTime) {//就是当前是间
         NSString *nowDateTime = [formatter stringFromDate:date];
+        self.nowDateTime = nowDateTime;
         NSLog(@"%@===当前的时间=========年-月-日  时：分：秒=====================",nowDateTime);
     }else {//开始任务的时间
         NSString *DateStartTime = [formatter stringFromDate:date];
+        self.DateStartTime = DateStartTime;
         NSLog(@"%@===开始任务的时间=========年-月-日  时：分：秒=====================",DateStartTime);
         //将开始任务的时间存起来
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:@"STARTTASKTIME" forKey:[NSString stringWithFormat:@"%@",DateStartTime]];
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        [userDefaults setObject:@"STARTTASKTIME" forKey:[NSString stringWithFormat:@"%@",DateStartTime]];
     }
     
 }
@@ -801,9 +991,7 @@
         }else {//0则表示是景区
             //该出加载的是没有房间数量的签到页面(也就是景区)
             NSLog(@"景区的状态值是:%zd------景区的id值是:%zd",self.stateType,self.attractions_id);
-            [self.task_view removeFromSuperview];
-            //此处添加景区的签到view
-            [self.view addSubview:self.sign_view];
+            self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.sign_view];
         }
     }else {
         //不在该签到的范围内

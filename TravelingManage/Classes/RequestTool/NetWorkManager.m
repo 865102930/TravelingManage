@@ -14,7 +14,7 @@
 
 #define BaseUrl @"http://118.178.224.151/teammgmtback"
 
-//#define BaseUrl @"http://192.168.0.103:8080/teammgmtback"
+//#define BaseUrl @"http://192.168.0.102:8080/teammgmtback"
 
 @implementation NetWorkManager
 
@@ -57,7 +57,7 @@
         
         AFJSONResponseSerializer *response = [AFJSONResponseSerializer serializer];
         
-        response.removesKeysWithNullValues = YES;
+//        response.removesKeysWithNullValues = YES;
         
         self.responseSerializer = response;
         
