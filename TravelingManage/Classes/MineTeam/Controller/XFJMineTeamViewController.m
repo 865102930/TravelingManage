@@ -13,33 +13,27 @@
 #import "XFJPleaseCheckViewController.h"
 #import "XFJPleaseAskingViewController.h"
 #import "XFJSubscribeButton.h"
+#import "XFJFindTeamInFoStateItem.h"
 
 @interface XFJMineTeamViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) UILabel *title_label;
-
 //设置该控制器装标题的数组
 @property (nonatomic, strong) NSMutableArray *subscribeTitleArray;
-
 //设置添加标题栏的view
 @property (nonatomic, strong) UIView *titleView;
-
 //设置一个属性记录上一个按钮的状态
 @property (nonatomic, strong) UIButton *previousButton;
-
 //设置下划线属性
 @property (nonatomic, strong) UIView *underLineVeiw;
-
 //设置添加内容的属性
 @property (nonatomic, strong) UIScrollView *contentView;
-
 @property (nonatomic, strong) UILabel *firest_label;
-
 @property (nonatomic, strong) UILabel *second_label;
-
 @property (nonatomic, strong) UILabel *third_label;
-
 @property (nonatomic, strong) UILabel *four_label;
+
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamInFoStateItem *> *findTeamInFoStateItemArray;
 
 @end
 
@@ -52,6 +46,8 @@
     
     [self setInitWithNav];
     
+    [self setAllRequest];
+    
     [self setUpInitController];
     
     [self setUpAllVeiwController];
@@ -59,6 +55,54 @@
     [self setUpInit];
     
     [self addChildVCIntoScrollView:0];
+    
+}
+
+#pragma mark - 所有的请求接口
+- (void)setAllRequest
+{
+    [self lineCountRequest];
+}
+
+#pragma mark - 每个标题中有多少为查看的数字接口
+- (void)lineCountRequest
+{
+    NSDictionary *dictParaments = @{
+                                    @"userId":@7
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDTEAMINFOSTATEURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSLog(@"+++++++++++获取到的团队状态数字是 :%@",object);
+            [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[object objectForKey:@"rows"]]];
+            if (wself.findTeamInFoStateItemArray.count == 0) {
+                [wself setUpLabelColourWithFirstNumber:0 secondNumber:0 thirdNumber:0 fourNumber:0];
+            }else if (wself.findTeamInFoStateItemArray.count == 1) {
+                [wself setUpLabelColourWithFirstNumber:wself.findTeamInFoStateItemArray[0].total secondNumber:0 thirdNumber:0 fourNumber:0];
+            }else if (wself.findTeamInFoStateItemArray.count == 2) {
+                [wself setUpLabelColourWithFirstNumber:wself.findTeamInFoStateItemArray[0].total secondNumber:wself.findTeamInFoStateItemArray[1].total thirdNumber:0 fourNumber:0];
+            }else if (wself.findTeamInFoStateItemArray.count == 3) {
+                [wself setUpLabelColourWithFirstNumber:wself.findTeamInFoStateItemArray[0].total secondNumber:wself.findTeamInFoStateItemArray[1].total thirdNumber:wself.findTeamInFoStateItemArray[2].total fourNumber:0];
+            }else {
+                [wself setUpLabelColourWithFirstNumber:wself.findTeamInFoStateItemArray[0].total secondNumber:wself.findTeamInFoStateItemArray[1].total thirdNumber:wself.findTeamInFoStateItemArray[2].total fourNumber:wself.findTeamInFoStateItemArray[3].total];
+            }
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            NSLog(@"++=========获取到的团队状态数字失败的是:%@",error);
+            [MBProgressHUD showHudTipStr:@"主人~~网络君错误啦!!" contentColor:HidWithColorContentBlack];
+        }
+    } progress:^(float progress) {
+    }];
+}
+
+#pragma mark - 文字的状态
+- (void)setUpLabelColourWithFirstNumber:(NSInteger)firestNumber secondNumber:(NSInteger)secondNumber thirdNumber:(NSInteger)thirdNumber fourNumber:(NSInteger)fourNumber
+{
+    self.firest_label.text = [NSString stringWithFormat:@"(%zd)",firestNumber];
+    self.second_label.text = [NSString stringWithFormat:@"(%zd)",secondNumber];
+    self.third_label.text = [NSString stringWithFormat:@"(%zd)",thirdNumber];
+    self.four_label.text = [NSString stringWithFormat:@"(%zd)",fourNumber];
 }
 
 - (void)setInitWithNav
@@ -82,6 +126,14 @@
         _title_label.textAlignment = NSTextAlignmentCenter;
     }
     return _title_label;
+}
+
+- (NSMutableArray <XFJFindTeamInFoStateItem *> *)findTeamInFoStateItemArray
+{
+    if (_findTeamInFoStateItemArray == nil) {
+        _findTeamInFoStateItemArray = [NSMutableArray array];
+    }
+    return _findTeamInFoStateItemArray;
 }
 
 #pragma mark - 将数组存在偏好设置中
@@ -200,10 +252,8 @@
 {
     if (_firest_label == nil) {
         _firest_label = [[UILabel alloc] init];
-        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",@"(2)"]];
-        [self returnRangColorWithString:string];
-        _firest_label.attributedText = string;
-        _firest_label.font = [UIFont systemFontOfSize:14.0];
+        _firest_label.textColor = kColorff47;
+        _firest_label.font = [UIFont systemFontOfSize:11.0];
     }
     return _firest_label;
 }
@@ -219,10 +269,8 @@
 {
     if (_second_label == nil) {
         _second_label = [[UILabel alloc] init];
-        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",@"(3)"]];
-        [self returnRangColorWithString:string];
-        _second_label.attributedText = string;
-        _second_label.font = [UIFont systemFontOfSize:14.0];
+        _second_label.textColor = kColorff47;
+        _second_label.font = [UIFont systemFontOfSize:11.0];
     }
     return _second_label;
 }
@@ -231,10 +279,8 @@
 {
     if (_third_label == nil) {
         _third_label = [[UILabel alloc] init];
-        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",@"(4)"]];
-        [self returnRangColorWithString:string];
-        _third_label.attributedText = string;
-        _third_label.font = [UIFont systemFontOfSize:14.0];
+        _third_label.textColor = kColorff47;
+        _third_label.font = [UIFont systemFontOfSize:11.0];
     }
     return _third_label;
 }
@@ -243,10 +289,8 @@
 {
     if (_four_label == nil) {
         _four_label = [[UILabel alloc] init];
-        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",@"(5)"]];
-        [self returnRangColorWithString:string];
-        _four_label.attributedText = string;
-        _four_label.font = [UIFont systemFontOfSize:14.0];
+        _four_label.textColor = kColorff47;
+        _four_label.font = [UIFont systemFontOfSize:11.0];
     }
     return _four_label;
 }

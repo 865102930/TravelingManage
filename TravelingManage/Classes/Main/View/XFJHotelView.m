@@ -116,13 +116,22 @@
 {
     if (_hotelText_field == nil) {
         _hotelText_field = [[UITextField alloc] init];
-        _hotelText_field.text = @"40";
+        _hotelText_field.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
+        [_hotelText_field addTarget:self action:@selector(hotelSignPeopleNumber:) forControlEvents:UIControlEventEditingChanged];
         _hotelText_field.textAlignment = NSTextAlignmentRight;
         _hotelText_field.textColor = kColor8383;
         _hotelText_field.font = [UIFont systemFontOfSize:14.0];
         _hotelText_field.background = [UIImage originalWithImage:@"input-box4-"];
     }
     return _hotelText_field;
+}
+
+- (void)hotelSignPeopleNumber:(UITextField *)textField
+{
+    self.isHotelCount = YES;
+    if (self.hotelPopelSignBlock) {
+        self.hotelPopelSignBlock(textField.text,self.isHotelCount);
+    }
 }
 
 - (UILabel *)peopleName_label
@@ -165,13 +174,21 @@
 {
     if (_romeText_field == nil) {
         _romeText_field = [[UITextField alloc] init];
-        _romeText_field.text = @"3";
+        _romeText_field.text = @"0";
         _romeText_field.textAlignment = NSTextAlignmentRight;
         _romeText_field.textColor = kColor8383;
         _romeText_field.font = [UIFont systemFontOfSize:14.0];
+        [_romeText_field addTarget:self action:@selector(hotelSignRoomCount:) forControlEvents:UIControlEventEditingChanged];
         _romeText_field.background = [UIImage originalWithImage:@"input-box4-"];
     }
     return _romeText_field;
+}
+
+- (void)hotelSignRoomCount:(UITextField *)hotelRoomCountText
+{
+    if (self.HotelSignRoomCountBlock) {
+        self.HotelSignRoomCountBlock(hotelRoomCountText.text);
+    }
 }
 
 - (UILabel *)rome_label

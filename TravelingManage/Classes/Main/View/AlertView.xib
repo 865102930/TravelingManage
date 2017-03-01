@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AlertView"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="gJZ-9Y-6EG" customClass="AlertView">
+        <view contentMode="scaleToFill" id="gJZ-9Y-6EG" customClass="AlertView1">
             <rect key="frame" x="0.0" y="0.0" width="288" height="172"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -41,7 +41,7 @@
                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="scanSign:" destination="-1" eventType="touchUpInside" id="F1W-GW-61n"/>
+                        <action selector="bake:" destination="gJZ-9Y-6EG" eventType="touchUpInside" id="nLB-F4-i3l"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ciJ-tK-ksW">
@@ -57,7 +57,7 @@
                         <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="manualSign:" destination="-1" eventType="touchUpInside" id="Rxn-m0-vU2"/>
+                        <action selector="signOut:" destination="gJZ-9Y-6EG" eventType="touchUpInside" id="iyJ-Nk-r8E"/>
                     </connections>
                 </button>
             </subviews>
@@ -69,6 +69,7 @@
                 <constraint firstItem="ppF-bC-IPt" firstAttribute="top" secondItem="RhQ-k0-79c" secondAttribute="bottom" id="A0T-xq-BdV"/>
                 <constraint firstAttribute="bottom" secondItem="ppF-bC-IPt" secondAttribute="bottom" id="Ct7-9A-6cM"/>
                 <constraint firstItem="FBR-5y-Mmt" firstAttribute="top" secondItem="RhQ-k0-79c" secondAttribute="bottom" id="JUe-jL-qbN"/>
+                <constraint firstItem="L9p-ud-FFD" firstAttribute="centerX" secondItem="gJZ-9Y-6EG" secondAttribute="centerX" id="SjT-EH-JU2"/>
                 <constraint firstAttribute="trailing" secondItem="RhQ-k0-79c" secondAttribute="trailing" id="Vhv-6Y-TQx"/>
                 <constraint firstItem="ciJ-tK-ksW" firstAttribute="centerX" secondItem="L9p-ud-FFD" secondAttribute="centerX" id="avV-AJ-e2u"/>
                 <constraint firstItem="ppF-bC-IPt" firstAttribute="leading" secondItem="gJZ-9Y-6EG" secondAttribute="leading" id="lYQ-oa-3lT"/>
@@ -78,14 +79,13 @@
                 <constraint firstAttribute="bottom" secondItem="ciJ-tK-ksW" secondAttribute="bottom" id="r1T-6U-xsM"/>
                 <constraint firstAttribute="bottom" secondItem="FBR-5y-Mmt" secondAttribute="bottom" id="r7Z-Kg-Oa9"/>
                 <constraint firstItem="RhQ-k0-79c" firstAttribute="leading" secondItem="gJZ-9Y-6EG" secondAttribute="leading" id="t1k-ZC-Qxy"/>
-                <constraint firstItem="L9p-ud-FFD" firstAttribute="leading" secondItem="gJZ-9Y-6EG" secondAttribute="leading" constant="125.5" id="us6-Sz-Xau"/>
                 <constraint firstItem="FBR-5y-Mmt" firstAttribute="leading" secondItem="ciJ-tK-ksW" secondAttribute="trailing" id="wqk-mF-FKX"/>
                 <constraint firstAttribute="trailing" secondItem="FBR-5y-Mmt" secondAttribute="trailing" id="zrG-Ge-25b"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-765" y="167"/>
+            <point key="canvasLocation" x="-1373" y="86"/>
         </view>
-        <view contentMode="scaleToFill" id="1Gp-Ts-hsH" customClass="AlertView1">
+        <view contentMode="scaleToFill" id="1Gp-Ts-hsH" customClass="AlertView">
             <rect key="frame" x="0.0" y="0.0" width="288" height="172"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -115,7 +115,7 @@
                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="scanSign:" destination="-1" eventType="touchUpInside" id="eVu-bP-6Cb"/>
+                        <action selector="scanSign:" destination="-1" eventType="touchUpInside" id="G09-Ve-dNR"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Qg-G8-tax">
@@ -131,7 +131,7 @@
                         <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="manualSign:" destination="-1" eventType="touchUpInside" id="SdV-Db-hZW"/>
+                        <action selector="manualSign:" destination="-1" eventType="touchUpInside" id="7Zc-DD-AYO"/>
                     </connections>
                 </button>
             </subviews>
@@ -145,19 +145,19 @@
                 <constraint firstAttribute="bottom" secondItem="SyL-04-YvL" secondAttribute="bottom" id="J7m-ix-QSv"/>
                 <constraint firstItem="5Qg-G8-tax" firstAttribute="top" secondItem="Vch-Ks-JIo" secondAttribute="bottom" id="Jf7-eV-573"/>
                 <constraint firstItem="SyL-04-YvL" firstAttribute="top" secondItem="Vch-Ks-JIo" secondAttribute="bottom" id="Qyj-If-DCy"/>
+                <constraint firstItem="sh8-6S-V2i" firstAttribute="centerX" secondItem="1Gp-Ts-hsH" secondAttribute="centerX" id="R5d-V3-URS"/>
                 <constraint firstItem="sh8-6S-V2i" firstAttribute="top" secondItem="1Gp-Ts-hsH" secondAttribute="top" constant="24" id="VFS-Zq-Edl"/>
                 <constraint firstAttribute="trailing" secondItem="QSm-Jq-TFj" secondAttribute="trailing" id="XZ1-LV-bIl"/>
                 <constraint firstItem="Rl5-bX-WOh" firstAttribute="centerX" secondItem="sh8-6S-V2i" secondAttribute="centerX" id="Znb-kV-ghl"/>
                 <constraint firstItem="Vch-Ks-JIo" firstAttribute="top" secondItem="Rl5-bX-WOh" secondAttribute="bottom" constant="25" id="ZxO-JH-fuN"/>
                 <constraint firstItem="5Qg-G8-tax" firstAttribute="leading" secondItem="SyL-04-YvL" secondAttribute="trailing" id="fM7-ko-GMF"/>
                 <constraint firstItem="SyL-04-YvL" firstAttribute="leading" secondItem="1Gp-Ts-hsH" secondAttribute="leading" id="gaF-pB-GMV"/>
-                <constraint firstItem="sh8-6S-V2i" firstAttribute="leading" secondItem="1Gp-Ts-hsH" secondAttribute="leading" constant="125.5" id="h3C-Za-hKY"/>
                 <constraint firstAttribute="bottom" secondItem="5Qg-G8-tax" secondAttribute="bottom" id="noM-Fk-9YS"/>
                 <constraint firstAttribute="trailing" secondItem="Vch-Ks-JIo" secondAttribute="trailing" id="qK4-TG-Gdp"/>
                 <constraint firstItem="Rl5-bX-WOh" firstAttribute="top" secondItem="sh8-6S-V2i" secondAttribute="bottom" constant="25" id="rhW-cj-ImS"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-758" y="389"/>
+            <point key="canvasLocation" x="-1310" y="377"/>
         </view>
     </objects>
     <resources>

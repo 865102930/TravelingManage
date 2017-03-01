@@ -14,14 +14,14 @@
 
 @implementation AlertView
 //提示
-////手动签到
+////确认
 - (IBAction)manualSign:(id)sender {
     if([self.delegate respondsToSelector:@selector(popViewClickBtn:)]) {
         [self.delegate popViewClickBtn:self];
     }
 }
 
-//扫描签到
+//取消
 - (IBAction)scanSign:(id)sender {
     if([self.delegate respondsToSelector:@selector(presentViewClickBtn:)]) {
         [self.delegate presentViewClickBtn:self];

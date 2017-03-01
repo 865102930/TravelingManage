@@ -10,4 +10,11 @@
 
 @interface XFJSignNoHotelView : UIView
 
+@property (nonatomic, strong) NSString *hotelSignPeopleCount;
+@property (nonatomic, strong) NSString *hotelSignRoomCount;
+//天数
+@property (nonatomic, assign) NSInteger hotelStayDay;
+
+@property (nonatomic, copy) void (^hotelSignNoButtonClickBlock)();
+
 @end

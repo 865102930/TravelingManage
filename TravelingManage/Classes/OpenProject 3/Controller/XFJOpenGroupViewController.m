@@ -452,7 +452,7 @@
             JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:homeController];
             //将用户填写的信息保存起来
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.strNum] forKey:@"CARNUMBERSTR"];
+            [userDefaults setObject:[NSString stringWithFormat:@"%@",self.conventionMessage_view.groupName_text] forKey:@"CARNUMBERSTR"];
             [userDefaults setObject:[NSString stringWithFormat:@"%@%@%@",wself.guestSourceInformation_view.selectedProvince,wself.guestSourceInformation_view.selectedCity,wself.guestSourceInformation_view.selectedArea] forKey:@"PEOPLEWHEREFROMSTR"];
             [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.conventionMessage_view.groupTime_text] forKey:@"OPENTEAMTIMESTR"];
             [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.teamInformation_view.teamPeople_number] forKey:@"TEAMPEOPLENUMBER"];

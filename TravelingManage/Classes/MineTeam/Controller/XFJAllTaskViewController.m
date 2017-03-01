@@ -8,10 +8,11 @@
 
 #import "XFJAllTaskViewController.h"
 #import "XFJAllTaskTableViewCell.h"
+#import "XFJFindTeamInfoByStateItem.h"
 
 @interface XFJAllTaskViewController () <UITableViewDelegate,UITableViewDataSource>
-
 @property (nonatomic, strong) UITableView *allTaskTableView;
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamInfoByStateItem *> *findTeamInfoByStateItem_array;
 
 @end
 
@@ -23,6 +24,40 @@
     self.view.backgroundColor = [UIColor yellowColor];
     
     [self setUpAllTableView];
+    
+    //请求接口
+    [self requestAllStates];
+}
+
+- (NSMutableArray <XFJFindTeamInfoByStateItem *> *)findTeamInfoByStateItem_array
+{
+    if (_findTeamInfoByStateItem_array == nil) {
+        _findTeamInfoByStateItem_array = [NSMutableArray array];
+    }
+    return _findTeamInfoByStateItem_array;
+}
+
+- (void)requestAllStates
+{
+    NSDictionary *dictParaments = @{
+                                    @"userId":@7,
+                                    @"notState":@1,
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:FINDTEAMINFOBYSTATEUEL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSLog(@"--------======++++---返回的请求信息是:%@",object);
+            NSMutableArray *find_array = [object objectForKey:@"rows"];
+            [wself.findTeamInfoByStateItem_array addObjectsFromArray:[XFJFindTeamInfoByStateItem mj_objectArrayWithKeyValuesArray:find_array]];
+            [wself.allTaskTableView reloadData];
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            NSLog(@"----+++++++返回的请求错误信息是:%@",error);
+        }
+    } progress:^(float progress) {
+        
+    }];
 }
 
 - (void)setUpAllTableView
@@ -61,6 +96,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XFJAllTaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJAllTaskTableViewCell forIndexPath:indexPath];
+    cell.findTeamInfoByStateItem = self.findTeamInfoByStateItem_array[indexPath.row];
     return cell;
 }
 

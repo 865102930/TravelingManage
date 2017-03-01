@@ -96,6 +96,11 @@
 		3A756F201E657D03005D2C02 /* AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A756F1D1E657D03005D2C02 /* AlertView.m */; };
 		3A756F211E657D03005D2C02 /* AlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F1E1E657D03005D2C02 /* AlertView.xib */; };
 		3A756F241E658C80005D2C02 /* AlertView1.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A756F231E658C80005D2C02 /* AlertView1.m */; };
+		3A756F281E66BBD0005D2C02 /* XFJFindTeamInFoStateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A756F271E66BBCF005D2C02 /* XFJFindTeamInFoStateItem.m */; };
+		3A756F2C1E66BE44005D2C02 /* location-map.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F291E66BE44005D2C02 /* location-map.png */; };
+		3A756F2D1E66BE44005D2C02 /* location-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F2A1E66BE44005D2C02 /* location-map@2x.png */; };
+		3A756F2E1E66BE44005D2C02 /* location-map@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F2B1E66BE44005D2C02 /* location-map@3x.png */; };
+		3A756F311E66E3D4005D2C02 /* XFJFindTeamInfoByStateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A756F301E66E3D4005D2C02 /* XFJFindTeamInfoByStateItem.m */; };
 		3A7A510C1E4B0219004FFB0F /* XFJLeftTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7A510B1E4B0219004FFB0F /* XFJLeftTableHeaderView.m */; };
 		3A7A51171E4B04AF004FFB0F /* xiugai.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7A51111E4B04AF004FFB0F /* xiugai.png */; };
 		3A7A51181E4B04AF004FFB0F /* xiugai@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7A51121E4B04AF004FFB0F /* xiugai@2x.png */; };
@@ -412,6 +417,13 @@
 		3A756F1E1E657D03005D2C02 /* AlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertView.xib; sourceTree = "<group>"; };
 		3A756F221E658C80005D2C02 /* AlertView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertView1.h; sourceTree = "<group>"; };
 		3A756F231E658C80005D2C02 /* AlertView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertView1.m; sourceTree = "<group>"; };
+		3A756F261E66BBCF005D2C02 /* XFJFindTeamInFoStateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindTeamInFoStateItem.h; sourceTree = "<group>"; };
+		3A756F271E66BBCF005D2C02 /* XFJFindTeamInFoStateItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindTeamInFoStateItem.m; sourceTree = "<group>"; };
+		3A756F291E66BE44005D2C02 /* location-map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-map.png"; sourceTree = "<group>"; };
+		3A756F2A1E66BE44005D2C02 /* location-map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-map@2x.png"; sourceTree = "<group>"; };
+		3A756F2B1E66BE44005D2C02 /* location-map@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-map@3x.png"; sourceTree = "<group>"; };
+		3A756F2F1E66E3D4005D2C02 /* XFJFindTeamInfoByStateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindTeamInfoByStateItem.h; sourceTree = "<group>"; };
+		3A756F301E66E3D4005D2C02 /* XFJFindTeamInfoByStateItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindTeamInfoByStateItem.m; sourceTree = "<group>"; };
 		3A7A510A1E4B0219004FFB0F /* XFJLeftTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJLeftTableHeaderView.h; sourceTree = "<group>"; };
 		3A7A510B1E4B0219004FFB0F /* XFJLeftTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJLeftTableHeaderView.m; sourceTree = "<group>"; };
 		3A7A51111E4B04AF004FFB0F /* xiugai.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiugai.png; sourceTree = "<group>"; };
@@ -1005,6 +1017,17 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		3A756F251E66B8DC005D2C02 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3A756F261E66BBCF005D2C02 /* XFJFindTeamInFoStateItem.h */,
+				3A756F271E66BBCF005D2C02 /* XFJFindTeamInFoStateItem.m */,
+				3A756F2F1E66E3D4005D2C02 /* XFJFindTeamInfoByStateItem.h */,
+				3A756F301E66E3D4005D2C02 /* XFJFindTeamInfoByStateItem.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		3A7A510D1E4B0493004FFB0F /* LeftViewImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1224,6 +1247,9 @@
 		3AE2FF341E4D48CD00E380F9 /* HomePicture */ = {
 			isa = PBXGroup;
 			children = (
+				3A756F291E66BE44005D2C02 /* location-map.png */,
+				3A756F2A1E66BE44005D2C02 /* location-map@2x.png */,
+				3A756F2B1E66BE44005D2C02 /* location-map@3x.png */,
 				3A756F141E657583005D2C02 /* tishi.png */,
 				3A756F151E657583005D2C02 /* tishi@2x.png */,
 				3A756F161E657583005D2C02 /* tishi@3x.png */,
@@ -1314,6 +1340,7 @@
 			children = (
 				3AE849DB1E5432F400A71C5E /* Controller */,
 				3AE849DC1E5432F400A71C5E /* View */,
+				3A756F251E66B8DC005D2C02 /* Model */,
 			);
 			path = MineTeam;
 			sourceTree = "<group>";
@@ -1449,6 +1476,7 @@
 				3AA475181E5EAE5300FEB005 /* shurukuang@3x.png in Resources */,
 				3ADDF0211E4DAD02003C838F /* information-@3x.png in Resources */,
 				3AA4750E1E5EA44F00FEB005 /* wodeweizhi@2x.png in Resources */,
+				3A756F2E1E66BE44005D2C02 /* location-map@3x.png in Resources */,
 				3AA4751C1E5EDE7900FEB005 /* dingwei.png in Resources */,
 				3ADDF0201E4DAD02003C838F /* information-@2x.png in Resources */,
 				3AE2FF401E4D491600E380F9 /* xinjianrenwukuang@3x.png in Resources */,
@@ -1492,6 +1520,7 @@
 				3AA4750D1E5EA44F00FEB005 /* wodeweizhi.png in Resources */,
 				3A7A51171E4B04AF004FFB0F /* xiugai.png in Resources */,
 				3AE2FF3F1E4D491600E380F9 /* xinjianrenwukuang@2x.png in Resources */,
+				3A756F2D1E66BE44005D2C02 /* location-map@2x.png in Resources */,
 				3A756F191E657583005D2C02 /* tishi@3x.png in Resources */,
 				3ADDF0231E4DAD02003C838F /* input-box-@2x.png in Resources */,
 				3ADDF0381E4DBB5B003C838F /* xinghao.png in Resources */,
@@ -1507,6 +1536,7 @@
 				3A4E70531E6034AD00547BCD /* renshu.png in Resources */,
 				3ADDF0391E4DBB5B003C838F /* xinghao@2x.png in Resources */,
 				3AE7FA3D1E55506C003E3505 /* hongse@2x.png in Resources */,
+				3A756F2C1E66BE44005D2C02 /* location-map.png in Resources */,
 				3ADDF0141E4DAD02003C838F /* add-img-@2x.png in Resources */,
 				3A7A51231E4B09FC004FFB0F /* message2.png in Resources */,
 				3ADDF01A1E4DAD02003C838F /* drop-down-box-2@2x.png in Resources */,
@@ -1691,6 +1721,7 @@
 				3A18E54A1E5D6FB400BFE891 /* XFJMinusCarNumTableViewCell.m in Sources */,
 				3A18E5521E5D6FB400BFE891 /* XFJVoucherPhotosView.m in Sources */,
 				1CFDFE201E542C65001D6300 /* TZPhotoPreviewCell.m in Sources */,
+				3A756F311E66E3D4005D2C02 /* XFJFindTeamInfoByStateItem.m in Sources */,
 				3A7A510C1E4B0219004FFB0F /* XFJLeftTableHeaderView.m in Sources */,
 				1CFDFE511E542C84001D6300 /* JFImageCollectionViewController.m in Sources */,
 				1CFDFE561E542C84001D6300 /* JFPhotoBrowserViewController.m in Sources */,
@@ -1707,6 +1738,7 @@
 				3AEE6C011E6402B400410412 /* XFJTeamSignListItem.m in Sources */,
 				3A07C8F81E480B0A008A838D /* UIImage+XFJOriginalImageView.m in Sources */,
 				1CFDFE1E1E542C65001D6300 /* TZImagePickerController.m in Sources */,
+				3A756F281E66BBD0005D2C02 /* XFJFindTeamInFoStateItem.m in Sources */,
 				1CFDFE3E1E542C78001D6300 /* WSPhotosBroseVC.m in Sources */,
 				3A48BAC41E5A949600910789 /* XFJHomeTopTaskMessageVeiw.m in Sources */,
 				3AE849DF1E54330900A71C5E /* XFJMineTeamViewController.m in Sources */,

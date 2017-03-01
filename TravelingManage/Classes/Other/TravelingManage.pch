@@ -64,7 +64,7 @@
 
 #define BASEURL @"http://118.178.224.151/teammgmtback"
 
-//#define BASEURL @"http://192.168.0.102:8080/teammgmtback"
+//#define BASEURL @"http://192.168.0.101:8080/teammgmtback"
 
 //注册接口
 #define REGISTURL (BASEURL@"/app/user/userRegister")
@@ -94,3 +94,10 @@
 #define TEAMSIGNOUTURL (BASEURL@"/app/teamTask/teamSignOut")
 //查询当前市的景区信息
 #define FINDATTRACTIONSLISTURL (BASEURL@"/app/attractions/findAttractionsList")
+//主界面顶部的按钮的接口
+#define STATUSTEAMINFOURL (BASEURL@"/app/teamInfo/statusTeamInfo")
+//团队状态的统计
+#define FINDTEAMINFOSTATEURL (BASEURL@"/app/teamInfo/findTeamInfoState")
+//团队状态列表
+#define FINDTEAMINFOBYSTATEUEL (BASEURL@"/app/teamInfo/findTeamInfoByState")
+

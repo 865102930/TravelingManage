@@ -57,7 +57,7 @@
 {
     if (_carNumber_label == nil) {
         _carNumber_label = [[UILabel alloc] init];
-        _carNumber_label.text = @"车  牌  号:";
+        _carNumber_label.text = @"团队编号:";
         _carNumber_label.textAlignment = NSTextAlignmentLeft;
         _carNumber_label.font = [UIFont systemFontOfSize:13.0];
         _carNumber_label.textColor = kColor8383;
@@ -136,8 +136,16 @@
         _state_button.layer.borderWidth = 0.5;
         [_state_button setTitleColor:kColorff47 forState:UIControlStateNormal];
         _state_button.titleLabel.font = [UIFont systemFontOfSize:13.0];
+        [_state_button addTarget:self action:@selector(stateButtonClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _state_button;
+}
+
+- (void)stateButtonClick
+{
+    if (self.ExitStatusButtonClickBlock) {
+        self.ExitStatusButtonClickBlock();
+    }
 }
 
 - (UIButton *)arrow_button

@@ -161,7 +161,7 @@
     if (_teamNumber_label2 == nil) {
         _teamNumber_label2 = [[UILabel alloc] init];
         _teamNumber_label2.textAlignment = NSTextAlignmentLeft;
-        _teamNumber_label2.text = [NSString stringWithFormat:@"0000"];
+//        _teamNumber_label2.text = [NSString stringWithFormat:@"0000"];
         _teamNumber_label2.textColor = kColor2b2b;
         _teamNumber_label2.font = [UIFont systemFontOfSize:14.0];
     }
@@ -194,7 +194,7 @@
     if (_teamPeople_label2 == nil) {
         _teamPeople_label2 = [[UILabel alloc] init];
         _teamPeople_label2.textAlignment = NSTextAlignmentLeft;
-        _teamPeople_label2.text = [NSString stringWithFormat:@"22人"];
+//        _teamPeople_label2.text = [NSString stringWithFormat:@"22人"];
         _teamPeople_label2.textColor = kColor2b2b;
         _teamPeople_label2.font = [UIFont systemFontOfSize:14.0];
     }
@@ -218,7 +218,7 @@
     if (_travelServiceName_label2 == nil) {
         _travelServiceName_label2 = [[UILabel alloc] init];
         _travelServiceName_label2.textAlignment = NSTextAlignmentLeft;
-        _travelServiceName_label2.text = [NSString stringWithFormat:@"张全蛋旅社"];
+//        _travelServiceName_label2.text = [NSString stringWithFormat:@"张全蛋旅社"];
         _travelServiceName_label2.textColor = kColor2b2b;
         _travelServiceName_label2.font = [UIFont systemFontOfSize:14.0];
     }
@@ -230,7 +230,7 @@
     if (_startTeamTime_label2 == nil) {
         _startTeamTime_label2 = [[UILabel alloc] init];
         _startTeamTime_label2.textAlignment = NSTextAlignmentLeft;
-        _startTeamTime_label2.text = [NSString stringWithFormat:@"2017-02-23"];
+//        _startTeamTime_label2.text = [NSString stringWithFormat:@"2017-02-23"];
         _startTeamTime_label2.textColor = kColor2b2b;
         _startTeamTime_label2.font = [UIFont systemFontOfSize:14.0];
     }
@@ -255,7 +255,7 @@
 {
     if (_taskStatus_label == nil) {
         _taskStatus_label = [[UILabel alloc] init];
-        _taskStatus_label.text = [NSString stringWithFormat:@"%@",@"任务进行中"];
+//        _taskStatus_label.text = [NSString stringWithFormat:@"%@",@"任务进行中"];
         _taskStatus_label.textColor = kColorff47;
         _taskStatus_label.font = [UIFont systemFontOfSize:13.0];
     }
@@ -266,7 +266,7 @@
 {
     if (_status_button == nil) {
         _status_button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_status_button setTitle:[NSString stringWithFormat:@"%@",@"重新开始"] forState:UIControlStateNormal];
+//        [_status_button setTitle:[NSString stringWithFormat:@"%@",@"重新开始"] forState:UIControlStateNormal];
         [_status_button setTitleColor:kColorff47 forState:UIControlStateNormal];
         [_status_button addTarget:self action:@selector(againStartButtonClick) forControlEvents:UIControlEventTouchUpInside];
         _status_button.layer.cornerRadius = 2.0;
@@ -281,7 +281,7 @@
 {
     if (_cancel_button == nil) {
         _cancel_button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_cancel_button setTitle:[NSString stringWithFormat:@"%@",@"取消"] forState:UIControlStateNormal];
+//        [_cancel_button setTitle:[NSString stringWithFormat:@"%@",@"取消"] forState:UIControlStateNormal];
         [_cancel_button setTitleColor:kColor9898 forState:UIControlStateNormal];
         [_cancel_button addTarget:self action:@selector(cancelButtonClick) forControlEvents:UIControlEventTouchUpInside];
         _cancel_button.layer.cornerRadius = 2.0;
@@ -304,6 +304,12 @@
 + (CGFloat)cellHeight
 {
     return 170.0;
+}
+
+- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    _findTeamInfoByStateItem = findTeamInfoByStateItem;
+    
 }
 
 @end

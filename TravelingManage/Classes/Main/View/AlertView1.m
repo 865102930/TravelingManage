@@ -10,6 +10,8 @@
 
 @implementation AlertView1
 
+
+//取消
 - (IBAction)bake:(UIButton *)sender {
     if([self.delegate respondsToSelector:@selector(popViewClickBtn1:)]) {
         [self.delegate popViewClickBtn1:self];
@@ -17,6 +19,7 @@
 
 }
 
+//确认
 - (IBAction)signOut:(UIButton *)sender {
     if([self.delegate respondsToSelector:@selector(presentViewClickBtn1:)]) {
         [self.delegate presentViewClickBtn1:self];

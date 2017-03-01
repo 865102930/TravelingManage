@@ -10,8 +10,12 @@
 
 
 #import <UIKit/UIKit.h>
+#import "XFJFindTeamInfoByStateItem.h"
+
 
 @interface XFJAllTaskTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) XFJFindTeamInfoByStateItem *findTeamInfoByStateItem;
 
 + (CGFloat)cellHeight;
 

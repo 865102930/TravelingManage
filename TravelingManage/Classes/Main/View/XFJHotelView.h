@@ -11,5 +11,10 @@
 @interface XFJHotelView : UIView
 
 @property (nonatomic, copy) void (^hotelSignButtonClickBlock)();
+@property (nonatomic, copy) void (^hotelPopelSignBlock)(NSString *, BOOL);
+//将用户输入的房间数量传出去
+@property (nonatomic, copy) void (^HotelSignRoomCountBlock)(NSString *);
+//是否改动了人数
+@property (nonatomic, assign) BOOL isHotelCount;
 
 @end

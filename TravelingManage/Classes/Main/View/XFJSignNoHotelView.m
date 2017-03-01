@@ -112,7 +112,6 @@
 {
     if (_peopleContent_label == nil) {
         _peopleContent_label = [[UILabel alloc] init];
-        _peopleContent_label.text = [NSString stringWithFormat:@"%@",@"400"];
         _peopleContent_label.textColor = RedColor;
         _peopleContent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _peopleContent_label.textAlignment = NSTextAlignmentLeft;
@@ -145,7 +144,7 @@
 {
     if (_houseContent_label == nil) {
         _houseContent_label = [[UILabel alloc] init];
-        _houseContent_label.text = [NSString stringWithFormat:@"%@",@"30"];
+//        _houseContent_label.text = [NSString stringWithFormat:@"%@",@"30"];
         _houseContent_label.textColor = RedColor;
         _houseContent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _houseContent_label.textAlignment = NSTextAlignmentLeft;
@@ -191,7 +190,8 @@
 {
     if (_inHouseTimeContent_label == nil) {
         _inHouseTimeContent_label = [[UILabel alloc] init];
-        _inHouseTimeContent_label.text = [NSString stringWithFormat:@"%@",@"3"];
+        //这里是将控制器中的小时数量转化为天数然后在赋值
+//        _inHouseTimeContent_label.text = [NSString stringWithFormat:@"%@",@"3"];
         _inHouseTimeContent_label.textColor = RedColor;
         _inHouseTimeContent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _inHouseTimeContent_label.textAlignment = NSTextAlignmentLeft;
@@ -229,6 +229,27 @@
 - (void)hotelSignNoButton
 {
     NSLog(@"主人~~您点击了酒店签退按钮~~");
+    if (self.hotelSignNoButtonClickBlock) {
+        self.hotelSignNoButtonClickBlock();
+    }
+}
+
+- (void)setHotelSignPeopleCount:(NSString *)hotelSignPeopleCount
+{
+    _hotelSignPeopleCount = hotelSignPeopleCount;
+    self.peopleContent_label.text = [NSString stringWithFormat:@"%@",hotelSignPeopleCount];
+}
+
+- (void)setHotelSignRoomCount:(NSString *)hotelSignRoomCount
+{
+    _hotelSignRoomCount = hotelSignRoomCount;
+    self.houseContent_label.text = [NSString stringWithFormat:@"%@",hotelSignRoomCount];
+}
+
+- (void)setHotelStayDay:(NSInteger)hotelStayDay
+{
+    _hotelStayDay = hotelStayDay;
+    self.inHouseTimeContent_label.text = [NSString stringWithFormat:@"%zd",hotelStayDay];
 }
 
 
