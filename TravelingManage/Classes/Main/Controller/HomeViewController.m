@@ -37,6 +37,7 @@
 #import "XFJAllTaskViewController.h"
 #import "JTNavigationController.h"
 #import "XFJSignMessageViewController.h"
+#import "XFJLaterTeamControlItem.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -120,6 +121,10 @@
     self.navigationItem.titleView = self.title_label;
     self.navigationItem.leftBarButtonItem = self.user_SttingButtonItem;
     self.navigationItem.rightBarButtonItem = self.projectButtonItem;
+    
+    //这里调用最近操作的团队信息
+    [self requestLatelyControl];
+    
     //这是添加的公告(如果开始进来的时候没有任务,就显示公告,后面则显示新建任务的标题栏)
     self.isProjectItem == NO ? [self.view addSubview:self.announcementView] : [self.view addSubview:self.homeTopTaskMessageVeiw];
     
@@ -141,6 +146,29 @@
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
     keyboardManager.keyboardDistanceFromTextField = 50;
+}
+
+#pragma mark - 最近操作的团队
+- (void)requestLatelyControl
+{
+    NSDictionary *dictParams = @{
+                                 @"userId":@7//这个数据暂时写死
+                                 };
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDNEWTEAMINFOURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++获取到的最近的操作的团队是:%@",responseObject);
+            [wself.view addSubview:wself.homeTopTaskMessageVeiw];
+            NSDictionary *dict = [responseObject objectForKey:@"object"];
+            XFJLaterTeamControlItem *laterTeamControlItem = [XFJLaterTeamControlItem mj_objectWithKeyValues:dict];
+            wself.homeTopTaskMessageVeiw.laterTeamControlItem = laterTeamControlItem;
+            NSLog(@"========打印出来的最近团队的参数模型是:%@",laterTeamControlItem);
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"+++++++++++++获取不到的最近的操作的团队打印的错误信息是:%@",error);
+        }
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated

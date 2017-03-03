@@ -53,9 +53,16 @@
 //            wself.leftTableFooterView.frame = CGRectMake(0, SCREEN_HEIGHT - 100, wself.XFJ_Width, 100);
 //            wself.leftTableFooterView = [[XFJLeftTableFooterView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 100, wself.XFJ_Width, 100)];
         };
+        //请求数据
+        [self requestViewContent];
         self.leftTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(requestLeftView)];
     }
     return self;
+}
+
+- (void)requestViewContent
+{
+    [self requestLeftView];
 }
 
 - (NSMutableArray <XFJLeftFindTeamInfoItem *> *)leftFindTeamInfoItem_array

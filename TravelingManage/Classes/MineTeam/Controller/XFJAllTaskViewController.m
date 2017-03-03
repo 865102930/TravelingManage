@@ -45,18 +45,10 @@
 
 - (void)requestAllStates
 {
-    NSDictionary *dictParaments;
-    if (self.type != 5) {
-        dictParaments = @{
-                          @"userId":@7,
-                          @"teamState":(self.type == -1) ? @"" : @(self.type)
-                        };
-    }else {
-        dictParaments = @{
-                          @"userId":@7,
-                          @"notState":@1
-                          };
-    }
+    NSDictionary *dictParaments = @{
+                                    @"userId":@7,
+                                    @"teamState":(self.type == -1) ? @"" : @(self.type)
+                                    };
     __weak __typeof(self)wself = self;
     NSLog(@"-------(((((((()))))))0传递的参数是:%@",dictParaments);
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDTEAMINFOBYSTATEUEL withParaments:dictParaments withSuccessBlock:^(id object) {

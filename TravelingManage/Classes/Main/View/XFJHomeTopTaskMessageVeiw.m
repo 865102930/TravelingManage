@@ -206,6 +206,14 @@
     }
 }
 
+- (void)setLaterTeamControlItem:(XFJLaterTeamControlItem *)laterTeamControlItem
+{
+    _laterTeamControlItem = laterTeamControlItem;
+    self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",laterTeamControlItem.teamNo];
+    self.peopleMessageContent_label.text = [NSString stringWithFormat:@"%@%@%@",laterTeamControlItem.province,laterTeamControlItem.city,laterTeamControlItem.area];
+    self.openTeamContent_label.text = [NSString stringWithFormat:@"%@",laterTeamControlItem.teamDate];
+}
+
 
 
 
