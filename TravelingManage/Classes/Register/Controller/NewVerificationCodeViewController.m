@@ -7,6 +7,7 @@
 //
 
 #import "NewVerificationCodeViewController.h"
+#import "NewPhoneNueViewController.h"
 
 @interface NewVerificationCodeViewController ()<UITextFieldDelegate>
 @property(nonatomic,strong)UIImageView *backgroundImage;//背景图片
@@ -226,6 +227,8 @@
 //下一步(先判断验证码是否正确,正确允许注册)
 - (void)nextButtonClick{
     NSLog(@"%@",self.navigationController.childViewControllers);
+    NewPhoneNueViewController *newPhoneNumVC = [[NewPhoneNueViewController alloc] init];
+    [self.navigationController pushViewController:newPhoneNumVC animated:YES];
 }
 
 //返回

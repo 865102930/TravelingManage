@@ -14,26 +14,85 @@
 #import "UIBarButtonItem+Item.h"
 @interface PersonalDataViewController ()
 @property (nonatomic, strong) UILabel *title_label;
+@property(nonatomic,strong)UIImageView *backImage;//返回
+@property(nonatomic,strong)UIButton    *backButton;//返回按钮
+@property(nonatomic,strong)UILabel     *titleL;//标题
+@property(nonatomic,strong)UIView     *headerView;
 @end
 
 @implementation PersonalDataViewController
-
-- (UILabel *)title_label {
-    if (_title_label == nil) {
-        _title_label = [[UILabel alloc] initWithFrame:CGRectMake(self.view.XFJ_centerX, 6, 100, 44)];
-        _title_label.text = @"我的账户";
-        _title_label.textColor = kColor6565;
-        _title_label.textAlignment = NSTextAlignmentCenter;
+#pragma  mark ----- lazy
+- (UIView *)headerView{
+    if (!_headerView) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
+        _headerView.backgroundColor = [UIColor whiteColor];
+        self.tableView.tableHeaderView = _headerView;
+        [self.view addSubview:_headerView];
     }
-    return _title_label;
+    return _headerView;
+}
+
+- (UIButton *)backButton{
+    if (!_backButton) {
+        _backButton = [[UIButton alloc] init];
+        [_backButton addTarget: self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_backButton];
+        
+    }
+    return _backButton;
+}
+
+- (UIImageView *)backImage{
+    if (!_backImage){
+        _backImage  = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back"]];
+        [self.view addSubview:_backImage];
+    }
+    return _backImage;
+}
+
+- (UILabel *)titleL{
+    if (!_titleL) {
+        _titleL = [[UILabel alloc] init];
+        _titleL.text = @"输入验证码";
+        _titleL.textColor = RedColor;
+        _titleL.font = [UIFont fontWithName:PingFang size:16];
+        [self.view addSubview:_titleL];
+    }
+    return _titleL;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.titleView = self.title_label;
     self.tableView.tableFooterView = [[UITableView alloc] init];
+    self.tableView.tableHeaderView = self.headerView;
     _user = [NSUserDefaults standardUserDefaults];
+    [self creatUI];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+#pragma  mark ----- creatUI
+- (void)creatUI{
+    [self.backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(0);
+        make.top.equalTo(self.view).offset(0);
+        make.size.mas_equalTo(CGSizeMake(64, 64));
+    }];
+    
+    [self.backImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(16);
+        make.top.equalTo(self.view).offset(29);
+        make.size.mas_equalTo(CGSizeMake(9, 17));
+    }];
+    
+    [self.titleL mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.backImage);
+        make.centerX.mas_equalTo(self.view);
+    }];
 }
 
 #pragma mark - Table view data source
@@ -72,7 +131,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{  NSLog(@"%@",self.navigationController.childViewControllers);
+{
     NewVerificationCodeViewController * VerificationCodeVC = [[NewVerificationCodeViewController alloc] init];
     VerificationCodeVC.registTextField_text = [_user objectForKey:@"phone"];
     [self.navigationController pushViewController:VerificationCodeVC animated:YES];
@@ -81,4 +140,10 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 55;
 }
+
+#pragma mark ----- 按钮点击事件 -----
+- (void)backButtonClick {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 @end

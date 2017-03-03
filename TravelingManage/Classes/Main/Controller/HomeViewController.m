@@ -660,7 +660,9 @@
 {
     [self remoSubViews];
     PersonalDataViewController *person = [[PersonalDataViewController alloc] init];
-    [self.navigationController pushViewController:person animated:YES];
+    //[self.navigationController pushViewController:person animated:YES];
+    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:person];
+    [self presentViewController:navVC animated:YES completion:nil];
 }
 
 - (void)remoSubViews
