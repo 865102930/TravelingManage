@@ -6,14 +6,13 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-
 #import "PersonalDataViewController.h"
 #import "PersonalDetailCell.h"
 #import "PersonDetail2Cell.h"
-#import "VerificationCodeViewController.h"
+#import "NewVerificationCodeViewController.h"
 #import "HomeViewController.h"
 #import "UIBarButtonItem+Item.h"
-@interface PersonalDataViewController ()<UIGestureRecognizerDelegate>
+@interface PersonalDataViewController ()
 @property (nonatomic, strong) UILabel *title_label;
 @end
 
@@ -35,20 +34,6 @@
     self.navigationItem.titleView = self.title_label;
     self.tableView.tableFooterView = [[UITableView alloc] init];
     _user = [NSUserDefaults standardUserDefaults];
-    if (self.isVerificationCodeVC) {
-        [self setupNavBar];
-    }
-    NSInteger num = self.navigationController.viewControllers.count;
-    if (num >= 1) {
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleNavigationTransition:)];
-        [self.view addGestureRecognizer:pan];
-        pan.delegate = self;
-        
-    }
-}
-
-- (void)handleNavigationTransition:(UIPanGestureRecognizer *)pan
-{
 }
 
 #pragma mark - Table view data source
@@ -87,8 +72,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VerificationCodeViewController * VerificationCodeVC = [[VerificationCodeViewController alloc] init];
+{  NSLog(@"%@",self.navigationController.childViewControllers);
+    NewVerificationCodeViewController * VerificationCodeVC = [[NewVerificationCodeViewController alloc] init];
     VerificationCodeVC.registTextField_text = [_user objectForKey:@"phone"];
     [self.navigationController pushViewController:VerificationCodeVC animated:YES];
 }
@@ -96,37 +81,4 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 55;
 }
-
-
-// 设置导航条内容
-- (void)setupNavBar
-{
-    // 左边
-    UIBarButtonItem *left = [UIBarButtonItem itemWithImage:[UIImage imageNamed:@"back"] highImage:[UIImage imageNamed:@"back"] title:nil target:self action:@selector(onClickBack)];
-    self.navigationItem.leftBarButtonItem = left;
-}
-
-- (void)onClickBack {
-    NSInteger num = self.navigationController.viewControllers.count;
-    NSLog(@"%ld",(long)num);
-//    if (num >= 1) {
-//        UIViewController *popVC = self.navigationController.viewControllers[num - 1];
-//        [self.navigationController popToViewController:popVC animated:YES];
-//        HomeViewController *homeVC = [[HomeViewController alloc] init];
-//        [self.navigationController popToViewController:homeVC animated:YES];
-//    }else{
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }
-
-//    HomeViewController *homeVC = [[HomeViewController alloc] init];
-//    [self.navigationController popToViewController:homeVC animated:NO];
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
-- (void)dealloc
-{
-    NSLog(@"%s",__func__);
-}
-
-
 @end

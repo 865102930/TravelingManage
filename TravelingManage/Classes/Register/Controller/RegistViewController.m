@@ -44,11 +44,7 @@
 - (UILabel *)titleL{
     if (!_titleL) {
         _titleL = [[UILabel alloc] init];
-        if (self.isNewPhoneNumVC) {
-            _titleL.text = @"绑定新手机号";
-        }else {
-            _titleL.text = @"新用户注册";
-        }
+        _titleL.text = @"新用户注册";
         _titleL.textColor = RedColor;
         _titleL.font = [UIFont fontWithName:PingFang size:16];
         [self.view addSubview:_titleL];
@@ -163,19 +159,7 @@
 //}
 //下一步
 - (void)nextButtonClick{
-//    [self whetherRegistration];
-    if (self.isNewPhoneNumVC) {
-        VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
-        verificationCodeVC.registTextField_text = self.phoneTextF.text;
-        verificationCodeVC.isNewVerificationCodeVC = YES;
-        [self.navigationController pushViewController:verificationCodeVC animated:YES];
-    }else {
-        VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
-        verificationCodeVC.registTextField_text = self.phoneTextF.text;
-        verificationCodeVC.isVerificationCodeVC = YES;
-        [self.navigationController pushViewController:verificationCodeVC animated:YES];
-    }
-    
+    [self whetherRegistration];
 }
 //返回
 - (void)backButtonClick{
@@ -217,11 +201,6 @@
         if (error.code == NSURLErrorCancelled) return;
         [MBProgressHUD showHUDMsg:@"网络连接错误"];
     }];
-}
-
-- (void)dealloc
-{
-    NSLog(@"%s",__func__);
 }
 @end
 

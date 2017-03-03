@@ -10,6 +10,4 @@
 
 @interface RegistViewController : UIViewController
 
-@property (nonatomic, assign) BOOL isNewPhoneNumVC;
-
 @end

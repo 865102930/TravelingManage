@@ -1,17 +1,14 @@
 //
-//  VerificationCodeViewController.m
+//  NewVerificationCodeViewController.m
 //  TravelingManage
 //
-//  Created by 戎翠林 on 17/2/9.
+//  Created by 戎翠林 on 17/3/3.
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#import "VerificationCodeViewController.h"
-#import "PersonalInformationViewController.h"
-#import "RegistViewController.h"
-#import "PersonalDataViewController.h"
-#import "JTNavigationController.h"
-@interface VerificationCodeViewController ()<UITextFieldDelegate>
+#import "NewVerificationCodeViewController.h"
+
+@interface NewVerificationCodeViewController ()<UITextFieldDelegate>
 @property(nonatomic,strong)UIImageView *backgroundImage;//背景图片
 @property(nonatomic,strong)UITextField *idCodeTextF;//验证码
 @property(nonatomic,strong)UIImageView *backImage;//返回
@@ -28,7 +25,8 @@
 
 @end
 
-@implementation VerificationCodeViewController
+@implementation NewVerificationCodeViewController
+
 #pragma  mark ----- lazy
 - (UIButton *)backButton{
     if (!_backButton) {
@@ -71,7 +69,7 @@
 - (UITextField *)idCodeTextF{
     if (!_idCodeTextF) {
         _idCodeTextF =[UITextField textLeftImage:@"idCodeImage" placeholder:@"请输入验证码" imageWidth:17 imageHeight:15 lineWidth:(SCREEN_WIDTH - 111 - 17 - 48)];
-          [_idCodeTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [_idCodeTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [self.view addSubview:_idCodeTextF];
     }
     return _idCodeTextF;
@@ -153,7 +151,7 @@
         make.centerY.mas_equalTo(self.backImage);
         make.centerX.mas_equalTo(self.view);
     }];
-
+    
     [self.idCodeL mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(27);
         make.top.equalTo(_backImage.mas_bottom).offset(21);
@@ -180,7 +178,7 @@
         make.top.equalTo(_idCodeL.mas_bottom).offset(10);
         make.height.mas_equalTo(42);
     }];
-
+    
     [self.nextButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
     [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
     [self.nextButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -218,73 +216,6 @@
     }];
 }
 
-//判断验证码是否正确
-- (void)codeMesgCheck {
-    NSDictionary *dictParaments = @{
-                                    @"mobile":self.registTextField_text,
-                                    @"code":self.idCodeTextF.text
-                                    };
-    [GRNetRequestClass POST:CODEMSGCHECK params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"判断验证码是否正确:%@",responseObject);
-        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
-            //注册
-            [self userRegister];
-        }else{
-            [MBProgressHUD showHUDMsg:@"验证码错误,请重新输入"];
-        }
-    } fail:^(NSURLSessionDataTask *task, NSError *error) {
-        if (error.code == NSURLErrorCancelled) return;
-        [MBProgressHUD showHUDMsg:@"网络连接错误"];
-    }];
-}
-
-//注册
-- (void)userRegister {
-    NSDictionary *dictParaments = @{
-                                    @"userMobile":self.registTextField_text,
-                                    };
-    [GRNetRequestClass POST:REGISTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"注册:%@",responseObject);
-        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
-            [MBProgressHUD showHUDMsg:@"注册成功"];
-            PersonalInformationViewController *PersonalInformationVC = [[PersonalInformationViewController alloc] init];
-            [self.navigationController pushViewController:PersonalInformationVC animated:YES];
-        }else{
-            [MBProgressHUD showHUDMsg:@"该手机号已注册"];
-        }
-    } fail:^(NSURLSessionDataTask *task, NSError *error) {
-        if (error.code == NSURLErrorCancelled) return;
-        [MBProgressHUD showHUDMsg:@"网络连接错误"];
-
-    }];
-}
-
-//手机号码修改
-- (void)modifyPhoneNum {
-    NSDictionary *dictParaments = @{
-                                    @"type" : @1,
-                                    @"userId" : @"userId",
-                                    @"randomcode" : self.idCodeTextF.text,
-                                    @"phone" : [_user objectForKey:@"phone"],
-                                    };
-    [GRNetRequestClass POST:CODECHECK params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"修改手机号:%@",responseObject);
-        NSLog(@"修改手机号参数:%@",dictParaments);
-        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
-            //到输入手机页面(注册页面)
-            RegistViewController *RegistVC = [[RegistViewController alloc] init];
-            [self.navigationController pushViewController:RegistVC animated:YES];
-        }else if ([responseObject[@"msg"] isEqualToString:@"fail"]) {
-            [MBProgressHUD showHUDMsg:@"验证码错误"];
-        }
-    } fail:^(NSURLSessionDataTask *task, NSError *error) {
-        if (error.code == NSURLErrorCancelled) return;
-        [MBProgressHUD showHUDMsg:@"网络连接错误"];
-    }];
-}
-
-
-
 
 #pragma mark ----- buttonClick
 //获取验证码
@@ -294,7 +225,7 @@
 
 //下一步(先判断验证码是否正确,正确允许注册)
 - (void)nextButtonClick{
-     [self codeMesgCheck];
+    NSLog(@"%@",self.navigationController.childViewControllers);
 }
 
 //返回
@@ -344,5 +275,4 @@
         self.idCodeButton.userInteractionEnabled = YES;
     }
 }
-
 @end

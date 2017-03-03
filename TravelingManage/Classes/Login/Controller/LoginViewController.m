@@ -8,7 +8,7 @@
 
 #import "LoginViewController.h"
 #import "RegistViewController.h"
-#import "JTNavigationController.h"
+//#import "JTNavigationController.h"
 #import "PersonalDataViewController.h"
 #import "HomeViewController.h"
 @interface LoginViewController ()<UITextFieldDelegate>
@@ -191,7 +191,7 @@
 //注册
 - (void)registButtonClick{
     RegistViewController *registController = [[RegistViewController alloc] init];
-    JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:registController];
+    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:registController];
     [self presentViewController:navVC animated:YES completion:nil];
 }
 
@@ -240,6 +240,10 @@
                  NSLog(@"idCard:%@",[_user objectForKey:@"idCard"]);
 //                HomeViewController *home = [[HomeViewController alloc] init];
                 PersonalDataViewController *detail = [[PersonalDataViewController alloc] init];
+//                JTNavigationController *jt = [[JTNavigationController alloc] initWithRootViewController:home];
+//                [UIApplication sharedApplication].keyWindow.rootViewController = home;
+//                [weakself presentViewController:home animated:YES completion:nil];
+                
                 [weakself.navigationController pushViewController:detail animated:YES];
             }
         }
