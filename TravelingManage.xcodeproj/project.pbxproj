@@ -16,6 +16,8 @@
 		1C210C741E559BDB00689677 /* PersonDetail2Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C210C731E559BDB00689677 /* PersonDetail2Cell.m */; };
 		1C665B991E6968310059DE59 /* NewVerificationCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C665B981E6968310059DE59 /* NewVerificationCodeViewController.m */; };
 		1C665B9C1E696E1D0059DE59 /* JTNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C665B9B1E696E1D0059DE59 /* JTNavigationController.m */; };
+		1C665BF61E69981E0059DE59 /* NewPhoneNueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C665BF51E69981E0059DE59 /* NewPhoneNueViewController.m */; };
+		1C665BF91E6999660059DE59 /* NewPhoneVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C665BF81E6999660059DE59 /* NewPhoneVerificationViewController.m */; };
 		1CA681BE1E680240007B6751 /* GRNetRequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CA681BD1E680240007B6751 /* GRNetRequestClass.m */; };
 		1CB523DE1E5195C600A205C3 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523DD1E5195C600A205C3 /* MessageModel.m */; };
 		1CB523E11E51AA8900A205C3 /* AnnouncementCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523E01E51AA8900A205C3 /* AnnouncementCell.m */; };
@@ -286,6 +288,10 @@
 		1C665B981E6968310059DE59 /* NewVerificationCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewVerificationCodeViewController.m; path = ../../Register/Controller/NewVerificationCodeViewController.m; sourceTree = "<group>"; };
 		1C665B9A1E696E1D0059DE59 /* JTNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JTNavigationController.h; sourceTree = "<group>"; };
 		1C665B9B1E696E1D0059DE59 /* JTNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JTNavigationController.m; sourceTree = "<group>"; };
+		1C665BF41E69981E0059DE59 /* NewPhoneNueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPhoneNueViewController.h; sourceTree = "<group>"; };
+		1C665BF51E69981E0059DE59 /* NewPhoneNueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPhoneNueViewController.m; sourceTree = "<group>"; };
+		1C665BF71E6999660059DE59 /* NewPhoneVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPhoneVerificationViewController.h; sourceTree = "<group>"; };
+		1C665BF81E6999660059DE59 /* NewPhoneVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPhoneVerificationViewController.m; sourceTree = "<group>"; };
 		1CA681BC1E680240007B6751 /* GRNetRequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRNetRequestClass.h; sourceTree = "<group>"; };
 		1CA681BD1E680240007B6751 /* GRNetRequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRNetRequestClass.m; sourceTree = "<group>"; };
 		1CB523DC1E5195C600A205C3 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
@@ -1147,6 +1153,10 @@
 				3A9474901E4D9137002F1F9B /* PersonalDataViewController.m */,
 				1C665B971E6968310059DE59 /* NewVerificationCodeViewController.h */,
 				1C665B981E6968310059DE59 /* NewVerificationCodeViewController.m */,
+				1C665BF41E69981E0059DE59 /* NewPhoneNueViewController.h */,
+				1C665BF51E69981E0059DE59 /* NewPhoneNueViewController.m */,
+				1C665BF71E6999660059DE59 /* NewPhoneVerificationViewController.h */,
+				1C665BF81E6999660059DE59 /* NewPhoneVerificationViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1778,6 +1788,7 @@
 				3A00E3141E545DE200525150 /* XFJAllTaskTableViewCell.m in Sources */,
 				3A9474981E4D9137002F1F9B /* PersonalInformationViewController.m in Sources */,
 				3AE849F11E54410F00A71C5E /* XFJSubscribeButton.m in Sources */,
+				1C665BF61E69981E0059DE59 /* NewPhoneNueViewController.m in Sources */,
 				1CFDFE221E542C65001D6300 /* TZVideoPlayerController.m in Sources */,
 				1CFDFE3C1E542C78001D6300 /* WSImageModel.m in Sources */,
 				3A18E54A1E5D6FB400BFE891 /* XFJMinusCarNumTableViewCell.m in Sources */,
@@ -1833,6 +1844,7 @@
 				1C1939C31E51476200882B8C /* MessageCell.m in Sources */,
 				3A18E5481E5D6FB400BFE891 /* LMContainsLMComboxScrollView.m in Sources */,
 				3AE849E51E543DF000A71C5E /* XFJTaskingViewController.m in Sources */,
+				1C665BF91E6999660059DE59 /* NewPhoneVerificationViewController.m in Sources */,
 				3AE2FF511E4D5F2700E380F9 /* XFJTaskView.m in Sources */,
 				3A18E52C1E5D6F4400BFE891 /* XFJOpenGroupViewController.m in Sources */,
 			);

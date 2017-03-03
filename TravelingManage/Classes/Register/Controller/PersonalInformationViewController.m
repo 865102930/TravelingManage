@@ -7,7 +7,6 @@
 //
 
 #import "PersonalInformationViewController.h"
-#import "PersonalDataViewController.h"
 #import "HomeViewController.h"
 #import "LoginViewController.h"
 @interface PersonalInformationViewController ()<UITextFieldDelegate>
