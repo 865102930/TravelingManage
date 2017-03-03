@@ -163,6 +163,8 @@
             NSDictionary *dict = [responseObject objectForKey:@"object"];
             XFJLaterTeamControlItem *laterTeamControlItem = [XFJLaterTeamControlItem mj_objectWithKeyValues:dict];
             wself.homeTopTaskMessageVeiw.laterTeamControlItem = laterTeamControlItem;
+            //如果状态值显示的是0就显示签到按钮
+            //如果状态值显示的是1就是签退按钮
             NSLog(@"========打印出来的最近团队的参数模型是:%@",laterTeamControlItem);
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
