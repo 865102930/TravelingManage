@@ -7,6 +7,8 @@
 //
 
 #import "AnnouncementCell.h"
+#import "AnnouncementModel.h"
+
 static NSString * const AnnouncementCellID = @"AnnouncementCellID";
 @implementation AnnouncementCell
 
@@ -90,7 +92,6 @@ static NSString * const AnnouncementCellID = @"AnnouncementCellID";
 {
     if (!_circleView) {
         _circleView = [[UIView alloc] init];
-        _circleView.backgroundColor = RedColor;
         _circleView.layer.masksToBounds = YES;
         _circleView.layer.cornerRadius = 3;
     }
@@ -114,6 +115,26 @@ static NSString * const AnnouncementCellID = @"AnnouncementCellID";
         _grayView.backgroundColor = BackgroudColor;
     }
     return _grayView;
+}
+
+- (void)setAnnouncementM:(AnnouncementModel *)announcementM{
+    _announcementM = announcementM;
+    _titleLabel.text = announcementM.announcementTitle;
+    _timeLabel.text = announcementM.createtime;
+    _contentLabel.text = announcementM.announcementDetail;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_contentLabel.text];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:5];//调整行间距
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_contentLabel.text length])];
+    _contentLabel.attributedText = attributedString;
+    [_contentLabel sizeToFit];
+  
+    if ([announcementM.isread isEqualToString:@"0"]){
+        _circleView.backgroundColor = RedColor;
+    }else {
+        _circleView.backgroundColor = [UIColor grayColor];
+    }
+    
 }
 
 @end

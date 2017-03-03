@@ -10,4 +10,5 @@
 
 @interface PersonalDataViewController : UITableViewController
 
+@property (nonatomic, strong)NSUserDefaults *user;
 @end

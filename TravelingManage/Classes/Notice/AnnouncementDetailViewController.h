@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 @class AnnouncementDetailModel;
+
 @interface AnnouncementDetailViewController : UITableViewController
+
 @property (nonatomic, assign) NSInteger Id;
 
 @property (nonatomic, strong) AnnouncementDetailModel *announcementDetailModel;
+
 @end

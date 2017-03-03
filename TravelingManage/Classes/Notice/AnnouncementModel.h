@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface AnnouncementModel : NSObject
+
 @property (nonatomic, strong) NSString *announcementTitle;//公告标题
 
 @property (nonatomic, strong) NSString *announcementDetail;//公告详情
@@ -22,5 +23,7 @@
 @property (nonatomic, strong) NSString *createtime;//创建时间
 
 @property (nonatomic, strong) NSString *updatetime;//更新时间
+
+@property (nonatomic, strong) NSString *isread;//是否读取 0:未读 1:已读
 
 @end

@@ -115,6 +115,7 @@
 #pragma  mark ----- viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _user = [NSUserDefaults standardUserDefaults];
     [self creatUI];
 }
 
@@ -184,22 +185,30 @@
 
 //登录请求
 - (void)requestLogin
-{
+{//18268165969  913074
+    __weak typeof(self) weakself = self;
     NSDictionary *dictParaments = @{
-                                    @"UserMobile":self.phoneTextF.text,
-                                    @"registrationId":@"10"
+                                    @"userMobile":self.phoneTextF.text,
+                                  //  @"registrationId":@"10"
                                     };
-    NSLog(@"=======----+++++=加入的登录参数是:%@",self.phoneTextF.text);
-    NSLog(@"dictParaments参数是 : %@",dictParaments);
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:LOGINURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if (object) {
-            NSLog(@"++++++=========登录后得到的参数是:%@",object);
+    [GRNetRequestClass POST:LOGINURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        [MBProgressHUD hidenHud];
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+                NSDictionary *dict = responseObject[@"object"];
+                [_user setObject:dict[@"id"]forKey:@"userId"];
+                [_user setObject:dict[@"userMobile"]forKey:@"phone"];
+//                [_user setObject:dict[@"userName"]forKey:@"userName"];
+                [_user setObject:dict[@"join"]forKey:@"workingHours"];
+                [_user synchronize];
+                NSLog(@"----------------------------登录后得到的返回值------------------------------:%@",responseObject);
+                HomeViewController *home = [[HomeViewController alloc] init];
+                [weakself.navigationController pushViewController:home animated:YES];
+            }
         }
-    } withFailureBlock:^(NSError *error) {
-        if (error) {
-            NSLog(@"---------+++++++++++失败后的得到的参数是:%@",error);
-        }
-    } progress:^(float progress) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        [MBProgressHUD hidenHud];
+        if (error.code == NSURLErrorCancelled) return;
     }];
 }
 //获取验证码

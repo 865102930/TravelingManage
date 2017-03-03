@@ -34,21 +34,23 @@
     self.tableView.tableFooterView = [UITableView new];
     self.tableView.separatorStyle = NO;
     [self loadData];
+    [MBProgressHUD showLoadHUD];
 }
 
 - (void)loadData{
     NSString *Id = [NSString stringWithFormat:@"%ld", (long)self.Id];
     NSDictionary *parameters = @{
-                                 @"Id" : Id
+                                 @"id" : Id
                                  };
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
     [mgr POST:ANNOUNCEMENT parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable responseObject) {
+        [MBProgressHUD hidenHud];
         NSArray *dictArr = responseObject[@"object"];
         _announcementDetailModel = [AnnouncementDetailModel mj_objectWithKeyValues:dictArr];
         [self.tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [MBProgressHUD hidenHud];
         if (error.code == NSURLErrorCancelled) return;
-        
     }];
 }
 

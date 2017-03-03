@@ -17,10 +17,22 @@
 @property (nonatomic, weak) PageButton *previousClickedTitleButton;
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, strong) UILabel *title_label;
-
+@property (nonatomic, strong) UIView *unreadMessageView;
 @end
 
 @implementation MessageListViewController
+
+//- (UIView *)unreadMessageView
+//{
+//    if (!_unreadMessageView) {
+//        _unreadMessageView = [[UIView alloc] initWithFrame:CGRectMake(30, 100, 6, 6)];
+//        _unreadMessageView.layer.masksToBounds = YES;
+//        _unreadMessageView.layer.cornerRadius = 3;
+//        _unreadMessageView.backgroundColor = RedColor;
+//        [_titlesView addSubview:_unreadMessageView];
+//    }
+//    return _unreadMessageView;
+//}
 
 - (UILabel *)title_label {
     if (_title_label == nil) {
@@ -40,8 +52,31 @@
     [self setupScrollView];
     [self setupTitlesView];
     [self addChildVcViewIntoScrollView:0];
+    [self loadData];
 }
 
+- (void)loadData {
+    NSDictionary *dictParaments = @{
+                                    @"userId":@7,
+                                    };
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:MESSAGELISTTOTAL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSLog(@"%@",object);
+            NSInteger total = [object [@"object"] integerValue];
+             if(total == 0) {
+                _unreadMessageView.backgroundColor = [UIColor clearColor];
+            }else{
+                _unreadMessageView.backgroundColor = RedColor;
+            }
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            
+        }
+    } progress:^(float progress) {
+        
+    }];
+}
 //  初始化子控制器
 - (void)setupChildVCs
 {
@@ -86,7 +121,6 @@
         make.left.equalTo(self.view).offset(0);
         make.height.mas_equalTo(3);
     }];
-    
     [self setupTitleButtons];
     [self setupTitleUnderline];
 }
@@ -104,6 +138,11 @@
     titleUnderline.backgroundColor = [firstTitleButton titleColorForState:UIControlStateSelected];
     [self.titlesView addSubview:titleUnderline];
     self.titleUnderline = titleUnderline;
+    
+    _unreadMessageView = [[UIView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 3 , 13, 6, 6)];
+    _unreadMessageView.layer.masksToBounds = YES;
+    _unreadMessageView.layer.cornerRadius = 3;
+    [_titlesView addSubview:_unreadMessageView];
     
     // 新点击的按钮
     firstTitleButton.selected = YES;
@@ -123,7 +162,7 @@
     NSUInteger count = titles.count;
     CGFloat titleButtonH = self.titlesView.XFJ_Height;
     CGFloat titleButtonW = self.titlesView.XFJ_Width / count;
-    
+
     for (NSInteger i = 0; i < count; i++) {
         PageButton *titleButton = [[PageButton alloc] init];
         titleButton.tag = i;

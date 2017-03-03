@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class MessageModel;
 
 @interface MessageViewController : UITableViewController
+
+@property (nonatomic, strong) MessageModel *messageModel;
 
 @end

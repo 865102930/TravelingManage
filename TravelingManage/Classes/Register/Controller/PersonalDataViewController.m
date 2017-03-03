@@ -30,6 +30,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.titleView = self.title_label;
     self.tableView.tableFooterView = [[UITableView alloc] init];
+    _user = [NSUserDefaults standardUserDefaults];
 }
 
 #pragma mark - Table view data source
@@ -49,19 +50,18 @@
     if (indexPath.row == 0) {
         PersonalDetailCell *personDetailCell = [PersonalDetailCell initWithTableView:tableView];
         personDetailCell.title.text = @"姓名";
-        personDetailCell.content.text = @"张三";
+        personDetailCell.content.text = [_user objectForKey:@"name"];
         personDetailCell.selectionStyle = UITableViewCellSelectionStyleNone;
         return personDetailCell;
     }else if (indexPath.row == 1){
         PersonalDetailCell *personDetailCell = [PersonalDetailCell initWithTableView:tableView];
         personDetailCell.title.text = @"身份证号";
-        personDetailCell.content.text = @"123123123231231233";
-        personDetailCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        personDetailCell.content.text = [_user objectForKey:@"IDCardNum"];        personDetailCell.selectionStyle = UITableViewCellSelectionStyleNone;
         return personDetailCell;
     }else{
         PersonDetail2Cell *personDetailCell = [PersonDetail2Cell initWithTableView:tableView];
         personDetailCell.title.text = @"电话";
-        personDetailCell.content.text = @"12312312312";
+        personDetailCell.content.text = [_user objectForKey:@"phone"];
         return personDetailCell;
     }
     return nil;

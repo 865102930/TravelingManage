@@ -7,6 +7,7 @@
 //
 
 #import "MessageCell.h"
+#import "MessageModel.h"
 static NSString * const MessageCellID = @"MessageCellID";
 @implementation MessageCell
 
@@ -144,4 +145,16 @@ static NSString * const MessageCellID = @"MessageCellID";
     return _deleteButton;
 }
 
+- (void)setMessageM:(MessageModel *)messageM {
+    _messageM = messageM;
+    _titleLabel.text = messageM.messageTitle;
+    _timeLabel.text = messageM.createtime;
+    _contentLabel.text = messageM.messageDetail;
+    
+    if ([messageM.isread isEqualToString:@"0"]){
+        _circleView.backgroundColor = RedColor;
+    }else {
+        _circleView.backgroundColor = [UIColor grayColor];
+    }
+}
 @end

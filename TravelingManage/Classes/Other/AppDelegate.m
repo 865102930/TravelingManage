@@ -35,7 +35,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
-//    XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[LoginViewController alloc] init]];
+//   XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[LoginViewController alloc] init]];
     self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
 }
