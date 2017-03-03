@@ -8,6 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, XFJStateType) {
+    /** 任务中 */
+    XFJStateTypeAll = 0,
+    /** 待完善 */
+    XFJStateTypePleasePerfect = 1,
+    /** 待审核 */
+    XFJStateTypePleaseCheck = 2,
+    /** 已审核 */
+    XFJStateTypeAlreadyCheck = 3,
+    /** 审核不通过 */
+    XFJStateTypeNOPassCheck = 4,
+    //评价
+    XFJStateTypePleaseAsking = 5,
+};
+
 @interface XFJFindTeamInfoByStateItem : NSObject
 
 //团队编号

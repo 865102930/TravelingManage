@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XFJFindTeamInfoByStateItem.h"
 
 @interface XFJAllTaskViewController : UIViewController
+
+- (XFJStateType)type;
 
 @end

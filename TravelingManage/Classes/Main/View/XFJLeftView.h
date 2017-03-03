@@ -23,6 +23,6 @@
 
 @property (nonatomic, assign) CGFloat touchWidth;
 
-@property (nonatomic, copy) void (^pushMineTeamBlock)();
+@property (nonatomic, copy) void (^pushMineTeamBlock)(NSInteger);
 
 @end

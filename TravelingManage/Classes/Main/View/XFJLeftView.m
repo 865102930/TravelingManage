@@ -11,6 +11,8 @@
 #import "XFJLeftTableHeaderView.h"
 #import "XFJLeftViewTableViewCell.h"
 #import "XFJLeftTableFooterView.h"
+#import <MJRefresh.h>
+#import "XFJLeftFindTeamInfoItem.h"
 
 @interface XFJLeftView()<UITableViewDelegate,UITableViewDataSource,XFJLeftTableFooterViewDelegate>
 
@@ -22,6 +24,10 @@
 
 @property (nonatomic, strong) XFJLeftTableFooterView *leftTableFooterView;
 
+@property (nonatomic, assign) NSInteger newPage;
+
+@property (nonatomic, strong) NSMutableArray <XFJLeftFindTeamInfoItem *> *leftFindTeamInfoItem_array;
+
 @end
 
 @implementation XFJLeftView
@@ -29,6 +35,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
+        self.newPage = 1;
         [self addSubview:self.backGroundView];
         [self addSubview:self.leftTableHeaderView];
         [self addSubview:self.leftTableView];
@@ -46,8 +53,43 @@
 //            wself.leftTableFooterView.frame = CGRectMake(0, SCREEN_HEIGHT - 100, wself.XFJ_Width, 100);
 //            wself.leftTableFooterView = [[XFJLeftTableFooterView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 100, wself.XFJ_Width, 100)];
         };
+        self.leftTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(requestLeftView)];
     }
     return self;
+}
+
+- (NSMutableArray <XFJLeftFindTeamInfoItem *> *)leftFindTeamInfoItem_array
+{
+    if (_leftFindTeamInfoItem_array == nil) {
+        _leftFindTeamInfoItem_array = [NSMutableArray array];
+    }
+    return _leftFindTeamInfoItem_array;
+}
+
+- (void)requestLeftView
+{
+    NSInteger newPage = self.newPage ++;
+    NSDictionary *dictParaments = @{
+                                    @"userId":@7,
+                                    @"rows":@5,
+                                    @"page":[NSString stringWithFormat:@"%ld",(long)newPage]
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:LEFTFINDTEAMINFOLISTURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSLog(@"+++++++++侧滑栏的数据是:%@",object);
+            NSString *strArray = [object objectForKey:@"rows"];
+            [wself.leftFindTeamInfoItem_array addObjectsFromArray:[XFJLeftFindTeamInfoItem mj_objectArrayWithKeyValuesArray:strArray]];
+            [wself.leftTableView reloadData];
+            [wself.leftTableView.mj_footer endRefreshing];
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            NSLog(@"_______未请求到侧滑栏的数据是:%@",error);
+            [wself.leftTableView.mj_footer endRefreshing];
+        }
+    } progress:^(float progress) {
+    }];
 }
 
 - (UIView *)backGroundView
@@ -62,7 +104,7 @@
 - (UITableView *)leftTableView
 {
     if (_leftTableView == nil) {
-        _leftTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 85, self.XFJ_Width, self.XFJ_Height) style:UITableViewStylePlain];
+        _leftTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 85, self.XFJ_Width, self.XFJ_Height - 185 - 85) style:UITableViewStylePlain];
         _leftTableView.delegate = self;
         _leftTableView.dataSource = self;
         _leftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -86,7 +128,7 @@
             _leftTableFooterView = [[XFJLeftTableFooterView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 185, self.XFJ_Width, 185)];
         _leftTableFooterView.delegate = self;
 //        }
-//        _leftTableFooterView.backgroundColor = [UIColor redColor];
+        _leftTableFooterView.backgroundColor = [UIColor whiteColor];
     }
     return _leftTableFooterView;
 }
@@ -101,14 +143,12 @@
         self.touchWidth = [touch locationInView:nil].x;
     }
 }
-
-- (void)pushMineTeamController
+- (void)pushMineTeamController:(NSInteger)strNumber
 {
     if (self.pushMineTeamBlock) {
-        self.pushMineTeamBlock();
+        self.pushMineTeamBlock(strNumber);
     }
 }
-
 #pragma mark - 一根或者多根手指开始在view上移动的时候,系统会自动调用view下面的方法
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
@@ -173,13 +213,14 @@
 #pragma mark - cell的个数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return [self.leftFindTeamInfoItem_array count];
 }
 
 #pragma mark - cell的内容
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XFJLeftViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJLeftViewTableViewCell forIndexPath:indexPath];
+    cell.leftFindTeamInfoItem = self.leftFindTeamInfoItem_array[indexPath.row];
     return cell;
 }
 

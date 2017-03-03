@@ -255,7 +255,6 @@
 {
     if (_taskStatus_label == nil) {
         _taskStatus_label = [[UILabel alloc] init];
-//        _taskStatus_label.text = [NSString stringWithFormat:@"%@",@"任务进行中"];
         _taskStatus_label.textColor = kColorff47;
         _taskStatus_label.font = [UIFont systemFontOfSize:13.0];
     }
@@ -266,7 +265,6 @@
 {
     if (_status_button == nil) {
         _status_button = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [_status_button setTitle:[NSString stringWithFormat:@"%@",@"重新开始"] forState:UIControlStateNormal];
         [_status_button setTitleColor:kColorff47 forState:UIControlStateNormal];
         [_status_button addTarget:self action:@selector(againStartButtonClick) forControlEvents:UIControlEventTouchUpInside];
         _status_button.layer.cornerRadius = 2.0;
@@ -281,7 +279,6 @@
 {
     if (_cancel_button == nil) {
         _cancel_button = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [_cancel_button setTitle:[NSString stringWithFormat:@"%@",@"取消"] forState:UIControlStateNormal];
         [_cancel_button setTitleColor:kColor9898 forState:UIControlStateNormal];
         [_cancel_button addTarget:self action:@selector(cancelButtonClick) forControlEvents:UIControlEventTouchUpInside];
         _cancel_button.layer.cornerRadius = 2.0;
@@ -309,6 +306,32 @@
 - (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
 {
     _findTeamInfoByStateItem = findTeamInfoByStateItem;
+    if (findTeamInfoByStateItem.teamState == 0) {
+        self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"任务进行中"];
+        [self.cancel_button setTitle:[NSString stringWithFormat:@"%@",@"取消"] forState:UIControlStateNormal];
+        [self.status_button setTitle:[NSString stringWithFormat:@"%@",@"重新开始"] forState:UIControlStateNormal];
+    }else if (findTeamInfoByStateItem.teamState == 1) {
+        self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"待完善任务"];
+        [self.status_button setTitle:[NSString stringWithFormat:@"%@",@"完善资料"] forState:UIControlStateNormal];
+        [self.cancel_button setHidden:YES];
+    }else if (findTeamInfoByStateItem.teamState == 2) {
+        self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"待审核任务"];
+        [self.cancel_button setHidden:YES];
+        [self.status_button setHidden:YES];
+    }else if (findTeamInfoByStateItem.teamState == 3) {
+        self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"已审核任务"];
+        [self.cancel_button setHidden:YES];
+        [self.status_button setHidden:YES];
+    }else {
+        self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"审核不通过"];
+        [self.cancel_button setHidden:YES];
+        [self.status_button setHidden:YES];
+    }
+        self.teamNumber_label2.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamNo];
+        self.teamPeople_label2.text = [NSString stringWithFormat:@"%zd",findTeamInfoByStateItem.teamNum];
+        self.travelServiceName_label2.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.travelAgencyName];
+        self.startTeamTime_label2.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
+
     
 }
 

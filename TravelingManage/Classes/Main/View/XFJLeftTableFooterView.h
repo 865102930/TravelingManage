@@ -10,7 +10,12 @@
 
 @protocol XFJLeftTableFooterViewDelegate  <NSObject>
 
-- (void)pushMineTeamController;
+//跳转到待完善界面
+- (void)pushMineTeamController:(NSInteger)strNumber;
+//跳转到待审核界面
+//跳转到待评价界面
+//跳转到全部任务界面
+
 
 @end
 

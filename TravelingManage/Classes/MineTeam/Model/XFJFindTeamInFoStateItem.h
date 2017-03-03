@@ -12,5 +12,7 @@
 
 //显示在标题中的数字
 @property (nonatomic, assign) NSInteger total;
+//是哪个标题
+@property (nonatomic, assign) NSInteger state;
 
 @end

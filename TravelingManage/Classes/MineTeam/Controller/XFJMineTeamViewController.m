@@ -54,8 +54,6 @@
     
     [self setUpInit];
     
-    [self addChildVCIntoScrollView:0];
-    
 }
 
 #pragma mark - 所有的请求接口
@@ -75,16 +73,17 @@
         if (object) {
             NSLog(@"+++++++++++获取到的团队状态数字是 :%@",object);
             [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[object objectForKey:@"rows"]]];
-            if (wself.findTeamInFoStateItemArray.count == 0) {
-                [wself setUpLabelColourWithFirstNumber:0 secondNumber:0 thirdNumber:0 fourNumber:0];
-            }else if (wself.findTeamInFoStateItemArray.count == 1) {
-                [wself setUpLabelColourWithFirstNumber:wself.findTeamInFoStateItemArray[0].total secondNumber:0 thirdNumber:0 fourNumber:0];
-            }else if (wself.findTeamInFoStateItemArray.count == 2) {
-                [wself setUpLabelColourWithFirstNumber:wself.findTeamInFoStateItemArray[0].total secondNumber:wself.findTeamInFoStateItemArray[1].total thirdNumber:0 fourNumber:0];
-            }else if (wself.findTeamInFoStateItemArray.count == 3) {
-                [wself setUpLabelColourWithFirstNumber:wself.findTeamInFoStateItemArray[0].total secondNumber:wself.findTeamInFoStateItemArray[1].total thirdNumber:wself.findTeamInFoStateItemArray[2].total fourNumber:0];
-            }else {
-                [wself setUpLabelColourWithFirstNumber:wself.findTeamInFoStateItemArray[0].total secondNumber:wself.findTeamInFoStateItemArray[1].total thirdNumber:wself.findTeamInFoStateItemArray[2].total fourNumber:wself.findTeamInFoStateItemArray[3].total];
+            for (NSInteger i = 0; i < wself.findTeamInFoStateItemArray.count; i++) {
+                XFJFindTeamInFoStateItem *findTeamInFoStateItem = wself.findTeamInFoStateItemArray[i];
+                if (findTeamInFoStateItem.state == 0) {
+                    wself.firest_label.text = [NSString stringWithFormat:@"(%zd)",findTeamInFoStateItem.total];
+                }else if (findTeamInFoStateItem.state == 1) {
+                    wself.second_label.text = [NSString stringWithFormat:@"(%zd)",findTeamInFoStateItem.total];
+                }else if (findTeamInFoStateItem.state == 2) {
+                    wself.third_label.text = [NSString stringWithFormat:@"(%zd)",findTeamInFoStateItem.total];
+                }else {
+                    wself.four_label.text = [NSString stringWithFormat:@"(%zd)",findTeamInFoStateItem.total];
+                }
             }
         }
     } withFailureBlock:^(NSError *error) {
@@ -94,15 +93,6 @@
         }
     } progress:^(float progress) {
     }];
-}
-
-#pragma mark - 文字的状态
-- (void)setUpLabelColourWithFirstNumber:(NSInteger)firestNumber secondNumber:(NSInteger)secondNumber thirdNumber:(NSInteger)thirdNumber fourNumber:(NSInteger)fourNumber
-{
-    self.firest_label.text = [NSString stringWithFormat:@"(%zd)",firestNumber];
-    self.second_label.text = [NSString stringWithFormat:@"(%zd)",secondNumber];
-    self.third_label.text = [NSString stringWithFormat:@"(%zd)",thirdNumber];
-    self.four_label.text = [NSString stringWithFormat:@"(%zd)",fourNumber];
 }
 
 - (void)setInitWithNav

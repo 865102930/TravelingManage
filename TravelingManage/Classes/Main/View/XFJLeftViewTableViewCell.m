@@ -126,7 +126,6 @@
         _team_number.textColor = kColor2f2f;
         [_team_number setFont:[UIFont systemFontOfSize:12.0]];
         _team_number.textAlignment = NSTextAlignmentLeft;
-        _team_number.text = [NSString stringWithFormat:@"团队编号: %@",@"0000"];
     }
     return _team_number;
 }
@@ -138,7 +137,6 @@
         _numberOf_team.textColor = kColor2f2f;
         [_numberOf_team setFont:[UIFont systemFontOfSize:12.0]];
         _numberOf_team.textAlignment = NSTextAlignmentLeft;
-        _numberOf_team.text = [NSString stringWithFormat:@"团队人数: %@",@"22人"];
     }
     return _numberOf_team;
 }
@@ -150,7 +148,7 @@
         _tourists.textColor = kColor2f2f;
         [_tourists setFont:[UIFont systemFontOfSize:12.0]];
         _tourists.textAlignment = NSTextAlignmentLeft;
-        _tourists.text = [NSString stringWithFormat:@"客源地: %@",@"0000"];
+        
     }
     return _tourists;
 }
@@ -162,7 +160,7 @@
         _licensePlate_number.textColor = kColor2f2f;
         [_licensePlate_number setFont:[UIFont systemFontOfSize:12.0]];
         _licensePlate_number.textAlignment = NSTextAlignmentLeft;
-        _licensePlate_number.text = [NSString stringWithFormat:@"车牌号: %@",@"浙APH228"];
+        
     }
     return _licensePlate_number;
 }
@@ -172,7 +170,14 @@
     return 150;
 }
 
-
+- (void)setLeftFindTeamInfoItem:(XFJLeftFindTeamInfoItem *)leftFindTeamInfoItem
+{
+    _leftFindTeamInfoItem = leftFindTeamInfoItem;
+    self.team_number.text = [NSString stringWithFormat:@"团队编号: %@",leftFindTeamInfoItem.teamNo];
+    self.numberOf_team.text = [NSString stringWithFormat:@"团队人数: %@",leftFindTeamInfoItem.teamNum];
+    self.tourists.text = [NSString stringWithFormat:@"客源地: %@%@%@",leftFindTeamInfoItem.province,leftFindTeamInfoItem.city,leftFindTeamInfoItem.area];
+    self.licensePlate_number.text = [NSString stringWithFormat:@"车牌号: %@",leftFindTeamInfoItem.vehicleNo];
+}
 
 
 - (void)awakeFromNib {

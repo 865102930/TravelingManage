@@ -175,6 +175,11 @@
 		3AA475241E5EF21500FEB005 /* XFJSceneryAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA475231E5EF21500FEB005 /* XFJSceneryAnnotationView.m */; };
 		3AA6E8851E48458500FC34A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B7AE51E48053C00A5B22D /* main.m */; };
 		3ABA4A4D1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABA4A4C1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m */; };
+		3ACCE3861E684AE000B3526B /* XFJSignMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE3851E684AE000B3526B /* XFJSignMessageViewController.m */; };
+		3ACCE3891E684B6800B3526B /* XFJSignMessageTopVeiw.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE3881E684B6800B3526B /* XFJSignMessageTopVeiw.m */; };
+		3ACCE38D1E684E1D00B3526B /* team.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACCE38A1E684E1D00B3526B /* team.png */; };
+		3ACCE38E1E684E1D00B3526B /* team@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACCE38B1E684E1D00B3526B /* team@2x.png */; };
+		3ACCE38F1E684E1D00B3526B /* team@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACCE38C1E684E1D00B3526B /* team@3x.png */; };
 		3ADDF0101E4DAD02003C838F /* add-.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFEF1E4DAD02003C838F /* add-.png */; };
 		3ADDF0111E4DAD02003C838F /* add-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFF01E4DAD02003C838F /* add-@2x.png */; };
 		3ADDF0121E4DAD02003C838F /* add-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFF11E4DAD02003C838F /* add-@3x.png */; };
@@ -248,6 +253,7 @@
 		3AEE6C0D1E641F6F00410412 /* house-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AEE6C071E641F6F00410412 /* house-@3x.png */; };
 		3AEE6C101E65505A00410412 /* XFJSingNoPeopleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE6C0F1E65505A00410412 /* XFJSingNoPeopleItem.m */; };
 		3AF04E0F1E61358F00D96984 /* XFJHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF04E0E1E61358F00D96984 /* XFJHeaderView.m */; };
+		3AF0C5FB1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF0C5FA1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m */; };
 		3AF0D39A1E61FC4200EDECD1 /* XFJHotelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF0D3991E61FC4200EDECD1 /* XFJHotelView.m */; };
 		3AFC9A2A1E629D200049A758 /* input-box4-.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A271E629D200049A758 /* input-box4-.png */; };
 		3AFC9A2B1E629D200049A758 /* input-box4-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A281E629D200049A758 /* input-box4-@2x.png */; };
@@ -530,6 +536,13 @@
 		3AA475231E5EF21500FEB005 /* XFJSceneryAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSceneryAnnotationView.m; sourceTree = "<group>"; };
 		3ABA4A4B1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamMessageBottomTableViewCell.h; sourceTree = "<group>"; };
 		3ABA4A4C1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessageBottomTableViewCell.m; sourceTree = "<group>"; };
+		3ACCE3841E684AE000B3526B /* XFJSignMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignMessageViewController.h; sourceTree = "<group>"; };
+		3ACCE3851E684AE000B3526B /* XFJSignMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignMessageViewController.m; sourceTree = "<group>"; };
+		3ACCE3871E684B6800B3526B /* XFJSignMessageTopVeiw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignMessageTopVeiw.h; sourceTree = "<group>"; };
+		3ACCE3881E684B6800B3526B /* XFJSignMessageTopVeiw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignMessageTopVeiw.m; sourceTree = "<group>"; };
+		3ACCE38A1E684E1D00B3526B /* team.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = team.png; sourceTree = "<group>"; };
+		3ACCE38B1E684E1D00B3526B /* team@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "team@2x.png"; sourceTree = "<group>"; };
+		3ACCE38C1E684E1D00B3526B /* team@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "team@3x.png"; sourceTree = "<group>"; };
 		3ADDEFEF1E4DAD02003C838F /* add-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-.png"; sourceTree = "<group>"; };
 		3ADDEFF01E4DAD02003C838F /* add-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-@2x.png"; sourceTree = "<group>"; };
 		3ADDEFF11E4DAD02003C838F /* add-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-@3x.png"; sourceTree = "<group>"; };
@@ -616,6 +629,8 @@
 		3AEE6C0F1E65505A00410412 /* XFJSingNoPeopleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSingNoPeopleItem.m; sourceTree = "<group>"; };
 		3AF04E0D1E61358F00D96984 /* XFJHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJHeaderView.h; sourceTree = "<group>"; };
 		3AF04E0E1E61358F00D96984 /* XFJHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJHeaderView.m; sourceTree = "<group>"; };
+		3AF0C5F91E67F840002900B1 /* XFJLeftFindTeamInfoItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJLeftFindTeamInfoItem.h; sourceTree = "<group>"; };
+		3AF0C5FA1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJLeftFindTeamInfoItem.m; sourceTree = "<group>"; };
 		3AF0D3981E61FC4200EDECD1 /* XFJHotelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJHotelView.h; sourceTree = "<group>"; };
 		3AF0D3991E61FC4200EDECD1 /* XFJHotelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJHotelView.m; sourceTree = "<group>"; };
 		3AFC9A271E629D200049A758 /* input-box4-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box4-.png"; sourceTree = "<group>"; };
@@ -1113,6 +1128,8 @@
 				3A9A2D9D1E49A97800D89639 /* UIViewController+JTNavigationExtension.m */,
 				3A9A2D9E1E49A97800D89639 /* XFJNavigationController.h */,
 				3A9A2D9F1E49A97800D89639 /* XFJNavigationController.m */,
+				3ACCE3841E684AE000B3526B /* XFJSignMessageViewController.h */,
+				3ACCE3851E684AE000B3526B /* XFJSignMessageViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1157,6 +1174,8 @@
 				3A756F221E658C80005D2C02 /* AlertView1.h */,
 				3A756F231E658C80005D2C02 /* AlertView1.m */,
 				3A756F1E1E657D03005D2C02 /* AlertView.xib */,
+				3ACCE3871E684B6800B3526B /* XFJSignMessageTopVeiw.h */,
+				3ACCE3881E684B6800B3526B /* XFJSignMessageTopVeiw.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1185,6 +1204,8 @@
 				3AEE6C001E6402B400410412 /* XFJTeamSignListItem.m */,
 				3AEE6C0E1E65505A00410412 /* XFJSingNoPeopleItem.h */,
 				3AEE6C0F1E65505A00410412 /* XFJSingNoPeopleItem.m */,
+				3AF0C5F91E67F840002900B1 /* XFJLeftFindTeamInfoItem.h */,
+				3AF0C5FA1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1250,6 +1271,9 @@
 		3AE2FF341E4D48CD00E380F9 /* HomePicture */ = {
 			isa = PBXGroup;
 			children = (
+				3ACCE38A1E684E1D00B3526B /* team.png */,
+				3ACCE38B1E684E1D00B3526B /* team@2x.png */,
+				3ACCE38C1E684E1D00B3526B /* team@3x.png */,
 				3A756F291E66BE44005D2C02 /* location-map.png */,
 				3A756F2A1E66BE44005D2C02 /* location-map@2x.png */,
 				3A756F2B1E66BE44005D2C02 /* location-map@3x.png */,
@@ -1478,7 +1502,9 @@
 				3A7A51211E4B09FC004FFB0F /* message@2x.png in Resources */,
 				3AFC9A2C1E629D200049A758 /* input-box4-@3x.png in Resources */,
 				3A9B890F1E4C17FF004E3B05 /* changemenubutton@2x.png in Resources */,
+				3ACCE38D1E684E1D00B3526B /* team.png in Resources */,
 				3AA475181E5EAE5300FEB005 /* shurukuang@3x.png in Resources */,
+				3ACCE38F1E684E1D00B3526B /* team@3x.png in Resources */,
 				3ADDF0211E4DAD02003C838F /* information-@3x.png in Resources */,
 				3AA4750E1E5EA44F00FEB005 /* wodeweizhi@2x.png in Resources */,
 				3A756F2E1E66BE44005D2C02 /* location-map@3x.png in Resources */,
@@ -1546,6 +1572,7 @@
 				3A7A51231E4B09FC004FFB0F /* message2.png in Resources */,
 				3ADDF01A1E4DAD02003C838F /* drop-down-box-2@2x.png in Resources */,
 				3A756F171E657583005D2C02 /* tishi.png in Resources */,
+				3ACCE38E1E684E1D00B3526B /* team@2x.png in Resources */,
 				3ADDF0171E4DAD02003C838F /* delete-@2x.png in Resources */,
 				3A993FDD1E495B3300F898D2 /* xinjian@3x.png in Resources */,
 				3A9474A81E4D92CA002F1F9B /* Assets.xcassets in Resources */,
@@ -1693,6 +1720,7 @@
 				1C210C741E559BDB00689677 /* PersonDetail2Cell.m in Sources */,
 				3A9474A61E4D91BE002F1F9B /* UITextField+textField.m in Sources */,
 				3A993FE01E49711E00F898D2 /* UIColor+expanded.m in Sources */,
+				3AF0C5FB1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m in Sources */,
 				1CFDFDEB1E541CBB001D6300 /* AnnouncementDetailCell.m in Sources */,
 				3AEE6C101E65505A00410412 /* XFJSingNoPeopleItem.m in Sources */,
 				1CFDFE6C1E5571B1001D6300 /* AnnouncementdetailImageCell.m in Sources */,
@@ -1736,7 +1764,9 @@
 				3A8347CD1E4AAD8000693882 /* XFJLeftView.m in Sources */,
 				1CB523EA1E51AFF600A205C3 /* AnnouncementDetailViewController.m in Sources */,
 				3A9B890A1E4C0B51004E3B05 /* XFJLeftTableFooterView.m in Sources */,
+				3ACCE3891E684B6800B3526B /* XFJSignMessageTopVeiw.m in Sources */,
 				3AA475211E5EE4F300FEB005 /* XFJSceneryAnnotation.m in Sources */,
+				3ACCE3861E684AE000B3526B /* XFJSignMessageViewController.m in Sources */,
 				3ABA4A4D1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m in Sources */,
 				1CFDFE531E542C84001D6300 /* JFImageManager.m in Sources */,
 				1CFDFDE81E53E3DD001D6300 /* AnnouncementDetailModel.m in Sources */,
