@@ -118,5 +118,7 @@
 #define FINDTEAMINFOBYSTATEUEL (BASEURL@"/app/teamInfo/findTeamInfoByState")
 //侧滑团队列表
 #define LEFTFINDTEAMINFOLISTURL (BASEURL@"/app/teamInfo/findTeamInfoList")
+//获取最近操作的团队
+#define FINDNEWTEAMINFOURL (BASEURL@"/app/teamInfo/findNewTeamInfo")
 
 

@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "XFJAllTaskViewController.h"
 
-@interface XFJPleaseAskingViewController : XFJAllTaskViewController
+
+@interface XFJPleaseAskingViewController : UIViewController
 
 @end
