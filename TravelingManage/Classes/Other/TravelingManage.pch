@@ -19,6 +19,7 @@
 #import "NSObject+Common.h"
 #import <MBProgressHUD.h>
 #import "UIImage+image.h"
+#import "GRNetRequestClass.h"
 #define PingFang @"PingFang SC"
 #define iphone6P (SCREEN_HEIGHT == 736)
 #define iphone6 (SCREEN_HEIGHT == 667)
@@ -77,6 +78,16 @@
 #define ANNOUNCEMENTLIST (BASEURL@"/app/announcement/announcementList")
 //公告详情接口
 #define ANNOUNCEMENT (BASEURL@"/app/announcement/announcement")
+//公告已读处理
+#define ANNOUNCEMENTREAD (BASEURL@"/app/announcement/announcementRead")
+//消息列表
+#define MESSAGELIST (BASEURL@"/app/message/messageList")
+//删除消息处理
+#define DELMESSAGE (BASEURL@"/app/message/delMessage")
+//未读消息件数
+#define MESSAGELISTTOTAL (BASEURL@"/app/message/messageListTotal")
+//消息已读处理
+#define MESSAGEREAD (BASEURL@"/app/message/messageRead")
 //团队参数查询(0:目的属性;1:团队性质;2:景点类型)
 #define TEAMNUMBERQUERYURL (BASEURL@"/app/params/findTeamParamList")
 //车牌查询
