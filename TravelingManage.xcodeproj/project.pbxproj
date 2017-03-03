@@ -179,6 +179,8 @@
 		3ACCE38D1E684E1D00B3526B /* team.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACCE38A1E684E1D00B3526B /* team.png */; };
 		3ACCE38E1E684E1D00B3526B /* team@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACCE38B1E684E1D00B3526B /* team@2x.png */; };
 		3ACCE38F1E684E1D00B3526B /* team@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACCE38C1E684E1D00B3526B /* team@3x.png */; };
+		3ACCE3921E69003200B3526B /* XFJSignMessageTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE3911E69003200B3526B /* XFJSignMessageTimeView.m */; };
+		3ACCE3951E69194700B3526B /* XFJSignTeamPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE3941E69194700B3526B /* XFJSignTeamPhotosView.m */; };
 		3ADDF0101E4DAD02003C838F /* add-.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFEF1E4DAD02003C838F /* add-.png */; };
 		3ADDF0111E4DAD02003C838F /* add-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFF01E4DAD02003C838F /* add-@2x.png */; };
 		3ADDF0121E4DAD02003C838F /* add-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFF11E4DAD02003C838F /* add-@3x.png */; };
@@ -540,6 +542,10 @@
 		3ACCE38A1E684E1D00B3526B /* team.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = team.png; sourceTree = "<group>"; };
 		3ACCE38B1E684E1D00B3526B /* team@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "team@2x.png"; sourceTree = "<group>"; };
 		3ACCE38C1E684E1D00B3526B /* team@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "team@3x.png"; sourceTree = "<group>"; };
+		3ACCE3901E69003200B3526B /* XFJSignMessageTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignMessageTimeView.h; sourceTree = "<group>"; };
+		3ACCE3911E69003200B3526B /* XFJSignMessageTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignMessageTimeView.m; sourceTree = "<group>"; };
+		3ACCE3931E69194700B3526B /* XFJSignTeamPhotosView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignTeamPhotosView.h; sourceTree = "<group>"; };
+		3ACCE3941E69194700B3526B /* XFJSignTeamPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignTeamPhotosView.m; sourceTree = "<group>"; };
 		3ADDEFEF1E4DAD02003C838F /* add-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-.png"; sourceTree = "<group>"; };
 		3ADDEFF01E4DAD02003C838F /* add-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-@2x.png"; sourceTree = "<group>"; };
 		3ADDEFF11E4DAD02003C838F /* add-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-@3x.png"; sourceTree = "<group>"; };
@@ -1173,6 +1179,10 @@
 				3A756F1E1E657D03005D2C02 /* AlertView.xib */,
 				3ACCE3871E684B6800B3526B /* XFJSignMessageTopVeiw.h */,
 				3ACCE3881E684B6800B3526B /* XFJSignMessageTopVeiw.m */,
+				3ACCE3901E69003200B3526B /* XFJSignMessageTimeView.h */,
+				3ACCE3911E69003200B3526B /* XFJSignMessageTimeView.m */,
+				3ACCE3931E69194700B3526B /* XFJSignTeamPhotosView.h */,
+				3ACCE3941E69194700B3526B /* XFJSignTeamPhotosView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1723,10 +1733,12 @@
 				1CFDFE501E542C84001D6300 /* JFAssetHelper.m in Sources */,
 				3AE849EB1E543EE500A71C5E /* XFJPleaseCheckViewController.m in Sources */,
 				1CFDFE211E542C65001D6300 /* TZPhotoPreviewController.m in Sources */,
+				3ACCE3951E69194700B3526B /* XFJSignTeamPhotosView.m in Sources */,
 				3A48BAD91E5AB7FB00910789 /* XFJTitleMessageContentTableViewCell.m in Sources */,
 				3A10CFDF1E5BDBD200592564 /* NSObject+Common.m in Sources */,
 				1C210C711E558B0600689677 /* PersonalDetailCell.m in Sources */,
 				3A9940331E499D1600F898D2 /* NetWorkManager.m in Sources */,
+				3ACCE3921E69003200B3526B /* XFJSignMessageTimeView.m in Sources */,
 				3A4E704F1E60345D00547BCD /* XFJSignNoPeopleView.m in Sources */,
 				1C1939BE1E4DC1E600882B8C /* MessageViewController.m in Sources */,
 				3A9EB5D51E5C64750064E61B /* XFJCarNumberItem.m in Sources */,

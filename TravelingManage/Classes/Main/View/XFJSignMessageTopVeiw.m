@@ -22,6 +22,22 @@
 {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = kColor8F8F;
+        [self addSubview:self.scenery_laebl];
+        [self addSubview:self.peopleContent_label];
+        [self addSubview:self.peopleTotal_imageView];
+        [self.scenery_laebl mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(11.0);
+            make.left.mas_equalTo(12.0);
+        }];
+        [self.peopleContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.mas_right).mas_offset(-12.0);
+            make.centerY.mas_equalTo(self.scenery_laebl.mas_centerY);
+        }];
+        [self.peopleTotal_imageView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.peopleContent_label.mas_left).mas_offset(-12);
+            make.centerY.mas_equalTo(self.scenery_laebl.mas_centerY);
+            make.width.height.mas_equalTo(14.0);
+        }];
     }
     return self;
 }
