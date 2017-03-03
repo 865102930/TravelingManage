@@ -36,6 +36,7 @@
 #import "AlertView1.h"
 #import "XFJAllTaskViewController.h"
 #import "JTNavigationController.h"
+#import "XFJSignMessageViewController.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -175,7 +176,8 @@
 //        XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
 //        [wself.navigationController pushViewController:teamMessageViewController animated:YES];
         //跳转到签到点信息
-        
+        XFJSignMessageViewController *signMessageController = [[XFJSignMessageViewController alloc] init];
+        [wself.navigationController pushViewController:signMessageController animated:YES];
     };
     //传递景点签到的内容
     self.sign_view.signModifyCount = ^(NSString *signNum, BOOL isSign) {

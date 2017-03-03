@@ -63,6 +63,10 @@
 #define kColor1EA8 [UIColor colorWithHexString:@"0x1EA8FF"]
 #define kColor6F6F [UIColor colorWithHexString:@"0x6F6F6F"]
 #define kColor8F8F [UIColor colorWithHexString:@"0x8F8F8F"]
+#define kColor5AD8 [UIColor colorWithHexString:@"0x5AD8CA"]
+#define kColorEBEB [UIColor colorWithHexString:@"0xEBEBEB"]
+#define kColorFF4745 [UIColor colorWithHexString:@"0xFF4745"]
+#define kColor16A7B8 [UIColor colorWithHexString:@"0x16A7B8"]
 
 #define BASEURL @"http://118.178.224.151/teammgmtback"
 
