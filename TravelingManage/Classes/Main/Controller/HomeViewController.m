@@ -123,7 +123,7 @@
     self.navigationItem.leftBarButtonItem = self.user_SttingButtonItem;
     self.navigationItem.rightBarButtonItem = self.projectButtonItem;
     
-    //这里调用最近操作的团队信息
+    //这里调用最近操作的团队信息(用BOOL值来判断)
     [self requestLatelyControl];
     
     //这是添加的公告(如果开始进来的时候没有任务,就显示公告,后面则显示新建任务的标题栏)
