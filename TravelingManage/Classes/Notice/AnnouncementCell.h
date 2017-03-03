@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class AnnouncementModel;
 
 @interface AnnouncementCell : UITableViewCell
 
@@ -17,4 +18,5 @@
 @property (nonatomic, strong) NSIndexPath *indexPath;
 @property (nonatomic, strong) UIView      *grayView;//cell灰色线
 + (instancetype)initWithTableView:(UITableView *)tableView;
+@property (nonatomic, strong) AnnouncementModel *announcementM;
 @end

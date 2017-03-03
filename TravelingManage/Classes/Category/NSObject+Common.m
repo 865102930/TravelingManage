@@ -8,7 +8,7 @@
 
 #import "NSObject+Common.h"
 #import "MBProgressHUD.h"
-
+#define DelayTime 1.5
 #define kHUDQueryViewTag 101
 #define kKeyWindow [UIApplication sharedApplication].keyWindow
 @implementation NSObject (Common)
@@ -85,6 +85,55 @@
 + (void)hidenHud
 {
     [self hideHUDAndView:nil];
+}
+
+
+/**
+ *  在窗口上显示菊花
+ */
++ (void)showLoadHUD {
+    [self showLoadHUDAddedToView:[UIApplication sharedApplication].keyWindow];
+}
+/**
+ *  在view上显示菊花
+ */
++ (void)showLoadHUDAddedToView:(UIView *)view {
+    
+    [MBProgressHUD hideHUDAndView:view];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    hud.contentColor = [UIColor whiteColor];
+    hud.bezelView.color = [UIColor blackColor];
+}
+
+/**
+ *  在窗口上显示文字-->1.5秒钟后消失
+ */
++ (void)showHUDMsg:(NSString *)message {
+    [self showHUDWithMsg:message withDelay:DelayTime];
+}
+/**
+ *  在窗口上显示文字-->afterDelay秒钟后消失
+ */
++ (void)showHUDWithMsg:(NSString *)message withDelay:(NSTimeInterval)afterDelay {
+    [self showHUDAddedToView:[UIApplication sharedApplication].keyWindow WithMsg:message withDelay:afterDelay];
+}
+
+/**
+ *  在View上显示文字-->afterDelay秒钟后消失
+ */
++ (void)showHUDAddedToView:(UIView *)view WithMsg:(NSString *)message withDelay:(NSTimeInterval)afterDelay {
+    
+    [MBProgressHUD hideHUDAndView:view];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.label.text = message;
+    hud.contentColor = [UIColor whiteColor];
+    hud.bezelView.color = [UIColor blackColor];
+    //可以设置显示的位置
+    // hud.offset = CGPointMake(0.f, MBProgressMaxOffset);
+    [hud hideAnimated:YES afterDelay:afterDelay];
 }
 
 @end

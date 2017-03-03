@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class MessageModel;
 @interface MessageCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel     *titleLabel;//标题
@@ -20,4 +20,6 @@
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
 + (instancetype)initWithTableView:(UITableView *)tableView;
+
+@property (nonatomic, strong) MessageModel *messageM;
 @end

@@ -9,6 +9,7 @@
 #import "PersonalInformationViewController.h"
 #import "PersonalDataViewController.h"
 #import "HomeViewController.h"
+#import "LoginViewController.h"
 @interface PersonalInformationViewController ()<UITextFieldDelegate>
 @property(nonatomic,strong)UIImageView *backgroundImage;//背景图片
 @property(nonatomic,strong)UIImageView *backImage;//返回
@@ -104,6 +105,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _user = [NSUserDefaults standardUserDefaults];
     [self creatUI];
 }
 
@@ -186,10 +188,14 @@
 - (void)agreeClick: (UIButton *)button{
 
 }
-//下一步
+//马上进入
 - (void)getIntoButtonClick{
-    HomeViewController *homeVc = [[HomeViewController alloc] init];
-    [self.navigationController pushViewController:homeVc animated:YES];
+    [_user setObject:self.nameTextF.text forKey:@"name"];
+    [_user setObject:self.idTextF.text forKey:@"IDCardNum"];
+    [_user synchronize];
+//    HomeViewController *homeVc = [[HomeViewController alloc] init];
+    LoginViewController *LoginVC = [[LoginViewController alloc] init];
+    [self.navigationController pushViewController:LoginVC animated:YES];
 }
 //返回
 - (void)backButtonClick{

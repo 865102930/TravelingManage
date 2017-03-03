@@ -14,6 +14,7 @@
 
 @interface XFJAnnouncementViewController ()
 @property (nonatomic, strong) NSMutableArray<AnnouncementModel *> *announcementModels;
+@property (nonatomic, assign) NSInteger announcementModel_id;//编号
 @end
 
 @implementation XFJAnnouncementViewController
@@ -25,6 +26,7 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.separatorStyle = NO;
     [self loadData];
+    [MBProgressHUD showLoadHUD];
 }
 
 //加载数据
@@ -44,14 +46,14 @@
 - (void)loadData{
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
     [mgr POST:ANNOUNCEMENTLIST parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable responseObject) {
-      
+        [MBProgressHUD hidenHud];
         NSArray *dictArr = responseObject[@"rows"];
         _announcementModels = [AnnouncementModel mj_objectArrayWithKeyValuesArray:dictArr];
         [self.tableView reloadData];
     
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [MBProgressHUD hidenHud];
         if (error.code == NSURLErrorCancelled) return;
-        
     }];
 }
 
@@ -67,18 +69,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AnnouncementCell *cell = [AnnouncementCell initWithTableView:tableView];
-    cell.indexPath = indexPath;
-    AnnouncementModel * model = self.announcementModels[indexPath.row];
-    cell.titleLabel.text = model.announcementTitle;
-    cell.timeLabel.text = model.createtime;
+    cell.announcementM = self.announcementModels[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.contentLabel.text = model.announcementDetail;
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:cell.contentLabel.text];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:5];//调整行间距
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [cell.contentLabel.text length])];
-    cell.contentLabel.attributedText = attributedString;
-    [cell.contentLabel sizeToFit];
     return cell;
 }
 
@@ -87,10 +79,27 @@
     AnnouncementModel * model = self.announcementModels[indexPath.row];
     AnnouncementDetailViewController *detailVC = [[AnnouncementDetailViewController alloc] init];
     detailVC.Id = model.AnnouncementModel_id;
+//    self.announcementModel_id = model.AnnouncementModel_id;
+//    [self loadAnnouncementRead];
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
-
+//公告已读
+- (void)loadAnnouncementRead{
+    AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
+    NSString *Id = [NSString stringWithFormat:@"%ld", (long)self.announcementModel_id];
+    NSDictionary *parameters = @{
+                                 @"id" : Id
+                                 };
+    [mgr POST:ANNOUNCEMENTREAD parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable responseObject) {
+      
+        NSLog(@"%@",responseObject);
+        [self.tableView reloadData];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (error.code == NSURLErrorCancelled) return;
+        
+    }];
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 165 + 8;
 }

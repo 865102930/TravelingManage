@@ -14,6 +14,7 @@
 		1C1939C31E51476200882B8C /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C1939C21E51476200882B8C /* MessageCell.m */; };
 		1C210C711E558B0600689677 /* PersonalDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C210C701E558B0600689677 /* PersonalDetailCell.m */; };
 		1C210C741E559BDB00689677 /* PersonDetail2Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C210C731E559BDB00689677 /* PersonDetail2Cell.m */; };
+		1CA681BE1E680240007B6751 /* GRNetRequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CA681BD1E680240007B6751 /* GRNetRequestClass.m */; };
 		1CB523DE1E5195C600A205C3 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523DD1E5195C600A205C3 /* MessageModel.m */; };
 		1CB523E11E51AA8900A205C3 /* AnnouncementCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523E01E51AA8900A205C3 /* AnnouncementCell.m */; };
 		1CB523E41E51ABA100A205C3 /* AnnouncementModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523E31E51ABA100A205C3 /* AnnouncementModel.m */; };
@@ -278,6 +279,8 @@
 		1C210C701E558B0600689677 /* PersonalDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDetailCell.m; sourceTree = "<group>"; };
 		1C210C721E559BDB00689677 /* PersonDetail2Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetail2Cell.h; sourceTree = "<group>"; };
 		1C210C731E559BDB00689677 /* PersonDetail2Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetail2Cell.m; sourceTree = "<group>"; };
+		1CA681BC1E680240007B6751 /* GRNetRequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRNetRequestClass.h; sourceTree = "<group>"; };
+		1CA681BD1E680240007B6751 /* GRNetRequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRNetRequestClass.m; sourceTree = "<group>"; };
 		1CB523DC1E5195C600A205C3 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		1CB523DD1E5195C600A205C3 /* MessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
 		1CB523DF1E51AA8900A205C3 /* AnnouncementCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnnouncementCell.h; path = TravelingManage/Classes/Notice/AnnouncementCell.h; sourceTree = SOURCE_ROOT; };
@@ -706,6 +709,20 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		1CA681C81E6807B8007B6751 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1CA681C91E6807B8007B6751 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		1CFDFDEC1E542C65001D6300 /* OpenProject */ = {
 			isa = PBXGroup;
 			children = (
@@ -931,8 +948,8 @@
 			isa = PBXGroup;
 			children = (
 				3A1B7ADA1E48053C00A5B22D /* Controller */,
-				3A1B7ADB1E48053C00A5B22D /* Model */,
-				3A1B7ADC1E48053C00A5B22D /* View */,
+				1CA681C81E6807B8007B6751 /* Model */,
+				1CA681C91E6807B8007B6751 /* View */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -944,20 +961,6 @@
 				3A94749C1E4D9160002F1F9B /* LoginViewController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		3A1B7ADB1E48053C00A5B22D /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		3A1B7ADC1E48053C00A5B22D /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		3A1B7AE11E48053C00A5B22D /* Other */ = {
@@ -986,14 +989,14 @@
 		3A1B7AE71E48053C00A5B22D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				3A94748F1E4D9137002F1F9B /* PersonalDataViewController.h */,
-				3A9474901E4D9137002F1F9B /* PersonalDataViewController.m */,
-				3A9474911E4D9137002F1F9B /* PersonalInformationViewController.h */,
-				3A9474921E4D9137002F1F9B /* PersonalInformationViewController.m */,
 				3A9474931E4D9137002F1F9B /* RegistViewController.h */,
 				3A9474941E4D9137002F1F9B /* RegistViewController.m */,
 				3A9474951E4D9137002F1F9B /* VerificationCodeViewController.h */,
 				3A9474961E4D9137002F1F9B /* VerificationCodeViewController.m */,
+				3A9474911E4D9137002F1F9B /* PersonalInformationViewController.h */,
+				3A9474921E4D9137002F1F9B /* PersonalInformationViewController.m */,
+				3A94748F1E4D9137002F1F9B /* PersonalDataViewController.h */,
+				3A9474901E4D9137002F1F9B /* PersonalDataViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1333,6 +1336,8 @@
 		3AE2FF4D1E4D59EE00E380F9 /* Announcement */ = {
 			isa = PBXGroup;
 			children = (
+				1CA681BC1E680240007B6751 /* GRNetRequestClass.h */,
+				1CA681BD1E680240007B6751 /* GRNetRequestClass.m */,
 				3AE2FF4E1E4D59EE00E380F9 /* Controller */,
 				1C1939BF1E51470600882B8C /* View */,
 				1C1939C01E51472700882B8C /* Model */,
@@ -1797,6 +1802,7 @@
 				3A18E5471E5D6FB400BFE891 /* LMComBoxView.m in Sources */,
 				3A07C9061E481A70008A838D /* UIView+Frame.m in Sources */,
 				3AE2FF431E4D4E4300E380F9 /* XFJAnnouncementView.m in Sources */,
+				1CA681BE1E680240007B6751 /* GRNetRequestClass.m in Sources */,
 				3A18E54F1E5D6FB400BFE891 /* XFJTeamInformationTableViewCell.m in Sources */,
 				3A18E5231E5D24FC00BFE891 /* UIImage+image.m in Sources */,
 				3A18E5491E5D6FB400BFE891 /* XFJCarNameTableViewCell.m in Sources */,

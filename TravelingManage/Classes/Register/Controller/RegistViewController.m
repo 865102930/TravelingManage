@@ -14,7 +14,7 @@
 @property(nonatomic,strong)UIImageView *backImage;//返回
 @property(nonatomic,strong)UITextField *phoneTextF;//手机号
 @property(nonatomic,strong)UILabel     *titleL;//标题
-@property(nonatomic,strong)UIButton    *agreeButton;//已阅读
+//@property(nonatomic,strong)UIButton    *agreeButton;//已阅读
 @property(nonatomic,strong)UIButton    *backButton;//返回按钮
 @property(nonatomic,strong)UIButton    *nextButton;//下一步
 
@@ -70,19 +70,19 @@
     return _phoneTextF;
 }
 
-- (UIButton *)agreeButton{
-    if (!_agreeButton) {
-        _agreeButton = [[UIButton alloc] init];
-        [_agreeButton setTitle:@"  我已阅读《团队注册协议》" forState:UIControlStateNormal];
-        _agreeButton.titleLabel.font = [UIFont systemFontOfSize:13];
-        [_agreeButton setTitleColor:RedColor forState:UIControlStateNormal];
-        [_agreeButton setImage:[UIImage imageNamed:@"notSelected"] forState:UIControlStateNormal];
-        [_agreeButton setImage:[UIImage imageNamed:@"choice"] forState:UIControlStateSelected];
-        [_agreeButton addTarget: self action:@selector(agreeClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:_agreeButton];
-    }
-    return _agreeButton;
-}
+//- (UIButton *)agreeButton{
+//    if (!_agreeButton) {
+//        _agreeButton = [[UIButton alloc] init];
+//        [_agreeButton setTitle:@"  我已阅读《团队注册协议》" forState:UIControlStateNormal];
+//        _agreeButton.titleLabel.font = [UIFont systemFontOfSize:13];
+//        [_agreeButton setTitleColor:RedColor forState:UIControlStateNormal];
+//        [_agreeButton setImage:[UIImage imageNamed:@"notSelected"] forState:UIControlStateNormal];
+//        [_agreeButton setImage:[UIImage imageNamed:@"choice"] forState:UIControlStateSelected];
+//        [_agreeButton addTarget: self action:@selector(agreeClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.view addSubview:_agreeButton];
+//    }
+//    return _agreeButton;
+//}
 
 - (UIButton *)nextButton{
     if (!_nextButton) {
@@ -135,32 +135,32 @@
         make.height.mas_equalTo(42);
     }];
     
-    [self.agreeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_phoneTextF.mas_bottom).with.offset(0);
-        make.left.equalTo(self.view).offset(-10);
-        make.size.mas_equalTo(CGSizeMake(250, 50));
-    }];
-
+//    [self.agreeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(_phoneTextF.mas_bottom).with.offset(0);
+//        make.left.equalTo(self.view).offset(-10);
+//        make.size.mas_equalTo(CGSizeMake(250, 50));
+//    }];
+    
     [self.nextButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
     [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
     [self.nextButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(17);
         make.right.equalTo(self.view).offset(-17);
-        make.top.equalTo(_agreeButton.mas_bottom).offset(20);
+        make.top.equalTo(_phoneTextF.mas_bottom).offset(35);
         make.height.mas_equalTo(42);
     }];
     
     self.phoneTextF.delegate = self;    
 }
 #pragma mark ----- buttonClick
-//已阅读
-- (void)agreeClick: (UIButton *)button{
-    button.selected = !button.selected;
-}
+////已阅读
+//- (void)agreeClick: (UIButton *)button{
+//    button.selected = !button.selected;
+//}
 //下一步
 - (void)nextButtonClick{
     VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
-    verificationCodeVC.registTextField_text = self.phoneNumber;
+    verificationCodeVC.registTextField_text = self.phoneTextF.text;
     [self.navigationController pushViewController:verificationCodeVC animated:YES];
 }
 //返回
@@ -174,8 +174,8 @@
         [self.nextButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
         [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
         _nextButton.userInteractionEnabled = YES;
-        NSLog(@"------------sender的内容是 :%@",sender.text);
-        self.phoneNumber = sender.text;
+//        NSLog(@"------------sender的内容是 :%@",sender.text);
+//        self.phoneNumber = sender.text;
     }else {
         [self.nextButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
         [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];

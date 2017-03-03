@@ -43,4 +43,19 @@ typedef NS_ENUM(NSInteger, HidWithColorContentType) {
  */
 + (void)hidenHud;
 
+/**
+ *  在窗口上显示菊花
+ */
++ (void)showLoadHUD;
+
+/**
+ *  在view上显示菊花
+ */
++ (void)showLoadHUDAddedToView:(UIView *)view;
+/**
+ *  在窗口上显示文字-->1.5秒钟后消失
+ */
++ (void)showHUDMsg:(NSString *)message;
+
+
 @end
