@@ -21,6 +21,11 @@
     self.view.backgroundColor = [UIColor blueColor];
 }
 
+- (XFJStateType)type
+{
+    return 0;
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

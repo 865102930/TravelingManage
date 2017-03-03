@@ -10,4 +10,5 @@
 
 @interface XFJMineTeamViewController : UIViewController
 
+
 @end

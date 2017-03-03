@@ -20,6 +20,11 @@
     self.view.backgroundColor = [UIColor purpleColor];
 }
 
+- (XFJStateType)type
+{
+    return 5;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

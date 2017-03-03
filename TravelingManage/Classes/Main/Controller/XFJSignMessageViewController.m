@@ -1,28 +1,23 @@
 //
-//  XFJPleaseCheckViewController.m
+//  XFJSignMessageViewController.m
 //  TravelingManage
 //
-//  Created by 肖锋 on 2017/2/15.
+//  Created by 肖锋 on 2017/3/2.
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#import "XFJPleaseCheckViewController.h"
+#import "XFJSignMessageViewController.h"
 
-@interface XFJPleaseCheckViewController ()
+@interface XFJSignMessageViewController ()
 
 @end
 
-@implementation XFJPleaseCheckViewController
+@implementation XFJSignMessageViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor orangeColor];
-}
-
-- (XFJStateType)type
-{
-    return 2;
+    self.view.backgroundColor = [UIColor redColor];
 }
 
 - (void)didReceiveMemoryWarning {

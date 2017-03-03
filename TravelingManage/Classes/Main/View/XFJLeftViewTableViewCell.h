@@ -10,8 +10,11 @@
 
 
 #import <UIKit/UIKit.h>
+#import "XFJLeftFindTeamInfoItem.h"
 
 @interface XFJLeftViewTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) XFJLeftFindTeamInfoItem *leftFindTeamInfoItem;
 
 + (CGFloat)cellHeight;
 

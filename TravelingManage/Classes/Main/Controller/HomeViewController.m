@@ -34,6 +34,8 @@
 #import "CoverView.h"
 #import "AlertView.h"
 #import "AlertView1.h"
+#import "XFJAllTaskViewController.h"
+#import "JTNavigationController.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -163,14 +165,17 @@
         MessageListViewController *announcementController = [[MessageListViewController alloc] init];
         [wself.navigationController pushViewController:announcementController animated:YES];
     };
-    self.leftView.pushMineTeamBlock = ^() {
+    self.leftView.pushMineTeamBlock = ^(NSInteger strNumber) {
         [wself remoSubViews];
         XFJMineTeamViewController *mineTeamController = [[XFJMineTeamViewController alloc] init];
         [wself.navigationController pushViewController:mineTeamController animated:YES];
     };
     self.homeTopTaskMessageVeiw.jumpWithTeamMessageBlock = ^() {
-        XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
-        [wself.navigationController pushViewController:teamMessageViewController animated:YES];
+        //这是点击顶部右侧的箭头按钮跳转的控制器
+//        XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
+//        [wself.navigationController pushViewController:teamMessageViewController animated:YES];
+        //跳转到签到点信息
+        
     };
     //传递景点签到的内容
     self.sign_view.signModifyCount = ^(NSString *signNum, BOOL isSign) {
@@ -237,6 +242,7 @@
 #pragma mark - 签退
 - (void)signNoPeopleButtonClick1
 {
+    NSLog(@"-----------------++++++=是否在签退的范围内:%d",self.isContains);
     //签到的时候判断是否在景区内
     if (self.isContains) {//在景区范围内,可以签退
         //时间是达到规定的时间(YES)
@@ -484,7 +490,7 @@
                 [wself requestTeamSignList];
                 //这里调用获取创建任务的当前时间
                 [wself setUpUserTimeWithUseApp:NO];
-                [MBProgressHUD showHudTipStr:@"亲~`您已经签到成功!" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"亲~您已经签到成功!" contentColor:HidWithColorContentBlack];
             }
         } withFailureBlock:^(NSError *error) {
             if (error) {
@@ -1103,10 +1109,11 @@
     //108.924069,34.175223 [self.latitude floatValue], [self.longitude floatValue]
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);//30.276601, 119.996597这是海创科技中心的经度和纬度
     BOOL isContains = MAPolygonContainsCoordinate(location, polygon, strarryCount);
-    self.isContains = isContains;
-    NSLog(@"-----------经纬度是否在多边形内部 : %d",isContains);//0:标识不在 1:标识在
+    NSLog(@"-----------经纬度是否在多边形内部1 : %d",isContains);//0:标识不在 1:标识在
     //根据判断是否在范围内的值来做事情
     if (isContains) {//该处为YES则表示在
+        NSLog(@"-----------经纬度是否在多边形内部2 : %d",isContains);//0:标识不在 1:标识在
+        self.isContains = isContains;
         //判断该范围的景点类型
         if (self.stateType == 1) {//1则表示酒店
             //该处加载的是有房间数量的签到页面(也就是酒店)

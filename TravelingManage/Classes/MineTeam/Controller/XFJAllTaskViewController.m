@@ -37,14 +37,29 @@
     return _findTeamInfoByStateItem_array;
 }
 
+#pragma mark - 对服务器的请求类型
+- (XFJStateType)type
+{
+    return -1;
+}
+
 - (void)requestAllStates
 {
-    NSDictionary *dictParaments = @{
-                                    @"userId":@7,
-                                    @"notState":@1,
-                                    };
+    NSDictionary *dictParaments;
+    if (self.type != 5) {
+        dictParaments = @{
+                          @"userId":@7,
+                          @"teamState":(self.type == -1) ? @"" : @(self.type)
+                        };
+    }else {
+        dictParaments = @{
+                          @"userId":@7,
+                          @"notState":@1
+                          };
+    }
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:FINDTEAMINFOBYSTATEUEL withParaments:dictParaments withSuccessBlock:^(id object) {
+    NSLog(@"-------(((((((()))))))0传递的参数是:%@",dictParaments);
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDTEAMINFOBYSTATEUEL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
             NSLog(@"--------======++++---返回的请求信息是:%@",object);
             NSMutableArray *find_array = [object objectForKey:@"rows"];
@@ -89,13 +104,17 @@
 #pragma mark - cell的个数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 6;
+    return [self.findTeamInfoByStateItem_array count];
 }
 
 #pragma mark - cell的内容
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XFJAllTaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJAllTaskTableViewCell forIndexPath:indexPath];
+    static NSString *const cellID = @"cellID";
+    XFJAllTaskTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell == nil) {
+        cell = [[XFJAllTaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    }
     cell.findTeamInfoByStateItem = self.findTeamInfoByStateItem_array[indexPath.row];
     return cell;
 }

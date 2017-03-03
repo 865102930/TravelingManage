@@ -128,6 +128,7 @@
         [_firestMenuButton setTitleColor:kColor5858 forState:UIControlStateNormal];
         _firestMenuButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
         _firestMenuButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+        _firestMenuButton.tag = 2;
         [_firestMenuButton addTarget:self action:@selector(pleasePerfected) forControlEvents:UIControlEventTouchUpInside];
     }
     return _firestMenuButton;
@@ -281,8 +282,9 @@
 - (void)pleasePerfected
 {
     NSLog(@"主人,您点击了待完善按钮~~");
-    if ([self.delegate respondsToSelector:@selector(pushMineTeamController)]) {
-        [self.delegate pushMineTeamController];
+    NSInteger strNumber = 2;
+    if ([self.delegate respondsToSelector:@selector(pushMineTeamController:)]) {
+        [self.delegate pushMineTeamController:strNumber];
     }
 }
 
