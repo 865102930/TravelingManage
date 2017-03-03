@@ -11,4 +11,7 @@
 @interface PersonalDataViewController : UITableViewController
 
 @property (nonatomic, strong)NSUserDefaults *user;
+
+@property (nonatomic, assign)BOOL isVerificationCodeVC;
+
 @end

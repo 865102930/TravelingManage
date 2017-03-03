@@ -177,19 +177,51 @@
     self.phoneTextF.delegate = self;
     self.idCodeTextF.delegate = self;
 }
-//登录
+//登录(先判断验证码是否正确)
 - (void)loginBtnClick
 {
-    [self requestLogin];
+    [self codeMesgCheck];
+}
+
+//获取验证码
+- (void)idCodeButtonClick{
+    [self getVerificationCode];
+}
+
+//注册
+- (void)registButtonClick{
+    RegistViewController *registController = [[RegistViewController alloc] init];
+    JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:registController];
+    [self presentViewController:navVC animated:YES completion:nil];
+}
+
+#pragma mark ----- 网络请求 -----
+//判断验证码是否正确
+- (void)codeMesgCheck {
+    NSDictionary *dictParaments = @{
+                                    @"mobile":self.phoneTextF.text,
+                                    @"code":self.idCodeTextF.text
+                                    };
+    [GRNetRequestClass POST:CODEMSGCHECK params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"判断验证码是否正确:%@",responseObject);
+        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+            //登录
+             [self requestLogin];
+        }else{
+            [MBProgressHUD showHUDMsg:@"验证码错误,请重新输入"];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
 }
 
 //登录请求
 - (void)requestLogin
-{//18268165969  913074
+{
     __weak typeof(self) weakself = self;
     NSDictionary *dictParaments = @{
                                     @"userMobile":self.phoneTextF.text,
-                                  //  @"registrationId":@"10"
+                                    //  @"registrationId":@"10"
                                     };
     [GRNetRequestClass POST:LOGINURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         [MBProgressHUD hidenHud];
@@ -198,12 +230,17 @@
                 NSDictionary *dict = responseObject[@"object"];
                 [_user setObject:dict[@"id"]forKey:@"userId"];
                 [_user setObject:dict[@"userMobile"]forKey:@"phone"];
-//                [_user setObject:dict[@"userName"]forKey:@"userName"];
-                [_user setObject:dict[@"join"]forKey:@"workingHours"];
+                [_user setObject:dict[@"userName"]forKey:@"userName"];
+                [_user setObject:dict[@"idCard"]forKey:@"idCard"];
                 [_user synchronize];
                 NSLog(@"----------------------------登录后得到的返回值------------------------------:%@",responseObject);
-                HomeViewController *home = [[HomeViewController alloc] init];
-                [weakself.navigationController pushViewController:home animated:YES];
+                 NSLog(@"phone:%@",[_user objectForKey:@"phone"]);
+                 NSLog(@"userId:%@",[_user objectForKey:@"userId"]);
+                 NSLog(@"userName:%@",[_user objectForKey:@"userName"]);
+                 NSLog(@"idCard:%@",[_user objectForKey:@"idCard"]);
+//                HomeViewController *home = [[HomeViewController alloc] init];
+                PersonalDataViewController *detail = [[PersonalDataViewController alloc] init];
+                [weakself.navigationController pushViewController:detail animated:YES];
             }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
@@ -211,8 +248,9 @@
         if (error.code == NSURLErrorCancelled) return;
     }];
 }
+
 //获取验证码
-- (void)idCodeButtonClick{
+- (void)getVerificationCode {
     //如果输入的电话号码等于0或者不等于11,就直接走这个里面
     if (self.phoneTextF.text.length != 11) {
         [MBProgressHUD showHudTipStr:@"请输入正确的电话号码~~" contentColor:HidWithColorContentBlack];
@@ -240,6 +278,27 @@
     }];
 }
 
+
+#pragma mark ----- textFieldDelegate
+- (void)textFieldDidChange:(UITextField *)sender {
+    if (self.idCodeTextF.text.length > 0 && self.phoneTextF.text.length == 11) {
+        [self.loginButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
+        [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
+        _loginButton.userInteractionEnabled = YES;
+        self.inputVerification = sender.text;
+    }else {
+        [self.loginButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
+        [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
+        _loginButton.userInteractionEnabled = NO;
+    }
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    self.phoneNum_str = textField.text;
+}
+
+#pragma mark ----- 定时器 -----
 - (void)startUpTimer{
     _durationToValidity = 60;
     [self.idCodeButton setTitle:[NSString stringWithFormat:@"%.0f 秒", _durationToValidity] forState:UIControlStateNormal];
@@ -266,29 +325,4 @@
     }
 }
 
-//注册
-- (void)registButtonClick{
-    RegistViewController *registController = [[RegistViewController alloc] init];
-    JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:registController];
-    [self presentViewController:navVC animated:YES completion:nil];
-}
-
-#pragma mark ----- textFieldDelegate
-- (void)textFieldDidChange:(UITextField *)sender {
-    if (self.idCodeTextF.text.length > 0 && self.phoneTextF.text.length == 11) {
-        [self.loginButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
-        [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
-        _loginButton.userInteractionEnabled = YES;
-        self.inputVerification = sender.text;
-    }else {
-        [self.loginButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
-        [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
-        _loginButton.userInteractionEnabled = NO;
-    }
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    self.phoneNum_str = textField.text;
-}
 @end

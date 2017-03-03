@@ -105,7 +105,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _user = [NSUserDefaults standardUserDefaults];
+//    _user = [NSUserDefaults standardUserDefaults];
     [self creatUI];
 }
 
@@ -190,9 +190,9 @@
 }
 //马上进入
 - (void)getIntoButtonClick{
-    [_user setObject:self.nameTextF.text forKey:@"name"];
-    [_user setObject:self.idTextF.text forKey:@"IDCardNum"];
-    [_user synchronize];
+//    [_user setObject:self.nameTextF.text forKey:@"name"];
+//    [_user setObject:self.idTextF.text forKey:@"IDCardNum"];
+//    [_user synchronize];
 //    HomeViewController *homeVc = [[HomeViewController alloc] init];
     LoginViewController *LoginVC = [[LoginViewController alloc] init];
     [self.navigationController pushViewController:LoginVC animated:YES];
@@ -214,6 +214,11 @@
         [self.nextButton setTitle:@"马上进入" forState:UIControlStateNormal];
         _nextButton.userInteractionEnabled = NO;
     }
+}
+
+- (void)dealloc
+{
+    NSLog(@"%s",__func__);
 }
 
 @end

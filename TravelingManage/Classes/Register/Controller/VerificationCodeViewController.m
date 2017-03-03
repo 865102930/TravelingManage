@@ -8,6 +8,9 @@
 
 #import "VerificationCodeViewController.h"
 #import "PersonalInformationViewController.h"
+#import "RegistViewController.h"
+#import "PersonalDataViewController.h"
+#import "JTNavigationController.h"
 @interface VerificationCodeViewController ()<UITextFieldDelegate>
 @property(nonatomic,strong)UIImageView *backgroundImage;//背景图片
 @property(nonatomic,strong)UITextField *idCodeTextF;//验证码
@@ -119,6 +122,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self creatUI];
+    _user = [NSUserDefaults standardUserDefaults];
+    [_user synchronize];
+    
 }
 
 #pragma  mark ----- viewWillAppear
@@ -186,12 +192,12 @@
     self.idCodeTextF.delegate = self;
 }
 
-#pragma mark ----- buttonClick
+#pragma mark ----- 网络请求
 //获取验证码
-- (void)idCodeButtonClick{
+- (void)getVerificationCode{
     NSDictionary *dictParament = @{
                                    @"mobile":self.registTextField_text
-                                    };
+                                   };
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:REQUESTREGISTVERIFICATIONURL withParaments:dictParament withSuccessBlock:^(id object) {
         if (object) {
@@ -199,7 +205,7 @@
                 [wself startUpTimer];
                 [MBProgressHUD showHUDMsg:@"验证码发送成功"];
             }else{
-                 [wself invalidateTimer];
+                [wself invalidateTimer];
                 [MBProgressHUD showHUDMsg:@"获取验证码失败"];
             }
         }
@@ -212,6 +218,129 @@
     }];
 }
 
+//判断验证码是否正确
+- (void)codeMesgCheck {
+    NSDictionary *dictParaments = @{
+                                    @"mobile":self.registTextField_text,
+                                    @"code":self.idCodeTextF.text
+                                    };
+    [GRNetRequestClass POST:CODEMSGCHECK params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"判断验证码是否正确:%@",responseObject);
+        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+            //注册
+            [self userRegister];
+        }else{
+            [MBProgressHUD showHUDMsg:@"验证码错误,请重新输入"];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+    }];
+}
+
+//注册
+- (void)userRegister {
+    NSDictionary *dictParaments = @{
+                                    @"userMobile":self.registTextField_text,
+                                    };
+    [GRNetRequestClass POST:REGISTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"注册:%@",responseObject);
+        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+            [MBProgressHUD showHUDMsg:@"注册成功"];
+            PersonalInformationViewController *PersonalInformationVC = [[PersonalInformationViewController alloc] init];
+            [self.navigationController pushViewController:PersonalInformationVC animated:YES];
+        }else{
+            [MBProgressHUD showHUDMsg:@"该手机号已注册"];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+
+    }];
+}
+
+//手机号码修改
+- (void)modifyPhoneNum {
+    NSDictionary *dictParaments = @{
+                                    @"type" : @1,
+                                    @"userId" : @"userId",
+                                    @"randomcode" : self.idCodeTextF.text,
+                                    @"phone" : [_user objectForKey:@"phone"],
+                                    };
+    [GRNetRequestClass POST:CODECHECK params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"修改手机号:%@",responseObject);
+        NSLog(@"修改手机号参数:%@",dictParaments);
+        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+            //到输入手机页面(注册页面)
+            RegistViewController *RegistVC = [[RegistViewController alloc] init];
+            [self.navigationController pushViewController:RegistVC animated:YES];
+        }else if ([responseObject[@"msg"] isEqualToString:@"fail"]) {
+            [MBProgressHUD showHUDMsg:@"验证码错误"];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+    }];
+}
+
+
+
+
+#pragma mark ----- buttonClick
+//获取验证码
+- (void)idCodeButtonClick{
+    [self getVerificationCode];
+}
+
+//下一步(先判断验证码是否正确,正确允许注册),个人详情页不需要判断验证码
+- (void)nextButtonClick{
+    //判断是由详情页push进来还是由输入手机号页面进来的
+    if (self.isVerificationCodeVC) {
+//        [self codeMesgCheck];
+        PersonalInformationViewController *PersonalInformationVC = [[PersonalInformationViewController alloc] init];
+        [self.navigationController pushViewController:PersonalInformationVC animated:YES];
+
+    }else {
+        if (self.isNewVerificationCodeVC){
+            NSLog(@"我是新手机号之后push进来的");
+            PersonalDataViewController *personDetailVC = [[PersonalDataViewController alloc] init];
+            personDetailVC.isVerificationCodeVC = YES;
+//            [self.navigationController popToViewController:personDetailVC animated:YES];
+            [self.navigationController pushViewController:personDetailVC animated:YES];
+            //        [self modifyPhoneNum];
+
+        }else {
+            NSLog(@"我是详情页push进来的");
+            RegistViewController *RegistVC = [[RegistViewController alloc] init];
+            RegistVC.isNewPhoneNumVC = YES;
+            [self.navigationController pushViewController:RegistVC animated:YES];
+            //        [self modifyPhoneNum];
+
+        }
+    }
+}
+
+
+//返回
+- (void)backButtonClick{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark ----- textFieldDelegate
+- (void)textFieldDidChange:(UITextField *)sender {
+    if (sender.text.length > 0) {
+        [self.nextButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
+        [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
+        _nextButton.userInteractionEnabled = YES;
+    }else {
+        [self.nextButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
+        [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
+        _nextButton.userInteractionEnabled = NO;
+    }
+}
+
+#pragma mark ----- 定时器 -----
+//定时器
 - (void)startUpTimer{
     _durationToValidity = 60;
     [self.idCodeButton setTitle:[NSString stringWithFormat:@"%.0f 秒", _durationToValidity] forState:UIControlStateNormal];
@@ -232,7 +361,7 @@
     if (_durationToValidity > 0) {
         self.idCodeButton.titleLabel.text = [NSString stringWithFormat:@"%.0f 秒", _durationToValidity];//防止 button_title 闪烁
         [self.idCodeButton setTitle:[NSString stringWithFormat:@"%.0f 秒", _durationToValidity] forState:UIControlStateNormal];
-       self.idCodeButton.userInteractionEnabled = NO;
+        self.idCodeButton.userInteractionEnabled = NO;
     }else{
         [self invalidateTimer];
         [self.idCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
@@ -240,41 +369,9 @@
     }
 }
 
-//下一步
-- (void)nextButtonClick{
-    
-        NSDictionary *dictParaments = @{
-                                        @"userMobile":self.registTextField_text,
-                                        };
-        [GRNetRequestClass POST:REGISTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSLog(@"%@",responseObject);
-            if ([responseObject[@"msg"] isEqualToString:@"success"]) {
-                [MBProgressHUD showHUDMsg:@"注册成功"];
-                PersonalInformationViewController *PersonalInformationVC = [[PersonalInformationViewController alloc] init];
-                [self.navigationController pushViewController:PersonalInformationVC animated:YES];
-            }else{
-                [MBProgressHUD showHUDMsg:@"该手机号已注册"];
-            }
-        } fail:^(NSURLSessionDataTask *task, NSError *error) {
-            
-        }];
+- (void)dealloc
+{
+    NSLog(@"%s",__func__);
 }
 
-//返回
-- (void)backButtonClick{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark ----- textFieldDelegate
-- (void)textFieldDidChange:(UITextField *)sender {
-    if (sender.text.length > 0) {
-        [self.nextButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
-        [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
-        _nextButton.userInteractionEnabled = YES;
-    }else {
-        [self.nextButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
-        [self.nextButton setTitle:@"下一步" forState:UIControlStateNormal];
-        _nextButton.userInteractionEnabled = NO;
-    }
-}
 @end

@@ -44,7 +44,11 @@
 - (UILabel *)titleL{
     if (!_titleL) {
         _titleL = [[UILabel alloc] init];
-        _titleL.text = @"新用户注册";
+        if (self.isNewPhoneNumVC) {
+            _titleL.text = @"绑定新手机号";
+        }else {
+            _titleL.text = @"新用户注册";
+        }
         _titleL.textColor = RedColor;
         _titleL.font = [UIFont fontWithName:PingFang size:16];
         [self.view addSubview:_titleL];
@@ -159,9 +163,19 @@
 //}
 //下一步
 - (void)nextButtonClick{
-    VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
-    verificationCodeVC.registTextField_text = self.phoneTextF.text;
-    [self.navigationController pushViewController:verificationCodeVC animated:YES];
+//    [self whetherRegistration];
+    if (self.isNewPhoneNumVC) {
+        VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
+        verificationCodeVC.registTextField_text = self.phoneTextF.text;
+        verificationCodeVC.isNewVerificationCodeVC = YES;
+        [self.navigationController pushViewController:verificationCodeVC animated:YES];
+    }else {
+        VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
+        verificationCodeVC.registTextField_text = self.phoneTextF.text;
+        verificationCodeVC.isVerificationCodeVC = YES;
+        [self.navigationController pushViewController:verificationCodeVC animated:YES];
+    }
+    
 }
 //返回
 - (void)backButtonClick{
@@ -182,6 +196,32 @@
         _nextButton.userInteractionEnabled = NO;
         
     }
-    
+}
+
+#pragma mark ----- 网络请求 -----
+//根据手机号判断用户信息
+- (void)whetherRegistration{
+    NSDictionary *dictParaments = @{
+                                    @"mobile":self.phoneTextF.text,
+                                    };
+    [GRNetRequestClass POST:QUERYUSER params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"根据手机号判断用户信息:%@",responseObject);
+        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+            VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
+            verificationCodeVC.registTextField_text = self.phoneTextF.text;
+            [self.navigationController pushViewController:verificationCodeVC animated:YES];
+        }else if ([responseObject[@"msg"] isEqualToString:@"success"]){
+            [MBProgressHUD showHUDMsg:@"该手机号已注册"];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+    }];
+}
+
+- (void)dealloc
+{
+    NSLog(@"%s",__func__);
 }
 @end
+

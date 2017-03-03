@@ -12,4 +12,11 @@
 
 @property (nonatomic, strong) NSString *registTextField_text;
 
+@property (nonatomic, assign) BOOL isVerificationCodeVC;
+
+@property (nonatomic, assign) BOOL isNewVerificationCodeVC;//是否是新手机号验证码页面
+
+@property (nonatomic, strong) NSUserDefaults *user;
+
+
 @end

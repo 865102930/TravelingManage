@@ -6,10 +6,14 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+
 #import "PersonalDataViewController.h"
 #import "PersonalDetailCell.h"
 #import "PersonDetail2Cell.h"
-@interface PersonalDataViewController ()
+#import "VerificationCodeViewController.h"
+#import "HomeViewController.h"
+#import "UIBarButtonItem+Item.h"
+@interface PersonalDataViewController ()<UIGestureRecognizerDelegate>
 @property (nonatomic, strong) UILabel *title_label;
 @end
 
@@ -31,6 +35,20 @@
     self.navigationItem.titleView = self.title_label;
     self.tableView.tableFooterView = [[UITableView alloc] init];
     _user = [NSUserDefaults standardUserDefaults];
+    if (self.isVerificationCodeVC) {
+        [self setupNavBar];
+    }
+    NSInteger num = self.navigationController.viewControllers.count;
+    if (num >= 1) {
+        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleNavigationTransition:)];
+        [self.view addGestureRecognizer:pan];
+        pan.delegate = self;
+        
+    }
+}
+
+- (void)handleNavigationTransition:(UIPanGestureRecognizer *)pan
+{
 }
 
 #pragma mark - Table view data source
@@ -50,13 +68,14 @@
     if (indexPath.row == 0) {
         PersonalDetailCell *personDetailCell = [PersonalDetailCell initWithTableView:tableView];
         personDetailCell.title.text = @"姓名";
-        personDetailCell.content.text = [_user objectForKey:@"name"];
+        personDetailCell.content.text = [_user objectForKey:@"userName"];
         personDetailCell.selectionStyle = UITableViewCellSelectionStyleNone;
         return personDetailCell;
     }else if (indexPath.row == 1){
         PersonalDetailCell *personDetailCell = [PersonalDetailCell initWithTableView:tableView];
         personDetailCell.title.text = @"身份证号";
-        personDetailCell.content.text = [_user objectForKey:@"IDCardNum"];        personDetailCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        personDetailCell.content.text = [_user objectForKey:@"idCard"];
+        personDetailCell.selectionStyle = UITableViewCellSelectionStyleNone;
         return personDetailCell;
     }else{
         PersonDetail2Cell *personDetailCell = [PersonDetail2Cell initWithTableView:tableView];
@@ -66,15 +85,47 @@
     }
     return nil;
 }
-// git rm files
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    VerificationCodeViewController * VerificationCodeVC = [[VerificationCodeViewController alloc] init];
+    VerificationCodeVC.registTextField_text = [_user objectForKey:@"phone"];
+    [self.navigationController pushViewController:VerificationCodeVC animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 55;
+}
+
+
+// 设置导航条内容
+- (void)setupNavBar
+{
+    // 左边
+    UIBarButtonItem *left = [UIBarButtonItem itemWithImage:[UIImage imageNamed:@"back"] highImage:[UIImage imageNamed:@"back"] title:nil target:self action:@selector(onClickBack)];
+    self.navigationItem.leftBarButtonItem = left;
+}
+
+- (void)onClickBack {
+    NSInteger num = self.navigationController.viewControllers.count;
+    NSLog(@"%ld",(long)num);
+//    if (num >= 1) {
+//        UIViewController *popVC = self.navigationController.viewControllers[num - 1];
+//        [self.navigationController popToViewController:popVC animated:YES];
+//        HomeViewController *homeVC = [[HomeViewController alloc] init];
+//        [self.navigationController popToViewController:homeVC animated:YES];
+//    }else{
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
+
+//    HomeViewController *homeVC = [[HomeViewController alloc] init];
+//    [self.navigationController popToViewController:homeVC animated:NO];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (void)dealloc
+{
+    NSLog(@"%s",__func__);
 }
 
 

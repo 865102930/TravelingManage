@@ -10,5 +10,5 @@
 
 @interface PersonalInformationViewController : UIViewController
 
-@property (nonatomic, strong) NSUserDefaults *user;
+//@property (nonatomic, strong) NSUserDefaults *user;
 @end
