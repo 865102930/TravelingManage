@@ -38,6 +38,7 @@
 #import "JTNavigationController.h"
 #import "XFJSignMessageViewController.h"
 #import "XFJLaterTeamControlItem.h"
+#import "PersonalDataViewController.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -651,6 +652,13 @@
         _leftView.delegate = self;
     }
     return _leftView;
+}
+
+- (void)pushPersonalDataController
+{
+    [self remoSubViews];
+    PersonalDataViewController *person = [[PersonalDataViewController alloc] init];
+    [self.navigationController pushViewController:person animated:YES];
 }
 
 - (void)remoSubViews

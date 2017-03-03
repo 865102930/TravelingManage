@@ -44,6 +44,9 @@
         __weak __typeof(self)wself = self;
         self.leftTableHeaderView.changeUserInformationBlock = ^(){
             NSLog(@"您点击了修改资料按钮~~");
+            if ([wself.delegate respondsToSelector:@selector(pushPersonalDataController)]) {
+                [wself.delegate pushPersonalDataController];
+            }
         };
         self.leftTableFooterView.addFooterViewHeightBlock = ^(){
             NSLog(@"增加了footerView的高度");

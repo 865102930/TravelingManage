@@ -13,6 +13,7 @@
 @required
 - (void)touchViewWithWidth:(NSInteger)width;
 - (void)backLeftVeiw;
+- (void)pushPersonalDataController;
 @optional
 
 @end
