@@ -140,7 +140,7 @@
     
     [self setUpPanGes];
     
-    [self.view addSubview:self.location_button];
+//    [self.view addSubview:self.location_button];
 #warning 此处的试图需要判断是否是第一次进来的时候运用(或者任务已经做完了)
     [self.view addSubview:self.location_button];
     
