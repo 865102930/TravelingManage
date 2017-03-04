@@ -10,7 +10,9 @@
 
 @interface NewPhoneVerificationViewController : UIViewController
 
-@property (nonatomic, strong) NSString *registTextField_text;
+@property (nonatomic, strong) NSString *oldPhoneNum;
+
+@property (nonatomic, strong) NSString *NewPhoneNum;
 
 @property (nonatomic, strong) NSUserDefaults *user;
 

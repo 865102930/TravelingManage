@@ -8,33 +8,55 @@
 
 #import "LoginViewController.h"
 #import "RegistViewController.h"
-//#import "JTNavigationController.h"
+#import "JTNavigationController.h"
 #import "PersonalDataViewController.h"
 #import "HomeViewController.h"
 @interface LoginViewController ()<UITextFieldDelegate>
-@property(nonatomic, strong) UIImageView *backgroundImage;//背景图片
-@property(nonatomic, strong) UIImageView *titleImage;//团队管理
-@property(nonatomic, strong) UITextField *phoneTextF;//手机号
-@property(nonatomic, strong) UITextField *idCodeTextF;//验证码
-@property(nonatomic, strong) UIButton    *idCodeButton;//验证码按钮
-@property(nonatomic, strong) UIButton    *loginButton;//登录
-@property(nonatomic, strong) UILabel     *registLabel;//注册
-@property(nonatomic, strong) UIButton    *registButton;//注册按钮
-//接收用户输入的手机号
-@property (nonatomic, strong) NSString *phoneNum_str;
-//短信倒计时
-@property (nonatomic, assign) NSTimeInterval durationToValidity;
-//定时器
-@property (nonatomic, strong, readwrite) NSTimer *timer;
-
-@property (nonatomic, strong) NSString *strMsg;
-
-//获取用户输入的验证码
-@property (nonatomic, strong) NSString *inputVerification;
+@property (nonatomic, assign) NSTimeInterval durationToValidity;//短信倒计时
+@property (nonatomic, strong, readwrite) NSTimer  *timer;//定时器
+@property (nonatomic, strong) UIImageView         *backgroundImage;//背景图片
+@property (nonatomic, strong) UIImageView         *titleImage;//团队管理
+@property (nonatomic, strong) UITextField         *phoneTextF;//手机号
+@property (nonatomic, strong) UITextField         *idCodeTextF;//验证码
+@property (nonatomic, strong) UIButton            *idCodeButton;//验证码按钮
+@property (nonatomic, strong) UIButton            *loginButton;//登录
+@property (nonatomic, strong) UILabel             *registLabel;//注册
+@property (nonatomic, strong) UIButton            *registButton;//注册按钮
+@property (nonatomic, strong) UIButton            *isGuideBtn;//我是导游
+@property (nonatomic, strong) UIButton            *isTravelAgencyBtn;//我是旅行社
+@property (nonatomic, assign) CGFloat             loginY;
 @end
 
 @implementation LoginViewController
 #pragma  mark ----- lazy
+- (UIButton *)isGuideBtn{
+    if (!_isGuideBtn) {
+        _isGuideBtn = [[UIButton alloc] init];
+        [_isGuideBtn setTitle:@"  我是导游" forState:UIControlStateNormal];
+        _isGuideBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+        [_isGuideBtn setTitleColor:RedColor forState:UIControlStateNormal];
+        [_isGuideBtn setImage:[UIImage imageNamed:@"notSelected"] forState:UIControlStateNormal];
+        [_isGuideBtn setImage:[UIImage imageNamed:@"choice"] forState:UIControlStateSelected];
+        [_isGuideBtn addTarget: self action:@selector(isGuideBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_isGuideBtn];
+    }
+    return _isGuideBtn;
+}
+
+- (UIButton *)isTravelAgencyBtn {
+    if (!_isTravelAgencyBtn) {
+        _isTravelAgencyBtn = [[UIButton alloc] init];
+        [_isTravelAgencyBtn setTitle:@"  我是旅行社" forState:UIControlStateNormal];
+        _isTravelAgencyBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+        [_isTravelAgencyBtn setTitleColor:RedColor forState:UIControlStateNormal];
+        [_isTravelAgencyBtn setImage:[UIImage imageNamed:@"notSelected"] forState:UIControlStateNormal];
+        [_isTravelAgencyBtn setImage:[UIImage imageNamed:@"choice"] forState:UIControlStateSelected];
+        [_isTravelAgencyBtn addTarget: self action:@selector(isTravelAgencyBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_isTravelAgencyBtn];
+    }
+    return _isTravelAgencyBtn;
+}
+
 - (UIImageView *)backgroundImage{
     if (!_backgroundImage){
         _backgroundImage  = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundImage"]];
@@ -61,15 +83,15 @@
     return _phoneTextF;
 }
 
-- (void)textFieldDid_change:(UITextField *)textField
-{
-    self.phoneNum_str = textField.text;
-}
+//- (void)textFieldDid_change:(UITextField *)textField
+//{
+//    self.phoneTextF.text = textField.text;
+//}
 
 - (UITextField *)idCodeTextF{
     if (!_idCodeTextF) {
         _idCodeTextF =[UITextField textLeftImage:@"idCodeImage" placeholder:@"请输入验证码" imageWidth:17 imageHeight:15 lineWidth:(SCREEN_WIDTH - 111 - 17 - 48)];
-         [_idCodeTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+         [_idCodeTextF addTarget:self action:@selector(idCodeTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [self.view addSubview:_idCodeTextF];
     }
     return _idCodeTextF;
@@ -117,6 +139,7 @@
     [super viewDidLoad];
     _user = [NSUserDefaults standardUserDefaults];
     [self creatUI];
+  
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -126,6 +149,17 @@
 
 #pragma  mark ----- creatUI
 - (void)creatUI{
+    CGFloat loginY = 0;
+    if (iphone5) {
+        loginY = SCREEN_HEIGHT / 1.6;
+        _loginY = loginY;
+    }else if (iphone6){
+        loginY = SCREEN_HEIGHT / 1.85;
+        _loginY = loginY;
+    }else {
+        loginY = SCREEN_HEIGHT / 2;
+        _loginY = loginY;
+    }
     self.backgroundImage.userInteractionEnabled = YES;
     //团队管理
     [self.titleImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -162,12 +196,8 @@
     //登录按钮
     [self.loginButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
     [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
-    [self.loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(17);
-        make.right.equalTo(self.view).offset(-17);
-        make.top.equalTo(_idCodeTextF.mas_bottom).offset(30);
-        make.height.mas_equalTo(42);
-    }];
+    NSLog(@"_loginY:%f",_loginY);
+    self.loginButton.frame = CGRectMake(17, _loginY, SCREEN_WIDTH - 34, 42);
     
     [self.registButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
@@ -177,10 +207,12 @@
     self.phoneTextF.delegate = self;
     self.idCodeTextF.delegate = self;
 }
+
+#pragma  mark ----- 登录按钮 -----
 //登录(先判断验证码是否正确)
 - (void)loginBtnClick
 {
-    [self codeMesgCheck];
+     [self codeMesgCheck];
 }
 
 //获取验证码
@@ -194,6 +226,17 @@
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:registController];
     [self presentViewController:navVC animated:YES completion:nil];
 }
+
+//我是导游
+- (void)isGuideBtnClick: (UIButton *)guideBtnClick {
+    
+}
+
+//我是旅行社
+- (void)isTravelAgencyBtnClick: (UIButton *)travelAgencyBtnClick {
+    
+}
+
 
 #pragma mark ----- 网络请求 -----
 //判断验证码是否正确
@@ -220,8 +263,9 @@
 {
     __weak typeof(self) weakself = self;
     NSDictionary *dictParaments = @{
-                                    @"userMobile":self.phoneTextF.text,
+                                    @"userMobile" : self.phoneTextF.text,
                                     //  @"registrationId":@"10"
+                                    @"code" : self.idCodeTextF.text,
                                     };
     [GRNetRequestClass POST:LOGINURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         [MBProgressHUD hidenHud];
@@ -238,13 +282,10 @@
                  NSLog(@"userId:%@",[_user objectForKey:@"userId"]);
                  NSLog(@"userName:%@",[_user objectForKey:@"userName"]);
                  NSLog(@"idCard:%@",[_user objectForKey:@"idCard"]);
-//                HomeViewController *home = [[HomeViewController alloc] init];
-                PersonalDataViewController *detail = [[PersonalDataViewController alloc] init];
-//                JTNavigationController *jt = [[JTNavigationController alloc] initWithRootViewController:home];
-//                [UIApplication sharedApplication].keyWindow.rootViewController = home;
-//                [weakself presentViewController:home animated:YES completion:nil];
+                HomeViewController *home = [[HomeViewController alloc] init];
+                UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:home];
+                [weakself presentViewController:navVC animated:YES completion:nil];
                 
-                [weakself.navigationController pushViewController:detail animated:YES];
             }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
@@ -262,16 +303,13 @@
     }
     [self.phoneTextF resignFirstResponder];
     NSDictionary *dictParaments = @{
-                                    @"mobile":self.phoneNum_str
+                                    @"mobile":self.phoneTextF.text
                                     };
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:REQUESTREGISTVERIFICATIONURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
             [NSObject showHudTipStr:@"验证码发送成功" contentColor:HidWithColorContentBlack];
             [wself startUpTimer];
-            NSString *strMsg = [object objectForKey:@"msg"];
-            NSLog(@"+++++----------短信返回的恩信息是:%@",strMsg);
-            wself.strMsg = strMsg;
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
@@ -282,25 +320,71 @@
     }];
 }
 
+//根据手机号查询用户角色
+- (void)checkUserRole {
+    NSDictionary *dictParaments = @{
+                                    @"userMobile":self.phoneTextF.text
+                                    };
+    [GRNetRequestClass POST:CHECKROLE params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        [MBProgressHUD hidenHud];
+        NSLog(@"%@",responseObject);
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"oneRole"]){
+//                如果是一个角色,就什么都不做,以下代码可以注释
+                self.isGuideBtn.frame = CGRectMake(0, _loginY - 20, SCREEN_WIDTH / 2 - 40, 40);
+                self.isTravelAgencyBtn.frame = CGRectMake(SCREEN_WIDTH / 2.2, _loginY - 20, SCREEN_WIDTH / 2 - 40, 40);
+                self.loginButton.frame = CGRectMake(17, _loginY + 20, SCREEN_WIDTH - 34, 42);
+            
+            }else if ([responseObject[@"msg"] isEqualToString:@"twoRole"]) {
+                //如果是两个角色,就增加是导游还是旅行社让用户选择
+                self.isGuideBtn.frame = CGRectMake(17, _loginY - 20, SCREEN_WIDTH / 2 - 40, 40);
+                self.isTravelAgencyBtn.frame = CGRectMake(SCREEN_WIDTH / 2, _loginY - 20, SCREEN_WIDTH / 2 - 40, 40);
+                self.loginButton.frame = CGRectMake(17, _loginY + 20, SCREEN_WIDTH - 34, 42);
+            }else if ([responseObject[@"msg"] isEqualToString:@"null"]) {
+                [MBProgressHUD showHUDMsg:@"该号码未注册"];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        [MBProgressHUD hidenHud];
+        if (error.code == NSURLErrorCancelled) return;
+    }];
+
+}
 
 #pragma mark ----- textFieldDelegate
 - (void)textFieldDidChange:(UITextField *)sender {
-    if (self.idCodeTextF.text.length > 0 && self.phoneTextF.text.length == 11) {
+    NSLog(@"------------sender的内容是 :%@", self.phoneTextF.text);
+    if (self.phoneTextF.text.length == 11) {
+        [self.isGuideBtn setHidden:NO];
+        [self.isTravelAgencyBtn setHidden:NO];
+        [self checkUserRole];
+    } else {
+        [self.isGuideBtn setHidden:YES];
+        [self.isTravelAgencyBtn setHidden:YES];
+        self.loginButton.frame = CGRectMake(17, _loginY, SCREEN_WIDTH - 34, 42);
+    }
+}
+
+- (void)idCodeTextFieldDidChange: (UITextField *)sender {
+     NSLog(@"%@",_phoneTextF.text);
+    NSLog(@"%@",_idCodeTextF.text);
+    if (self.idCodeTextF.text.length && self.phoneTextF.text.length == 11) {
         [self.loginButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
         [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
         _loginButton.userInteractionEnabled = YES;
-        self.inputVerification = sender.text;
+        //        self.phoneTextF.text = sender.text;
     }else {
         [self.loginButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
         [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
         _loginButton.userInteractionEnabled = NO;
     }
+
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    self.phoneNum_str = textField.text;
-}
+//- (void)textFieldDidEndEditing:(UITextField *)textField
+//{
+//    self.phoneTextF.text = textField.text;
+//}
 
 #pragma mark ----- 定时器 -----
 - (void)startUpTimer{
@@ -323,9 +407,11 @@
     if (_durationToValidity > 0) {
         self.idCodeButton.titleLabel.text = [NSString stringWithFormat:@"%.0f 秒", _durationToValidity];//防止 button_title 闪烁
         [self.idCodeButton setTitle:[NSString stringWithFormat:@"%.0f 秒", _durationToValidity] forState:UIControlStateNormal];
+        self.idCodeButton.userInteractionEnabled = NO;
     }else{
         [self invalidateTimer];
         [self.idCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+        self.idCodeButton.userInteractionEnabled = YES;
     }
 }
 

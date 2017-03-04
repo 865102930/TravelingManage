@@ -123,7 +123,6 @@
     [self creatUI];
     _user = [NSUserDefaults standardUserDefaults];
     [_user synchronize];
-    
 }
 
 #pragma  mark ----- viewWillAppear
@@ -158,7 +157,7 @@
         make.top.equalTo(_backImage.mas_bottom).offset(21);
     }];
     
-    self.phoneNum.text = [NSString stringWithFormat:@"%@",self.registTextField_text];
+    self.phoneNum.text = [NSString stringWithFormat:@"%@",self.oldPhone_text];
     [self.phoneNum mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_idCodeL.mas_right).offset(5);
         make.top.equalTo(_backImage.mas_bottom).offset(21);
@@ -194,13 +193,15 @@
 #pragma mark ----- 网络请求
 //获取验证码
 - (void)getVerificationCode{
-    NSDictionary *dictParament = @{
-                                   @"mobile":self.registTextField_text
-                                   };
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:REQUESTREGISTVERIFICATIONURL withParaments:dictParament withSuccessBlock:^(id object) {
-        if (object) {
-            if ([object[@"msg"] isEqualToString:@"success"]){
+    NSDictionary *dictParament = @{
+                                   @"mobile" : self.oldPhone_text
+                                   };
+    [GRNetRequestClass POST:REQUESTREGISTVERIFICATIONURL params:dictParament success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"获取验证码:%@",responseObject);
+          NSLog(@"获取验证码dictParament:%@",responseObject);
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"success"]){
                 [wself startUpTimer];
                 [MBProgressHUD showHUDMsg:@"验证码发送成功"];
             }else{
@@ -208,14 +209,42 @@
                 [MBProgressHUD showHUDMsg:@"获取验证码失败"];
             }
         }
-    } withFailureBlock:^(NSError *error) {
-        if (error) {
-            //如果发送错误就直接销毁定时器
-            [wself invalidateTimer];
-        }
-    } progress:^(float progress) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        [wself invalidateTimer];
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
     }];
 }
+
+//修改手机号
+- (void)modifyPhoneNumber{
+    __weak __typeof(self)wself = self;
+    NSDictionary *dictParament = @{
+                                   @"type" : @1,
+                                   @"userId" : [_user objectForKey:@"userId"],
+                                   @"randomcode" : self.idCodeTextF.text,
+                                   @"phone" : self.oldPhone_text,
+                                   };
+       NSLog(@"修改手机号dictParament:%@",dictParament);
+    [GRNetRequestClass POST:CODECHECK params:dictParament success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"修改手机号:%@",responseObject);
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"success"]){
+                NewPhoneNueViewController *newPhoneNumVC = [[NewPhoneNueViewController alloc] init];
+                newPhoneNumVC.oldPhone_text = self.oldPhone_text;
+                [wself.navigationController pushViewController:newPhoneNumVC animated:YES];
+            }else if ([responseObject[@"msg"] isEqualToString:@"fail"]){
+                [MBProgressHUD showHUDMsg:@"验证码错误"];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        [wself invalidateTimer];
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+    }];
+}
+
+
 
 
 #pragma mark ----- buttonClick
@@ -224,11 +253,10 @@
     [self getVerificationCode];
 }
 
-//下一步(先判断验证码是否正确,正确允许注册)
+//下一步
 - (void)nextButtonClick{
     NSLog(@"%@",self.navigationController.childViewControllers);
-    NewPhoneNueViewController *newPhoneNumVC = [[NewPhoneNueViewController alloc] init];
-    [self.navigationController pushViewController:newPhoneNumVC animated:YES];
+    [self modifyPhoneNumber];
 }
 
 //返回

@@ -10,7 +10,7 @@
 
 @interface NewVerificationCodeViewController : UIViewController
 
-@property (nonatomic, strong) NSString *registTextField_text;
+@property (nonatomic, strong) NSString *oldPhone_text;
 
 @property (nonatomic, strong) NSUserDefaults *user;
 

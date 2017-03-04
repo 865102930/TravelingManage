@@ -16,7 +16,6 @@
 //@property(nonatomic,strong)UIButton    *agreeButton;//已阅读
 @property(nonatomic,strong)UIButton    *backButton;//返回按钮
 @property(nonatomic,strong)UIButton    *nextButton;//下一步
-@property (nonatomic, strong) NSString *phoneNumber;
 
 @end
 
@@ -44,7 +43,7 @@
 - (UILabel *)titleL{
     if (!_titleL) {
         _titleL = [[UILabel alloc] init];
-        _titleL.text = @"新用户注册";
+        _titleL.text = @"输入新手机号";
         _titleL.textColor = RedColor;
         _titleL.font = [UIFont fontWithName:PingFang size:16];
         [self.view addSubview:_titleL];
@@ -86,11 +85,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self creatUI];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 #pragma  mark ----- creatUI
@@ -136,13 +130,64 @@
 #pragma mark ----- buttonClick
 //下一步
 - (void)nextButtonClick{
-    NewPhoneVerificationViewController *newPhoneVVC = [[NewPhoneVerificationViewController alloc] init];
-    [self.navigationController pushViewController:newPhoneVVC animated:YES];
+    if ([self.phoneTextF.text isEqualToString: self.oldPhone_text]) {
+        [MBProgressHUD showHUDMsg:@"新旧手机号重复"];
+        return;
+    }
+    [self queryInformation];
 }
 //返回
 - (void)backButtonClick{
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+
+#pragma mark ----- 网络请求
+//获取验证码
+- (void)getVerificationCode{
+    NSDictionary *dictParament = @{
+                                   @"mobile":self.phoneTextF.text,
+                                   };
+    [GRNetRequestClass POST:REQUESTREGISTVERIFICATIONURL params:dictParament success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"获取验证码:%@",responseObject);
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"success"]){
+                [MBProgressHUD showHUDMsg:@"验证码已发送至手机"];
+                NewPhoneVerificationViewController *newPhoneVVC = [[NewPhoneVerificationViewController alloc] init];
+                newPhoneVVC.oldPhoneNum = self.oldPhone_text;
+                newPhoneVVC.NewPhoneNum = self.phoneTextF.text;
+                [self.navigationController pushViewController:newPhoneVVC animated:YES];
+            }else{
+                [MBProgressHUD showHUDMsg:@"获取验证码失败"];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+    }];
+}
+
+//根据手机号查询用户信息
+- (void)queryInformation {
+    NSDictionary *dictParament = @{
+                                   @"userMobile":self.phoneTextF.text,
+                                   };
+    [GRNetRequestClass POST:QUERYUSER params:dictParament success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"获取验证码:%@",responseObject);
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"success"]){
+                [self getVerificationCode];
+            }else if ([responseObject[@"msg"] isEqualToString:@"exist"]){
+                [MBProgressHUD showHUDMsg:@"该手机号已存在"];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+    }];
+}
+
+
 
 #pragma mark ----- textFieldDelegate
 - (void)textFieldDidChange:(UITextField *)sender {
