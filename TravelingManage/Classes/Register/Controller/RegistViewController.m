@@ -183,6 +183,26 @@
 }
 
 #pragma mark ----- 网络请求 -----
+//获取验证码
+- (void)getVerificationCode{
+    NSDictionary *dictParament = @{
+                                   @"mobile":self.phoneTextF.text
+                                   };
+    [GRNetRequestClass POST:REQUESTREGISTVERIFICATIONURL params:dictParament success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"获取验证码:%@",responseObject);
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"success"]){
+                [MBProgressHUD showHUDMsg:@"验证码已发送至手机"];
+            }else{
+                [MBProgressHUD showHUDMsg:@"获取验证码失败"];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+    }];
+}
+
 //根据手机号判断用户信息
 - (void)whetherRegistration{
     NSDictionary *dictParaments = @{
@@ -191,6 +211,7 @@
     [GRNetRequestClass POST:QUERYUSER params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"根据手机号判断用户信息:%@",responseObject);
         if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+            [self getVerificationCode];
             VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
             verificationCodeVC.registTextField_text = self.phoneTextF.text;
             [self.navigationController pushViewController:verificationCodeVC animated:YES];

@@ -79,12 +79,14 @@
 #define REGISTURL (BASEURL@"/app/user/userRegister")
 //获取注册验证码和登录验证码
 #define REQUESTREGISTVERIFICATIONURL (BASEURL@"/app/user/userCodeMsg")
-//判断验证码是否正确0303
+//判断验证码是否正确
 #define CODEMSGCHECK (BASEURL@"/app/user/codeMsgCheck")
-//根据手机号查询用户信息0303
+//根据手机号查询用户信息
 #define QUERYUSER (BASEURL@"/app/user/queryUser")
-//修改手机号0303
+//修改手机号
 #define CODECHECK (BASEURL@"/app/user/codeCheck")
+//判断角色
+#define CHECKROLE (BASEURL@"/app/user/checkRole")
 //登录接口
 #define LOGINURL (BASEURL@"/app/user/userLogin")
 //公告列表接口

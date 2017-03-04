@@ -10,4 +10,6 @@
 
 @interface NewPhoneNueViewController : UIViewController
 
+@property (nonatomic, strong) NSString *oldPhone_text;
+
 @end

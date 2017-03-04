@@ -122,7 +122,6 @@
     [self creatUI];
     _user = [NSUserDefaults standardUserDefaults];
     [_user synchronize];
-    
 }
 
 #pragma  mark ----- viewWillAppear
@@ -130,7 +129,6 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
-
 #pragma  mark ----- creatUI
 - (void)creatUI{
     self.backgroundImage.userInteractionEnabled = YES;
@@ -157,7 +155,7 @@
         make.top.equalTo(_backImage.mas_bottom).offset(21);
     }];
     
-    self.phoneNum.text = [NSString stringWithFormat:@"%@",self.registTextField_text];
+    self.phoneNum.text = [NSString stringWithFormat:@"%@",self.NewPhoneNum];
     [self.phoneNum mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_idCodeL.mas_right).offset(5);
         make.top.equalTo(_backImage.mas_bottom).offset(21);
@@ -194,7 +192,7 @@
 //获取验证码
 - (void)getVerificationCode{
     NSDictionary *dictParament = @{
-                                   @"mobile":self.registTextField_text
+                                   @"mobile":self.NewPhoneNum
                                    };
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:REQUESTREGISTVERIFICATIONURL withParaments:dictParament withSuccessBlock:^(id object) {
@@ -217,6 +215,42 @@
 }
 
 
+//修改手机号
+- (void)modifyPhoneNumber{
+    __weak __typeof(self)wself = self;
+    NSDictionary *dictParament = @{
+                                   @"type" : @2,
+                                   @"userId" : [_user objectForKey:@"userId"],
+                                   @"randomcode" : self.idCodeTextF.text,
+                                   @"phoneNew" : self.NewPhoneNum,
+                                   @"phone" : self.oldPhoneNum,
+                                   };
+    NSLog(@"修改手机号dictParament:%@",dictParament);
+    [GRNetRequestClass POST:CODECHECK params:dictParament success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"修改手机号:%@",responseObject);
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"success"]){
+                 [MBProgressHUD showHUDMsg:@"手机号修改成功"];
+                [_user setObject:@""forKey:@"phone"];
+                [_user setObject:self.NewPhoneNum forKey:@"phone"];
+                [self.navigationController popToViewController:self.navigationController.childViewControllers[0] animated:YES];
+            }else if ([responseObject[@"msg"] isEqualToString:@"fail"]){
+                [MBProgressHUD showHUDMsg:@"验证码错误"];
+            }else if ([responseObject[@"msg"] isEqualToString:@"Repeat"]) {
+                 [MBProgressHUD showHUDMsg:@"新旧手机号重复"];
+            }else{
+                [MBProgressHUD showHUDMsg:@"网络连接错误"];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        [wself invalidateTimer];
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+    }];
+}
+
+
+
 #pragma mark ----- buttonClick
 //获取验证码
 - (void)idCodeButtonClick{
@@ -226,7 +260,8 @@
 //下一步(先判断验证码是否正确,正确允许注册)
 - (void)nextButtonClick{
     NSLog(@"%@",self.navigationController.childViewControllers);
-    [self.navigationController popToViewController:self.navigationController.childViewControllers[0] animated:YES];
+    
+    [self modifyPhoneNumber];
 }
 
 //返回

@@ -17,7 +17,8 @@
 @property(nonatomic,strong)UIImageView *backImage;//返回
 @property(nonatomic,strong)UIButton    *backButton;//返回按钮
 @property(nonatomic,strong)UILabel     *titleL;//标题
-@property(nonatomic,strong)UIView     *headerView;
+@property(nonatomic,strong)UIView      *headerView;
+@property(nonatomic,strong)UIView      *lineView;
 @end
 
 @implementation PersonalDataViewController
@@ -30,6 +31,15 @@
         [self.view addSubview:_headerView];
     }
     return _headerView;
+}
+
+- (UIView *)lineView {
+    if (!_lineView) {
+        _lineView = [[UIView alloc] init];
+        _lineView.frame = CGRectMake(0, 64, SCREEN_WIDTH, 0.6);
+        [self.view addSubview:_lineView];
+    }
+    return _lineView;
 }
 
 - (UIButton *)backButton{
@@ -53,8 +63,8 @@
 - (UILabel *)titleL{
     if (!_titleL) {
         _titleL = [[UILabel alloc] init];
-        _titleL.text = @"输入验证码";
-        _titleL.textColor = RedColor;
+        _titleL.text = @"我的账户";
+        _titleL.textColor = kColor8383;
         _titleL.font = [UIFont fontWithName:PingFang size:16];
         [self.view addSubview:_titleL];
     }
@@ -68,6 +78,7 @@
     self.tableView.tableHeaderView = self.headerView;
     _user = [NSUserDefaults standardUserDefaults];
     [self creatUI];
+    self.tableView.scrollEnabled = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -77,6 +88,7 @@
 
 #pragma  mark ----- creatUI
 - (void)creatUI{
+     self.lineView.backgroundColor = kColor8383;
     [self.backButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(0);
         make.top.equalTo(self.view).offset(0);
@@ -93,6 +105,8 @@
         make.centerY.mas_equalTo(self.backImage);
         make.centerX.mas_equalTo(self.view);
     }];
+    
+    
 }
 
 #pragma mark - Table view data source
@@ -132,9 +146,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NewVerificationCodeViewController * VerificationCodeVC = [[NewVerificationCodeViewController alloc] init];
-    VerificationCodeVC.registTextField_text = [_user objectForKey:@"phone"];
-    [self.navigationController pushViewController:VerificationCodeVC animated:YES];
+    [self getVerificationCode];//获取验证码
+    if (indexPath.row == 2) {
+        NewVerificationCodeViewController * VerificationCodeVC = [[NewVerificationCodeViewController alloc] init];
+        VerificationCodeVC.oldPhone_text = [_user objectForKey:@"phone"];
+        [self.navigationController pushViewController:VerificationCodeVC animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -144,6 +161,27 @@
 #pragma mark ----- 按钮点击事件 -----
 - (void)backButtonClick {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark ----- 网络请求
+//获取验证码
+- (void)getVerificationCode{
+    NSDictionary *dictParament = @{
+                                   @"mobile":[_user objectForKey:@"phone"]
+                                   };
+    [GRNetRequestClass POST:REQUESTREGISTVERIFICATIONURL params:dictParament success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"获取验证码:%@",responseObject);
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"success"]){
+                [MBProgressHUD showHUDMsg:@"验证码已发送至手机"];
+            }else{
+                [MBProgressHUD showHUDMsg:@"获取验证码失败"];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+    }];
 }
 
 @end
