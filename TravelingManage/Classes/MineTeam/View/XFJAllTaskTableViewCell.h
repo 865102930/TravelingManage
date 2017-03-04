@@ -17,6 +17,12 @@
 
 @property (nonatomic, strong) XFJFindTeamInfoByStateItem *findTeamInfoByStateItem;
 
+
+//重新开始
+@property (nonatomic, copy) void (^alreadyTeamBlock)(UIButton *);
+//待完善资料
+@property (nonatomic, copy) void (^pleasePerfectDataBlock)(UIButton *);
+
 + (CGFloat)cellHeight;
 
 @end

@@ -10,4 +10,11 @@
 
 @implementation XFJFindTeamInfoByStateItem
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{
+             @"findTeamInfoByState_Id":@"id",
+             };
+}
+
 @end

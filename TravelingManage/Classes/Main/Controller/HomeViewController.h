@@ -13,5 +13,6 @@
 @interface HomeViewController : UIViewController
 
 @property (nonatomic, assign) BOOL isProjectItem;
+@property (nonatomic, assign) BOOL isFindTeamList;
 
 @end

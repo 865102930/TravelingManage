@@ -18,7 +18,6 @@
 #import "XFJTaskView.h"
 #import <Masonry.h>
 #import "XFJHomeTopTaskMessageVeiw.h"
-#import "XFJTeamMessageViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "XFJFindAttractionsListItem.h"
 #import "XFJSignView.h"
@@ -97,6 +96,7 @@
 @property (nonatomic, assign) NSInteger dayTime;//将在酒店待的时间传出来
 @property (nonatomic, assign) BOOL isSignButtonClick;//是否点击了酒店签退的按钮
 
+
 @end
 
 @implementation HomeViewController
@@ -123,8 +123,8 @@
     self.navigationItem.leftBarButtonItem = self.user_SttingButtonItem;
     self.navigationItem.rightBarButtonItem = self.projectButtonItem;
     
-    //这里调用最近操作的团队信息
-    [self requestLatelyControl];
+    //这里调用最近操作的团队信息(用BOOL值来判断)
+    self.isFindTeamList == YES ? [self.view addSubview:self.announcementView] : [self requestLatelyControl];
     
     //这是添加的公告(如果开始进来的时候没有任务,就显示公告,后面则显示新建任务的标题栏)
     self.isProjectItem == NO ? [self.view addSubview:self.announcementView] : [self.view addSubview:self.homeTopTaskMessageVeiw];
@@ -140,7 +140,7 @@
     
     [self setUpPanGes];
     
-    [self.view addSubview:self.location_button];
+//    [self.view addSubview:self.location_button];
 #warning 此处的试图需要判断是否是第一次进来的时候运用(或者任务已经做完了)
     [self.view addSubview:self.location_button];
     
@@ -204,11 +204,9 @@
     };
     self.homeTopTaskMessageVeiw.jumpWithTeamMessageBlock = ^() {
         //这是点击顶部右侧的箭头按钮跳转的控制器
-//        XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
-//        [wself.navigationController pushViewController:teamMessageViewController animated:YES];
         //跳转到签到点信息
-        XFJSignMessageViewController *signMessageController = [[XFJSignMessageViewController alloc] init];
-        [wself.navigationController pushViewController:signMessageController animated:YES];
+//        XFJSignMessageViewController *signMessageController = [[XFJSignMessageViewController alloc] init];
+//        [wself.navigationController pushViewController:signMessageController animated:YES];
     };
     //传递景点签到的内容
     self.sign_view.signModifyCount = ^(NSString *signNum, BOOL isSign) {
