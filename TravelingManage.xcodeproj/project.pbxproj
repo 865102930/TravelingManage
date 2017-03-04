@@ -100,6 +100,8 @@
 		3A51D15B1E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D15A1E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.m */; };
 		3A51D15E1E6AC543005B86F6 /* XFJTeamMessageBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D15D1E6AC543005B86F6 /* XFJTeamMessageBottomView.m */; };
 		3A51D1611E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1601E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m */; };
+		3A51D1651E6ADCB8005B86F6 /* XFJFindTeamTasksItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1641E6ADCB8005B86F6 /* XFJFindTeamTasksItem.m */; };
+		3A51D1681E6AE4F3005B86F6 /* XFJTaskRowsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1671E6AE4F3005B86F6 /* XFJTaskRowsItem.m */; };
 		3A756F171E657583005D2C02 /* tishi.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F141E657583005D2C02 /* tishi.png */; };
 		3A756F181E657583005D2C02 /* tishi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F151E657583005D2C02 /* tishi@2x.png */; };
 		3A756F191E657583005D2C02 /* tishi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F161E657583005D2C02 /* tishi@3x.png */; };
@@ -449,6 +451,10 @@
 		3A51D15D1E6AC543005B86F6 /* XFJTeamMessageBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessageBottomView.m; sourceTree = "<group>"; };
 		3A51D15F1E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamMessageTableViewCell.h; sourceTree = "<group>"; };
 		3A51D1601E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessageTableViewCell.m; sourceTree = "<group>"; };
+		3A51D1631E6ADCB8005B86F6 /* XFJFindTeamTasksItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindTeamTasksItem.h; sourceTree = "<group>"; };
+		3A51D1641E6ADCB8005B86F6 /* XFJFindTeamTasksItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindTeamTasksItem.m; sourceTree = "<group>"; };
+		3A51D1661E6AE4F3005B86F6 /* XFJTaskRowsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTaskRowsItem.h; sourceTree = "<group>"; };
+		3A51D1671E6AE4F3005B86F6 /* XFJTaskRowsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTaskRowsItem.m; sourceTree = "<group>"; };
 		3A756F141E657583005D2C02 /* tishi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tishi.png; sourceTree = "<group>"; };
 		3A756F151E657583005D2C02 /* tishi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@2x.png"; sourceTree = "<group>"; };
 		3A756F161E657583005D2C02 /* tishi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@3x.png"; sourceTree = "<group>"; };
@@ -1046,6 +1052,7 @@
 			children = (
 				3A48BACF1E5AADF400910789 /* Controller */,
 				3A48BAD31E5AB7B000910789 /* View */,
+				3A51D1621E6ADC8C005B86F6 /* Model */,
 			);
 			path = TeamMessage;
 			sourceTree = "<group>";
@@ -1082,6 +1089,17 @@
 				3A51D1601E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		3A51D1621E6ADC8C005B86F6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3A51D1631E6ADCB8005B86F6 /* XFJFindTeamTasksItem.h */,
+				3A51D1641E6ADCB8005B86F6 /* XFJFindTeamTasksItem.m */,
+				3A51D1661E6AE4F3005B86F6 /* XFJTaskRowsItem.h */,
+				3A51D1671E6AE4F3005B86F6 /* XFJTaskRowsItem.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		3A756F251E66B8DC005D2C02 /* Model */ = {
@@ -1809,6 +1827,7 @@
 				3AE849E81E543E9B00A71C5E /* XFJPleaseDoITViewController.m in Sources */,
 				3A1B7AEA1E48053C00A5B22D /* AppDelegate.m in Sources */,
 				3A9474A41E4D91BE002F1F9B /* UIButton+button.m in Sources */,
+				3A51D1651E6ADCB8005B86F6 /* XFJFindTeamTasksItem.m in Sources */,
 				3A18E5561E5D807900BFE891 /* XFJFindTravelAgencyListItem.m in Sources */,
 				3A9A2DA71E49A99100D89639 /* XFJMaskView.m in Sources */,
 				3AE2FF5A1E4D613B00E380F9 /* HyperlinksButton.m in Sources */,
@@ -1873,6 +1892,7 @@
 				3A18E5491E5D6FB400BFE891 /* XFJCarNameTableViewCell.m in Sources */,
 				3A51D14C1E6A91A7005B86F6 /* XFJGeneralMessageView.m in Sources */,
 				3A756F1F1E657D03005D2C02 /* CoverView.m in Sources */,
+				3A51D1681E6AE4F3005B86F6 /* XFJTaskRowsItem.m in Sources */,
 				3A9A2DA31E49A97800D89639 /* UIViewController+JTNavigationExtension.m in Sources */,
 				3AE849EE1E543F1300A71C5E /* XFJPleaseAskingViewController.m in Sources */,
 				1CFDFE1C1E542C65001D6300 /* TZImageManager.m in Sources */,

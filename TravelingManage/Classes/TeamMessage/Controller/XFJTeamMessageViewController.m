@@ -16,6 +16,9 @@
 #import "WSPhotosBroseVC.h"
 #import "XFJUpPhotosOpenTeamMessageView.h"
 #import "XFJTeamMessageBottomView.h"
+#import "XFJFindTeamTasksItem.h"
+#import "XFJTaskRowsItem.h"
+
 
 @interface XFJTeamMessageViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJCarPhotosWithPerfectViewDelegate,XFJUpPhotosOpenTeamMessageViewDelegate>
 
@@ -30,6 +33,8 @@
 @property (nonatomic, assign) NSInteger maxImageCount;
 @property (nonatomic, strong) NSMutableArray *dataArr;
 @property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *findTeamTasksItemArray;
+@property (nonatomic, strong) NSMutableArray <XFJTaskRowsItem *> *taskRowsArray;
 
 @end
 
@@ -72,14 +77,38 @@
     return _title_label;
 }
 
+- (NSMutableArray <XFJFindTeamTasksItem *> *)findTeamTasksItemArray
+{
+    if (_findTeamTasksItemArray == nil) {
+        _findTeamTasksItemArray = [NSMutableArray array];
+    }
+    return _findTeamTasksItemArray;
+}
+
+- (NSMutableArray <XFJTaskRowsItem *> *)taskRowsArray
+{
+    if (_taskRowsArray == nil) {
+        _taskRowsArray = [NSMutableArray array];
+    }
+    return _taskRowsArray;
+}
 - (void)requestTeamMessage
 {
     NSDictionary *dictParams = @{
                                  @"id":[NSString stringWithFormat:@"%zd",self.findTeamInfoByState_Id]
                                  };
+    __weak __typeof(self)wself = self;
     [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
-            NSLog(@"++++++++获取到的具体的团队资料是 :%@",responseObject);
+            NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
+            wself.findTeamTasksItemArray = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
+            wself.generalMessageView.findTeamTasksItem = wself.findTeamTasksItemArray;
+            for (NSInteger i = 0;i < findArray.count ; i++) {
+                NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
+                wself.taskRowsArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
+                self.teamMessageBottomView.taskRowsItemArray = wself.taskRowsArray;
+                NSLog(@"++++++++获取到的具体的团队资料是 :%@",self.teamMessageBottomView.taskRowsItemArray);
+            }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
@@ -150,7 +179,7 @@
 - (XFJTeamMessageBottomView *)teamMessageBottomView
 {
     if (_teamMessageBottomView == nil) {
-        _teamMessageBottomView = [[XFJTeamMessageBottomView alloc] initWithFrame:CGRectMake(0, self.upPhotosOpenTeamMessageView.XFJ_Y + 170, SCREEN_WIDTH, 200)];
+        _teamMessageBottomView = [[XFJTeamMessageBottomView alloc] initWithFrame:CGRectMake(0, self.upPhotosOpenTeamMessageView.XFJ_Y + 170, SCREEN_WIDTH, 300)];
         _teamMessageBottomView.backgroundColor = [UIColor whiteColor];
     }
     return _teamMessageBottomView;

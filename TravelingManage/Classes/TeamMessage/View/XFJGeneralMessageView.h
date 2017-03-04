@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XFJFindTeamTasksItem.h"
 
 @interface XFJGeneralMessageView : UIView
+
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *findTeamTasksItem;
 
 @end

@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XFJTaskRowsItem.h"
 
 @interface XFJTeamMessageBottomView : UIView
+
+@property (nonatomic, strong) NSMutableArray <XFJTaskRowsItem *> *taskRowsItemArray;
 
 @end

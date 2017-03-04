@@ -303,7 +303,6 @@
 {
     if (_teamNumberContent_label == nil) {
         _teamNumberContent_label = [[UILabel alloc] init];
-        _teamNumberContent_label.text = @"1234567";
         _teamNumberContent_label.font = [UIFont fontWithName:PingFang size:13.0];
         _teamNumberContent_label.textColor = kColor2f2f;
     }
@@ -313,7 +312,6 @@
 {
     if (_traveingNameContent_label == nil) {
         _traveingNameContent_label = [[UILabel alloc] init];
-        _traveingNameContent_label.text = @"你好旅行社";
         _traveingNameContent_label.font = [UIFont fontWithName:PingFang size:13.0];
         _traveingNameContent_label.textColor = kColor2f2f;
     }
@@ -324,7 +322,6 @@
 {
     if (_carNumberContent_label == nil) {
         _carNumberContent_label = [[UILabel alloc] init];
-        _carNumberContent_label.text = @"浙APH123";
         _carNumberContent_label.font = [UIFont fontWithName:PingFang size:13.0];
         _carNumberContent_label.textColor = kColor2f2f;
     }
@@ -335,7 +332,6 @@
 {
     if (_whereAreFromContent_label == nil) {
         _whereAreFromContent_label = [[UILabel alloc] init];
-        _whereAreFromContent_label.text = @"浙江省杭州市余杭区";
         _whereAreFromContent_label.font = [UIFont fontWithName:PingFang size:13.0];
         _whereAreFromContent_label.textColor = kColor2f2f;
     }
@@ -346,7 +342,6 @@
 {
     if (_endContent_label == nil) {
         _endContent_label = [[UILabel alloc] init];
-        _endContent_label.text = @"景区观光";
         _endContent_label.font = [UIFont fontWithName:PingFang size:13.0];
         _endContent_label.textColor = kColor2f2f;
     }
@@ -357,7 +352,6 @@
 {
     if (_teamPeopleNumberContent_label == nil) {
         _teamPeopleNumberContent_label = [[UILabel alloc] init];
-        _teamPeopleNumberContent_label.text = @"22人";
         _teamPeopleNumberContent_label.font = [UIFont fontWithName:PingFang size:13.0];
         _teamPeopleNumberContent_label.textColor = kColor2f2f;
     }
@@ -368,7 +362,6 @@
 {
     if (_teamPropertyContent_label == nil) {
         _teamPropertyContent_label = [[UILabel alloc] init];
-        _teamPropertyContent_label.text = @"散拼团";
         _teamPropertyContent_label.font = [UIFont fontWithName:PingFang size:13.0];
         _teamPropertyContent_label.textColor = kColor2f2f;
     }
@@ -379,7 +372,6 @@
 {
     if (_teamDayContent_label == nil) {
         _teamDayContent_label = [[UILabel alloc] init];
-        _teamDayContent_label.text = @"4天";
         _teamDayContent_label.font = [UIFont fontWithName:PingFang size:13.0];
         _teamDayContent_label.textColor = kColor2f2f;
     }
@@ -390,11 +382,33 @@
 {
     if (_outTeamTimeContent_label == nil) {
         _outTeamTimeContent_label = [[UILabel alloc] init];
-        _outTeamTimeContent_label.text = @"2017-02-23";
         _outTeamTimeContent_label.font = [UIFont fontWithName:PingFang size:13.0];
         _outTeamTimeContent_label.textColor = kColor2f2f;
     }
     return _outTeamTimeContent_label;
+}
+
+- (void)setFindTeamTasksItem:(NSMutableArray<XFJFindTeamTasksItem *> *)findTeamTasksItem
+{
+    _findTeamTasksItem = findTeamTasksItem;
+    //团队编号
+    self.teamNumberContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTasksItem[0].teamNo];
+    //旅行社名称
+     self.traveingNameContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].travelAgencyName];
+    //车牌号
+    self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].vehicleNo];
+    //客源地
+    self.whereAreFromContent_label.text = [NSString stringWithFormat:@"%@%@%@",findTeamTasksItem[0].province,findTeamTasksItem[0].city,findTeamTasksItem[0].area];
+    //目的属性
+    self.endContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamAttrVal];
+    //团队人数
+    self.teamPeopleNumberContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTasksItem[0].teamNum];
+    //团队性质
+    self.teamPropertyContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamNatureVal];
+    //行程天数
+    self.teamDayContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTasksItem[0].teamDay];
+    //出团日期
+    self.outTeamTimeContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamDate];
 }
 
 

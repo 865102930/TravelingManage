@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XFJTaskRowsItem.h"
 @interface XFJTeamMessageTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) XFJTaskRowsItem *taskRowsItem;
 
 @end
