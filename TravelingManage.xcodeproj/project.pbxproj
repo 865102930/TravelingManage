@@ -84,9 +84,6 @@
 		3A48BAC81E5AAB3A00910789 /* chakan.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A48BAC51E5AAB3A00910789 /* chakan.png */; };
 		3A48BAC91E5AAB3A00910789 /* chakan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A48BAC61E5AAB3A00910789 /* chakan@2x.png */; };
 		3A48BACA1E5AAB3A00910789 /* chakan@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A48BAC71E5AAB3A00910789 /* chakan@3x.png */; };
-		3A48BAD21E5AAE1100910789 /* XFJTeamMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A48BAD11E5AAE1100910789 /* XFJTeamMessageViewController.m */; };
-		3A48BAD61E5AB7E300910789 /* XFJTitleMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A48BAD51E5AB7E300910789 /* XFJTitleMessageTableViewCell.m */; };
-		3A48BAD91E5AB7FB00910789 /* XFJTitleMessageContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A48BAD81E5AB7FB00910789 /* XFJTitleMessageContentTableViewCell.m */; };
 		3A4E704F1E60345D00547BCD /* XFJSignNoPeopleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4E704E1E60345D00547BCD /* XFJSignNoPeopleView.m */; };
 		3A4E70531E6034AD00547BCD /* renshu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4E70501E6034AD00547BCD /* renshu.png */; };
 		3A4E70541E6034AD00547BCD /* renshu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4E70511E6034AD00547BCD /* renshu@2x.png */; };
@@ -94,6 +91,15 @@
 		3A4E70591E6034B900547BCD /* shijian.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4E70561E6034B900547BCD /* shijian.png */; };
 		3A4E705A1E6034B900547BCD /* shijian@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4E70571E6034B900547BCD /* shijian@2x.png */; };
 		3A4E705B1E6034B900547BCD /* shijian@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4E70581E6034B900547BCD /* shijian@3x.png */; };
+		3A51D1481E6A8CDA005B86F6 /* XFJPleasePerfectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1471E6A8CDA005B86F6 /* XFJPleasePerfectView.m */; };
+		3A51D14C1E6A91A7005B86F6 /* XFJGeneralMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D14B1E6A91A7005B86F6 /* XFJGeneralMessageView.m */; };
+		3A51D14F1E6AA82A005B86F6 /* XFJOtherMessagePerfectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D14E1E6AA82A005B86F6 /* XFJOtherMessagePerfectView.m */; };
+		3A51D1521E6AAB8A005B86F6 /* XFJCarPhotosWithPerfectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1511E6AAB8A005B86F6 /* XFJCarPhotosWithPerfectView.m */; };
+		3A51D1551E6AB0B3005B86F6 /* XFJCarPhotosPerfectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1541E6AB0B3005B86F6 /* XFJCarPhotosPerfectCollectionViewCell.m */; };
+		3A51D1581E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1571E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.m */; };
+		3A51D15B1E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D15A1E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.m */; };
+		3A51D15E1E6AC543005B86F6 /* XFJTeamMessageBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D15D1E6AC543005B86F6 /* XFJTeamMessageBottomView.m */; };
+		3A51D1611E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1601E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m */; };
 		3A756F171E657583005D2C02 /* tishi.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F141E657583005D2C02 /* tishi.png */; };
 		3A756F181E657583005D2C02 /* tishi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F151E657583005D2C02 /* tishi@2x.png */; };
 		3A756F191E657583005D2C02 /* tishi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F161E657583005D2C02 /* tishi@3x.png */; };
@@ -177,7 +183,6 @@
 		3AA475211E5EE4F300FEB005 /* XFJSceneryAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA475201E5EE4F300FEB005 /* XFJSceneryAnnotation.m */; };
 		3AA475241E5EF21500FEB005 /* XFJSceneryAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA475231E5EF21500FEB005 /* XFJSceneryAnnotationView.m */; };
 		3AA6E8851E48458500FC34A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B7AE51E48053C00A5B22D /* main.m */; };
-		3ABA4A4D1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABA4A4C1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m */; };
 		3ACCE3861E684AE000B3526B /* XFJSignMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE3851E684AE000B3526B /* XFJSignMessageViewController.m */; };
 		3ACCE3891E684B6800B3526B /* XFJSignMessageTopVeiw.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE3881E684B6800B3526B /* XFJSignMessageTopVeiw.m */; };
 		3ACCE38D1E684E1D00B3526B /* team.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACCE38A1E684E1D00B3526B /* team.png */; };
@@ -187,6 +192,7 @@
 		3ACCE3951E69194700B3526B /* XFJSignTeamPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE3941E69194700B3526B /* XFJSignTeamPhotosView.m */; };
 		3ACCE3981E697F6300B3526B /* XFJAskingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE3971E697F6300B3526B /* XFJAskingTableViewCell.m */; };
 		3ACCE39B1E69878E00B3526B /* XFJLaterTeamControlItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE39A1E69878E00B3526B /* XFJLaterTeamControlItem.m */; };
+		3ACCE39E1E6A841F00B3526B /* XFJTeamMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE39D1E6A841F00B3526B /* XFJTeamMessageViewController.m */; };
 		3ADDF0101E4DAD02003C838F /* add-.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFEF1E4DAD02003C838F /* add-.png */; };
 		3ADDF0111E4DAD02003C838F /* add-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFF01E4DAD02003C838F /* add-@2x.png */; };
 		3ADDF0121E4DAD02003C838F /* add-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFF11E4DAD02003C838F /* add-@3x.png */; };
@@ -417,12 +423,6 @@
 		3A48BAC51E5AAB3A00910789 /* chakan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chakan.png; sourceTree = "<group>"; };
 		3A48BAC61E5AAB3A00910789 /* chakan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chakan@2x.png"; sourceTree = "<group>"; };
 		3A48BAC71E5AAB3A00910789 /* chakan@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chakan@3x.png"; sourceTree = "<group>"; };
-		3A48BAD01E5AAE1100910789 /* XFJTeamMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamMessageViewController.h; sourceTree = "<group>"; };
-		3A48BAD11E5AAE1100910789 /* XFJTeamMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessageViewController.m; sourceTree = "<group>"; };
-		3A48BAD41E5AB7E300910789 /* XFJTitleMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTitleMessageTableViewCell.h; sourceTree = "<group>"; };
-		3A48BAD51E5AB7E300910789 /* XFJTitleMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTitleMessageTableViewCell.m; sourceTree = "<group>"; };
-		3A48BAD71E5AB7FB00910789 /* XFJTitleMessageContentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTitleMessageContentTableViewCell.h; sourceTree = "<group>"; };
-		3A48BAD81E5AB7FB00910789 /* XFJTitleMessageContentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTitleMessageContentTableViewCell.m; sourceTree = "<group>"; };
 		3A4E704D1E60345D00547BCD /* XFJSignNoPeopleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignNoPeopleView.h; sourceTree = "<group>"; };
 		3A4E704E1E60345D00547BCD /* XFJSignNoPeopleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignNoPeopleView.m; sourceTree = "<group>"; };
 		3A4E70501E6034AD00547BCD /* renshu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = renshu.png; sourceTree = "<group>"; };
@@ -431,6 +431,24 @@
 		3A4E70561E6034B900547BCD /* shijian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shijian.png; sourceTree = "<group>"; };
 		3A4E70571E6034B900547BCD /* shijian@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shijian@2x.png"; sourceTree = "<group>"; };
 		3A4E70581E6034B900547BCD /* shijian@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shijian@3x.png"; sourceTree = "<group>"; };
+		3A51D1461E6A8CDA005B86F6 /* XFJPleasePerfectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJPleasePerfectView.h; sourceTree = "<group>"; };
+		3A51D1471E6A8CDA005B86F6 /* XFJPleasePerfectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJPleasePerfectView.m; sourceTree = "<group>"; };
+		3A51D14A1E6A91A7005B86F6 /* XFJGeneralMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJGeneralMessageView.h; sourceTree = "<group>"; };
+		3A51D14B1E6A91A7005B86F6 /* XFJGeneralMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJGeneralMessageView.m; sourceTree = "<group>"; };
+		3A51D14D1E6AA82A005B86F6 /* XFJOtherMessagePerfectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJOtherMessagePerfectView.h; sourceTree = "<group>"; };
+		3A51D14E1E6AA82A005B86F6 /* XFJOtherMessagePerfectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJOtherMessagePerfectView.m; sourceTree = "<group>"; };
+		3A51D1501E6AAB8A005B86F6 /* XFJCarPhotosWithPerfectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJCarPhotosWithPerfectView.h; sourceTree = "<group>"; };
+		3A51D1511E6AAB8A005B86F6 /* XFJCarPhotosWithPerfectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCarPhotosWithPerfectView.m; sourceTree = "<group>"; };
+		3A51D1531E6AB0B3005B86F6 /* XFJCarPhotosPerfectCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJCarPhotosPerfectCollectionViewCell.h; sourceTree = "<group>"; };
+		3A51D1541E6AB0B3005B86F6 /* XFJCarPhotosPerfectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCarPhotosPerfectCollectionViewCell.m; sourceTree = "<group>"; };
+		3A51D1561E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJUpPhotosOpenTeamMessageView.h; sourceTree = "<group>"; };
+		3A51D1571E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJUpPhotosOpenTeamMessageView.m; sourceTree = "<group>"; };
+		3A51D1591E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamMessagePerfectCollectionViewCell.h; sourceTree = "<group>"; };
+		3A51D15A1E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessagePerfectCollectionViewCell.m; sourceTree = "<group>"; };
+		3A51D15C1E6AC543005B86F6 /* XFJTeamMessageBottomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamMessageBottomView.h; sourceTree = "<group>"; };
+		3A51D15D1E6AC543005B86F6 /* XFJTeamMessageBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessageBottomView.m; sourceTree = "<group>"; };
+		3A51D15F1E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamMessageTableViewCell.h; sourceTree = "<group>"; };
+		3A51D1601E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessageTableViewCell.m; sourceTree = "<group>"; };
 		3A756F141E657583005D2C02 /* tishi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tishi.png; sourceTree = "<group>"; };
 		3A756F151E657583005D2C02 /* tishi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@2x.png"; sourceTree = "<group>"; };
 		3A756F161E657583005D2C02 /* tishi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@3x.png"; sourceTree = "<group>"; };
@@ -547,8 +565,6 @@
 		3AA475201E5EE4F300FEB005 /* XFJSceneryAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSceneryAnnotation.m; sourceTree = "<group>"; };
 		3AA475221E5EF21500FEB005 /* XFJSceneryAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSceneryAnnotationView.h; sourceTree = "<group>"; };
 		3AA475231E5EF21500FEB005 /* XFJSceneryAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSceneryAnnotationView.m; sourceTree = "<group>"; };
-		3ABA4A4B1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamMessageBottomTableViewCell.h; sourceTree = "<group>"; };
-		3ABA4A4C1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessageBottomTableViewCell.m; sourceTree = "<group>"; };
 		3ACCE3841E684AE000B3526B /* XFJSignMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignMessageViewController.h; sourceTree = "<group>"; };
 		3ACCE3851E684AE000B3526B /* XFJSignMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignMessageViewController.m; sourceTree = "<group>"; };
 		3ACCE3871E684B6800B3526B /* XFJSignMessageTopVeiw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignMessageTopVeiw.h; sourceTree = "<group>"; };
@@ -564,6 +580,8 @@
 		3ACCE3971E697F6300B3526B /* XFJAskingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJAskingTableViewCell.m; sourceTree = "<group>"; };
 		3ACCE3991E69878E00B3526B /* XFJLaterTeamControlItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJLaterTeamControlItem.h; sourceTree = "<group>"; };
 		3ACCE39A1E69878E00B3526B /* XFJLaterTeamControlItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJLaterTeamControlItem.m; sourceTree = "<group>"; };
+		3ACCE39C1E6A841F00B3526B /* XFJTeamMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamMessageViewController.h; sourceTree = "<group>"; };
+		3ACCE39D1E6A841F00B3526B /* XFJTeamMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamMessageViewController.m; sourceTree = "<group>"; };
 		3ADDEFEF1E4DAD02003C838F /* add-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-.png"; sourceTree = "<group>"; };
 		3ADDEFF01E4DAD02003C838F /* add-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-@2x.png"; sourceTree = "<group>"; };
 		3ADDEFF11E4DAD02003C838F /* add-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-@3x.png"; sourceTree = "<group>"; };
@@ -1035,8 +1053,8 @@
 		3A48BACF1E5AADF400910789 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				3A48BAD01E5AAE1100910789 /* XFJTeamMessageViewController.h */,
-				3A48BAD11E5AAE1100910789 /* XFJTeamMessageViewController.m */,
+				3ACCE39C1E6A841F00B3526B /* XFJTeamMessageViewController.h */,
+				3ACCE39D1E6A841F00B3526B /* XFJTeamMessageViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1044,12 +1062,24 @@
 		3A48BAD31E5AB7B000910789 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3A48BAD41E5AB7E300910789 /* XFJTitleMessageTableViewCell.h */,
-				3A48BAD51E5AB7E300910789 /* XFJTitleMessageTableViewCell.m */,
-				3A48BAD71E5AB7FB00910789 /* XFJTitleMessageContentTableViewCell.h */,
-				3A48BAD81E5AB7FB00910789 /* XFJTitleMessageContentTableViewCell.m */,
-				3ABA4A4B1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.h */,
-				3ABA4A4C1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m */,
+				3A51D1461E6A8CDA005B86F6 /* XFJPleasePerfectView.h */,
+				3A51D1471E6A8CDA005B86F6 /* XFJPleasePerfectView.m */,
+				3A51D14A1E6A91A7005B86F6 /* XFJGeneralMessageView.h */,
+				3A51D14B1E6A91A7005B86F6 /* XFJGeneralMessageView.m */,
+				3A51D14D1E6AA82A005B86F6 /* XFJOtherMessagePerfectView.h */,
+				3A51D14E1E6AA82A005B86F6 /* XFJOtherMessagePerfectView.m */,
+				3A51D1501E6AAB8A005B86F6 /* XFJCarPhotosWithPerfectView.h */,
+				3A51D1511E6AAB8A005B86F6 /* XFJCarPhotosWithPerfectView.m */,
+				3A51D1561E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.h */,
+				3A51D1571E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.m */,
+				3A51D1591E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.h */,
+				3A51D15A1E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.m */,
+				3A51D1531E6AB0B3005B86F6 /* XFJCarPhotosPerfectCollectionViewCell.h */,
+				3A51D1541E6AB0B3005B86F6 /* XFJCarPhotosPerfectCollectionViewCell.m */,
+				3A51D15C1E6AC543005B86F6 /* XFJTeamMessageBottomView.h */,
+				3A51D15D1E6AC543005B86F6 /* XFJTeamMessageBottomView.m */,
+				3A51D15F1E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.h */,
+				3A51D1601E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1729,7 +1759,6 @@
 				3AFC9A2F1E62C4090049A758 /* XFJSignNoHotelView.m in Sources */,
 				3A10CFDC1E5BD04F00592564 /* UITextField+XFJTextField.m in Sources */,
 				3AA475241E5EF21500FEB005 /* XFJSceneryAnnotationView.m in Sources */,
-				3A48BAD61E5AB7E300910789 /* XFJTitleMessageTableViewCell.m in Sources */,
 				3A94749A1E4D9137002F1F9B /* VerificationCodeViewController.m in Sources */,
 				3AA6E8851E48458500FC34A2 /* main.m in Sources */,
 				1CFDFE521E542C84001D6300 /* JFImageGroupTableViewController.m in Sources */,
@@ -1742,7 +1771,6 @@
 				1CFDFE1A1E542C65001D6300 /* TZAssetCell.m in Sources */,
 				1CFDFE1B1E542C65001D6300 /* TZAssetModel.m in Sources */,
 				3AA475121E5EAB5E00FEB005 /* XFJSignView.m in Sources */,
-				3A48BAD21E5AAE1100910789 /* XFJTeamMessageViewController.m in Sources */,
 				3A18E54D1E5D6FB400BFE891 /* XFJOtherInformationTableViewCell.m in Sources */,
 				3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */,
 				3A18E5511E5D6FB400BFE891 /* XFJUploadPhotosTableViewCell.m in Sources */,
@@ -1765,15 +1793,18 @@
 				1CFDFE501E542C84001D6300 /* JFAssetHelper.m in Sources */,
 				3AE849EB1E543EE500A71C5E /* XFJPleaseCheckViewController.m in Sources */,
 				1CFDFE211E542C65001D6300 /* TZPhotoPreviewController.m in Sources */,
+				3A51D1521E6AAB8A005B86F6 /* XFJCarPhotosWithPerfectView.m in Sources */,
 				3ACCE3951E69194700B3526B /* XFJSignTeamPhotosView.m in Sources */,
-				3A48BAD91E5AB7FB00910789 /* XFJTitleMessageContentTableViewCell.m in Sources */,
 				3A10CFDF1E5BDBD200592564 /* NSObject+Common.m in Sources */,
+				3A51D1551E6AB0B3005B86F6 /* XFJCarPhotosPerfectCollectionViewCell.m in Sources */,
 				1C210C711E558B0600689677 /* PersonalDetailCell.m in Sources */,
+				3A51D1611E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m in Sources */,
 				3A9940331E499D1600F898D2 /* NetWorkManager.m in Sources */,
 				3ACCE3921E69003200B3526B /* XFJSignMessageTimeView.m in Sources */,
 				3A4E704F1E60345D00547BCD /* XFJSignNoPeopleView.m in Sources */,
 				1C1939BE1E4DC1E600882B8C /* MessageViewController.m in Sources */,
 				3A9EB5D51E5C64750064E61B /* XFJCarNumberItem.m in Sources */,
+				3A51D15B1E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.m in Sources */,
 				3A9474971E4D9137002F1F9B /* PersonalDataViewController.m in Sources */,
 				3AE849E81E543E9B00A71C5E /* XFJPleaseDoITViewController.m in Sources */,
 				3A1B7AEA1E48053C00A5B22D /* AppDelegate.m in Sources */,
@@ -1797,6 +1828,7 @@
 				3A756F311E66E3D4005D2C02 /* XFJFindTeamInfoByStateItem.m in Sources */,
 				3A7A510C1E4B0219004FFB0F /* XFJLeftTableHeaderView.m in Sources */,
 				1CFDFE511E542C84001D6300 /* JFImageCollectionViewController.m in Sources */,
+				3ACCE39E1E6A841F00B3526B /* XFJTeamMessageViewController.m in Sources */,
 				1CFDFE561E542C84001D6300 /* JFPhotoBrowserViewController.m in Sources */,
 				3A18E54C1E5D6FB400BFE891 /* XFJGuestSourceInformationTableViewCell.m in Sources */,
 				3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */,
@@ -1807,14 +1839,16 @@
 				3ACCE3891E684B6800B3526B /* XFJSignMessageTopVeiw.m in Sources */,
 				3AA475211E5EE4F300FEB005 /* XFJSceneryAnnotation.m in Sources */,
 				3ACCE3861E684AE000B3526B /* XFJSignMessageViewController.m in Sources */,
-				3ABA4A4D1E5AEE89008274CD /* XFJTeamMessageBottomTableViewCell.m in Sources */,
 				1CFDFE531E542C84001D6300 /* JFImageManager.m in Sources */,
 				1CFDFDE81E53E3DD001D6300 /* AnnouncementDetailModel.m in Sources */,
+				3A51D14F1E6AA82A005B86F6 /* XFJOtherMessagePerfectView.m in Sources */,
 				3AEE6C011E6402B400410412 /* XFJTeamSignListItem.m in Sources */,
 				1C665B991E6968310059DE59 /* NewVerificationCodeViewController.m in Sources */,
+				3A51D15E1E6AC543005B86F6 /* XFJTeamMessageBottomView.m in Sources */,
 				3A07C8F81E480B0A008A838D /* UIImage+XFJOriginalImageView.m in Sources */,
 				1CFDFE1E1E542C65001D6300 /* TZImagePickerController.m in Sources */,
 				3A756F281E66BBD0005D2C02 /* XFJFindTeamInFoStateItem.m in Sources */,
+				3A51D1481E6A8CDA005B86F6 /* XFJPleasePerfectView.m in Sources */,
 				1CFDFE3E1E542C78001D6300 /* WSPhotosBroseVC.m in Sources */,
 				3A48BAC41E5A949600910789 /* XFJHomeTopTaskMessageVeiw.m in Sources */,
 				3AE849DF1E54330900A71C5E /* XFJMineTeamViewController.m in Sources */,
@@ -1827,6 +1861,7 @@
 				3ACCE3981E697F6300B3526B /* XFJAskingTableViewCell.m in Sources */,
 				1CFDFE5A1E542CD3001D6300 /* UIBarButtonItem+Item.m in Sources */,
 				3AF0D39A1E61FC4200EDECD1 /* XFJHotelView.m in Sources */,
+				3A51D1581E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.m in Sources */,
 				1CFDFE3D1E542C78001D6300 /* WSImagePickerView.m in Sources */,
 				1CB523E11E51AA8900A205C3 /* AnnouncementCell.m in Sources */,
 				3A18E5471E5D6FB400BFE891 /* LMComBoxView.m in Sources */,
@@ -1836,6 +1871,7 @@
 				3A18E54F1E5D6FB400BFE891 /* XFJTeamInformationTableViewCell.m in Sources */,
 				3A18E5231E5D24FC00BFE891 /* UIImage+image.m in Sources */,
 				3A18E5491E5D6FB400BFE891 /* XFJCarNameTableViewCell.m in Sources */,
+				3A51D14C1E6A91A7005B86F6 /* XFJGeneralMessageView.m in Sources */,
 				3A756F1F1E657D03005D2C02 /* CoverView.m in Sources */,
 				3A9A2DA31E49A97800D89639 /* UIViewController+JTNavigationExtension.m in Sources */,
 				3AE849EE1E543F1300A71C5E /* XFJPleaseAskingViewController.m in Sources */,

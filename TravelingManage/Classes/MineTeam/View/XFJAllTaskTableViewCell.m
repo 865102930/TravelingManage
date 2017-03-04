@@ -267,7 +267,7 @@
     if (_status_button == nil) {
         _status_button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_status_button setTitleColor:kColorff47 forState:UIControlStateNormal];
-        [_status_button addTarget:self action:@selector(againStartButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [_status_button addTarget:self action:@selector(againStartButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         _status_button.layer.cornerRadius = 2.0;
         _status_button.layer.borderColor = kColorff47.CGColor;
         _status_button.layer.borderWidth = 0.5;
@@ -290,15 +290,27 @@
     return _cancel_button;
 }
 
-- (void)againStartButtonClick
-{
-    NSLog(@"主人,您点击了重新开始按钮~~");
-}
-
 - (void)cancelButtonClick
 {
     NSLog(@"主人,您点击了取消按钮~~");
 }
+
+- (void)againStartButtonClick:(UIButton *)button
+{
+    NSLog(@"主人,您点击了重新开始按钮~~");
+    if (self.findTeamInfoByStateItem.teamState == 0) {//这里点击的是重新开始按钮
+        NSLog(@"---------这里打印的状态值是0 :%zd",self.findTeamInfoByStateItem.teamState);
+        if (self.alreadyTeamBlock) {
+            self.alreadyTeamBlock(button);
+        }
+    }else if (self.findTeamInfoByStateItem.teamState == 1) {//这里点击的完善资料按钮
+        NSLog(@"---------这里打印的状态值是1 :%zd",self.findTeamInfoByStateItem.teamState);
+        if (self.pleasePerfectDataBlock) {
+            self.pleasePerfectDataBlock(button);
+        }
+    }
+}
+
 + (CGFloat)cellHeight
 {
     return 170.0;

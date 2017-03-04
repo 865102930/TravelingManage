@@ -2,20 +2,34 @@
 //  XFJTeamMessageViewController.m
 //  TravelingManage
 //
-//  Created by 肖锋 on 2017/2/20.
+//  Created by 肖锋 on 2017/3/4.
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
 #import "XFJTeamMessageViewController.h"
-#import "XFJTitleMessageTableViewCell.h"
-#import "XFJTitleMessageContentTableViewCell.h"
-#import "XFJTeamMessageBottomTableViewCell.h"
+#import "XFJPleasePerfectView.h"
+#import "XFJGeneralMessageView.h"
+#import "XFJOtherMessagePerfectView.h"
+#import "XFJCarPhotosWithPerfectView.h"
+#import "TZImagePickerController.h"
+#import "WSImagePickerView.h"
+#import "WSPhotosBroseVC.h"
+#import "XFJUpPhotosOpenTeamMessageView.h"
+#import "XFJTeamMessageBottomView.h"
 
-@interface XFJTeamMessageViewController () <UITableViewDelegate,UITableViewDataSource>
+@interface XFJTeamMessageViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJCarPhotosWithPerfectViewDelegate,XFJUpPhotosOpenTeamMessageViewDelegate>
 
 @property (nonatomic, strong) UILabel *title_label;
-
-@property (nonatomic, strong) UITableView *teamMessageContent_tableView;
+@property (nonatomic, strong) UIScrollView *scroll_view;
+@property (nonatomic, strong) XFJPleasePerfectView *pleasePerfectView;
+@property (nonatomic, strong) XFJGeneralMessageView *generalMessageView;
+@property (nonatomic, strong) XFJOtherMessagePerfectView *otherMessagePerfectView;
+@property (nonatomic, strong) XFJCarPhotosWithPerfectView *carPhotosWithPerfectView;
+@property (nonatomic, strong) XFJUpPhotosOpenTeamMessageView *upPhotosOpenTeamMessageView;
+@property (nonatomic, strong) XFJTeamMessageBottomView *teamMessageBottomView;
+@property (nonatomic, assign) NSInteger maxImageCount;
+@property (nonatomic, strong) NSMutableArray *dataArr;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 
 @end
 
@@ -23,176 +37,294 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor redColor];
+    
     [self setInitWithNav];
+    
+    [self.view addSubview:self.scroll_view];
+    [self.scroll_view addSubview:self.pleasePerfectView];
+    [self.scroll_view addSubview:self.generalMessageView];
+    [self.scroll_view addSubview:self.otherMessagePerfectView];
+    [self.scroll_view addSubview:self.carPhotosWithPerfectView];
+    [self.scroll_view addSubview:self.upPhotosOpenTeamMessageView];
+    [self.scroll_view addSubview:self.teamMessageBottomView];
+    
+    self.view.backgroundColor = [UIColor redColor];
+    
+    NSLog(@"-------------self.findTeamInfoByState_Id的结果是 :%zd",self.findTeamInfoByState_Id);
+    
+    //请求到的自定页面数据
+    [self requestTeamMessage];
 }
 
 - (void)setInitWithNav
 {
     self.navigationItem.titleView = self.title_label;
-    [self.view addSubview:self.teamMessageContent_tableView];
-    [self.teamMessageContent_tableView registerClass:[XFJTitleMessageTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJTitleMessageTableViewCell];
-    [self.teamMessageContent_tableView registerClass:[XFJTitleMessageContentTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJTitleMessageContentTableViewCell];
-    [self.teamMessageContent_tableView registerClass:[XFJTeamMessageBottomTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJTeamMessageBottomTableViewCell];
 }
 
 - (UILabel *)title_label
 {
     if (_title_label == nil) {
         _title_label = [[UILabel alloc] initWithFrame:CGRectMake(self.view.XFJ_centerX, 6, 100, 44)];
-        _title_label.text = @"团队详情";
+        _title_label.text = @"待完善";
         _title_label.textColor = kColor6565;
         _title_label.textAlignment = NSTextAlignmentCenter;
     }
     return _title_label;
 }
 
-- (UITableView *)teamMessageContent_tableView
+- (void)requestTeamMessage
 {
-    if (_teamMessageContent_tableView == nil) {
-        _teamMessageContent_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStyleGrouped];
-        _teamMessageContent_tableView.delegate = self;
-        _teamMessageContent_tableView.dataSource = self;
-        //去掉分割线
-        _teamMessageContent_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _teamMessageContent_tableView.backgroundColor = kColoreeee;
+    NSDictionary *dictParams = @{
+                                 @"id":[NSString stringWithFormat:@"%zd",self.findTeamInfoByState_Id]
+                                 };
+    [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"++++++++获取到的具体的团队资料是 :%@",responseObject);
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"++++++++获取团队信息资料失败的是 :%@",error);
+        }
+    }];
+}
+
+- (UIScrollView *)scroll_view
+{
+    if (_scroll_view == nil) {
+        _scroll_view = [[UIScrollView alloc] init];
+        _scroll_view.frame = CGRectMake(0, 0, self.view.bounds.size.width, 1.2 * self.view.XFJ_Height);
+        _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2.5);
+        _scroll_view.backgroundColor = kColoreeee;
+        _scroll_view.showsHorizontalScrollIndicator = NO;
+        _scroll_view.scrollEnabled = YES;
     }
-    return _teamMessageContent_tableView;
+    return _scroll_view;
 }
 
-#pragma mark - 数据源和代理方法
-#pragma mark - 组数
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (XFJPleasePerfectView *)pleasePerfectView
 {
-    return 4;
+    if (_pleasePerfectView == nil) {
+        _pleasePerfectView = [[XFJPleasePerfectView alloc] initWithFrame:CGRectMake(0, 1, SCREEN_WIDTH, 72.0)];
+        _pleasePerfectView.backgroundColor = [UIColor whiteColor];
+    }
+    return _pleasePerfectView;
 }
 
-#pragma mark - 每组cell的个数
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (XFJGeneralMessageView *)generalMessageView
 {
-    NSInteger row = (section == 0 ? 5 :
-                     section == 1 ? 3 :
-                     section == 2 ? 4 :
-                     2);
-    return row;
+    if (_generalMessageView == nil) {
+        _generalMessageView = [[XFJGeneralMessageView alloc] initWithFrame:CGRectMake(0, 73, SCREEN_WIDTH, 220)];
+        _generalMessageView.backgroundColor = [UIColor whiteColor];
+    }
+    return _generalMessageView;
 }
 
-#pragma mark - cell的内容
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (XFJOtherMessagePerfectView *)otherMessagePerfectView
 {
-    if (indexPath.section == 0) {//第一组
-        if (indexPath.row == 0) {
-            XFJTitleMessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTitleMessageTableViewCell forIndexPath:indexPath];
-            [cell setTitle:@"常规信息"];
-            return cell;
-        }else {
-            XFJTitleMessageContentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTitleMessageContentTableViewCell forIndexPath:indexPath];
-            (indexPath.row == 1 ? [cell setTitle:@"团队编号" content:@"123455"] :
-             indexPath.row == 2 ? [cell setTitle:@"出团日期" content:@"2017-02-20"] :
-             indexPath.row == 3 ? [cell setTitle:@"旅行社名称" content:@"名称名称名称名称名称"] :
-             [cell setTitle:@"车牌号" content:@"浙APH228"]);
-            return cell;
+    if (_otherMessagePerfectView == nil) {
+        _otherMessagePerfectView = [[XFJOtherMessagePerfectView alloc] initWithFrame:CGRectMake(0, 293, SCREEN_WIDTH, 100)];
+        _otherMessagePerfectView.backgroundColor = [UIColor whiteColor];
+    }
+    return _otherMessagePerfectView;
+}
+
+- (XFJCarPhotosWithPerfectView *)carPhotosWithPerfectView
+{
+    if (_carPhotosWithPerfectView == nil) {
+        _carPhotosWithPerfectView = [[XFJCarPhotosWithPerfectView alloc] initWithFrame:CGRectMake(0, 393, SCREEN_WIDTH, 170)];
+        _carPhotosWithPerfectView.backgroundColor = [UIColor whiteColor];
+        _carPhotosWithPerfectView.delegate = self;
+    }
+    return _carPhotosWithPerfectView;
+}
+- (XFJUpPhotosOpenTeamMessageView *)upPhotosOpenTeamMessageView
+{
+    if (_upPhotosOpenTeamMessageView == nil) {
+        _upPhotosOpenTeamMessageView = [[XFJUpPhotosOpenTeamMessageView alloc] initWithFrame:CGRectMake(0, 563, SCREEN_WIDTH, 170)];
+        _upPhotosOpenTeamMessageView.backgroundColor = [UIColor whiteColor];
+        _upPhotosOpenTeamMessageView.delegate = self;
+    }
+    return _upPhotosOpenTeamMessageView;
+}
+
+- (XFJTeamMessageBottomView *)teamMessageBottomView
+{
+    if (_teamMessageBottomView == nil) {
+        _teamMessageBottomView = [[XFJTeamMessageBottomView alloc] initWithFrame:CGRectMake(0, self.upPhotosOpenTeamMessageView.XFJ_Y + 170, SCREEN_WIDTH, 200)];
+        _teamMessageBottomView.backgroundColor = [UIColor whiteColor];
+    }
+    return _teamMessageBottomView;
+}
+
+- (NSMutableArray *)dataArr
+{
+    if (_dataArr == nil) {
+        _dataArr = [NSMutableArray array];
+    }
+    return _dataArr;
+}
+
+- (NSMutableArray *)dataArray
+{
+    if (_dataArray == nil) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
+
+#pragma makr - 访问照相机
+- (void)chooseImage:(XFJCarPhotosWithPerfectView *)SerPhotoCell
+{
+    self.maxImageCount = 6;
+    UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:@"请选择相机或者相册" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选择",nil];
+    [action showInView:self.view];
+}
+
+- (void)chooseVoucherPhotosImage:(XFJUpPhotosOpenTeamMessageView *)voucherPhotos
+{
+    self.maxImageCount = 1;
+    UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:@"请选择相机或者相册" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选择",nil];
+    [action showInView:self.view];
+}
+
+- (void)jumpCell:(XFJCarPhotosWithPerfectView *)cell indexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray *tmpArray = [[NSMutableArray alloc] init];
+    if(indexPath.row < _dataArr.count) {
+        for (UIImage *image in _dataArr) {
+            WSImageModel *model = [[WSImageModel alloc] init];
+            model.image = image;
+            [tmpArray addObject:model];
         }
-    }else if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
-            XFJTitleMessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTitleMessageTableViewCell forIndexPath:indexPath];
-            [cell setTitle:@"客源信息"];
-            return cell;
-        }else {
-            XFJTitleMessageContentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTitleMessageContentTableViewCell forIndexPath:indexPath];
-            (indexPath.row == 1 ? [cell setTitle:@"客源地" content:@"123455"] :
-             [cell setTitle:@"目的属性" content:@"1.景区风光"]);
-            return cell;
+        WSPhotosBroseVC *vc = [[WSPhotosBroseVC alloc] init];;
+        vc.imageArray = tmpArray;
+        vc.showIndex = indexPath.row;
+        __weak typeof (self)weakself = self;
+        vc.completion = ^ (NSArray *array){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_dataArr removeAllObjects];
+                [_dataArr addObjectsFromArray:array];
+                weakself.carPhotosWithPerfectView.dataArr = _dataArr;
+                if (_dataArr.count <= 4) {
+                    self.carPhotosWithPerfectView.frame = CGRectMake(0, 393, SCREEN_WIDTH, 170);
+                    self.upPhotosOpenTeamMessageView.frame = CGRectMake(0, 563, SCREEN_WIDTH, 170);
+                }
+            });
+        };
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)jumpToCell:(XFJUpPhotosOpenTeamMessageView *)cell indexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray *tmpArray = [[NSMutableArray alloc] init];
+    if(indexPath.row < _dataArray.count) {
+        for (UIImage *image in _dataArray) {
+            WSImageModel *model = [[WSImageModel alloc] init];
+            model.image = image;
+            [tmpArray addObject:model];
         }
-    }else if (indexPath.section == 2) {
-        if (indexPath.row == 0) {
-            XFJTitleMessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTitleMessageTableViewCell forIndexPath:indexPath];
-            [cell setTitle:@"团队信息"];
-            return cell;
+        WSPhotosBroseVC *vc = [[WSPhotosBroseVC alloc] init];;
+        vc.imageArray = tmpArray;
+        vc.showIndex = indexPath.row;
+        __weak typeof (self)weakself = self;
+        vc.completion = ^ (NSArray *array){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_dataArray removeAllObjects];
+                [_dataArray addObjectsFromArray:array];
+                weakself.upPhotosOpenTeamMessageView.dataArr = _dataArray;
+                //                if (_dataArr.count <= 4) {
+                //                    self.uploadPhotos_view.frame = CGRectMake(0, 728, SCREEN_WIDTH, 200);
+                //                }
+            });
+        };
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:
+            [self openCamera];
+            break;
+        case 1:
+            [self openAlbum];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)openCamera
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *ipc = [[UIImagePickerController alloc] init];
+        ipc.sourceType = UIImagePickerControllerSourceTypeCamera;
+        ipc.delegate = self;
+        [self presentViewController:ipc animated:YES completion:nil];
+    } else {
+        //        [MBProgressHUD showHUDMsg: @"请打开允许访问相机权限"];
+        NSLog(@"请打开允许访问相机权限");
+    }
+}
+
+- (void)openAlbum
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:self.maxImageCount - (self.maxImageCount == 6 ? self.dataArr.count : self.dataArray.count) delegate:self];
+        
+        [self presentViewController:imagePickerVc animated:YES completion:nil];
+    }else{
+        //        [MBProgressHUD showHUDMsg: @"请打开允许访问相册权限" ];
+    }
+}
+
+//相机选的图片
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    if (self.maxImageCount == 6) {
+        UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        [self.dataArr addObject:image];
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        self.carPhotosWithPerfectView.dataArr = self.dataArr;
+        self.carPhotosWithPerfectView.maxImageCount = 6;
+    }else {
+        NSLog(@"self.maxImageCount == 1");
+        UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        [self.dataArray addObject:image];
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        self.upPhotosOpenTeamMessageView.dataArr = self.dataArray;
+        self.upPhotosOpenTeamMessageView.maxImageCount = 1;
+    }
+}
+
+//取消按钮
+- (void)imagePickerControllerDidCancel:(TZImagePickerController *)picke{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+// 相册选的图片
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto{
+    if (self.maxImageCount == 6) {
+        [self.dataArr addObjectsFromArray:photos];
+        self.carPhotosWithPerfectView.dataArr = self.dataArr;
+        self.carPhotosWithPerfectView.maxImageCount = 6;
+        if (self.dataArr.count < 4) {
         }else {
-            XFJTitleMessageContentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTitleMessageContentTableViewCell forIndexPath:indexPath];
-            (indexPath.row == 1 ? [cell setTitle:@"团队人数" content:@"123455"] :
-             indexPath.row == 2 ? [cell setTitle:@"出团性质" content:@"2017-02-20"] :
-             [cell setTitle:@"行程天数" content:@"浙APH228"]);
-            return cell;
-        }
-    }else if (indexPath.section == 3) {
-        if (indexPath.row == 0) {
-            XFJTitleMessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTitleMessageTableViewCell forIndexPath:indexPath];
-            [cell setTitle:@"其它信息"];
-            return cell;
-        }else {
-            XFJTitleMessageContentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTitleMessageContentTableViewCell forIndexPath:indexPath];
-            [cell setTitle:@"属性" content:@"属性值"];
-            return cell;
+            self.carPhotosWithPerfectView.frame = CGRectMake(0, 393, SCREEN_WIDTH, 230);
+            self.upPhotosOpenTeamMessageView.frame = CGRectMake(0, 620, SCREEN_WIDTH, 170);
         }
     }else {
-        
+        NSLog(@"self.maxImageCount == 1----------");
+        [self.dataArray addObjectsFromArray:photos];
+        self.upPhotosOpenTeamMessageView.dataArr = self.dataArray;
+        self.upPhotosOpenTeamMessageView.maxImageCount = 1;
     }
-    
-    return nil;
 }
 
-#pragma mark - cell的点击事件
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
 
-#pragma mark - cell的高度
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            return [XFJTitleMessageTableViewCell cellHeight];
-        }else {
-            return [XFJTitleMessageContentTableViewCell cellHeight];
-        }
-    }else if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
-            return [XFJTitleMessageTableViewCell cellHeight];
-        }else {
-            return [XFJTitleMessageContentTableViewCell cellHeight];
-        }
-    }else if (indexPath.section == 2) {
-        if (indexPath.row == 0) {
-            return [XFJTitleMessageTableViewCell cellHeight];
-        }else {
-            return [XFJTitleMessageContentTableViewCell cellHeight];
-        }
-    }else if (indexPath.section == 3) {
-        if (indexPath.row == 0) {
-            return [XFJTitleMessageTableViewCell cellHeight];
-        }else {
-            return [XFJTitleMessageContentTableViewCell cellHeight];
-        }
-    }
-    return 0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 2.0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
-    view.backgroundColor = kColoreeee;
-    return view;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 1.0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
-    view.backgroundColor = kColoreeee;
-    return view;
-}
 
 
 

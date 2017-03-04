@@ -9,6 +9,7 @@
 #import "XFJAllTaskViewController.h"
 #import "XFJAllTaskTableViewCell.h"
 #import "XFJFindTeamInfoByStateItem.h"
+#import "XFJTeamMessageViewController.h"
 
 @interface XFJAllTaskViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *allTaskTableView;
@@ -107,6 +108,19 @@
     if (cell == nil) {
         cell = [[XFJAllTaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
+    cell.alreadyTeamBlock = ^(UIButton *button) {
+        
+    };
+    __weak __typeof(self)wself = self;
+    cell.pleasePerfectDataBlock = ^(UIButton *button) {
+        UITableViewCell *cell = (UITableViewCell *)[button superview];
+        NSIndexPath *path = [self.allTaskTableView indexPathForCell:cell];
+        //这里可以获取到cell是具体是哪一个,就可以传相应的id
+        NSLog(@"-----------------index row%d", [path row]);
+        XFJTeamMessageViewController *teamMessageController = [[XFJTeamMessageViewController alloc] init];
+        teamMessageController.findTeamInfoByState_Id = wself.findTeamInfoByStateItem_array[path.row].findTeamInfoByState_Id;
+        [wself.navigationController pushViewController:teamMessageController animated:YES];
+    };
     cell.findTeamInfoByStateItem = self.findTeamInfoByStateItem_array[indexPath.row];
     return cell;
 }
@@ -114,7 +128,7 @@
 #pragma mark - cell的点击
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    NSLog(@"点击了第%zd个cell",indexPath.row);
 }
 
 #pragma mark - cell的高度

@@ -463,6 +463,7 @@
 //                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,self.dict1);
 //            }
             homeController.isProjectItem = YES;
+            homeController.isFindTeamList = YES;
             [wself presentViewController:navVC animated:YES completion:nil];
         }
     } withFailureBlock:^(NSError *error) {
