@@ -18,6 +18,8 @@
 #import "XFJTeamMessageBottomView.h"
 #import "XFJFindTeamTasksItem.h"
 #import "XFJTaskRowsItem.h"
+#import "XFJPleasePerfectMessageViewController.h"
+#import "XFJPleaseAppraiseViewController.h"
 
 
 @interface XFJTeamMessageViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJCarPhotosWithPerfectViewDelegate,XFJUpPhotosOpenTeamMessageViewDelegate>
@@ -57,8 +59,45 @@
     
     NSLog(@"-------------self.findTeamInfoByState_Id的结果是 :%zd",self.findTeamInfoByState_Id);
     
+    self.teamMessageBottomView.findTeamInfoByState_Id = self.findTeamInfoByState_Id;
+    
     //请求到的自定页面数据
     [self requestTeamMessage];
+    __weak __typeof(self)wself = self;
+    self.teamMessageBottomView.sureCommitBlock = ^(NSInteger teamId) {
+      //弹出确认提交和上传附件弹窗
+        [wself sureAndCommitShow:teamId];
+    };
+}
+
+#pragma mark - 确认提交和上传附件
+- (void)sureAndCommitShow:(NSInteger)teamId
+{
+    UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"提交完成!" preferredStyle:UIAlertControllerStyleAlert];
+    __weak __typeof(self)wself = self;
+    [alertVc addAction:[UIAlertAction actionWithTitle:@"上传附件" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
+        NSLog(@"主人~~您点击了上传附件按钮!");
+        [wself jumpPleasePerfectMessage:teamId];
+    }]];
+    [alertVc addAction:[UIAlertAction actionWithTitle:@"立即评价" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"主人~~您点击了立即评价按钮!");
+        [wself jumpPleaseAppraise];
+    }]];
+    [self presentViewController:alertVc animated:NO completion:nil];
+}
+
+#pragma mark - 跳转到完善资料的控制器
+- (void)jumpPleasePerfectMessage:(NSInteger)teamId
+{
+    XFJPleasePerfectMessageViewController *pleasePerfectMessageViewController = [[XFJPleasePerfectMessageViewController alloc] init];
+    pleasePerfectMessageViewController.teamId = teamId;
+    [self.navigationController pushViewController:pleasePerfectMessageViewController animated:YES];
+}
+#pragma mark - 跳转到立即评价控制器
+- (void)jumpPleaseAppraise
+{
+    XFJPleaseAppraiseViewController *pleaseAppraiseViewController = [[XFJPleaseAppraiseViewController alloc] init];
+    [self.navigationController pushViewController:pleaseAppraiseViewController animated:YES];
 }
 
 - (void)setInitWithNav
@@ -103,12 +142,6 @@
             NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
             wself.findTeamTasksItemArray = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
             wself.generalMessageView.findTeamTasksItem = wself.findTeamTasksItemArray;
-            for (NSInteger i = 0;i < findArray.count ; i++) {
-                NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
-                wself.taskRowsArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
-                self.teamMessageBottomView.taskRowsItemArray = wself.taskRowsArray;
-                NSLog(@"++++++++获取到的具体的团队资料是 :%@",self.teamMessageBottomView.taskRowsItemArray);
-            }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {

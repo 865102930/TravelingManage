@@ -8,6 +8,8 @@
 
 #import "XFJTeamMessageBottomView.h"
 #import "XFJTeamMessageTableViewCell.h"
+#import "XFJTaskRowsItem.h"
+#import "XFJFindTeamTasksItem.h"
 
 @interface XFJTeamMessageBottomView() <UITableViewDelegate,UITableViewDataSource>
 
@@ -19,7 +21,8 @@
 @property (nonatomic, strong) UITableView *visitMessage_tableView;
 @property (nonatomic, strong) UIButton *sureButton;
 
-@property (nonatomic, strong) NSMutableArray *arrayTask;
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *arrayTask;
+@property (nonatomic, strong) NSMutableArray <XFJTaskRowsItem *> *TaskRowsItemArray;
 
 @end
 
@@ -55,6 +58,7 @@
             make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
             make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
         }];
+        [self.visitMessage_tableView registerClass:[XFJTeamMessageTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJTeamMessageTableViewCell];
     }
     return self;
 }
@@ -104,14 +108,16 @@
         [_sureButton setTitleColor:kColorFFFF forState:UIControlStateNormal];
         _sureButton.backgroundColor = kColorff47;
         _sureButton.layer.cornerRadius = 8.0;
+        [_sureButton addTarget:self action:@selector(sure_buttonClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _sureButton;
 }
 
-- (void)setTaskRowsItemArray:(NSMutableArray<XFJTaskRowsItem *> *)taskRowsItemArray
+- (void)sure_buttonClick
 {
-    _taskRowsItemArray = taskRowsItemArray;
-    NSLog(@"在这里打印的cell的个数是 :%zd",[taskRowsItemArray count]);
+    if (self.sureCommitBlock) {
+        self.sureCommitBlock(self.findTeamInfoByState_Id);
+    }
 }
 
 - (UITableView *)visitMessage_tableView
@@ -126,24 +132,53 @@
     return _visitMessage_tableView;
 }
 
+- (void)setFindTeamInfoByState_Id:(NSInteger)findTeamInfoByState_Id
+{
+    _findTeamInfoByState_Id = findTeamInfoByState_Id;
+    NSLog(@"获取到的findTeamInfoByState_Id是 : %zd",findTeamInfoByState_Id);
+    NSDictionary *dictParams = @{
+                                 @"id":[NSString stringWithFormat:@"%zd",findTeamInfoByState_Id]
+                                 };
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
+            wself.arrayTask = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
+            for (NSInteger i = 0;i < findArray.count ; i++) {
+                NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
+                self.TaskRowsItemArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
+                NSLog(@"wself.TaskRowsItemArray-------%@",self.TaskRowsItemArray);
+            }
+            [wself.visitMessage_tableView reloadData];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"++++++++获取团队信息资料失败的是 :%@",error);
+        }
+    }];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.arrayTask count];
+    NSLog(@"wself.TaskRowsItemArray的值是 :%zd",self.TaskRowsItemArray.count);
+    return [self.TaskRowsItemArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *const cellID = @"cellID";
-    XFJTeamMessageTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (cell == nil) {
-        cell = [[XFJTeamMessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-    }
-    cell.taskRowsItem = self.arrayTask[indexPath.row];
-    NSLog(@"这里打印到的景点信息是:%@",self.arrayTask[indexPath.row]);
+//    NSString *const cellID = @"cellID";
+//    XFJTeamMessageTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//    [self.visitMessage_tableView registerClass:[XFJTeamMessageTableViewCell class] forCellReuseIdentifier:cellID];
+//    if (cell == nil) {
+//        cell = [[XFJTeamMessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+//    }
+    XFJTeamMessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJTeamMessageTableViewCell forIndexPath:indexPath];
+    cell.taskRowsItem = self.TaskRowsItemArray[indexPath.row];
+    NSLog(@"这里打印到的景点信息是:%@",self.TaskRowsItemArray[indexPath.row]);
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

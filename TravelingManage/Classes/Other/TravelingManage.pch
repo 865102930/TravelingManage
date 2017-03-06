@@ -70,6 +70,8 @@
 #define kColorFF4B [UIColor colorWithHexString:@"0xFF4B4B"]
 #define kColorFF38 [UIColor colorWithHexString:@"0xFF3838"]
 #define kColor6262 [UIColor colorWithHexString:@"0x626262"]
+#define kColorB1B1 [UIColor colorWithHexString:@"0xB1B1B1"]
+#define kColorE0E0 [UIColor colorWithHexString:@"0xE0E0E0"]
 
 #define BASEURL @"http://118.178.224.151/teammgmtback"
 
@@ -133,5 +135,8 @@
 #define FINDNEWTEAMINFOURL (BASEURL@"/app/teamInfo/findNewTeamInfo")
 //团队信息查看(自定义属性)
 #define FINDTEAMINFOTASKSURL (BASEURL@"/app/teamInfo/findTeamInfoTasks")
+//任务信息完善
+#define TASKPERFECTURL (BASEURL@"/app/teamTask/taskPerfect")
+
 
 

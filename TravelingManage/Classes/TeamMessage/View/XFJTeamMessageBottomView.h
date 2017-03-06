@@ -11,6 +11,10 @@
 
 @interface XFJTeamMessageBottomView : UIView
 
-@property (nonatomic, strong) NSMutableArray <XFJTaskRowsItem *> *taskRowsItemArray;
+
+@property (nonatomic, assign) NSInteger findTeamInfoByState_Id;
+//确认提交
+@property (nonatomic, copy) void (^sureCommitBlock)(NSInteger);
+
 
 @end
