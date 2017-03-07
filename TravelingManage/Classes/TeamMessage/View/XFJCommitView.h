@@ -10,4 +10,8 @@
 
 @interface XFJCommitView : UIView
 
+//点击提交评价按钮
+@property (nonatomic, copy) void (^teamEvaluateBlock)();
+
+
 @end

@@ -12,4 +12,6 @@
 
 @interface XFJPleaseAppraiseViewController : UIViewController
 
+@property (nonatomic, assign) NSInteger teamId;
+
 @end

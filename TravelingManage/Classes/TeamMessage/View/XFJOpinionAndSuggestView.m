@@ -9,7 +9,7 @@
 #import "XFJOpinionAndSuggestView.h"
 #import "UIPlaceHolderTextView.h"
 
-@interface XFJOpinionAndSuggestView()
+@interface XFJOpinionAndSuggestView() <UITextViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UIPlaceHolderTextView *textView;
 @property (nonatomic, strong) UIView *line_view;
@@ -54,6 +54,7 @@
         _textView = [[UIPlaceHolderTextView alloc] initWithFrame:self.bounds];
         _textView.placeholder = @"请输入您的意见或者建议...";
         _textView.placeholderColor = [UIColor lightGrayColor];
+        _textView.delegate = self;
         if (_textView.contentSize.height >= _textView.frame.size.height) {
             [_textView setUserInteractionEnabled:YES];
         }
@@ -77,6 +78,13 @@
         _middle_view.backgroundColor = kColorE0E0;
     }
     return _middle_view;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if (self.textViewTextBlock) {
+        self.textViewTextBlock(textView.text);
+    }
 }
 
 @end

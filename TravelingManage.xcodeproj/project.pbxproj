@@ -189,6 +189,7 @@
 		3AA475211E5EE4F300FEB005 /* XFJSceneryAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA475201E5EE4F300FEB005 /* XFJSceneryAnnotation.m */; };
 		3AA475241E5EF21500FEB005 /* XFJSceneryAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA475231E5EF21500FEB005 /* XFJSceneryAnnotationView.m */; };
 		3AA6E8851E48458500FC34A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B7AE51E48053C00A5B22D /* main.m */; };
+		3ABDC9DC1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABDC9DB1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.m */; };
 		3AC8031D1E6D2BCF005D2B71 /* XFJSignPhotosMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8031C1E6D2BCF005D2B71 /* XFJSignPhotosMessageTableViewCell.m */; };
 		3AC803201E6D4D82005D2B71 /* XFJAssessmentTeamTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8031F1E6D4D82005D2B71 /* XFJAssessmentTeamTopView.m */; };
 		3AC803261E6D51CF005D2B71 /* UIImage+Tint.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC803231E6D51CF005D2B71 /* UIImage+Tint.m */; };
@@ -290,6 +291,8 @@
 		3AFC9A2B1E629D200049A758 /* input-box4-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A281E629D200049A758 /* input-box4-@2x.png */; };
 		3AFC9A2C1E629D200049A758 /* input-box4-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A291E629D200049A758 /* input-box4-@3x.png */; };
 		3AFC9A2F1E62C4090049A758 /* XFJSignNoHotelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC9A2E1E62C4090049A758 /* XFJSignNoHotelView.m */; };
+		3AFFB2681E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2671E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m */; };
+		3AFFB26B1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB26A1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m */; };
 		D2818BC1C16899123CFFEBFB /* libPods-TravelingManage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B55613806B12752B343871BD /* libPods-TravelingManage.a */; };
 /* End PBXBuildFile section */
 
@@ -595,6 +598,8 @@
 		3AA475201E5EE4F300FEB005 /* XFJSceneryAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSceneryAnnotation.m; sourceTree = "<group>"; };
 		3AA475221E5EF21500FEB005 /* XFJSceneryAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSceneryAnnotationView.h; sourceTree = "<group>"; };
 		3AA475231E5EF21500FEB005 /* XFJSceneryAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSceneryAnnotationView.m; sourceTree = "<group>"; };
+		3ABDC9DA1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindCustomAttrListItem.h; sourceTree = "<group>"; };
+		3ABDC9DB1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindCustomAttrListItem.m; sourceTree = "<group>"; };
 		3AC8031B1E6D2BCF005D2B71 /* XFJSignPhotosMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignPhotosMessageTableViewCell.h; sourceTree = "<group>"; };
 		3AC8031C1E6D2BCF005D2B71 /* XFJSignPhotosMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignPhotosMessageTableViewCell.m; sourceTree = "<group>"; };
 		3AC8031E1E6D4D82005D2B71 /* XFJAssessmentTeamTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJAssessmentTeamTopView.h; sourceTree = "<group>"; };
@@ -727,6 +732,10 @@
 		3AFC9A291E629D200049A758 /* input-box4-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box4-@3x.png"; sourceTree = "<group>"; };
 		3AFC9A2D1E62C4090049A758 /* XFJSignNoHotelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignNoHotelView.h; sourceTree = "<group>"; };
 		3AFC9A2E1E62C4090049A758 /* XFJSignNoHotelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignNoHotelView.m; sourceTree = "<group>"; };
+		3AFFB2661E6ED2D10013185F /* XFJFirestAttributeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFirestAttributeTableViewCell.h; sourceTree = "<group>"; };
+		3AFFB2671E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFirestAttributeTableViewCell.m; sourceTree = "<group>"; };
+		3AFFB2691E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSecondAttributeTableViewCell.h; sourceTree = "<group>"; };
+		3AFFB26A1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSecondAttributeTableViewCell.m; sourceTree = "<group>"; };
 		68B76989437BBA39F7947CAC /* Pods-TravelingManage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.release.xcconfig"; sourceTree = "<group>"; };
 		7689CDD2E1CFC6736603A27A /* Pods-TravelingManage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.debug.xcconfig"; sourceTree = "<group>"; };
 		B55613806B12752B343871BD /* libPods-TravelingManage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TravelingManage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1150,6 +1159,10 @@
 				3AC803371E6D7CEB005D2B71 /* XFJSignAppraiseTableViewCell.m */,
 				3AC803391E6D8A78005D2B71 /* XFJCommitView.h */,
 				3AC8033A1E6D8A78005D2B71 /* XFJCommitView.m */,
+				3AFFB2661E6ED2D10013185F /* XFJFirestAttributeTableViewCell.h */,
+				3AFFB2671E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m */,
+				3AFFB2691E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.h */,
+				3AFFB26A1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1161,6 +1174,8 @@
 				3A51D1641E6ADCB8005B86F6 /* XFJFindTeamTasksItem.m */,
 				3A51D1661E6AE4F3005B86F6 /* XFJTaskRowsItem.h */,
 				3A51D1671E6AE4F3005B86F6 /* XFJTaskRowsItem.m */,
+				3ABDC9DA1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.h */,
+				3ABDC9DB1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1925,6 +1940,7 @@
 				3A756F201E657D03005D2C02 /* AlertView.m in Sources */,
 				3A00E3141E545DE200525150 /* XFJAllTaskTableViewCell.m in Sources */,
 				3A9474981E4D9137002F1F9B /* PersonalInformationViewController.m in Sources */,
+				3AFFB2681E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m in Sources */,
 				3AE849F11E54410F00A71C5E /* XFJSubscribeButton.m in Sources */,
 				1C665BF61E69981E0059DE59 /* NewPhoneNueViewController.m in Sources */,
 				3AC803381E6D7CEB005D2B71 /* XFJSignAppraiseTableViewCell.m in Sources */,
@@ -1939,6 +1955,7 @@
 				3ACCE39E1E6A841F00B3526B /* XFJTeamMessageViewController.m in Sources */,
 				3AC8033B1E6D8A78005D2B71 /* XFJCommitView.m in Sources */,
 				1CFDFE561E542C84001D6300 /* JFPhotoBrowserViewController.m in Sources */,
+				3ABDC9DC1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.m in Sources */,
 				3A18E54C1E5D6FB400BFE891 /* XFJGuestSourceInformationTableViewCell.m in Sources */,
 				3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */,
 				3AA475091E5E8E7700FEB005 /* XFJFindAttractionsListItem.m in Sources */,
@@ -1975,6 +1992,7 @@
 				3ACCE3981E697F6300B3526B /* XFJAskingTableViewCell.m in Sources */,
 				1CFDFE5A1E542CD3001D6300 /* UIBarButtonItem+Item.m in Sources */,
 				3AF0D39A1E61FC4200EDECD1 /* XFJHotelView.m in Sources */,
+				3AFFB26B1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m in Sources */,
 				3A51D1581E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.m in Sources */,
 				1CFDFE3D1E542C78001D6300 /* WSImagePickerView.m in Sources */,
 				1CB523E11E51AA8900A205C3 /* AnnouncementCell.m in Sources */,

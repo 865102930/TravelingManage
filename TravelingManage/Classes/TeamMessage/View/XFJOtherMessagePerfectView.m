@@ -24,7 +24,7 @@
         [self addSubview:self.line_view];
         [self addSubview:self.otherMessage_imageView];
         [self addSubview:self.otherMessage_label];
-        [self addSubview:self.quality_field];
+//        [self addSubview:self.quality_field];
         [self.line_view mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.mas_top);
             make.left.mas_equalTo(self.mas_left);
@@ -41,12 +41,12 @@
             make.left.mas_equalTo(self.otherMessage_imageView.mas_right).mas_offset(8.0);
             make.centerY.mas_equalTo(self.otherMessage_imageView.mas_centerY);
         }];
-        [self.quality_field mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.otherMessage_imageView.mas_bottom).mas_offset(16.0);
-            make.left.mas_equalTo(self.otherMessage_imageView.mas_left);
-            make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
-            make.height.mas_equalTo(38.0);
-        }];
+//        [self.quality_field mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.otherMessage_imageView.mas_bottom).mas_offset(16.0);
+//            make.left.mas_equalTo(self.otherMessage_imageView.mas_left);
+//            make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
+//            make.height.mas_equalTo(38.0);
+//        }];
     }
     return self;
 }

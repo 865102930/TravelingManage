@@ -29,6 +29,7 @@
             make.left.mas_equalTo(self.mas_left);
             make.right.mas_equalTo(self.mas_right);
             make.height.mas_equalTo(3.0);
+            
         }];
         [self.teamMessage_imageView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.line_view.mas_bottom).mas_offset(15.0);
@@ -40,15 +41,15 @@
             make.centerY.mas_equalTo(self.teamMessage_imageView.mas_centerY);
             make.left.mas_equalTo(self.teamMessage_imageView.mas_right).mas_offset(9.0);
         }];
-//        SYStarRatingView *syStarRatingViewOne;
-//        if (iphone5) {
-//            syStarRatingViewOne = [[SYStarRatingView alloc] initWithFrame:CGRectMake(self.XFJ_centerX - 40, 15, 180, 20)];
-//        }else {
-//            syStarRatingViewOne = [[SYStarRatingView alloc] initWithFrame:CGRectMake(self.XFJ_centerX - 15, 15, 180, 20)];
-//        }
-//        syStarRatingViewOne.delegate = self;
-//        syStarRatingViewOne.foregroundViewColor = [UIColor redColor];
-//        [self addSubview:syStarRatingViewOne];
+        SYStarRatingView *syStarRatingViewOne;
+        if (iphone5) {
+            syStarRatingViewOne = [[SYStarRatingView alloc] initWithFrame:CGRectMake(self.XFJ_centerX - 40, 15, 180, 20)];
+        }else {
+            syStarRatingViewOne = [[SYStarRatingView alloc] initWithFrame:CGRectMake(self.XFJ_centerX - 15, 15, 180, 20)];
+        }
+        syStarRatingViewOne.delegate = self;
+        syStarRatingViewOne.foregroundViewColor = [UIColor redColor];
+        [self addSubview:syStarRatingViewOne];
     }
     return self;
 }
@@ -86,7 +87,13 @@
 -(void)starRatingView:(SYStarRatingView *)view score:(float)score
 {
     NSLog(@"+++++++++++++用户的评价分数是 :%@",[NSString stringWithFormat:@"%0.2f",score * 10 ]);
+    if (self.commitStarBlock) {
+        self.commitStarBlock([NSString stringWithFormat:@"%0.2f",score * 10 ]);
+    }
     
 }
+
+
+
 
 @end

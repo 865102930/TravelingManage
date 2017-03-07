@@ -137,6 +137,12 @@
 #define FINDTEAMINFOTASKSURL (BASEURL@"/app/teamInfo/findTeamInfoTasks")
 //任务信息完善
 #define TASKPERFECTURL (BASEURL@"/app/teamTask/taskPerfect")
+//团队评价
+#define EVALUATEURL (BASEURL@"/app/teamTask/evaluate")
+//中间部分自定义字段查询
+#define FINDCUSTOMATTRLISTURL (BASEURL@"/app/teamTask/findCustomAttrList")
+
+
 
 
 

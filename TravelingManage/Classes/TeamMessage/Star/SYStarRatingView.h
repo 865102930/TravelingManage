@@ -66,6 +66,7 @@
  */
 - (void)setScore:(float)score withAnimation:(bool)isAnimate completion:(void (^)(BOOL finished))completion;
 
+
 @end
 
 

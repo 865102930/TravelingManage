@@ -10,4 +10,7 @@
 
 @interface XFJOpinionAndSuggestView : UIView
 
+//将用户编辑的内容传递到控制器中
+@property (nonatomic, copy) void (^textViewTextBlock)(NSString *) ;
+
 @end

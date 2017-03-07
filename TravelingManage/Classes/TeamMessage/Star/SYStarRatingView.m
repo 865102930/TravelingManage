@@ -270,6 +270,10 @@
     [self setNeedsDisplay];
 }
 
+- (void)dealloc
+{
+    [self unregisterFromKVO];
+}
 
 
 @end

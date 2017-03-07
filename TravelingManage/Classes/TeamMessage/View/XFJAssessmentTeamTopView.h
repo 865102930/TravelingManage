@@ -10,4 +10,8 @@
 
 @interface XFJAssessmentTeamTopView : UIView
 
+//将用户的评分传入控制器中
+@property (nonatomic, copy) void (^commitStarBlock)(NSString *);
+
+
 @end

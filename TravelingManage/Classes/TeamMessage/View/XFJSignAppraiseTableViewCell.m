@@ -17,7 +17,7 @@
 @property (nonatomic, strong) UILabel *scenicService_label;
 @property (nonatomic, strong) UILabel *environmentHygienism_label;
 @property (nonatomic, strong) UILabel *installationEquipment_label;
-@property (nonatomic, strong) SYStarRatingView *syStarRatingViewOne;
+@property (nonatomic, assign) NSInteger attractionsId;
 
 @end
 
@@ -61,29 +61,20 @@
             make.left.mas_equalTo(self.signTitle_imageView.mas_left);
             make.top.mas_equalTo(self.environmentHygienism_label.mas_bottom).mas_offset(28.0);
         }];
-//        for (NSInteger i = 1; i <= 3; i++) {
-//            SYStarRatingView *syStarRatingViewOne;
-//            if (iphone5) {
-//                syStarRatingViewOne = [[SYStarRatingView alloc] initWithFrame:CGRectMake(self.XFJ_centerX - 40, 48, 180, 20)];
-//            }else {
-//                syStarRatingViewOne = [[SYStarRatingView alloc] initWithFrame:CGRectMake(self.XFJ_centerX - 15, 48, 180, 20)];
-//            }
-//            syStarRatingViewOne.delegate = self;
-//            syStarRatingViewOne.foregroundViewColor = [UIColor redColor];
-//            [self addSubview:_syStarRatingViewOne];
-//        }
+        for (NSInteger i = 1; i <= 3; i++) {
+            SYStarRatingView *syStarRatingViewOne;
+            if (iphone5) {
+                syStarRatingViewOne = [[SYStarRatingView alloc] initWithFrame:CGRectMake(self.XFJ_centerX - 40,i * 48, 180, 20)];
+            }else {
+                syStarRatingViewOne = [[SYStarRatingView alloc] initWithFrame:CGRectMake(self.XFJ_centerX - 15,i * 48, 180, 20)];
+            }
+            syStarRatingViewOne.tag = i;
+            syStarRatingViewOne.delegate = self;
+            syStarRatingViewOne.foregroundViewColor = [UIColor redColor];
+            [self addSubview:syStarRatingViewOne];
+        }
     }
     return self;
-}
-
-- (SYStarRatingView *)syStarRatingViewOne
-{
-    if (_syStarRatingViewOne == nil) {
-        _syStarRatingViewOne = [[SYStarRatingView alloc] initWithFrame:CGRectMake(self.XFJ_centerX - 15, 48, 180, 20)];
-        _syStarRatingViewOne.delegate = self;
-        _syStarRatingViewOne.foregroundViewColor = [UIColor redColor];
-    }
-    return _syStarRatingViewOne;
 }
 
 - (UIView *)line_view
@@ -108,7 +99,6 @@
 {
     if (_signTitle_label == nil) {
         _signTitle_label = [[UILabel alloc] init];
-        _signTitle_label.text = @"签到点评价";
         _signTitle_label.font = [UIFont fontWithName:PingFang size:14.0];
         _signTitle_label.textColor = kColor2b2b;
     }
@@ -150,8 +140,30 @@
 #pragma mark - 评星的代理方法
 -(void)starRatingView:(SYStarRatingView *)view score:(float)score
 {
-    NSLog(@"+++++++++++++用户的评价分数是2 :%@",[NSString stringWithFormat:@"%0.2f",score * 10]);
+    if (view.tag == 1) {
+        NSLog(@"+++++++++++++用户的评价分数是1 :%@",[NSString stringWithFormat:@"%0.2f",score * 10]);
+        if (self.teamScoreBlock1) {
+            self.teamScoreBlock1([NSString stringWithFormat:@"%0.2f",score * 10],self.attractionsId);
+        }
+    }else if (view.tag == 2) {
+        NSLog(@"+++++++++++++用户的评价分数是2 :%@",[NSString stringWithFormat:@"%0.2f",score * 10]);
+        if (self.teamScoreBlock2) {
+            self.teamScoreBlock2([NSString stringWithFormat:@"%0.2f",score * 10],self.attractionsId);
+        }
+    }else {
+        NSLog(@"+++++++++++++用户的评价分数是3 :%@",[NSString stringWithFormat:@"%0.2f",score * 10]);
+        if (self.teamScoreBlock3) {
+            self.teamScoreBlock3([NSString stringWithFormat:@"%0.2f",score * 10],self.attractionsId);
+        }
+    }
     
+}
+
+- (void)setFindTeamTasksItemArray:(XFJTaskRowsItem *)findTeamTasksItemArray
+{
+    _findTeamTasksItemArray = findTeamTasksItemArray;
+    self.signTitle_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItemArray.attractionsName];
+    self.attractionsId = findTeamTasksItemArray.attractionsId;
 }
 
 @end

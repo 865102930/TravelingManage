@@ -32,5 +32,7 @@
 @property (nonatomic, strong) NSString *teamNatureVal;
 //车辆
 @property (nonatomic, strong) NSString *vehicleNo;
+//景区名称
+@property (nonatomic, strong) NSString *attractionsName;
 
 @end

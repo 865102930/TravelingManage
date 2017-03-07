@@ -20,9 +20,12 @@
 #import "XFJTaskRowsItem.h"
 #import "XFJPleasePerfectMessageViewController.h"
 #import "XFJPleaseAppraiseViewController.h"
+#import "XFJFindCustomAttrListItem.h"
+#import "XFJFirestAttributeTableViewCell.h"
+#import "XFJSecondAttributeTableViewCell.h"
 
 
-@interface XFJTeamMessageViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJCarPhotosWithPerfectViewDelegate,XFJUpPhotosOpenTeamMessageViewDelegate>
+@interface XFJTeamMessageViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJCarPhotosWithPerfectViewDelegate,XFJUpPhotosOpenTeamMessageViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UILabel *title_label;
 @property (nonatomic, strong) UIScrollView *scroll_view;
@@ -37,6 +40,11 @@
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *findTeamTasksItemArray;
 @property (nonatomic, strong) NSMutableArray <XFJTaskRowsItem *> *taskRowsArray;
+//自定义字段文本的内容
+@property (nonatomic, strong) NSMutableArray <XFJFindCustomAttrListItem *> *findCustomAttrListItemArray;
+//自定义属性
+@property (nonatomic, strong) UITableView *attrList_tableView;
+@property (nonatomic, strong) UIView *backGround_view;
 
 @end
 
@@ -48,12 +56,14 @@
     [self setInitWithNav];
     
     [self.view addSubview:self.scroll_view];
+    [self.scroll_view addSubview:self.backGround_view];
     [self.scroll_view addSubview:self.pleasePerfectView];
     [self.scroll_view addSubview:self.generalMessageView];
     [self.scroll_view addSubview:self.otherMessagePerfectView];
-    [self.scroll_view addSubview:self.carPhotosWithPerfectView];
-    [self.scroll_view addSubview:self.upPhotosOpenTeamMessageView];
+    [self.backGround_view addSubview:self.carPhotosWithPerfectView];
+    [self.backGround_view addSubview:self.upPhotosOpenTeamMessageView];
     [self.scroll_view addSubview:self.teamMessageBottomView];
+    [self.scroll_view addSubview:self.attrList_tableView];
     
     self.view.backgroundColor = [UIColor redColor];
     
@@ -63,11 +73,36 @@
     
     //请求到的自定页面数据
     [self requestTeamMessage];
+    
+    //请求自定义字段数据
+    [self requestFindCustomAttrListMessage:self.findTeamInfoByState_Id];
     __weak __typeof(self)wself = self;
     self.teamMessageBottomView.sureCommitBlock = ^(NSInteger teamId) {
       //弹出确认提交和上传附件弹窗
         [wself sureAndCommitShow:teamId];
     };
+    [self.backGround_view mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.view.mas_left);
+        make.right.mas_equalTo(self.view.mas_right);
+        make.height.mas_equalTo(340.0);
+        make.top.mas_equalTo(self.attrList_tableView.mas_bottom);
+    }];
+    [self.teamMessageBottomView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.view.mas_left);
+        make.right.mas_equalTo(self.view.mas_right);
+        make.height.mas_equalTo(300.0);
+        make.top.mas_equalTo(self.upPhotosOpenTeamMessageView.mas_bottom);
+    }];
+    [self.attrList_tableView registerClass:[XFJFirestAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJFirestAttributeTableViewCell];
+    [self.attrList_tableView registerClass:[XFJSecondAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJSecondAttributeTableViewCell];
+}
+
+- (NSMutableArray <XFJFindCustomAttrListItem *> *)findCustomAttrListItemArray
+{
+    if (_findCustomAttrListItemArray == nil) {
+        _findCustomAttrListItemArray = [NSMutableArray array];
+    }
+    return _findCustomAttrListItemArray;
 }
 
 #pragma mark - 确认提交和上传附件
@@ -81,9 +116,18 @@
     }]];
     [alertVc addAction:[UIAlertAction actionWithTitle:@"立即评价" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSLog(@"主人~~您点击了立即评价按钮!");
-        [wself jumpPleaseAppraise];
+        [wself jumpPleaseAppraise:teamId];
     }]];
     [self presentViewController:alertVc animated:NO completion:nil];
+}
+
+- (UIView *)backGround_view
+{
+    if (_backGround_view == nil) {
+        _backGround_view = [[UIView alloc] init];
+        _backGround_view.backgroundColor = [UIColor redColor];
+    }
+    return _backGround_view;
 }
 
 #pragma mark - 跳转到完善资料的控制器
@@ -94,9 +138,10 @@
     [self.navigationController pushViewController:pleasePerfectMessageViewController animated:YES];
 }
 #pragma mark - 跳转到立即评价控制器
-- (void)jumpPleaseAppraise
+- (void)jumpPleaseAppraise:(NSInteger)teamId
 {
     XFJPleaseAppraiseViewController *pleaseAppraiseViewController = [[XFJPleaseAppraiseViewController alloc] init];
+    pleaseAppraiseViewController.teamId = teamId;
     [self.navigationController pushViewController:pleaseAppraiseViewController animated:YES];
 }
 
@@ -114,6 +159,18 @@
         _title_label.textAlignment = NSTextAlignmentCenter;
     }
     return _title_label;
+}
+
+- (UITableView *)attrList_tableView
+{
+    if (_attrList_tableView == nil) {
+        _attrList_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 323, SCREEN_WIDTH, 90) style:UITableViewStylePlain];
+        _attrList_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _attrList_tableView.backgroundColor = [UIColor redColor];
+        _attrList_tableView.delegate = self;
+        _attrList_tableView.dataSource = self;
+    }
+    return _attrList_tableView;
 }
 
 - (NSMutableArray <XFJFindTeamTasksItem *> *)findTeamTasksItemArray
@@ -146,6 +203,29 @@
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"++++++++获取团队信息资料失败的是 :%@",error);
+        }
+    }];
+}
+
+#pragma mark - 加载自定义字段数据
+- (void)requestFindCustomAttrListMessage:(NSInteger)teamId
+{
+    NSDictionary *dictParams = @{
+                                 @"teamId":@7,
+                                 @"teamAttractionsType":@0
+                                 };
+    __weak __typeof(self)wself = self;
+    NSLog(@"-------------自定义字段参数是 :%@",dictParams);
+    [GRNetRequestClass GET:FINDCUSTOMATTRLISTURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSMutableArray *rowsArray = [responseObject objectForKey:@"rows"];
+            wself.findCustomAttrListItemArray = [XFJFindCustomAttrListItem mj_objectArrayWithKeyValuesArray:rowsArray];
+            NSLog(@"+++++++++++返回的自定字段信息是 :%@",wself.findCustomAttrListItemArray);
+            [wself.attrList_tableView reloadData];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"___________返回错误的信息是 :%@",error);
         }
     }];
 }
@@ -193,7 +273,7 @@
 - (XFJCarPhotosWithPerfectView *)carPhotosWithPerfectView
 {
     if (_carPhotosWithPerfectView == nil) {
-        _carPhotosWithPerfectView = [[XFJCarPhotosWithPerfectView alloc] initWithFrame:CGRectMake(0, 393, SCREEN_WIDTH, 170)];
+        _carPhotosWithPerfectView = [[XFJCarPhotosWithPerfectView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 170)];
         _carPhotosWithPerfectView.backgroundColor = [UIColor whiteColor];
         _carPhotosWithPerfectView.delegate = self;
     }
@@ -202,7 +282,7 @@
 - (XFJUpPhotosOpenTeamMessageView *)upPhotosOpenTeamMessageView
 {
     if (_upPhotosOpenTeamMessageView == nil) {
-        _upPhotosOpenTeamMessageView = [[XFJUpPhotosOpenTeamMessageView alloc] initWithFrame:CGRectMake(0, 563, SCREEN_WIDTH, 170)];
+        _upPhotosOpenTeamMessageView = [[XFJUpPhotosOpenTeamMessageView alloc] initWithFrame:CGRectMake(0, 170, SCREEN_WIDTH, 170)];
         _upPhotosOpenTeamMessageView.backgroundColor = [UIColor whiteColor];
         _upPhotosOpenTeamMessageView.delegate = self;
     }
@@ -212,7 +292,7 @@
 - (XFJTeamMessageBottomView *)teamMessageBottomView
 {
     if (_teamMessageBottomView == nil) {
-        _teamMessageBottomView = [[XFJTeamMessageBottomView alloc] initWithFrame:CGRectMake(0, self.upPhotosOpenTeamMessageView.XFJ_Y + 170, SCREEN_WIDTH, 300)];
+        _teamMessageBottomView = [[XFJTeamMessageBottomView alloc] init];
         _teamMessageBottomView.backgroundColor = [UIColor whiteColor];
     }
     return _teamMessageBottomView;
@@ -268,8 +348,8 @@
                 [_dataArr addObjectsFromArray:array];
                 weakself.carPhotosWithPerfectView.dataArr = _dataArr;
                 if (_dataArr.count <= 4) {
-                    self.carPhotosWithPerfectView.frame = CGRectMake(0, 393, SCREEN_WIDTH, 170);
-                    self.upPhotosOpenTeamMessageView.frame = CGRectMake(0, 563, SCREEN_WIDTH, 170);
+                    self.carPhotosWithPerfectView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 170);
+                    self.upPhotosOpenTeamMessageView.frame = CGRectMake(0, 170, SCREEN_WIDTH, 170);
                 }
             });
         };
@@ -375,8 +455,8 @@
         self.carPhotosWithPerfectView.maxImageCount = 6;
         if (self.dataArr.count < 4) {
         }else {
-            self.carPhotosWithPerfectView.frame = CGRectMake(0, 393, SCREEN_WIDTH, 230);
-            self.upPhotosOpenTeamMessageView.frame = CGRectMake(0, 620, SCREEN_WIDTH, 170);
+            self.carPhotosWithPerfectView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 230);
+            self.upPhotosOpenTeamMessageView.frame = CGRectMake(0, 230, SCREEN_WIDTH, 170);
         }
     }else {
         NSLog(@"self.maxImageCount == 1----------");
@@ -384,6 +464,46 @@
         self.upPhotosOpenTeamMessageView.dataArr = self.dataArray;
         self.upPhotosOpenTeamMessageView.maxImageCount = 1;
     }
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 2;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    if (indexPath.row == 0) {
+//        XFJFirestAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFirestAttributeTableViewCell forIndexPath:indexPath];
+//        return cell;
+//    }else if (indexPath.row == 1) {
+//        XFJSecondAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSecondAttributeTableViewCell forIndexPath:indexPath];
+//        return cell;
+//    }
+//    id obj = self.findCustomAttrListItemArray[indexPath.row];
+//    if ([obj is]) {
+//        <#statements#>
+//    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.attrList_tableView.frame = CGRectMake(0, 323, SCREEN_WIDTH, 45 * self.findCustomAttrListItemArray.count);
+    NSInteger cellHeight;
+    if (indexPath.row == 0) {
+        return 45.0;
+    }else if (indexPath.row == 1) {
+        return 45.0;
+    }else if (indexPath.row == 2) {
+        
+    }
+    return 45.0;
 }
 
 

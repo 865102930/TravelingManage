@@ -63,7 +63,9 @@
 
 - (void)commitButtonClick
 {
-    NSLog(@"主人~~您点击了提交按钮!!");
+    if (self.teamEvaluateBlock) {
+        self.teamEvaluateBlock();
+    }
 }
 
 
