@@ -15,7 +15,7 @@
 //自定义属性名称
 @property (nonatomic, strong) NSString *userName;
 //文本的样式
-@property (nonatomic, assign) NSInteger attrType;
+@property (nonatomic, assign) int attrType;
 //不是;是
 @property (nonatomic, assign) BOOL isRequire;
 

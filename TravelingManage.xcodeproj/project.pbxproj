@@ -293,6 +293,18 @@
 		3AFC9A2F1E62C4090049A758 /* XFJSignNoHotelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC9A2E1E62C4090049A758 /* XFJSignNoHotelView.m */; };
 		3AFFB2681E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2671E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m */; };
 		3AFFB26B1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB26A1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m */; };
+		3AFFB26E1E6FBE250013185F /* XFJThirdAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB26D1E6FBE250013185F /* XFJThirdAttributeTableViewCell.m */; };
+		3AFFB2711E6FD61B0013185F /* XFJFourAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2701E6FD61B0013185F /* XFJFourAttributeTableViewCell.m */; };
+		3AFFB2741E6FDBBA0013185F /* XFJFiveAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2731E6FDBBA0013185F /* XFJFiveAttributeTableViewCell.m */; };
+		3AFFB2771E6FE2CF0013185F /* XFJSixAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2761E6FE2CF0013185F /* XFJSixAttributeTableViewCell.m */; };
+		3AFFB27A1E6FE5620013185F /* XFJSevenTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2791E6FE5620013185F /* XFJSevenTableViewCell.m */; };
+		3AFFB27D1E6FFA810013185F /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB27C1E6FFA810013185F /* CollectionViewCell.m */; };
+		3AFFB2801E6FFA9D0013185F /* AlbumAddBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFFB27E1E6FFA9D0013185F /* AlbumAddBtn@2x.png */; };
+		3AFFB2811E6FFA9D0013185F /* photo_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFFB27F1E6FFA9D0013185F /* photo_delete@2x.png */; };
+		3AFFB2841E7015500013185F /* XFJEigthAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2831E7015500013185F /* XFJEigthAttributeTableViewCell.m */; };
+		3AFFB2871E701B4A0013185F /* XFJCheckBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2861E701B4A0013185F /* XFJCheckBoxView.m */; };
+		3AFFB28A1E701E7F0013185F /* XFJCheckBoxTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2891E701E7F0013185F /* XFJCheckBoxTableViewCell.m */; };
+		3AFFB28D1E7023D20013185F /* XFJCheckFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB28C1E7023D20013185F /* XFJCheckFooterView.m */; };
 		D2818BC1C16899123CFFEBFB /* libPods-TravelingManage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B55613806B12752B343871BD /* libPods-TravelingManage.a */; };
 /* End PBXBuildFile section */
 
@@ -736,6 +748,28 @@
 		3AFFB2671E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFirestAttributeTableViewCell.m; sourceTree = "<group>"; };
 		3AFFB2691E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSecondAttributeTableViewCell.h; sourceTree = "<group>"; };
 		3AFFB26A1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSecondAttributeTableViewCell.m; sourceTree = "<group>"; };
+		3AFFB26C1E6FBE250013185F /* XFJThirdAttributeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJThirdAttributeTableViewCell.h; sourceTree = "<group>"; };
+		3AFFB26D1E6FBE250013185F /* XFJThirdAttributeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJThirdAttributeTableViewCell.m; sourceTree = "<group>"; };
+		3AFFB26F1E6FD61B0013185F /* XFJFourAttributeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFourAttributeTableViewCell.h; sourceTree = "<group>"; };
+		3AFFB2701E6FD61B0013185F /* XFJFourAttributeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFourAttributeTableViewCell.m; sourceTree = "<group>"; };
+		3AFFB2721E6FDBBA0013185F /* XFJFiveAttributeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFiveAttributeTableViewCell.h; sourceTree = "<group>"; };
+		3AFFB2731E6FDBBA0013185F /* XFJFiveAttributeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFiveAttributeTableViewCell.m; sourceTree = "<group>"; };
+		3AFFB2751E6FE2CF0013185F /* XFJSixAttributeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSixAttributeTableViewCell.h; sourceTree = "<group>"; };
+		3AFFB2761E6FE2CF0013185F /* XFJSixAttributeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSixAttributeTableViewCell.m; sourceTree = "<group>"; };
+		3AFFB2781E6FE5620013185F /* XFJSevenTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSevenTableViewCell.h; sourceTree = "<group>"; };
+		3AFFB2791E6FE5620013185F /* XFJSevenTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSevenTableViewCell.m; sourceTree = "<group>"; };
+		3AFFB27B1E6FFA810013185F /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
+		3AFFB27C1E6FFA810013185F /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
+		3AFFB27E1E6FFA9D0013185F /* AlbumAddBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlbumAddBtn@2x.png"; sourceTree = "<group>"; };
+		3AFFB27F1E6FFA9D0013185F /* photo_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_delete@2x.png"; sourceTree = "<group>"; };
+		3AFFB2821E7015500013185F /* XFJEigthAttributeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJEigthAttributeTableViewCell.h; sourceTree = "<group>"; };
+		3AFFB2831E7015500013185F /* XFJEigthAttributeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJEigthAttributeTableViewCell.m; sourceTree = "<group>"; };
+		3AFFB2851E701B4A0013185F /* XFJCheckBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJCheckBoxView.h; sourceTree = "<group>"; };
+		3AFFB2861E701B4A0013185F /* XFJCheckBoxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCheckBoxView.m; sourceTree = "<group>"; };
+		3AFFB2881E701E7F0013185F /* XFJCheckBoxTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJCheckBoxTableViewCell.h; sourceTree = "<group>"; };
+		3AFFB2891E701E7F0013185F /* XFJCheckBoxTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCheckBoxTableViewCell.m; sourceTree = "<group>"; };
+		3AFFB28B1E7023D20013185F /* XFJCheckFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJCheckFooterView.h; sourceTree = "<group>"; };
+		3AFFB28C1E7023D20013185F /* XFJCheckFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCheckFooterView.m; sourceTree = "<group>"; };
 		68B76989437BBA39F7947CAC /* Pods-TravelingManage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.release.xcconfig"; sourceTree = "<group>"; };
 		7689CDD2E1CFC6736603A27A /* Pods-TravelingManage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.debug.xcconfig"; sourceTree = "<group>"; };
 		B55613806B12752B343871BD /* libPods-TravelingManage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TravelingManage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1163,6 +1197,26 @@
 				3AFFB2671E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m */,
 				3AFFB2691E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.h */,
 				3AFFB26A1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m */,
+				3AFFB26C1E6FBE250013185F /* XFJThirdAttributeTableViewCell.h */,
+				3AFFB26D1E6FBE250013185F /* XFJThirdAttributeTableViewCell.m */,
+				3AFFB26F1E6FD61B0013185F /* XFJFourAttributeTableViewCell.h */,
+				3AFFB2701E6FD61B0013185F /* XFJFourAttributeTableViewCell.m */,
+				3AFFB2721E6FDBBA0013185F /* XFJFiveAttributeTableViewCell.h */,
+				3AFFB2731E6FDBBA0013185F /* XFJFiveAttributeTableViewCell.m */,
+				3AFFB2751E6FE2CF0013185F /* XFJSixAttributeTableViewCell.h */,
+				3AFFB2761E6FE2CF0013185F /* XFJSixAttributeTableViewCell.m */,
+				3AFFB2781E6FE5620013185F /* XFJSevenTableViewCell.h */,
+				3AFFB2791E6FE5620013185F /* XFJSevenTableViewCell.m */,
+				3AFFB2821E7015500013185F /* XFJEigthAttributeTableViewCell.h */,
+				3AFFB2831E7015500013185F /* XFJEigthAttributeTableViewCell.m */,
+				3AFFB27B1E6FFA810013185F /* CollectionViewCell.h */,
+				3AFFB27C1E6FFA810013185F /* CollectionViewCell.m */,
+				3AFFB2851E701B4A0013185F /* XFJCheckBoxView.h */,
+				3AFFB2861E701B4A0013185F /* XFJCheckBoxView.m */,
+				3AFFB2881E701E7F0013185F /* XFJCheckBoxTableViewCell.h */,
+				3AFFB2891E701E7F0013185F /* XFJCheckBoxTableViewCell.m */,
+				3AFFB28B1E7023D20013185F /* XFJCheckFooterView.h */,
+				3AFFB28C1E7023D20013185F /* XFJCheckFooterView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1530,6 +1584,8 @@
 		3AE7FA351E555059003E3505 /* MineTeam */ = {
 			isa = PBXGroup;
 			children = (
+				3AFFB27E1E6FFA9D0013185F /* AlbumAddBtn@2x.png */,
+				3AFFB27F1E6FFA9D0013185F /* photo_delete@2x.png */,
 				3AE7FA361E55506C003E3505 /* hongse.png */,
 				3AE7FA371E55506C003E3505 /* hongse@2x.png */,
 				3AE7FA381E55506C003E3505 /* hongse@3x.png */,
@@ -1760,6 +1816,7 @@
 				3AE2FF3C1E4D491600E380F9 /* gonggao@2x.png in Resources */,
 				1CB5240A1E53080C00A205C3 /* area.plist in Resources */,
 				3A9B892D1E4C45C4004E3B05 /* triangle@2x.png in Resources */,
+				3AFFB2811E6FFA9D0013185F /* photo_delete@2x.png in Resources */,
 				3AE2FF471E4D4FA100E380F9 /* laba.png in Resources */,
 				3ADDF02D1E4DAD02003C838F /* Triangle-@3x.png in Resources */,
 				3AE7FA3F1E55506C003E3505 /* huise.png in Resources */,
@@ -1797,6 +1854,7 @@
 				3A9B89221E4C1C10004E3B05 /* quanbu@3x.png in Resources */,
 				3AEE6C0C1E641F6F00410412 /* house-@2x.png in Resources */,
 				3AA4751E1E5EDE7900FEB005 /* dingwei@3x.png in Resources */,
+				3AFFB2801E6FFA9D0013185F /* AlbumAddBtn@2x.png in Resources */,
 				3ADDF0241E4DAD02003C838F /* input-box-@3x.png in Resources */,
 				3A9B890E1E4C17FF004E3B05 /* changemenubutton.png in Resources */,
 				3ADDF0121E4DAD02003C838F /* add-@3x.png in Resources */,
@@ -1874,15 +1932,18 @@
 				1C665B9C1E696E1D0059DE59 /* JTNavigationController.m in Sources */,
 				3A18E54B1E5D6FB400BFE891 /* XFJConventionMessageTableViewCell.m in Sources */,
 				3AFC9A2F1E62C4090049A758 /* XFJSignNoHotelView.m in Sources */,
+				3AFFB26E1E6FBE250013185F /* XFJThirdAttributeTableViewCell.m in Sources */,
 				3A10CFDC1E5BD04F00592564 /* UITextField+XFJTextField.m in Sources */,
 				3AA475241E5EF21500FEB005 /* XFJSceneryAnnotationView.m in Sources */,
 				3A94749A1E4D9137002F1F9B /* VerificationCodeViewController.m in Sources */,
 				3AA6E8851E48458500FC34A2 /* main.m in Sources */,
 				1CFDFE521E542C84001D6300 /* JFImageGroupTableViewController.m in Sources */,
+				3AFFB2871E701B4A0013185F /* XFJCheckBoxView.m in Sources */,
 				1C1939B51E4DADDD00882B8C /* XFJAnnouncementViewController.m in Sources */,
 				1CFDFE551E542C84001D6300 /* JFImagePickerViewCell.m in Sources */,
 				3A9474A51E4D91BE002F1F9B /* UITextField+Placeholder.m in Sources */,
 				3A94748E1E4D8FB8002F1F9B /* HomeViewController.m in Sources */,
+				3AFFB28D1E7023D20013185F /* XFJCheckFooterView.m in Sources */,
 				1CB523DE1E5195C600A205C3 /* MessageModel.m in Sources */,
 				3A94749D1E4D9160002F1F9B /* LoginViewController.m in Sources */,
 				1CFDFE1A1E542C65001D6300 /* TZAssetCell.m in Sources */,
@@ -1963,6 +2024,8 @@
 				1CB523EA1E51AFF600A205C3 /* AnnouncementDetailViewController.m in Sources */,
 				3A51D16E1E6CF838005B86F6 /* XFJPleaseAppraiseViewController.m in Sources */,
 				3A9B890A1E4C0B51004E3B05 /* XFJLeftTableFooterView.m in Sources */,
+				3AFFB2711E6FD61B0013185F /* XFJFourAttributeTableViewCell.m in Sources */,
+				3AFFB2771E6FE2CF0013185F /* XFJSixAttributeTableViewCell.m in Sources */,
 				3ACCE3891E684B6800B3526B /* XFJSignMessageTopVeiw.m in Sources */,
 				3AA475211E5EE4F300FEB005 /* XFJSceneryAnnotation.m in Sources */,
 				3A51D1741E6D0719005B86F6 /* XFJPleasePerfectMessageTopView.m in Sources */,
@@ -1991,11 +2054,13 @@
 				3A9EB5CF1E5C495C0064E61B /* XFJPurposeItem.m in Sources */,
 				3ACCE3981E697F6300B3526B /* XFJAskingTableViewCell.m in Sources */,
 				1CFDFE5A1E542CD3001D6300 /* UIBarButtonItem+Item.m in Sources */,
+				3AFFB27D1E6FFA810013185F /* CollectionViewCell.m in Sources */,
 				3AF0D39A1E61FC4200EDECD1 /* XFJHotelView.m in Sources */,
 				3AFFB26B1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m in Sources */,
 				3A51D1581E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.m in Sources */,
 				1CFDFE3D1E542C78001D6300 /* WSImagePickerView.m in Sources */,
 				1CB523E11E51AA8900A205C3 /* AnnouncementCell.m in Sources */,
+				3AFFB28A1E701E7F0013185F /* XFJCheckBoxTableViewCell.m in Sources */,
 				3A18E5471E5D6FB400BFE891 /* LMComBoxView.m in Sources */,
 				3AC803201E6D4D82005D2B71 /* XFJAssessmentTeamTopView.m in Sources */,
 				3A07C9061E481A70008A838D /* UIView+Frame.m in Sources */,
@@ -2005,13 +2070,16 @@
 				3A18E5231E5D24FC00BFE891 /* UIImage+image.m in Sources */,
 				3A18E5491E5D6FB400BFE891 /* XFJCarNameTableViewCell.m in Sources */,
 				3A51D14C1E6A91A7005B86F6 /* XFJGeneralMessageView.m in Sources */,
+				3AFFB2741E6FDBBA0013185F /* XFJFiveAttributeTableViewCell.m in Sources */,
 				3A756F1F1E657D03005D2C02 /* CoverView.m in Sources */,
 				3A51D1681E6AE4F3005B86F6 /* XFJTaskRowsItem.m in Sources */,
 				3A9A2DA31E49A97800D89639 /* UIViewController+JTNavigationExtension.m in Sources */,
+				3AFFB27A1E6FE5620013185F /* XFJSevenTableViewCell.m in Sources */,
 				3AE849EE1E543F1300A71C5E /* XFJPleaseAskingViewController.m in Sources */,
 				1CFDFE1C1E542C65001D6300 /* TZImageManager.m in Sources */,
 				3A9940341E499D1600F898D2 /* UIImage+compressIMG.m in Sources */,
 				1C1939C31E51476200882B8C /* MessageCell.m in Sources */,
+				3AFFB2841E7015500013185F /* XFJEigthAttributeTableViewCell.m in Sources */,
 				3A18E5481E5D6FB400BFE891 /* LMContainsLMComboxScrollView.m in Sources */,
 				3AE849E51E543DF000A71C5E /* XFJTaskingViewController.m in Sources */,
 				1C665BF91E6999660059DE59 /* NewPhoneVerificationViewController.m in Sources */,

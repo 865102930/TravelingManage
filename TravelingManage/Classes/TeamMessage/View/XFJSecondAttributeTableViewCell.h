@@ -6,8 +6,8 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+//只可输入数字
 #define KCellIdentifier_XFJSecondAttributeTableViewCell @"XFJSecondAttributeTableViewCell"
-
 
 #import <UIKit/UIKit.h>
 

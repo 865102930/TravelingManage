@@ -6,6 +6,8 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+
+//输入单行
 #define KCellIdentifier_XFJFirestAttributeTableViewCell @"XFJFirestAttributeTableViewCell"
 
 #import <UIKit/UIKit.h>

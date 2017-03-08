@@ -141,6 +141,9 @@
 #define EVALUATEURL (BASEURL@"/app/teamTask/evaluate")
 //中间部分自定义字段查询
 #define FINDCUSTOMATTRLISTURL (BASEURL@"/app/teamTask/findCustomAttrList")
+//获取自定义系统参数
+#define FINDPARAMSSYSTEMLISTURL (BASEURL@"/app/params/findParamsSystemList")
+
 
 
 

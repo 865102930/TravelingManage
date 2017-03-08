@@ -23,6 +23,14 @@
 #import "XFJFindCustomAttrListItem.h"
 #import "XFJFirestAttributeTableViewCell.h"
 #import "XFJSecondAttributeTableViewCell.h"
+#import "XFJThirdAttributeTableViewCell.h"
+#import "XFJFourAttributeTableViewCell.h"
+#import "XFJFiveAttributeTableViewCell.h"
+#import "XFJSixAttributeTableViewCell.h"
+#import "XFJSevenTableViewCell.h"
+#import "XFJEigthAttributeTableViewCell.h"
+#import "XFJMaskView.h"
+#import "XFJCheckBoxView.h"
 
 
 @interface XFJTeamMessageViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJCarPhotosWithPerfectViewDelegate,XFJUpPhotosOpenTeamMessageViewDelegate,UITableViewDelegate,UITableViewDataSource>
@@ -45,6 +53,11 @@
 //自定义属性
 @property (nonatomic, strong) UITableView *attrList_tableView;
 @property (nonatomic, strong) UIView *backGround_view;
+@property (nonatomic, strong) NSArray *array;
+@property (nonatomic, strong) NSMutableArray *attrTypeArray;
+@property (nonatomic, strong) XFJMaskView *maskView1;
+@property (nonatomic, strong) XFJCheckBoxView *checkBoxView;
+
 
 @end
 
@@ -81,6 +94,9 @@
       //弹出确认提交和上传附件弹窗
         [wself sureAndCommitShow:teamId];
     };
+    self.maskView1.maskBlock = ^() {
+        [wself.maskView1 removeFromSuperview];
+    };
     [self.backGround_view mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.view.mas_left);
         make.right.mas_equalTo(self.view.mas_right);
@@ -95,6 +111,12 @@
     }];
     [self.attrList_tableView registerClass:[XFJFirestAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJFirestAttributeTableViewCell];
     [self.attrList_tableView registerClass:[XFJSecondAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJSecondAttributeTableViewCell];
+    [self.attrList_tableView registerClass:[XFJThirdAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJThirdAttributeTableViewCell];
+    [self.attrList_tableView registerClass:[XFJFourAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJFourAttributeTableViewCell];
+    [self.attrList_tableView registerClass:[XFJFiveAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJFiveAttributeTableViewCell];
+    [self.attrList_tableView registerClass:[XFJSixAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJSixAttributeTableViewCell];
+    [self.attrList_tableView registerClass:[XFJSevenTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJSevenTableViewCell];
+    [self.attrList_tableView registerClass:[XFJEigthAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJEigthAttributeTableViewCell];
 }
 
 - (NSMutableArray <XFJFindCustomAttrListItem *> *)findCustomAttrListItemArray
@@ -104,6 +126,23 @@
     }
     return _findCustomAttrListItemArray;
 }
+
+- (XFJCheckBoxView *)checkBoxView
+{
+    if (_checkBoxView == nil) {
+        _checkBoxView = [[XFJCheckBoxView alloc] initWithFrame:CGRectMake(50, 150, SCREEN_WIDTH - 2 * 50, SCREEN_HEIGHT - 2 * 150)];
+    }
+    return _checkBoxView;
+}
+
+- (XFJMaskView *)maskView1
+{
+    if (_maskView1 == nil) {
+        _maskView1 = [[XFJMaskView alloc] initWithFrame:CGRectZero];
+    }
+    return _maskView1;
+}
+
 
 #pragma mark - 确认提交和上传附件
 - (void)sureAndCommitShow:(NSInteger)teamId
@@ -166,9 +205,10 @@
     if (_attrList_tableView == nil) {
         _attrList_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 323, SCREEN_WIDTH, 90) style:UITableViewStylePlain];
         _attrList_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _attrList_tableView.backgroundColor = [UIColor redColor];
+        _attrList_tableView.backgroundColor = [UIColor whiteColor];
         _attrList_tableView.delegate = self;
         _attrList_tableView.dataSource = self;
+        _attrList_tableView.bounces = NO;
     }
     return _attrList_tableView;
 }
@@ -211,7 +251,7 @@
 - (void)requestFindCustomAttrListMessage:(NSInteger)teamId
 {
     NSDictionary *dictParams = @{
-                                 @"teamId":@7,
+                                 @"teamId":[NSString stringWithFormat:@"%zd",self.findTeamInfoByState_Id],
                                  @"teamAttractionsType":@0
                                  };
     __weak __typeof(self)wself = self;
@@ -220,7 +260,12 @@
         if (responseObject) {
             NSMutableArray *rowsArray = [responseObject objectForKey:@"rows"];
             wself.findCustomAttrListItemArray = [XFJFindCustomAttrListItem mj_objectArrayWithKeyValuesArray:rowsArray];
-            NSLog(@"+++++++++++返回的自定字段信息是 :%@",wself.findCustomAttrListItemArray);
+            for (NSInteger i = 0; i < wself.findCustomAttrListItemArray.count; i++) {
+                int attrType = wself.findCustomAttrListItemArray[i].attrType;
+//                [wself.attrTypeArray addObject:attrType];
+                [wself.attrTypeArray addObject:[NSString stringWithFormat:@"%d",attrType]];
+                NSLog(@"+++++++++++返回的自定字段信息是 :%d",attrType);
+            }
             [wself.attrList_tableView reloadData];
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
@@ -228,6 +273,14 @@
             NSLog(@"___________返回错误的信息是 :%@",error);
         }
     }];
+}
+
+- (NSMutableArray *)attrTypeArray
+{
+    if (_attrTypeArray == nil) {
+        _attrTypeArray = [NSMutableArray array];
+    }
+    return _attrTypeArray;
 }
 
 - (UIScrollView *)scroll_view
@@ -328,6 +381,8 @@
     UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:@"请选择相机或者相册" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选择",nil];
     [action showInView:self.view];
 }
+
+
 
 - (void)jumpCell:(XFJCarPhotosWithPerfectView *)cell indexPath:(NSIndexPath *)indexPath
 {
@@ -473,37 +528,74 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return [self.findCustomAttrListItemArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.row == 0) {
-//        XFJFirestAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFirestAttributeTableViewCell forIndexPath:indexPath];
-//        return cell;
-//    }else if (indexPath.row == 1) {
-//        XFJSecondAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSecondAttributeTableViewCell forIndexPath:indexPath];
-//        return cell;
-//    }
-//    id obj = self.findCustomAttrListItemArray[indexPath.row];
-//    if ([obj is]) {
-//        <#statements#>
-//    }
+    NSInteger i = indexPath.row;
+    NSString *ty_pe = self.attrTypeArray[i];
+    if ([ty_pe intValue] == 0) {
+        XFJFirestAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFirestAttributeTableViewCell forIndexPath:indexPath];
+        return cell;
+    }else if ([ty_pe intValue] == 1) {
+        XFJSecondAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSecondAttributeTableViewCell forIndexPath:indexPath];
+        return cell;
+    }else if ([ty_pe intValue] == 2) {
+        XFJThirdAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJThirdAttributeTableViewCell forIndexPath:indexPath];
+        return cell;
+    }else if ([ty_pe intValue] == 3) {
+        XFJFourAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFourAttributeTableViewCell forIndexPath:indexPath];
+        cell.teamAttr = self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr;
+        NSLog(@"---------获取的back值是 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
+        __weak __typeof(self)wself = self;
+        cell.presentMaskViewBlock = ^() {
+            [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
+            [wself.maskView1 addSubview:self.checkBoxView];
+        };
+        return cell;
+    }else if ([ty_pe intValue] == 4) {
+        XFJFiveAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFiveAttributeTableViewCell forIndexPath:indexPath];
+        return cell;
+    }else if ([ty_pe intValue] == 5) {
+        XFJSixAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSixAttributeTableViewCell forIndexPath:indexPath];
+        return cell;
+    }else if ([ty_pe intValue] == 6) {
+        XFJSevenTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSevenTableViewCell forIndexPath:indexPath];
+        __weak __typeof(self)wself = self;
+        cell.presentPickPhotosBlock = ^(TZImagePickerController *pickerController) {
+          [wself presentViewController:pickerController animated:YES completion:nil];
+        };
+        return cell;
+    }else {
+        XFJEigthAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJEigthAttributeTableViewCell forIndexPath:indexPath];
+        return cell;
+    }
     return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.attrList_tableView.frame = CGRectMake(0, 323, SCREEN_WIDTH, 45 * self.findCustomAttrListItemArray.count);
-    NSInteger cellHeight;
-    if (indexPath.row == 0) {
+    self.attrList_tableView.frame = CGRectMake(0, 323, SCREEN_WIDTH, 80 * self.findCustomAttrListItemArray.count);
+    NSInteger i = indexPath.row;
+    NSString *ty_pe = self.attrTypeArray[i];
+    if ([ty_pe intValue] == 0) {
         return 45.0;
-    }else if (indexPath.row == 1) {
+    }else if ([ty_pe intValue] == 1) {
         return 45.0;
-    }else if (indexPath.row == 2) {
-        
+    }else if ([ty_pe intValue] == 2) {
+        return 100.0;
+    }else if ([ty_pe intValue] == 3) {
+        return 45.0;
+    }else if ([ty_pe intValue] == 4) {
+        return 53.0;
+    }else if ([ty_pe intValue] == 5) {
+        return 45.0;
+    }else if ([ty_pe intValue] == 6) {
+        return 240.0;
+    }else {
+        return 45.0;
     }
-    return 45.0;
 }
 
 

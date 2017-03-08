@@ -18,4 +18,6 @@
  */
 + (UITextField *)textBackGroundImage:(NSString *)imageName titleName:(NSString *)titleName rightImage:(NSString *)rightImage placeholder: (NSString *)placeholder;
 
++ (UITextField *)textBackGround_Image:(NSString *)imageName titleName:(NSString *)titleName rightImage:(NSString *)rightImage placeholder: (NSString *)placeholder;
+
 @end
