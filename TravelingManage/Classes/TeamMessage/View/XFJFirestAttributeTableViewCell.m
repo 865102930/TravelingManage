@@ -36,8 +36,14 @@
 {
     if (_quality_field == nil) {
         _quality_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"属          性" rightImage:@"xinghao" placeholder:@"单行输入"];
+        [_quality_field addTarget:self action:@selector(firestTextField:) forControlEvents:UIControlEventEditingDidEnd];
     }
     return _quality_field;
+}
+
+- (void)firestTextField:(UITextField *)textField
+{
+    NSLog(@"这是获取到的用户的单行输入的最终值:%@",textField.text);
 }
 
 
