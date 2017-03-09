@@ -6,13 +6,13 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-//复选框
+//单选框
 #define KCellIdentifier_XFJFourAttributeTableViewCell @"XFJFourAttributeTableViewCell"
 #import <UIKit/UIKit.h>
 
 @interface XFJFourAttributeTableViewCell : UITableViewCell
 
-@property (nonatomic, copy) void (^presentMaskViewBlock)();
+@property (nonatomic, copy) void (^presentMaskViewBlock)(NSString *);
 
 @property (nonatomic, strong) NSString *teamAttr;
 

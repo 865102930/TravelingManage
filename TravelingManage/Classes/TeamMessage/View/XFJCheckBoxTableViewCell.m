@@ -10,10 +10,9 @@
 
 @interface XFJCheckBoxTableViewCell()
 
-
-@property (nonatomic, strong) UIButton *check_button;
 @property (nonatomic, strong) UIView *line_view;
 @property (nonatomic, assign) BOOL isChoose;
+@property (nonatomic, strong) UILabel *titltContent_label;
 
 @end
 
@@ -25,6 +24,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self addSubview:self.check_button];
         [self addSubview:self.line_view];
+        [self addSubview:self.titltContent_label];
         [self.check_button mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(self.mas_centerY);
             make.height.width.mas_equalTo(14.0);
@@ -35,6 +35,10 @@
             make.right.mas_equalTo(-15.0);
             make.height.mas_equalTo(0.5);
             make.bottom.mas_equalTo(self.mas_bottom);
+        }];
+        [self.titltContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
+            make.centerY.mas_equalTo(self.mas_centerY);
         }];
         self.isChoose = YES;
     }
@@ -63,24 +67,44 @@
     return _line_view;
 }
 
+- (UILabel *)titltContent_label
+{
+    if (_titltContent_label == nil) {
+        _titltContent_label = [[UILabel alloc] init];
+        _titltContent_label.textColor = [UIColor blackColor];
+        _titltContent_label.font = [UIFont fontWithName:PingFang size:14.0];
+        _titltContent_label.textAlignment = NSTextAlignmentLeft;
+    }
+    return _titltContent_label;
+}
+
 - (void)choose_buttonClick:(UIButton *)button
 {
-    if (self.isChoose) {
-        [self.check_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
-        if (self.choose_buttonClickBlock) {
-            self.choose_buttonClickBlock(button);
-        }
-        self.isChoose = NO;
-    }else {
-        [self.check_button setImage:[UIImage originalWithImage:@""] forState:UIControlStateNormal];
-        self.isChoose = YES;
-    }
+//    if (self.isChoose) {
+//        [self.check_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
+//        if (self.choose_buttonClickBlock) {
+//            self.choose_buttonClickBlock(button);
+//        }
+//        self.isChoose = NO;
+//    }else {
+//        [self.check_button setImage:[UIImage originalWithImage:@""] forState:UIControlStateNormal];
+//        if (self.remove_buttonClickBlock) {
+//            self.remove_buttonClickBlock(button);
+//        }
+//        self.isChoose = YES;
+//    }
     
 }
 
 + (CGFloat)cellHeight
 {
     return 80;
+}
+
+- (void)setFindParamsSystemListDoubleItem:(XFJFindParamsSystemListDoubleItem *)findParamsSystemListDoubleItem
+{
+    _findParamsSystemListDoubleItem = findParamsSystemListDoubleItem;
+    self.titltContent_label.text = [NSString stringWithFormat:@"%@",findParamsSystemListDoubleItem.name];
 }
 
 @end

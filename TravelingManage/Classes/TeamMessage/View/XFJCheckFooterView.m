@@ -21,7 +21,6 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.sure_button];
-        
         [self.sure_button mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.mas_top).mas_offset(29.0);
             make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
@@ -40,6 +39,7 @@
         [_sure_button setTitleColor:kColorFFFF forState:UIControlStateNormal];
         _sure_button.backgroundColor = kColorff47;
         _sure_button.layer.cornerRadius = 8.0;
+        _sure_button.userInteractionEnabled = YES;
         [_sure_button addTarget:self action:@selector(sureButtonClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _sure_button;
@@ -48,6 +48,9 @@
 - (void)sureButtonClick
 {
     NSLog(@"主人~~您点击了确认按钮!!");
+    if (self.presentChoosrNumberBlock) {
+        self.presentChoosrNumberBlock();
+    }
 }
 
 

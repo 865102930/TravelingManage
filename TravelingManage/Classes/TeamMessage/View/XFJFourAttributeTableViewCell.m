@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) UITextField *quality_field;
 @property (nonatomic, strong) UIButton *four_button;
-
+@property (nonatomic, strong) NSString *types;
 @end
 
 @implementation XFJFourAttributeTableViewCell
@@ -61,8 +61,9 @@
 {
     NSLog(@"主人~~您点击了复选框按钮!!");
     if (self.presentMaskViewBlock) {
-        self.presentMaskViewBlock();
+        self.presentMaskViewBlock(self.teamAttr);
     }
+    NSLog(@"++++++++++获取到的teamAttr值是 :%@",self.teamAttr);
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -73,7 +74,7 @@
 - (void)setTeamAttr:(NSString *)teamAttr
 {
     _teamAttr = teamAttr;
-    
+    self.types = teamAttr;
 }
 
 

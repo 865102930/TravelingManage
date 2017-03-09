@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) UITextField *quality_field;
 @property (nonatomic, strong) UIButton *four_button;
+@property (nonatomic, strong) NSString *types;
 
 @end
 
@@ -61,12 +62,22 @@
 - (void)chooseMessageButtonClick
 {
     NSLog(@"主人~~您点击了单选框按钮!!");
+    if (self.presentMaskViewBlock) {
+        self.presentMaskViewBlock(self.teamAttr);
+    }
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     return NO;
 }
+
+- (void)setTeamAttr:(NSString *)teamAttr
+{
+    _teamAttr = teamAttr;
+    self.types = teamAttr;
+}
+
 
 
 @end

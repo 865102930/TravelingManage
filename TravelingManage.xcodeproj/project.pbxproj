@@ -305,6 +305,7 @@
 		3AFFB2871E701B4A0013185F /* XFJCheckBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2861E701B4A0013185F /* XFJCheckBoxView.m */; };
 		3AFFB28A1E701E7F0013185F /* XFJCheckBoxTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2891E701E7F0013185F /* XFJCheckBoxTableViewCell.m */; };
 		3AFFB28D1E7023D20013185F /* XFJCheckFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB28C1E7023D20013185F /* XFJCheckFooterView.m */; };
+		3AFFB2901E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB28F1E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.m */; };
 		D2818BC1C16899123CFFEBFB /* libPods-TravelingManage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B55613806B12752B343871BD /* libPods-TravelingManage.a */; };
 /* End PBXBuildFile section */
 
@@ -770,6 +771,8 @@
 		3AFFB2891E701E7F0013185F /* XFJCheckBoxTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCheckBoxTableViewCell.m; sourceTree = "<group>"; };
 		3AFFB28B1E7023D20013185F /* XFJCheckFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJCheckFooterView.h; sourceTree = "<group>"; };
 		3AFFB28C1E7023D20013185F /* XFJCheckFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCheckFooterView.m; sourceTree = "<group>"; };
+		3AFFB28E1E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindParamsSystemListDoubleItem.h; sourceTree = "<group>"; };
+		3AFFB28F1E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindParamsSystemListDoubleItem.m; sourceTree = "<group>"; };
 		68B76989437BBA39F7947CAC /* Pods-TravelingManage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.release.xcconfig"; sourceTree = "<group>"; };
 		7689CDD2E1CFC6736603A27A /* Pods-TravelingManage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelingManage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelingManage/Pods-TravelingManage.debug.xcconfig"; sourceTree = "<group>"; };
 		B55613806B12752B343871BD /* libPods-TravelingManage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TravelingManage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1230,6 +1233,8 @@
 				3A51D1671E6AE4F3005B86F6 /* XFJTaskRowsItem.m */,
 				3ABDC9DA1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.h */,
 				3ABDC9DB1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.m */,
+				3AFFB28E1E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.h */,
+				3AFFB28F1E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1996,6 +2001,7 @@
 				3A9A2DA71E49A99100D89639 /* XFJMaskView.m in Sources */,
 				3AE2FF5A1E4D613B00E380F9 /* HyperlinksButton.m in Sources */,
 				1CFDFE1F1E542C65001D6300 /* TZPhotoPickerController.m in Sources */,
+				3AFFB2901E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.m in Sources */,
 				1CFDFE231E542C65001D6300 /* UIView+Layout.m in Sources */,
 				3A18E5531E5D6FB400BFE891 /* XFJVoucherPhotosCollectionViewCell.m in Sources */,
 				3A756F201E657D03005D2C02 /* AlertView.m in Sources */,

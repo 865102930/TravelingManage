@@ -10,4 +10,7 @@
 
 @interface XFJCheckBoxView : UIView
 
+@property (nonatomic, strong) NSString *backStr;
+@property (nonatomic, copy) void (^chooseCheckBoxBlock)(NSString *);
+
 @end
