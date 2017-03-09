@@ -146,8 +146,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self getVerificationCode];//获取验证码
     if (indexPath.row == 2) {
+        [self getVerificationCode];//获取验证码
         NewVerificationCodeViewController * VerificationCodeVC = [[NewVerificationCodeViewController alloc] init];
         VerificationCodeVC.oldPhone_text = [_user objectForKey:@"phone"];
         [self.navigationController pushViewController:VerificationCodeVC animated:YES];

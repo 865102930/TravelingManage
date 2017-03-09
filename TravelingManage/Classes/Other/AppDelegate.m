@@ -15,6 +15,8 @@
 
 @interface AppDelegate ()
 
+@property (strong, nonatomic) NSUserDefaults *user;
+
 @end
 
 @implementation AppDelegate
@@ -34,12 +36,24 @@
     [AMapServices sharedServices].apiKey = @"5c654200f483c39405a4c93a4fbdb98e";
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-   XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
-//   XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[LoginViewController alloc] init]];
-    self.window.rootViewController = nav;
-    [self.window makeKeyAndVisible];
+    [self selflogin];
 }
 
+#pragma mark - 登录
+- (void)selflogin{
+    _user =[NSUserDefaults standardUserDefaults];
+    [_user synchronize];
+    NSString *userId = [_user objectForKey:@"userId"];
+    if (userId) {
+        XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
+        self.window.rootViewController = nav;
+        [self.window makeKeyAndVisible];
+    }else {
+        XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[LoginViewController alloc] init]];
+        self.window.rootViewController = nav;
+        [self.window makeKeyAndVisible];
+    }
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits thbe application and it begins the transition to the background state.

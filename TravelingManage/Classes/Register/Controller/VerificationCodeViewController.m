@@ -226,8 +226,9 @@
     [GRNetRequestClass POST:CODEMSGCHECK params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"判断验证码是否正确:%@",responseObject);
         if ([responseObject[@"msg"] isEqualToString:@"success"]) {
-            //注册
-            [self userRegister];
+            PersonalInformationViewController *PersonalInformationVC = [[PersonalInformationViewController alloc] init];
+            PersonalInformationVC.phoneNum_text = self.registTextField_text;
+            [self.navigationController pushViewController:PersonalInformationVC animated:YES];
         }else{
             [MBProgressHUD showHUDMsg:@"验证码错误,请重新输入"];
         }
@@ -237,26 +238,6 @@
     }];
 }
 
-//注册
-- (void)userRegister {
-    NSDictionary *dictParaments = @{
-                                    @"userMobile":self.registTextField_text,
-                                    };
-    [GRNetRequestClass POST:REGISTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"注册:%@",responseObject);
-        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
-            [MBProgressHUD showHUDMsg:@"注册成功"];
-            PersonalInformationViewController *PersonalInformationVC = [[PersonalInformationViewController alloc] init];
-            [self.navigationController pushViewController:PersonalInformationVC animated:YES];
-        }else{
-            [MBProgressHUD showHUDMsg:@"该手机号已注册"];
-        }
-    } fail:^(NSURLSessionDataTask *task, NSError *error) {
-        if (error.code == NSURLErrorCancelled) return;
-        [MBProgressHUD showHUDMsg:@"网络连接错误"];
-
-    }];
-}
 
 //手机号码修改
 - (void)modifyPhoneNum {

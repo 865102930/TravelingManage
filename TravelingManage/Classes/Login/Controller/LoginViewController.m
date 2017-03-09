@@ -109,9 +109,11 @@
     if (!_loginButton) {
         _loginButton = [[UIButton alloc] init];
         _loginButton.titleLabel.font = [UIFont fontWithName:PingFang size:15];
-        [_loginButton setTintColor:[UIColor colorWithHexString:@"FFFFFF"]];
+        [_loginButton setTintColor:RedColor];
         [_loginButton addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
-        _loginButton.userInteractionEnabled = NO;
+        [_loginButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
+        [_loginButton setTitle:@"登录" forState:UIControlStateNormal];
+//        _loginButton.userInteractionEnabled = NO;
         [self.view addSubview:_loginButton];
     }
     return _loginButton;
@@ -194,8 +196,8 @@
     }];
     
     //登录按钮
-    [self.loginButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
-    [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
+//    [self.loginButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
+//    [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
     NSLog(@"_loginY:%f",_loginY);
     self.loginButton.frame = CGRectMake(17, _loginY, SCREEN_WIDTH - 34, 42);
     
@@ -212,6 +214,18 @@
 //登录(先判断验证码是否正确)
 - (void)loginBtnClick
 {
+    if (self.phoneTextF.text.length == 0) {
+        [MBProgressHUD showHUDMsg:@"手机号为空"];
+        return;
+    }
+    if (self.phoneTextF.text.length != 11) {
+        [MBProgressHUD showHUDMsg:@"手机号填写错误"];
+        return;
+    }
+    if (self.idCodeTextF.text.length == 0) {
+        [MBProgressHUD showHUDMsg:@"请填写验证码"];
+        return;
+    }
      [self codeMesgCheck];
 }
 
@@ -331,9 +345,9 @@
         if (responseObject) {
             if ([responseObject[@"msg"] isEqualToString:@"oneRole"]){
 //                如果是一个角色,就什么都不做,以下代码可以注释
-                self.isGuideBtn.frame = CGRectMake(0, _loginY - 20, SCREEN_WIDTH / 2 - 40, 40);
-                self.isTravelAgencyBtn.frame = CGRectMake(SCREEN_WIDTH / 2.2, _loginY - 20, SCREEN_WIDTH / 2 - 40, 40);
-                self.loginButton.frame = CGRectMake(17, _loginY + 20, SCREEN_WIDTH - 34, 42);
+//                self.isGuideBtn.frame = CGRectMake(0, _loginY - 20, SCREEN_WIDTH / 2 - 40, 40);
+//                self.isTravelAgencyBtn.frame = CGRectMake(SCREEN_WIDTH / 2.2, _loginY - 20, SCREEN_WIDTH / 2 - 40, 40);
+//                self.loginButton.frame = CGRectMake(17, _loginY + 20, SCREEN_WIDTH - 34, 42);
             
             }else if ([responseObject[@"msg"] isEqualToString:@"twoRole"]) {
                 //如果是两个角色,就增加是导游还是旅行社让用户选择
@@ -341,6 +355,8 @@
                 self.isTravelAgencyBtn.frame = CGRectMake(SCREEN_WIDTH / 2, _loginY - 20, SCREEN_WIDTH / 2 - 40, 40);
                 self.loginButton.frame = CGRectMake(17, _loginY + 20, SCREEN_WIDTH - 34, 42);
             }else if ([responseObject[@"msg"] isEqualToString:@"null"]) {
+                [self.isGuideBtn setHidden:YES];
+                [self.isTravelAgencyBtn setHidden:YES];
                 [MBProgressHUD showHUDMsg:@"该号码未注册"];
             }
         }
@@ -368,17 +384,17 @@
 - (void)idCodeTextFieldDidChange: (UITextField *)sender {
      NSLog(@"%@",_phoneTextF.text);
     NSLog(@"%@",_idCodeTextF.text);
-    if (self.idCodeTextF.text.length && self.phoneTextF.text.length == 11) {
-        [self.loginButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
-        [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
-        _loginButton.userInteractionEnabled = YES;
-        //        self.phoneTextF.text = sender.text;
-    }else {
-        [self.loginButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
-        [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
-        _loginButton.userInteractionEnabled = NO;
-    }
-
+//    if (self.idCodeTextF.text.length && self.phoneTextF.text.length == 11) {
+//        [self.loginButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
+//        [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
+//        _loginButton.userInteractionEnabled = YES;
+//        //        self.phoneTextF.text = sender.text;
+//    }else {
+//        [self.loginButton setBackgroundImage: [UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
+//        [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
+//        _loginButton.userInteractionEnabled = NO;
+//    }
+//
 }
 
 //- (void)textFieldDidEndEditing:(UITextField *)textField

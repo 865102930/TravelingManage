@@ -306,8 +306,9 @@
 - (void)exitButtonClick
 {
     NSLog(@"主人,您点击了退出按钮~~");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(exitButtonClick:)]) {
+        [self.delegate exitButtonClick:self];
+    }
 }
-
-
 
 @end

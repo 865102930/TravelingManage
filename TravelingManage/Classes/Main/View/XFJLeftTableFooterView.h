@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class XFJLeftTableFooterView;
 @protocol XFJLeftTableFooterViewDelegate  <NSObject>
 
 //跳转到待完善界面
@@ -15,8 +15,8 @@
 //跳转到待审核界面
 //跳转到待评价界面
 //跳转到全部任务界面
-
-
+//退出按钮
+- (void)exitButtonClick:(XFJLeftTableFooterView *)leftTableFooterView;
 @end
 
 @interface XFJLeftTableFooterView : UIView

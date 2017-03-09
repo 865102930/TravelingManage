@@ -188,14 +188,36 @@
 
 }
 //马上进入
-- (void)getIntoButtonClick{
-//    [_user setObject:self.nameTextF.text forKey:@"name"];
-//    [_user setObject:self.idTextF.text forKey:@"IDCardNum"];
-//    [_user synchronize];
-//    HomeViewController *homeVc = [[HomeViewController alloc] init];
-    LoginViewController *LoginVC = [[LoginViewController alloc] init];
-    [self.navigationController pushViewController:LoginVC animated:YES];
+- (void)getIntoButtonClick{    
+    [self userRegister];
 }
+
+//注册
+- (void)userRegister {
+    NSDictionary *dictParaments = @{
+                                    @"userMobile" : self.phoneNum_text,
+                                    @"idCard" : self.idTextF.text,
+                                    @"userName" : self.nameTextF.text,
+                                    };
+    [GRNetRequestClass POST:REGISTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"注册responseObject:%@",responseObject);
+        NSLog(@"注册dictParaments:%@",dictParaments);
+        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+            [MBProgressHUD showHUDMsg:@"注册成功"];
+            LoginViewController *LoginVC = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:LoginVC animated:YES];
+        }else{
+            [MBProgressHUD showHUDMsg:@"该手机号已注册"];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error.code == NSURLErrorCancelled) return;
+        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+        
+    }];
+}
+
+
+
 //返回
 - (void)backButtonClick{
     [self.navigationController popViewControllerAnimated:YES];

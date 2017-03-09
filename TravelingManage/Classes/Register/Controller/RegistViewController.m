@@ -211,7 +211,7 @@
     [GRNetRequestClass POST:QUERYUSER params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"根据手机号判断用户信息:%@",responseObject);
         if ([responseObject[@"msg"] isEqualToString:@"success"]) {
-            [self getVerificationCode];
+//            [self getVerificationCode];
             VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
             verificationCodeVC.registTextField_text = self.phoneTextF.text;
             [self.navigationController pushViewController:verificationCodeVC animated:YES];
