@@ -143,6 +143,9 @@
 #define FINDCUSTOMATTRLISTURL (BASEURL@"/app/teamTask/findCustomAttrList")
 //获取自定义系统参数
 #define FINDPARAMSSYSTEMLISTURL (BASEURL@"/app/params/findParamsSystemList")
+//修改团队信息
+#define MODIFYTEAMINFOURL (BASEURL@"/app/teamInfo/modifyTeamInfo")
+
 
 
 

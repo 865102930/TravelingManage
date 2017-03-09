@@ -57,6 +57,14 @@
 @property (nonatomic, strong) NSMutableArray *attrTypeArray;
 @property (nonatomic, strong) XFJMaskView *maskView1;
 @property (nonatomic, strong) XFJCheckBoxView *checkBoxView;
+@property (nonatomic, strong) NSMutableArray *allBackArray;
+@property (nonatomic, strong) NSMutableArray *allRootImage;
+@property (nonatomic, strong) NSString *root;
+@property (nonatomic, strong) NSString *voucherPicRoot;
+@property (nonatomic, assign) NSInteger teamId;
+//这个用来装所有的自定义信息的集合
+@property (nonatomic, strong) NSMutableArray *allAttribute_array;
+@property (nonatomic, strong) NSString *AttributeStr;
 
 
 @end
@@ -91,8 +99,16 @@
     [self requestFindCustomAttrListMessage:self.findTeamInfoByState_Id];
     __weak __typeof(self)wself = self;
     self.teamMessageBottomView.sureCommitBlock = ^(NSInteger teamId) {
-      //弹出确认提交和上传附件弹窗
-        [wself sureAndCommitShow:teamId];
+        wself.teamId = teamId;
+        //上传图片接口
+//        [wself requestWithOpenTeam];
+        [wself sureAndCommitShow:wself.teamId];
+    };
+    self.checkBoxView.chooseCheckBoxBlock = ^(NSString *resultStr) {
+        [wself.checkBoxView removeFromSuperview];
+        [wself.maskView1 removeFromSuperview];
+        NSLog(@"--------------在这里拿到所有用户选择的信息是 :%@",resultStr);
+        wself.AttributeStr = resultStr;
     };
     self.maskView1.maskBlock = ^() {
         [wself.maskView1 removeFromSuperview];
@@ -119,6 +135,119 @@
     [self.attrList_tableView registerClass:[XFJEigthAttributeTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJEigthAttributeTableViewCell];
 }
 
+#pragma mark - 发送请求
+- (void)requestWithOpenTeam
+{
+    //上传图片
+    [self upLoadPic];
+    [self upLoadVoucherPic];
+}
+
+- (NSMutableArray *)allRootImage
+{
+    if (_allRootImage == nil) {
+        _allRootImage = [NSMutableArray array];
+    }
+    return _allRootImage;
+}
+
+- (NSMutableArray *)allAttribute_array
+{
+    if (_allAttribute_array == nil) {
+        _allAttribute_array = [NSMutableArray array];
+    }
+    return _allAttribute_array;
+}
+
+#pragma mark - 图片上传车辆照片
+- (void)upLoadPic
+{
+    if (self.dataArr.count == 0) {
+        NSLog(@"图片上传失败------");
+    }else {
+        for (int i = 0; i < _dataArr.count; i++) {
+            UIImage *image = _dataArr[i];
+            NSData *imageData = [UIImage compressImage:image maxSize:300];
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+            __weak __typeof(self)wself = self;
+            [manager POST:UPLOADIMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                [formData appendPartWithFileData:imageData name:@"file" fileName:@"image.jpg" mimeType:@"image/jpg"];
+            } progress:^(NSProgress * _Nonnull uploadProgress) {
+                
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                NSString *root = dict[@"object"];
+                [wself.allRootImage addObject:root];
+                wself.root = [wself.allRootImage componentsJoinedByString:@","];
+                NSLog(@"上传图片成功后的信息-------%@+++++++%@",root,wself.root);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"上传图片失败--------%@",error);
+            }];
+        }
+    }
+}
+
+#pragma mark - 上传凭证
+- (void)upLoadVoucherPic
+{
+    if (self.dataArray == 0) {
+        NSLog(@"图片丢失~~~~~~");
+    }else {
+        UIImage *image = self.dataArray[0];
+        NSData *imageData = [UIImage compressImage:image maxSize:300];
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        __weak __typeof(self)wself = self;
+        [manager POST:UPLOADIMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            [formData appendPartWithFileData:imageData name:@"file" fileName:@"image.jpg" mimeType:@"image/jpg"];
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            NSString *root = dict[@"object"];
+            wself.voucherPicRoot = root;
+            NSLog(@"上传图片成功后的信息-------%@",root);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (wself.root.length == 0) {
+                    [MBProgressHUD showHudTipStr:@"图片上传失败~~" contentColor:HidWithColorContentBlack];
+                    return ;
+                }
+                //确认提交接口
+                [wself sureCommitWithAttributeTeamId:self.teamId];
+                //弹出确认提交和上传附件弹窗
+//                [wself sureAndCommitShow:self.teamId];
+            });
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"上传图片失败--------%@",error);
+        }];
+    }
+}
+
+
+#pragma mark - 完善资料的确认提交
+- (void)sureCommitWithAttributeTeamId:(NSInteger)teamId
+{
+    //转成json格式给服务器发送
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.allAttribute_array options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictParams = @{
+                           @"id":[NSString stringWithFormat:@"%zd",teamId],
+                           @"teamBack":jsonString,
+                           @"teamVehicleImages":self.voucherPicRoot//图片集合
+                           };
+    [GRNetRequestClass POST:MODIFYTEAMINFOURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"--------------修改信息完成后显示的结果是:%@",responseObject);
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"++++++++++++++修改信息失败的结果是 :%@",error);
+        }
+    }];
+    
+}
+
 - (NSMutableArray <XFJFindCustomAttrListItem *> *)findCustomAttrListItemArray
 {
     if (_findCustomAttrListItemArray == nil) {
@@ -133,6 +262,14 @@
         _checkBoxView = [[XFJCheckBoxView alloc] initWithFrame:CGRectMake(50, 150, SCREEN_WIDTH - 2 * 50, SCREEN_HEIGHT - 2 * 150)];
     }
     return _checkBoxView;
+}
+
+- (NSMutableArray *)allBackArray
+{
+    if (_allBackArray == nil) {
+        _allBackArray = [NSMutableArray array];
+    }
+    return _allBackArray;
 }
 
 - (XFJMaskView *)maskView1
@@ -537,31 +674,31 @@
     NSString *ty_pe = self.attrTypeArray[i];
     if ([ty_pe intValue] == 0) {
         XFJFirestAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFirestAttributeTableViewCell forIndexPath:indexPath];
+        NSLog(@"---------获取的back值是0 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         return cell;
     }else if ([ty_pe intValue] == 1) {
         XFJSecondAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSecondAttributeTableViewCell forIndexPath:indexPath];
+        NSLog(@"---------获取的back值是1 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         return cell;
     }else if ([ty_pe intValue] == 2) {
         XFJThirdAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJThirdAttributeTableViewCell forIndexPath:indexPath];
+        NSLog(@"---------获取的back值是2 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         return cell;
     }else if ([ty_pe intValue] == 3) {
         XFJFourAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFourAttributeTableViewCell forIndexPath:indexPath];
-        cell.teamAttr = self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr;
-        NSLog(@"---------获取的back值是 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
-        __weak __typeof(self)wself = self;
-        cell.presentMaskViewBlock = ^() {
-            [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
-            [wself.maskView1 addSubview:self.checkBoxView];
-        };
+        NSLog(@"---------获取的back值是3 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         return cell;
     }else if ([ty_pe intValue] == 4) {
         XFJFiveAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFiveAttributeTableViewCell forIndexPath:indexPath];
+        NSLog(@"---------获取的back值是4 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         return cell;
     }else if ([ty_pe intValue] == 5) {
         XFJSixAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSixAttributeTableViewCell forIndexPath:indexPath];
+        NSLog(@"---------获取的back值是5 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         return cell;
     }else if ([ty_pe intValue] == 6) {
         XFJSevenTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSevenTableViewCell forIndexPath:indexPath];
+        NSLog(@"---------获取的back值是6 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         __weak __typeof(self)wself = self;
         cell.presentPickPhotosBlock = ^(TZImagePickerController *pickerController) {
           [wself presentViewController:pickerController animated:YES completion:nil];
@@ -569,8 +706,24 @@
         return cell;
     }else {
         XFJEigthAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJEigthAttributeTableViewCell forIndexPath:indexPath];
+        cell.teamAttr = self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr;
+        NSLog(@"---------获取的back值是7 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
+        __weak __typeof(self)wself = self;
+        cell.presentMaskViewBlock = ^(NSString *typesStr) {
+            [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
+            self.checkBoxView.backStr = typesStr;
+            [wself.maskView1 addSubview:self.checkBoxView];
+            NSLog(@"-------------这里打印的back值是 :%@",typesStr);
+        };
+//        NSDictionary *dict = @{
+//                               @"name":self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr,//这是显示的是back几
+//                               @"value":self.AttributeStr//这里添加的是和back对应的值
+//                               };
+        NSLog(@"这是显示的是back%@--------这里添加的是和back对应的值%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr,self.AttributeStr);
+//        [self.allAttribute_array addObject:dict];
         return cell;
     }
+    
     return nil;
 }
 

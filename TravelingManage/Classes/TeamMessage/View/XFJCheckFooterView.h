@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XFJCheckFooterView : UIView
+@interface XFJCheckFooterView : UITableViewHeaderFooterView
+
+@property (nonatomic, copy) void (^presentChoosrNumberBlock)();
 
 @end
