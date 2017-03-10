@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XFJPleasePerfectMessageViewController : UIViewController
+@interface XFJPleasePerfectMessageViewController : UITableViewController
 
 //接收传过来的团队id
 @property (nonatomic, assign) NSInteger teamId;
