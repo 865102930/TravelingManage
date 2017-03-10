@@ -19,47 +19,25 @@
 @interface XFJPleasePerfectMessageViewController () <UIActionSheetDelegate,XFJPleaseUpPerfectPhotosViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,UITableViewDelegate,UITableViewDataSource,XFJSignPhotosMessageTableViewCellDelegate>
 
 @property (nonatomic, strong) UILabel *title_label;
-@property (nonatomic, strong) UIScrollView *scroll_view;
 @property (nonatomic, strong) XFJPleasePerfectMessageTopView *pleasePerfectMessageTopView;
 @property (nonatomic, strong) XFJPleaseUpPerfectPhotosView *pleaseUpPerfectPhotosView;
 @property (nonatomic, assign) NSInteger maxImageCount;
 @property (nonatomic, strong) NSMutableArray *dataArr;
 @property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) UITableView *signPhotos_tableView;
+//@property (nonatomic, strong) UITableView *signPhotos_tableView;
 @property (nonatomic, strong) XFJSignPhotosMessageTableViewCell *cell;
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *findTeamTasksItem;
-
+@property (nonatomic, strong) UIView *headerView;
 @end
 
 @implementation XFJPleasePerfectMessageViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self setInitWithNav];
-    
-    NSLog(@"-----++++++++++++传过来的TeamId是:%zd",self.teamId);
-    //请求顶部的数据信息
-    [self requestTopPerfectMessage];
-}
-
-- (void)requestTopPerfectMessage
-{
-    NSDictionary *dictParams = @{
-                                 @"id":[NSString stringWithFormat:@"%zd",self.teamId]
-                                 };
-    __weak __typeof(self)wself = self;
-    [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
-        if (responseObject) {
-            NSLog(@"------------++++++++++++获取到的值是 :%@",responseObject);
-            wself.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]];
-            wself.pleasePerfectMessageTopView.findTeamTasksItem = wself.findTeamTasksItem;
-        }
-    } fail:^(NSURLSessionDataTask *task, NSError *error) {
-        if (error) {
-            NSLog(@"---------+++++++++没得到后台返回的值,打印错误信息是 :%@",error);
-        }
-    }];
+#pragma mark ---- lazy ----
+- (UIView *)headerView {
+    if (!_headerView) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 265)];
+        _headerView.backgroundColor = [UIColor yellowColor];
+    }
+    return _headerView;
 }
 
 - (NSMutableArray <XFJFindTeamTasksItem *> *)findTeamTasksItem
@@ -70,19 +48,7 @@
     return _findTeamTasksItem;
 }
 
-- (UIScrollView *)scroll_view
-{
-    if (_scroll_view == nil) {
-        _scroll_view = [[UIScrollView alloc] init];
-        _scroll_view.frame = CGRectMake(0, 0, self.view.bounds.size.width, 1.2 * self.view.XFJ_Height);
-        _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2.5);
-        _scroll_view.backgroundColor = kColoreeee;
-        _scroll_view.showsHorizontalScrollIndicator = NO;
-        _scroll_view.scrollEnabled = YES;
-    }
-    return _scroll_view;
-}
-
+//顶部信息
 - (XFJPleasePerfectMessageTopView *)pleasePerfectMessageTopView
 {
     if (_pleasePerfectMessageTopView == nil) {
@@ -91,26 +57,17 @@
     }
     return _pleasePerfectMessageTopView;
 }
-
+//可上传的6张图片
 - (XFJPleaseUpPerfectPhotosView *)pleaseUpPerfectPhotosView
 {
     if (_pleaseUpPerfectPhotosView == nil) {
-        _pleaseUpPerfectPhotosView = [[XFJPleaseUpPerfectPhotosView alloc] initWithFrame:CGRectMake(0, 86, SCREEN_WIDTH, 170)];
+        _pleaseUpPerfectPhotosView = [[XFJPleaseUpPerfectPhotosView alloc] initWithFrame:CGRectMake(0, 86, SCREEN_WIDTH, 180)];
         _pleaseUpPerfectPhotosView.backgroundColor = [UIColor whiteColor];
         _pleaseUpPerfectPhotosView.delegate = self;
     }
     return _pleaseUpPerfectPhotosView;
 }
-
-- (void)setInitWithNav
-{
-    self.navigationItem.titleView = self.title_label;
-    [self.view addSubview:self.scroll_view];
-    [self.scroll_view addSubview:self.pleasePerfectMessageTopView];
-    [self.scroll_view addSubview:self.pleaseUpPerfectPhotosView];
-    [self.scroll_view addSubview:self.signPhotos_tableView];
-}
-
+//导航栏标题
 - (UILabel *)title_label
 {
     if (_title_label == nil) {
@@ -138,18 +95,48 @@
     return _dataArray;
 }
 
-- (UITableView *)signPhotos_tableView
-{
-    if (_signPhotos_tableView == nil) {
-        _signPhotos_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, self.pleaseUpPerfectPhotosView.XFJ_Height + 86, SCREEN_WIDTH, 300) style:UITableViewStylePlain];
-        _signPhotos_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _signPhotos_tableView.delegate = self;
-        _signPhotos_tableView.dataSource = self;
-    }
-    return _signPhotos_tableView;
+#pragma mark ---- viewDidLoad ----
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.tableView.tableHeaderView = self.headerView;
+    [self setInitWithNav];
+    NSLog(@"-----++++++++++++传过来的TeamId是:%zd",self.teamId);
+    //请求顶部的数据信息
+    [self requestTopPerfectMessage];
 }
 
-#pragma makr - 访问照相机
+#pragma mark ---- setInitWithNav ----
+- (void)setInitWithNav
+{
+    self.navigationItem.titleView = self.title_label;
+    [self.headerView addSubview:self.pleasePerfectMessageTopView];
+    [self.headerView addSubview:self.pleaseUpPerfectPhotosView];
+//    [self.headerView addSubview:self.signPhotos_tableView];
+}
+
+#pragma mark ---- 网络请求 ----
+- (void)requestTopPerfectMessage
+{
+    NSDictionary *dictParams = @{
+                                 @"id":[NSString stringWithFormat:@"%zd",self.teamId]
+                                 };
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"------------++++++++++++获取到的值是 :%@",responseObject);
+            wself.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]];
+            wself.pleasePerfectMessageTopView.findTeamTasksItem = wself.findTeamTasksItem;
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"---------+++++++++没得到后台返回的值,打印错误信息是 :%@",error);
+        }
+    }];
+}
+
+
+
+#pragma mark ---- 访问相机 ----
 - (void)chooseImage:(XFJPleaseUpPerfectPhotosView *)SerPhotoCell
 {
     self.maxImageCount = 6;
@@ -182,9 +169,10 @@
                 [_dataArr removeAllObjects];
                 [_dataArr addObjectsFromArray:array];
                 weakself.pleaseUpPerfectPhotosView.dataArr = _dataArr;
-                if (_dataArr.count <= 4) {
-                    self.pleaseUpPerfectPhotosView.frame = CGRectMake(0, 86, SCREEN_WIDTH, 170);
-                    self.signPhotos_tableView.frame = CGRectMake(0, self.pleaseUpPerfectPhotosView.XFJ_Height + 86, SCREEN_WIDTH, 300);
+                if (_dataArr.count < 4) {
+                    self.pleaseUpPerfectPhotosView.frame = CGRectMake(0, 86, SCREEN_WIDTH, 180);
+                    self.headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 265);
+                    [self.tableView reloadData];
                 }
             });
         };
@@ -288,17 +276,17 @@
         [self.dataArr addObjectsFromArray:photos];
         self.pleaseUpPerfectPhotosView.dataArr = self.dataArr;
         self.pleaseUpPerfectPhotosView.maxImageCount = 6;
-        if (self.dataArr.count < 4) {
-        }else {
-            self.pleaseUpPerfectPhotosView.frame = CGRectMake(0, 86, SCREEN_WIDTH, 230);
-            self.signPhotos_tableView.frame = CGRectMake(0, self.pleaseUpPerfectPhotosView.XFJ_Height + 86, SCREEN_WIDTH, 300);
+        if (self.dataArr.count >= 4) {
+            self.pleaseUpPerfectPhotosView.frame = CGRectMake(0, 86, SCREEN_WIDTH, 260);
+            self.headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 345);
+            [self.tableView reloadData];
         }
     }else {
         NSLog(@"self.maxImageCount == 1----------");
         [self.dataArray addObjectsFromArray:photos];
         self.cell.dataArr = self.dataArray;
         self.cell.maxImageCount = 1;
-        [self.signPhotos_tableView reloadData];
+//        [self.signPhotos_tableView reloadData];
     }
 }
 
