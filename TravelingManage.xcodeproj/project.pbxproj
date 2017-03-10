@@ -57,6 +57,7 @@
 		1CFDFE6C1E5571B1001D6300 /* AnnouncementdetailImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFDFE6B1E5571B1001D6300 /* AnnouncementdetailImageCell.m */; };
 		3A00E3141E545DE200525150 /* XFJAllTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A00E3131E545DE200525150 /* XFJAllTaskTableViewCell.m */; };
 		3A02C09B1E7152C900966384 /* XFJAloneCheckView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C09A1E7152C900966384 /* XFJAloneCheckView.m */; };
+		3A02C09E1E727B7200966384 /* XFJSignTeamTwoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C09D1E727B7200966384 /* XFJSignTeamTwoView.m */; };
 		3A07C8F81E480B0A008A838D /* UIImage+XFJOriginalImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8F71E480B0A008A838D /* UIImage+XFJOriginalImageView.m */; };
 		3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8FF1E481A70008A838D /* UIBarButtonItem+XFJItem.m */; };
 		3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C9011E481A70008A838D /* UIImage+XFJColor.m */; };
@@ -405,6 +406,8 @@
 		3A00E3131E545DE200525150 /* XFJAllTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJAllTaskTableViewCell.m; sourceTree = "<group>"; };
 		3A02C0991E7152C900966384 /* XFJAloneCheckView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJAloneCheckView.h; sourceTree = "<group>"; };
 		3A02C09A1E7152C900966384 /* XFJAloneCheckView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJAloneCheckView.m; sourceTree = "<group>"; };
+		3A02C09C1E727B7200966384 /* XFJSignTeamTwoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignTeamTwoView.h; sourceTree = "<group>"; };
+		3A02C09D1E727B7200966384 /* XFJSignTeamTwoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignTeamTwoView.m; sourceTree = "<group>"; };
 		3A07C8F61E480B0A008A838D /* UIImage+XFJOriginalImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+XFJOriginalImageView.h"; sourceTree = "<group>"; };
 		3A07C8F71E480B0A008A838D /* UIImage+XFJOriginalImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+XFJOriginalImageView.m"; sourceTree = "<group>"; };
 		3A07C8FD1E480FF0008A838D /* TravelingManage.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TravelingManage.pch; sourceTree = "<group>"; };
@@ -1397,6 +1400,8 @@
 				3ACCE3911E69003200B3526B /* XFJSignMessageTimeView.m */,
 				3ACCE3931E69194700B3526B /* XFJSignTeamPhotosView.h */,
 				3ACCE3941E69194700B3526B /* XFJSignTeamPhotosView.m */,
+				3A02C09C1E727B7200966384 /* XFJSignTeamTwoView.h */,
+				3A02C09D1E727B7200966384 /* XFJSignTeamTwoView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1978,6 +1983,7 @@
 				3AF0C5FB1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m in Sources */,
 				1CFDFDEB1E541CBB001D6300 /* AnnouncementDetailCell.m in Sources */,
 				3AEE6C101E65505A00410412 /* XFJSingNoPeopleItem.m in Sources */,
+				3A02C09E1E727B7200966384 /* XFJSignTeamTwoView.m in Sources */,
 				1CFDFE6C1E5571B1001D6300 /* AnnouncementdetailImageCell.m in Sources */,
 				3A9A2DA41E49A97800D89639 /* XFJNavigationController.m in Sources */,
 				1CFDFE501E542C84001D6300 /* JFAssetHelper.m in Sources */,
