@@ -95,6 +95,7 @@
 @property (nonatomic, strong) NSString *signRoomCount;//用户修改的恩房间数量
 @property (nonatomic, assign) NSInteger dayTime;//将在酒店待的时间传出来
 @property (nonatomic, assign) BOOL isSignButtonClick;//是否点击了酒店签退的按钮
+@property (nonatomic, assign) NSInteger iscount;
 
 
 @end
@@ -205,8 +206,8 @@
     self.homeTopTaskMessageVeiw.jumpWithTeamMessageBlock = ^() {
         //这是点击顶部右侧的箭头按钮跳转的控制器
         //跳转到签到点信息
-//        XFJSignMessageViewController *signMessageController = [[XFJSignMessageViewController alloc] init];
-//        [wself.navigationController pushViewController:signMessageController animated:YES];
+        XFJSignMessageViewController *signMessageController = [[XFJSignMessageViewController alloc] init];
+        [wself.navigationController pushViewController:signMessageController animated:YES];
     };
     //传递景点签到的内容
     self.sign_view.signModifyCount = ^(NSString *signNum, BOOL isSign) {
@@ -1149,8 +1150,8 @@
     //108.924069,34.175223 [self.latitude floatValue], [self.longitude floatValue]
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);//30.276601, 119.996597这是海创科技中心的经度和纬度
     BOOL isContains = MAPolygonContainsCoordinate(location, polygon, strarryCount);
-    NSLog(@"-----------经纬度是否在多边形内部1 : %d",isContains);//0:标识不在 1:标识在
-    //根据判断是否在范围内的值来做事情
+//    NSLog(@"-----------经纬度是否在多边形内部1 : %d",isContains);//0:标识不在 1:标识在
+    //根据判断是否在范围内的值来做事情(4个和9个表示在范围内)
     if (isContains) {//该处为YES则表示在
         NSLog(@"-----------经纬度是否在多边形内部2 : %d",isContains);//0:标识不在 1:标识在
         self.isContains = isContains;
