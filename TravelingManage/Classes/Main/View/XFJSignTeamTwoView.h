@@ -10,4 +10,13 @@
 
 @interface XFJSignTeamTwoView : UIView
 
+//景点
+@property (nonatomic, strong) NSMutableArray *scenery_array;
+//酒店
+@property (nonatomic, strong) NSMutableArray *hotel_array;
+
+@property (nonatomic, copy) void (^scenerySign_Block)();
+
+@property (nonatomic, copy) void (^hotelSign_block)();
+
 @end

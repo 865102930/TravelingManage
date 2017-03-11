@@ -39,6 +39,7 @@
 #import "XFJLaterTeamControlItem.h"
 #import "PersonalDataViewController.h"
 #import "XFJSignTeamTwoView.h"
+#import "XFJChooseScenerySignView.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -104,6 +105,8 @@
 //将为1的酒店保存起来
 @property (nonatomic, strong) NSMutableArray *hotel_array;
 @property (nonatomic, strong) XFJSignTeamTwoView *signTeamTwoView;
+@property (nonatomic, strong) XFJChooseScenerySignView *chooseScenerySignView;
+@property (nonatomic, strong) XFJFindAttractionsListItem *FindAttractionsListItem;
 
 @end
 
@@ -210,6 +213,17 @@
     return _hotel_array;
 }
 
+- (XFJChooseScenerySignView *)chooseScenerySignView
+{
+    if (_chooseScenerySignView == nil) {
+        _chooseScenerySignView = [[XFJChooseScenerySignView alloc] initWithFrame:CGRectMake(50, 150, SCREEN_WIDTH - 2 * 50, SCREEN_HEIGHT - 2 * 150)];
+        _chooseScenerySignView.backgroundColor = [UIColor whiteColor];
+    }
+    return _chooseScenerySignView;
+}
+
+
+
 #pragma mark - 给按钮添加一个滑动手势
 - (void)setUpPanGes
 {
@@ -265,6 +279,27 @@
     //任务按钮的状态改变
     self.homeTopTaskMessageVeiw.ExitStatusButtonClickBlock = ^() {
         [wself statusHomeTopButtonClickRequest];
+    };
+    
+    self.signTeamTwoView.scenerySign_Block = ^() {
+      //添加遮盖
+        [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
+        //添加选择景点框
+        [wself.maskView1 addSubview:wself.chooseScenerySignView];
+    };
+    self.signTeamTwoView.hotelSign_block = ^() {
+        //直接添加酒店签到页面
+        [wself.view addSubview:wself.hotel_view];
+    };
+    self.maskView1.maskBlock = ^() {
+        [wself.maskView1 removeFromSuperview];
+    };
+    self.chooseScenerySignView.chooseBlockButtonWithSure = ^(XFJFindAttractionsListItem *FindAttractionsListItem) {
+        NSLog(@"------------获取到的值是 :%@",FindAttractionsListItem);
+        wself.FindAttractionsListItem = FindAttractionsListItem;
+        [wself.maskView1 removeFromSuperview];
+        [wself.signTeamTwoView removeFromSuperview];
+        [wself.view addSubview:wself.sign_view];
     };
 }
 
@@ -503,13 +538,13 @@
     self.isHotelSignTime = YES;
     NSDictionary *dictParaments = @{
                                     @"teamId":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
-                                    @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractions_id],//景区id
+                                    @"attractionsId":[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],//景区id
                                     @"userIdList":@2,//管理员id(可能是多个)
                                     @"checkinNumber":self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],//签到人数
                                     @"rooms":@0//房间数(可以不传)
                                     };
     NSLog(@"self.isHotelSign的值是:%zd-----self.hotelSignPeople的值是:%@------self.teamNumber的值是:%@",self.isHotelSign,self.hotelSignPeople,[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]);
-    NSLog(@"团队%@-----景区%@-----管理员%@-----签到人数%@-----房间数%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],[NSString stringWithFormat:@"%zd",self.attractions_id],@2,self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],@0);
+    NSLog(@"团队%@-----景区%@-----管理员%@-----签到人数%@-----房间数%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],@2,self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],@0);
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
@@ -786,6 +821,7 @@
         [self openLeftView:NO];
     }else{
         [[UIApplication sharedApplication].keyWindow addSubview:self.maskView1];
+        [self.chooseScenerySignView removeFromSuperview];
         [self openLeftView:YES];
     }
 }
@@ -1040,8 +1076,6 @@
 - (void)setSceneryInToMapView:(NSMutableArray <XFJFindAttractionsListItem *> *)findAttractionsListArray
 {
     [self.isYes_array removeAllObjects];
-    [self.scenery_array removeAllObjects];
-    [self.hotel_array removeAllObjects];
     //遍历所有的景点列表
     for (NSInteger i = 0; i < findAttractionsListArray.count; i++) {
         @autoreleasepool {
@@ -1109,6 +1143,29 @@
         }
     }
 //    [self.mapView showAnnotations:self.annotationArray edgePadding:UIEdgeInsetsMake(80, 80, 80, 80) animated:YES];
+    [self.scenery_array removeAllObjects];
+    [self.hotel_array removeAllObjects];
+    //这里遍历所有在范围内的点数
+    for (NSInteger i = 0; i < self.isYes_array.count; i++) {
+        XFJFindAttractionsListItem *findAttractionsListItem = [self.isYes_array objectAtIndex:i];
+        NSLog(@"-------++++++这里打印所有的在范围内的点数是 :%zd",self.isYes_array.count);
+        NSInteger typeState = findAttractionsListItem.typeState;
+        NSLog(@"=============在范围内的状态值是 :%zd",typeState);
+        if (typeState == 0) {//景区
+            [self.scenery_array addObject:findAttractionsListItem];
+        }else {//这里表示酒店
+            [self.hotel_array addObject:findAttractionsListItem];
+        }
+    }
+    if (self.isContains) {//如果是yes就创建
+        self.isProjectItem == NO ? (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 200, 42, 41)) : (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 290, 42, 41));
+        self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.signTeamTwoView];
+        self.signTeamTwoView.scenery_array = self.scenery_array;
+        NSLog(@"----最终加入数组中为0的值是1 :%zd",self.scenery_array.count);
+        self.chooseScenerySignView.scenery_array = self.scenery_array;
+        self.signTeamTwoView.hotel_array = self.hotel_array;
+        NSLog(@"++++最终加入数组中为0的值是2 :%zd",self.hotel_array.count);
+    }
     NSLog(@"------------添加的大头针数组是 : %@",self.annotationArray);
 }
 
@@ -1200,53 +1257,33 @@
 #pragma mark - 判断是否在折线范围内
 - (BOOL)setContains:(CLLocationCoordinate2D *)polygon strarryCount:(NSInteger)strarryCount
 {
-    //108.924069,34.175223 [self.latitude floatValue], [self.longitude floatValue]
-    CLLocationCoordinate2D location = CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);//30.276601, 119.996597这是海创科技中心的经度和纬度
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);
     BOOL isContains = MAPolygonContainsCoordinate(location, polygon, strarryCount);
-//    NSLog(@"-----------经纬度是否在多边形内部1 : %d",isContains);//0:标识不在 1:标识在
     //根据判断是否在范围内的值来做事情(4个和9个表示在范围内)
-    [self.scenery_array removeAllObjects];
-    [self.hotel_array removeAllObjects];
-    //这里遍历所有在范围内的点数
-    for (NSInteger i = 0; i < self.isYes_array.count; i++) {
-        XFJFindAttractionsListItem *findAttractionsListItem = [self.isYes_array objectAtIndex:i];
-        NSLog(@"-------++++++这里打印所有的在范围内的点数是 :%zd",self.isYes_array.count);
-        NSInteger typeState = findAttractionsListItem.typeState;
-        NSLog(@"=============在范围内的状态值是 :%zd",typeState);
-        if (typeState == 0) {//景区
-            [self.scenery_array addObject:findAttractionsListItem];
-            NSLog(@"----最终加入数组中为0的值是1 :%zd",self.scenery_array.count);
-        }else {//这里表示酒店
-            [self.hotel_array addObject:findAttractionsListItem];
-            NSLog(@"++++最终加入数组中为0的值是2 :%zd",self.hotel_array.count);
-        }
-    }
-    if (self.isContains) {//如果是yes就创建
-        self.isProjectItem == NO ? (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 200, 42, 41)) : (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 290, 42, 41));
-        self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.signTeamTwoView];
-    }
+    //        if (isContains) {//该处为YES则表示在
+    //            NSLog(@"-----------经纬度是否在多边形内部2 : %d",isContains);//0:标识不在 1:标识在
+    //            self.isContains = isContains;
+    //            //判断该范围的景点类型
+    //            if (self.stateType == 1) {//1则表示酒店
+    //                //该处加载的是有房间数量的签到页面(也就是酒店)
+    //                NSLog(@"酒店的状态值是 :%zd",self.stateType);
+    //                //此处添加酒店的签到view
+    //                self.isProjectItem == NO ? (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 200, 42, 41)) : (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 290, 42, 41));
+    //                self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.hotel_view];
+    //            }else {//0则表示是景区
+    //                //该出加载的是没有房间数量的签到页面(也就是景区)
+    //                NSLog(@"景区的状态值是:%zd------景区的id值是:%zd",self.stateType,self.attractions_id);
+    //                self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.sign_view];
+    //            }
+    //        }else {
+    //            //不在该签到的范围内
+    //            NSLog(@"不在景点范围内景点的状态值是:%zd",self.stateType);
+    //            //提示还没到签到区域,让用户到签到区域进行签到
+    //            //        [MBProgressHUD showHudTipStr:@"亲~~您还没有到达签到区域,请考虑是否签到?" contentColor:HidWithColorContentBlack];
+    //        }
+    
+    
 
-//        if (isContains) {//该处为YES则表示在
-//            NSLog(@"-----------经纬度是否在多边形内部2 : %d",isContains);//0:标识不在 1:标识在
-//            self.isContains = isContains;
-//            //判断该范围的景点类型
-//            if (self.stateType == 1) {//1则表示酒店
-//                //该处加载的是有房间数量的签到页面(也就是酒店)
-//                NSLog(@"酒店的状态值是 :%zd",self.stateType);
-//                //此处添加酒店的签到view
-//                self.isProjectItem == NO ? (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 200, 42, 41)) : (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 290, 42, 41));
-//                self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.hotel_view];
-//            }else {//0则表示是景区
-//                //该出加载的是没有房间数量的签到页面(也就是景区)
-//                NSLog(@"景区的状态值是:%zd------景区的id值是:%zd",self.stateType,self.attractions_id);
-//                self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.sign_view];
-//            }
-//        }else {
-//            //不在该签到的范围内
-//            NSLog(@"不在景点范围内景点的状态值是:%zd",self.stateType);
-//            //提示还没到签到区域,让用户到签到区域进行签到
-//            //        [MBProgressHUD showHudTipStr:@"亲~~您还没有到达签到区域,请考虑是否签到?" contentColor:HidWithColorContentBlack];
-//        }
     
     return isContains;
 }
@@ -1298,6 +1335,8 @@
     }
     return nil;
 }
+
+
 
 
 @end

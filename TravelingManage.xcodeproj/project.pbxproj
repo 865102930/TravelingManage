@@ -58,6 +58,8 @@
 		3A00E3141E545DE200525150 /* XFJAllTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A00E3131E545DE200525150 /* XFJAllTaskTableViewCell.m */; };
 		3A02C09B1E7152C900966384 /* XFJAloneCheckView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C09A1E7152C900966384 /* XFJAloneCheckView.m */; };
 		3A02C09E1E727B7200966384 /* XFJSignTeamTwoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C09D1E727B7200966384 /* XFJSignTeamTwoView.m */; };
+		3A02C0A11E73C03A00966384 /* XFJChooseScenerySignView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C0A01E73C03A00966384 /* XFJChooseScenerySignView.m */; };
+		3A02C0A41E73C7A600966384 /* XFJChooseSceneryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C0A31E73C7A600966384 /* XFJChooseSceneryTableViewCell.m */; };
 		3A07C8F81E480B0A008A838D /* UIImage+XFJOriginalImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8F71E480B0A008A838D /* UIImage+XFJOriginalImageView.m */; };
 		3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8FF1E481A70008A838D /* UIBarButtonItem+XFJItem.m */; };
 		3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C9011E481A70008A838D /* UIImage+XFJColor.m */; };
@@ -108,6 +110,7 @@
 		3A51D16E1E6CF838005B86F6 /* XFJPleaseAppraiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D16D1E6CF838005B86F6 /* XFJPleaseAppraiseViewController.m */; };
 		3A51D1741E6D0719005B86F6 /* XFJPleasePerfectMessageTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1731E6D0719005B86F6 /* XFJPleasePerfectMessageTopView.m */; };
 		3A51D1771E6D0EF5005B86F6 /* XFJPleaseUpPerfectPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1761E6D0EF5005B86F6 /* XFJPleaseUpPerfectPhotosView.m */; };
+		3A6239181E73E02B00D045BA /* XFJChooseSceneryFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */; };
 		3A756F171E657583005D2C02 /* tishi.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F141E657583005D2C02 /* tishi.png */; };
 		3A756F181E657583005D2C02 /* tishi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F151E657583005D2C02 /* tishi@2x.png */; };
 		3A756F191E657583005D2C02 /* tishi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F161E657583005D2C02 /* tishi@3x.png */; };
@@ -408,6 +411,10 @@
 		3A02C09A1E7152C900966384 /* XFJAloneCheckView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJAloneCheckView.m; sourceTree = "<group>"; };
 		3A02C09C1E727B7200966384 /* XFJSignTeamTwoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignTeamTwoView.h; sourceTree = "<group>"; };
 		3A02C09D1E727B7200966384 /* XFJSignTeamTwoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignTeamTwoView.m; sourceTree = "<group>"; };
+		3A02C09F1E73C03A00966384 /* XFJChooseScenerySignView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJChooseScenerySignView.h; sourceTree = "<group>"; };
+		3A02C0A01E73C03A00966384 /* XFJChooseScenerySignView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJChooseScenerySignView.m; sourceTree = "<group>"; };
+		3A02C0A21E73C7A600966384 /* XFJChooseSceneryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJChooseSceneryTableViewCell.h; sourceTree = "<group>"; };
+		3A02C0A31E73C7A600966384 /* XFJChooseSceneryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJChooseSceneryTableViewCell.m; sourceTree = "<group>"; };
 		3A07C8F61E480B0A008A838D /* UIImage+XFJOriginalImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+XFJOriginalImageView.h"; sourceTree = "<group>"; };
 		3A07C8F71E480B0A008A838D /* UIImage+XFJOriginalImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+XFJOriginalImageView.m"; sourceTree = "<group>"; };
 		3A07C8FD1E480FF0008A838D /* TravelingManage.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TravelingManage.pch; sourceTree = "<group>"; };
@@ -501,6 +508,8 @@
 		3A51D1731E6D0719005B86F6 /* XFJPleasePerfectMessageTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJPleasePerfectMessageTopView.m; sourceTree = "<group>"; };
 		3A51D1751E6D0EF5005B86F6 /* XFJPleaseUpPerfectPhotosView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJPleaseUpPerfectPhotosView.h; sourceTree = "<group>"; };
 		3A51D1761E6D0EF5005B86F6 /* XFJPleaseUpPerfectPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJPleaseUpPerfectPhotosView.m; sourceTree = "<group>"; };
+		3A6239161E73E02B00D045BA /* XFJChooseSceneryFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJChooseSceneryFooterView.h; sourceTree = "<group>"; };
+		3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJChooseSceneryFooterView.m; sourceTree = "<group>"; };
 		3A756F141E657583005D2C02 /* tishi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tishi.png; sourceTree = "<group>"; };
 		3A756F151E657583005D2C02 /* tishi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@2x.png"; sourceTree = "<group>"; };
 		3A756F161E657583005D2C02 /* tishi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@3x.png"; sourceTree = "<group>"; };
@@ -1402,6 +1411,12 @@
 				3ACCE3941E69194700B3526B /* XFJSignTeamPhotosView.m */,
 				3A02C09C1E727B7200966384 /* XFJSignTeamTwoView.h */,
 				3A02C09D1E727B7200966384 /* XFJSignTeamTwoView.m */,
+				3A02C09F1E73C03A00966384 /* XFJChooseScenerySignView.h */,
+				3A02C0A01E73C03A00966384 /* XFJChooseScenerySignView.m */,
+				3A02C0A21E73C7A600966384 /* XFJChooseSceneryTableViewCell.h */,
+				3A02C0A31E73C7A600966384 /* XFJChooseSceneryTableViewCell.m */,
+				3A6239161E73E02B00D045BA /* XFJChooseSceneryFooterView.h */,
+				3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1956,6 +1971,8 @@
 				3AFFB2871E701B4A0013185F /* XFJCheckBoxView.m in Sources */,
 				1C1939B51E4DADDD00882B8C /* XFJAnnouncementViewController.m in Sources */,
 				1CFDFE551E542C84001D6300 /* JFImagePickerViewCell.m in Sources */,
+				3A02C0A41E73C7A600966384 /* XFJChooseSceneryTableViewCell.m in Sources */,
+				3A6239181E73E02B00D045BA /* XFJChooseSceneryFooterView.m in Sources */,
 				3A9474A51E4D91BE002F1F9B /* UITextField+Placeholder.m in Sources */,
 				3A94748E1E4D8FB8002F1F9B /* HomeViewController.m in Sources */,
 				3AFFB28D1E7023D20013185F /* XFJCheckFooterView.m in Sources */,
@@ -2037,6 +2054,7 @@
 				3A18E54C1E5D6FB400BFE891 /* XFJGuestSourceInformationTableViewCell.m in Sources */,
 				3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */,
 				3AA475091E5E8E7700FEB005 /* XFJFindAttractionsListItem.m in Sources */,
+				3A02C0A11E73C03A00966384 /* XFJChooseScenerySignView.m in Sources */,
 				3A8347CD1E4AAD8000693882 /* XFJLeftView.m in Sources */,
 				1CB523EA1E51AFF600A205C3 /* AnnouncementDetailViewController.m in Sources */,
 				3A51D16E1E6CF838005B86F6 /* XFJPleaseAppraiseViewController.m in Sources */,

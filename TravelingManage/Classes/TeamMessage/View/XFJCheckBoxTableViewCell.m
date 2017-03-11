@@ -93,7 +93,6 @@
 //        }
 //        self.isChoose = YES;
 //    }
-    
 }
 
 + (CGFloat)cellHeight
