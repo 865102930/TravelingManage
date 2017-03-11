@@ -57,7 +57,7 @@
 
 - (void)loadData {
     NSDictionary *dictParaments = @{
-                                    @"userId":@7,
+                                    @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"],
                                     };
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:MESSAGELISTTOTAL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {

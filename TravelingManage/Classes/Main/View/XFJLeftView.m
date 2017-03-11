@@ -30,6 +30,7 @@
 
 @end
 
+
 @implementation XFJLeftView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -80,7 +81,7 @@
 {
     NSInteger newPage = self.newPage ++;
     NSDictionary *dictParaments = @{
-                                    @"userId":@7,
+                                    @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"],
                                     @"rows":@5,
                                     @"page":[NSString stringWithFormat:@"%ld",(long)newPage]
                                     };
@@ -157,6 +158,13 @@
 {
     if (self.pushMineTeamBlock) {
         self.pushMineTeamBlock(strNumber);
+    }
+}
+#pragma mark - 退出登录
+- (void)exitButtonClick:(XFJLeftTableFooterView *)leftTableFooterView
+{
+    if (self.logoutUserBlock) {
+        self.logoutUserBlock();
     }
 }
 #pragma mark - 一根或者多根手指开始在view上移动的时候,系统会自动调用view下面的方法

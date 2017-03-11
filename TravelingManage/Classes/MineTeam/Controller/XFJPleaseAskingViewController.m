@@ -41,7 +41,7 @@
 - (void)requestAllStates
 {
     NSDictionary *dictParaments = @{
-                                    @"userId":@7,
+                                    @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"],
                                     @"notState":@1
                                     };
     __weak __typeof(self)wself = self;

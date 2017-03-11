@@ -25,5 +25,7 @@
 @property (nonatomic, assign) CGFloat touchWidth;
 
 @property (nonatomic, copy) void (^pushMineTeamBlock)(NSInteger);
+//退出登录
+@property (nonatomic, copy) void (^logoutUserBlock)();
 
 @end

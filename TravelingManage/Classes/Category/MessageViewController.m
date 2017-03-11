@@ -34,7 +34,7 @@
 - (void)loadData
 {
     NSDictionary *dictParaments = @{
-                                    @"userId":@7,
+                                    @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"],
                                     };
     __weak __typeof(self)wself = self;
     [GRNetRequestClass POST:MESSAGELIST params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {

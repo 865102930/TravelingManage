@@ -66,7 +66,7 @@
 - (void)lineCountRequest
 {
     NSDictionary *dictParaments = @{
-                                    @"userId":@7
+                                    @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]
                                     };
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDTEAMINFOSTATEURL withParaments:dictParaments withSuccessBlock:^(id object) {

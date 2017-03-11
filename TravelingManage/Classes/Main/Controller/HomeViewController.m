@@ -164,7 +164,7 @@
 - (void)requestLatelyControl
 {
     NSDictionary *dictParams = @{
-                                 @"userId":@7//这个数据暂时写死
+                                 @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]//这个数据暂时写死
                                  };
     __weak __typeof(self)wself = self;
     [GRNetRequestClass POST:FINDNEWTEAMINFOURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -240,6 +240,20 @@
         XFJMineTeamViewController *mineTeamController = [[XFJMineTeamViewController alloc] init];
         [wself.navigationController pushViewController:mineTeamController animated:YES];
     };
+    //退出登录
+    self.leftView.logoutUserBlock = ^() {
+        //移除侧滑页面
+        [wself remoSubViews];
+        //清空userId
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        [userDefaults setObject:@"" forKey:@"userId"];
+        [userDefaults removeObjectForKey:@"userId"];
+        [userDefaults synchronize];
+        //跳转到登录页面
+        LoginViewController *loginController = [[LoginViewController alloc] init];
+        [wself presentViewController:loginController animated:YES completion:nil];
+        [wself.manager stopUpdatingLocation];
+    };
     self.homeTopTaskMessageVeiw.jumpWithTeamMessageBlock = ^() {
         //这是点击顶部右侧的箭头按钮跳转的控制器
         //跳转到签到点信息
@@ -306,6 +320,7 @@
 #pragma mark - 改变按钮的状态
 - (void)statusHomeTopButtonClickRequest
 {
+    NSLog(@"teamID:%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"]);
     //参数
     NSDictionary *dictParaments = @{
                                     @"id":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
@@ -1281,10 +1296,6 @@
     //            //提示还没到签到区域,让用户到签到区域进行签到
     //            //        [MBProgressHUD showHudTipStr:@"亲~~您还没有到达签到区域,请考虑是否签到?" contentColor:HidWithColorContentBlack];
     //        }
-    
-    
-
-    
     return isContains;
 }
 
@@ -1334,6 +1345,12 @@
         return annotationView;
     }
     return nil;
+}
+
+
+- (void)dealloc
+{
+    
 }
 
 
