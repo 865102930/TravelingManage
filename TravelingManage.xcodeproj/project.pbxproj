@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C06E0891E73C1540019FF1F /* PhotoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C06E0881E73C1540019FF1F /* PhotoModel.m */; };
 		1C1939B51E4DADDD00882B8C /* XFJAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C1939B41E4DADDD00882B8C /* XFJAnnouncementViewController.m */; };
 		1C1939B81E4DB71B00882B8C /* PageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C1939B71E4DB71B00882B8C /* PageButton.m */; };
 		1C1939BB1E4DB99100882B8C /* MessageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C1939BA1E4DB99100882B8C /* MessageListViewController.m */; };
@@ -311,6 +312,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C06E0871E73C1540019FF1F /* PhotoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoModel.h; sourceTree = "<group>"; };
+		1C06E0881E73C1540019FF1F /* PhotoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoModel.m; sourceTree = "<group>"; };
 		1C1939B31E4DADDD00882B8C /* XFJAnnouncementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XFJAnnouncementViewController.h; path = TravelingManage/Classes/Main/Controller/XFJAnnouncementViewController.h; sourceTree = SOURCE_ROOT; };
 		1C1939B41E4DADDD00882B8C /* XFJAnnouncementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XFJAnnouncementViewController.m; path = TravelingManage/Classes/Main/Controller/XFJAnnouncementViewController.m; sourceTree = SOURCE_ROOT; };
 		1C1939B61E4DB71B00882B8C /* PageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageButton.h; sourceTree = "<group>"; };
@@ -1240,6 +1243,8 @@
 				3ABDC9DB1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.m */,
 				3AFFB28E1E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.h */,
 				3AFFB28F1E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.m */,
+				1C06E0871E73C1540019FF1F /* PhotoModel.h */,
+				1C06E0881E73C1540019FF1F /* PhotoModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2016,6 +2021,7 @@
 				3AE849F11E54410F00A71C5E /* XFJSubscribeButton.m in Sources */,
 				1C665BF61E69981E0059DE59 /* NewPhoneNueViewController.m in Sources */,
 				3AC803381E6D7CEB005D2B71 /* XFJSignAppraiseTableViewCell.m in Sources */,
+				1C06E0891E73C1540019FF1F /* PhotoModel.m in Sources */,
 				1CFDFE221E542C65001D6300 /* TZVideoPlayerController.m in Sources */,
 				1CFDFE3C1E542C78001D6300 /* WSImageModel.m in Sources */,
 				3A18E54A1E5D6FB400BFE891 /* XFJMinusCarNumTableViewCell.m in Sources */,

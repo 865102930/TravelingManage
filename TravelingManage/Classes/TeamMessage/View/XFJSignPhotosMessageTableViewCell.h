@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class PhotoModel;
 @class XFJSignPhotosMessageTableViewCell;
 @protocol XFJSignPhotosMessageTableViewCellDelegate <NSObject>
 
@@ -20,12 +20,14 @@
 
 @interface XFJSignPhotosMessageTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) NSMutableArray *dataArr;
+@property (nonatomic, strong) UIButton *addPicBtn;
+
+@property (nonatomic, strong) UIImage *photoImage;
 
 @property (nonatomic, weak) id <XFJSignPhotosMessageTableViewCellDelegate>delegate;
 
 @property (nonatomic, strong) NSIndexPath *selectIndexPath;
 
-@property (nonatomic, assign) NSInteger maxImageCount;
+@property (nonatomic, strong)PhotoModel *photoM;
 
 @end

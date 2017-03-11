@@ -206,16 +206,16 @@
 //根据手机号判断用户信息
 - (void)whetherRegistration{
     NSDictionary *dictParaments = @{
-                                    @"mobile":self.phoneTextF.text,
+                                    @"userMobile":self.phoneTextF.text,
                                     };
     [GRNetRequestClass POST:QUERYUSER params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"根据手机号判断用户信息:%@",responseObject);
         if ([responseObject[@"msg"] isEqualToString:@"success"]) {
-//            [self getVerificationCode];
+            [self getVerificationCode];
             VerificationCodeViewController *verificationCodeVC = [[VerificationCodeViewController alloc] init];
             verificationCodeVC.registTextField_text = self.phoneTextF.text;
             [self.navigationController pushViewController:verificationCodeVC animated:YES];
-        }else if ([responseObject[@"msg"] isEqualToString:@"success"]){
+        }else if ([responseObject[@"msg"] isEqualToString:@"exist"]){
             [MBProgressHUD showHUDMsg:@"该手机号已注册"];
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
