@@ -11,7 +11,7 @@
 #import "HomeViewController.h"
 #import <AMapFoundationKit/AMapFoundationKit.h>
 #import "LoginViewController.h"
-
+#import "XFJPleasePerfectMessageViewController.h"
 
 @interface AppDelegate ()
 

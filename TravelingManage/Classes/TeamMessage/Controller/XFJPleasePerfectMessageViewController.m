@@ -15,7 +15,7 @@
 #import "WSPhotosBroseVC.h"
 #import "XFJSignPhotosMessageTableViewCell.h"
 #import "XFJFindTeamTasksItem.h"
-
+#import "PhotoModel.h"
 @interface XFJPleasePerfectMessageViewController () <UIActionSheetDelegate,XFJPleaseUpPerfectPhotosViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,UITableViewDelegate,UITableViewDataSource,XFJSignPhotosMessageTableViewCellDelegate>
 
 @property (nonatomic, strong) UILabel *title_label;
@@ -28,16 +28,32 @@
 @property (nonatomic, strong) XFJSignPhotosMessageTableViewCell *cell;
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *findTeamTasksItem;
 @property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) NSIndexPath *selectedIndexpath;
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) NSMutableArray<PhotoModel *> *photoModelArr;
 @end
 
 @implementation XFJPleasePerfectMessageViewController
 #pragma mark ---- lazy ----
+- (NSMutableArray<PhotoModel *> *)photoModelArr {
+    if (!_photoModelArr) {
+        _photoModelArr = [NSMutableArray array];
+    }
+    return _photoModelArr;
+}
 - (UIView *)headerView {
     if (!_headerView) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 265)];
         _headerView.backgroundColor = [UIColor yellowColor];
     }
     return _headerView;
+}
+
+- (UIImage *)image {
+    if (!_image) {
+        _image = [[UIImage alloc] init];
+    }
+    return _image;
 }
 
 - (NSMutableArray <XFJFindTeamTasksItem *> *)findTeamTasksItem
@@ -147,6 +163,9 @@
 - (void)chooseVoucherPhotosImage:(XFJSignPhotosMessageTableViewCell *)voucherPhotos
 {
     self.maxImageCount = 1;
+    self.selectedIndexpath = voucherPhotos.selectIndexPath;
+    NSLog(@"voucherPhotos:%@", voucherPhotos.selectIndexPath);
+    NSLog(@"self.selectedIndexpath:%@",self.selectedIndexpath);
     UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:@"请选择相机或者相册" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选择",nil];
     [action showInView:self.view];
 }
@@ -176,7 +195,6 @@
                 }
             });
         };
-        
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -198,13 +216,9 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_dataArray removeAllObjects];
                 [_dataArray addObjectsFromArray:array];
-                weakself.cell.dataArr = _dataArray;
-//                                if (_dataArr.count <= 4) {
-//                                    self.uploadPhotos_view.frame = CGRectMake(0, 728, SCREEN_WIDTH, 200);
-//                                }
+//                weakself.cell.dataArr = _dataArray;
             });
         };
-        
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -257,8 +271,10 @@
         self.pleaseUpPerfectPhotosView.maxImageCount = 6;
     }else {
         NSLog(@"self.maxImageCount == 1");
-        UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        [self.dataArray addObject:image];
+        _image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        NSLog(@"%@",_image);
+        [self.dataArray addObject:_image];
+        [self.photoModelArr addObject:_dataArray];
         [picker dismissViewControllerAnimated:YES completion:nil];
         self.pleaseUpPerfectPhotosView.dataArr = self.dataArray;
         self.pleaseUpPerfectPhotosView.maxImageCount = 1;
@@ -284,9 +300,8 @@
     }else {
         NSLog(@"self.maxImageCount == 1----------");
         [self.dataArray addObjectsFromArray:photos];
-        self.cell.dataArr = self.dataArray;
-        self.cell.maxImageCount = 1;
-//        [self.signPhotos_tableView reloadData];
+        _image = photos[0];
+         [self.tableView reloadData];
     }
 }
 
@@ -297,20 +312,26 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *const cellId = @"cellId";
     XFJSignPhotosMessageTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    self.cell = cell;
-    cell.dataArr = self.dataArray;
-    NSLog(@"++++++++++++++++选取到的照片数量是 :%@",self.dataArray);
+   
     if (cell == nil) {
         cell = [[XFJSignPhotosMessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     cell.delegate = self;
+//    PhotoModel *photoM = self.photoModelArr[indexPath.row];
+    cell.selectIndexPath = indexPath;
+    self.cell = cell;
+    if(self.dataArray.count == 0){
+        cell.photoImage = nil;
+    }else{
+        cell.photoImage = self.image;
+    }
     return cell;
 }
 
