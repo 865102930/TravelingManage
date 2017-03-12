@@ -9,7 +9,7 @@
 
 
 #import <UIKit/UIKit.h>
-
+#import "XFJFindTeamInfoByStateItem.h"
 @interface XFJTeamInformationTableViewCell : UIView
 
 //团队人数
@@ -20,6 +20,8 @@
 
 //行程天数
 @property (nonatomic, strong) NSString *teamDay;
+
+@property (nonatomic, strong) XFJFindTeamInfoByStateItem *findTeamInfoByStateItem;
 
 
 @end

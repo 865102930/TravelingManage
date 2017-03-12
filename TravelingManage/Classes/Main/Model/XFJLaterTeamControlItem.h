@@ -22,5 +22,17 @@
 @property (nonatomic, strong) NSString *teamDate;
 //0:签到 1:签退  (根据这个来判断下面显示的是什么信息)
 @property (nonatomic, strong) NSString *taskState;
+//签到时间
+@property (nonatomic, strong) NSString *createTime;
+//旅行社名字
+@property (nonatomic, strong) NSString *travelAgencyName;
+//团队人数
+@property (nonatomic, assign) NSInteger checkinNumber;
+//团队id
+@property (nonatomic, assign) NSInteger findNewTeamInfo_Id;
+//任务id
+@property (nonatomic, assign) NSInteger taskId;
+//景区id
+@property (nonatomic, assign) NSInteger attractionsId;
 
 @end

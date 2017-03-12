@@ -40,6 +40,9 @@
 #import "PersonalDataViewController.h"
 #import "XFJSignTeamTwoView.h"
 #import "XFJChooseScenerySignView.h"
+#import "XFJPleaseDoITViewController.h"
+#import "XFJPleaseAskingViewController.h"
+
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -235,18 +238,42 @@
         MessageListViewController *announcementController = [[MessageListViewController alloc] init];
         [wself.navigationController pushViewController:announcementController animated:YES];
     };
+    //待完善
     self.leftView.pushMineTeamBlock = ^(NSInteger strNumber) {
+        [wself remoSubViews];
+        XFJMineTeamViewController *pleaseDoITViewController = [[XFJMineTeamViewController alloc] init];
+        pleaseDoITViewController.strNumber = strNumber;
+        [wself.navigationController pushViewController:pleaseDoITViewController animated:YES];
+    };
+    //全部任务
+    self.leftView.pushAllTeamTaskBlock = ^() {
         [wself remoSubViews];
         XFJMineTeamViewController *mineTeamController = [[XFJMineTeamViewController alloc] init];
         [wself.navigationController pushViewController:mineTeamController animated:YES];
     };
-    //退出登录
+    //待评价
+    self.leftView.pushPleaseAskingBlock = ^() {
+        [wself remoSubViews];
+//        XFJPleaseAskingViewController *pleaseAskingViewController = [[XFJPleaseAskingViewController alloc] init];
+        XFJMineTeamViewController *pleaseAskingViewController = [[XFJMineTeamViewController alloc] init];
+        [wself.navigationController pushViewController:pleaseAskingViewController animated:YES];
+    };
+    //待审核
+    self.leftView.pushCheckTeamBlock = ^() {
+        [wself remoSubViews];
+        XFJMineTeamViewController *pleaseCheckTeamViewController = [[XFJMineTeamViewController alloc] init];
+        [wself.navigationController pushViewController:pleaseCheckTeamViewController animated:YES];
+    };
+    //将左侧的内容传到控制器中
+    self.leftView.presentToHomeController = ^(XFJLeftFindTeamInfoItem *leftFindTeamInfoItem) {
+        [wself remoSubViews];
+    };
+    //退出登
     self.leftView.logoutUserBlock = ^() {
         //移除侧滑页面
         [wself remoSubViews];
         //清空userId
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//        [userDefaults setObject:@"" forKey:@"userId"];
         [userDefaults removeObjectForKey:@"userId"];
         [userDefaults synchronize];
         //跳转到登录页面

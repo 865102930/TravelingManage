@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XFJLaterTeamControlItem.h"
 
 @interface XFJSignMessageTimeView : UIView
+
+@property (nonatomic, strong) XFJLaterTeamControlItem *laterTeamControlItem;
 
 @end

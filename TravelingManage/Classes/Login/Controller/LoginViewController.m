@@ -297,7 +297,7 @@
                  NSLog(@"userName:%@",[_user objectForKey:@"userName"]);
                  NSLog(@"idCard:%@",[_user objectForKey:@"idCard"]);
                 HomeViewController *home = [[HomeViewController alloc] init];
-                UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:home];
+                JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:home];
                 [weakself presentViewController:navVC animated:YES completion:nil];
                 
             }

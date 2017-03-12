@@ -10,5 +10,7 @@
 
 @interface XFJMineTeamViewController : UIViewController
 
+@property (nonatomic, assign) NSInteger strNumber;
+
 
 @end

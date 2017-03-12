@@ -13,8 +13,11 @@
 //跳转到待完善界面
 - (void)pushMineTeamController:(NSInteger)strNumber;
 //跳转到待审核界面
+- (void)pushToPleaseCheckTeamController;
 //跳转到待评价界面
+- (void)pushToPleaseAskingTeamController;
 //跳转到全部任务界面
+- (void)pushToAllTaskingTeamController;
 //退出按钮
 - (void)exitButtonClick:(XFJLeftTableFooterView *)leftTableFooterView;
 @end

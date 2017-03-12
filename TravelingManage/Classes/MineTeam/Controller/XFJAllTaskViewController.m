@@ -10,6 +10,7 @@
 #import "XFJAllTaskTableViewCell.h"
 #import "XFJFindTeamInfoByStateItem.h"
 #import "XFJTeamMessageViewController.h"
+#import "XFJOpenGroupViewController.h"
 
 @interface XFJAllTaskViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *allTaskTableView;
@@ -28,6 +29,7 @@
     
     //请求接口
     [self requestAllStates];
+    
 }
 
 - (NSMutableArray <XFJFindTeamInfoByStateItem *> *)findTeamInfoByStateItem_array
@@ -108,18 +110,32 @@
     if (cell == nil) {
         cell = [[XFJAllTaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
-    cell.alreadyTeamBlock = ^(UIButton *button) {
-        
-    };
     __weak __typeof(self)wself = self;
+    cell.alreadyTeamBlock = ^(UIButton *button) {
+        UITableViewCell *cell = (UITableViewCell *)[button superview];
+        NSIndexPath *path = [self.allTaskTableView indexPathForCell:cell];
+        //这里可以获取到cell是具体是哪一个,就可以传相应的id
+        NSLog(@"----------+++++++-------index row%zd", [path row]);
+        //点击冲洗开始后,跳转到开团界面
+        XFJOpenGroupViewController *openGroupViewController = [[XFJOpenGroupViewController alloc] init];
+//        openGroupViewController.findTeamInfoByStateItem = wself.findTeamInfoByStateItem_array[path.row];
+        [wself.navigationController pushViewController:openGroupViewController animated:YES];
+    };
     cell.pleasePerfectDataBlock = ^(UIButton *button) {
         UITableViewCell *cell = (UITableViewCell *)[button superview];
         NSIndexPath *path = [self.allTaskTableView indexPathForCell:cell];
         //这里可以获取到cell是具体是哪一个,就可以传相应的id
-        NSLog(@"-----------------index row%d", [path row]);
+        NSLog(@"-----------------index row%zd", [path row]);
         XFJTeamMessageViewController *teamMessageController = [[XFJTeamMessageViewController alloc] init];
         teamMessageController.findTeamInfoByState_Id = wself.findTeamInfoByStateItem_array[path.row].findTeamInfoByState_Id;
         [wself.navigationController pushViewController:teamMessageController animated:YES];
+    };
+    cell.cancelTeamBlock= ^(UIButton *button) {
+        UITableViewCell *cell = (UITableViewCell *)[button superview];
+        NSIndexPath *path = [self.allTaskTableView indexPathForCell:cell];
+        //这里可以获取到cell是具体是哪一个,就可以传相应的id
+        NSLog(@"---------=========--------index row%zd", [path row]);
+        [wself requestCancelTeamTask:wself.findTeamInfoByStateItem_array[path.row].findTeamInfoByState_Id];
     };
     cell.findTeamInfoByStateItem = self.findTeamInfoByStateItem_array[indexPath.row];
     return cell;
@@ -135,6 +151,22 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [XFJAllTaskTableViewCell cellHeight];
+}
+
+#pragma mark - 调用取消团队的接口
+- (void)requestCancelTeamTask:(NSInteger)findTeamInfoByState_Id
+{
+    [GRNetRequestClass POST:DELETETEAMINFOURL params:@{@"id":[NSString stringWithFormat:@"%zd",findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
+                [MBProgressHUD showHudTipStr:@"主人~~您已经取消团队了!!" contentColor:HidWithColorContentBlack];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"主人~~您取消团队失败了,可能是网络问题!!" contentColor:HidWithColorContentBlack];
+        }
+    }];
 }
 
 @end

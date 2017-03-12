@@ -167,6 +167,29 @@
         self.logoutUserBlock();
     }
 }
+#pragma mark - 跳转到全部任务控制器
+- (void)pushToAllTaskingTeamController
+{
+    if (self.pushAllTeamTaskBlock) {
+        self.pushAllTeamTaskBlock();
+    }
+}
+#pragma mark - 待审核
+- (void)pushToPleaseCheckTeamController
+{
+    if (self.pushCheckTeamBlock) {
+        self.pushCheckTeamBlock();
+    }
+}
+
+#pragma makr - 待评价
+- (void)pushToPleaseAskingTeamController
+{
+    if (self.pushPleaseAskingBlock) {
+        self.pushPleaseAskingBlock();
+    }
+}
+
 #pragma mark - 一根或者多根手指开始在view上移动的时候,系统会自动调用view下面的方法
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
@@ -246,6 +269,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"cell点击了我~~");
+    __weak __typeof(self)wself = self;
+    if (self.presentToHomeController) {
+        self.presentToHomeController(wself.leftFindTeamInfoItem_array[indexPath.row]);
+    }
 }
 
 #pragma mark - cell的高度

@@ -22,6 +22,8 @@
 @property (nonatomic, copy) void (^alreadyTeamBlock)(UIButton *);
 //待完善资料
 @property (nonatomic, copy) void (^pleasePerfectDataBlock)(UIButton *);
+//取消按钮
+@property (nonatomic, copy) void (^cancelTeamBlock)(UIButton *);
 
 + (CGFloat)cellHeight;
 

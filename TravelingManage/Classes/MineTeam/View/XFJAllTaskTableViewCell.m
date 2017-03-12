@@ -281,7 +281,7 @@
     if (_cancel_button == nil) {
         _cancel_button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_cancel_button setTitleColor:kColor9898 forState:UIControlStateNormal];
-        [_cancel_button addTarget:self action:@selector(cancelButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [_cancel_button addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         _cancel_button.layer.cornerRadius = 2.0;
         _cancel_button.layer.borderColor = kColor9898.CGColor;
         _cancel_button.layer.borderWidth = 0.5;
@@ -290,9 +290,12 @@
     return _cancel_button;
 }
 
-- (void)cancelButtonClick
+- (void)cancelButtonClick:(UIButton *)button
 {
     NSLog(@"主人,您点击了取消按钮~~");
+    if (self.cancelTeamBlock) {
+        self.cancelTeamBlock(button);
+    }
 }
 
 - (void)againStartButtonClick:(UIButton *)button

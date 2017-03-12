@@ -145,6 +145,8 @@
 #define FINDPARAMSSYSTEMLISTURL (BASEURL@"/app/params/findParamsSystemList")
 //修改团队信息
 #define MODIFYTEAMINFOURL (BASEURL@"/app/teamInfo/modifyTeamInfo")
+//取消团队
+#define DELETETEAMINFOURL (BASEURL@"/app/teamInfo/deleteTeamInfo")
 
 
 

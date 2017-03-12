@@ -323,6 +323,13 @@
     self.carName_view.userLocation = self.locationWithUser;
 }
 
+//- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+//{
+//    _findTeamInfoByStateItem = findTeamInfoByStateItem;
+//    self.conventionMessage_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+//    self.teamInformation_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+//}
+
 - (void)requestFindCarNumberWithUserlocation:(NSString *)userLocation;
 {
     if (userLocation.length == 0) {
@@ -360,6 +367,7 @@
 {
     if (self.dataArr.count == 0) {
         NSLog(@"图片上传失败------");
+        [MBProgressHUD showHudTipStr:@"请上传车辆图片" contentColor:HidWithColorContentBlack];
     }else {
         for (int i = 0; i < _dataArr.count; i++) {
             UIImage *image = _dataArr[i];
@@ -387,8 +395,8 @@
 #pragma mark - 上传凭证
 - (void)upLoadVoucherPic
 {
-    if (self.dataArray == 0) {
-        NSLog(@"图片丢失~~~~~~");
+    if (self.dataArray.count == 0) {
+        [MBProgressHUD showHudTipStr:@"请上传凭证照片" contentColor:HidWithColorContentBlack];
     }else {
         UIImage *image = self.dataArray[0];
         NSData *imageData = [UIImage compressImage:image maxSize:300];
@@ -423,6 +431,12 @@
     NSNumber *traveName = [NSNumber numberWithInteger:self.conventionMessage_view.travelName];
     NSNumber *paramName1 = [NSNumber numberWithInteger:self.guestSourceInformation_view.paramName1];
     NSNumber *teamNature = [NSNumber numberWithInteger:self.teamInformation_view.teamNature];
+    if (self.conventionMessage_view.groupName_text == nil || self.conventionMessage_view.groupTime_text == nil || traveName == nil || self.strNum == nil || self.guestSourceInformation_view.selectedProvince == nil || self.guestSourceInformation_view.selectedCity == nil || self.guestSourceInformation_view.selectedArea == nil || paramName1 == nil || teamNature == nil || self.teamInformation_view.teamPeople_number == nil || self.teamInformation_view.teamDay == nil) {
+        self.voucherPicRoot = nil;
+        self.root = nil;
+        [MBProgressHUD showHudTipStr:@"主人~~请完善必填信息" contentColor:HidWithColorContentBlack];
+        return;
+    }
     NSDictionary *dictParaments = @{
                                    @"teamNo":self.conventionMessage_view.groupName_text,//团队编号
                                    @"teamDate":self.conventionMessage_view.groupTime_text,//出团日期

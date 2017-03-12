@@ -98,7 +98,7 @@
 {
     if (_signContent_label == nil) {
         _signContent_label = [[UILabel alloc] init];
-        _signContent_label.text = @"2017-03-02";
+//        _signContent_label.text = @"2017-03-02";
         _signContent_label.textColor = kColor2b2b;
         _signContent_label.font = [UIFont fontWithName:PingFang size:14.0];
     }
@@ -145,6 +145,16 @@
         _signNoContent_label.font = [UIFont fontWithName:PingFang size:14.0];
     }
     return _signNoContent_label;
+}
+
+- (void)setLaterTeamControlItem:(XFJLaterTeamControlItem *)laterTeamControlItem
+{
+    _laterTeamControlItem = laterTeamControlItem;
+    if (laterTeamControlItem.createTime == nil) {
+        self.signContent_label.text = [NSString stringWithFormat:@"%@",@"该团队还未签到"];
+    }else {
+        self.signContent_label.text = [NSString stringWithFormat:@"%@",laterTeamControlItem.createTime];
+    }
 }
 
 

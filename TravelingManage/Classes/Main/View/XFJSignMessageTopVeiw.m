@@ -46,7 +46,6 @@
 {
     if (_scenery_laebl == nil) {
         _scenery_laebl = [[UILabel alloc] init];
-        _scenery_laebl.text = @"景点名称景点名称";
         _scenery_laebl.textColor = kColorFFFF;
         _scenery_laebl.font = [UIFont fontWithName:PingFang size:14.0];
     }
@@ -66,11 +65,22 @@
 {
     if (_peopleContent_label == nil) {
         _peopleContent_label = [[UILabel alloc] init];
-        _peopleContent_label.text = [NSString stringWithFormat:@"%@人",@"40"];
         _peopleContent_label.textColor = kColorFFFF;
         _peopleContent_label.font = [UIFont fontWithName:PingFang size:14.0];
     }
     return _peopleContent_label;
+}
+
+- (void)setLaterTeamControlItem:(XFJLaterTeamControlItem *)laterTeamControlItem
+{
+    _laterTeamControlItem = laterTeamControlItem;
+    self.peopleContent_label.text = [NSString stringWithFormat:@"%zd人",laterTeamControlItem.checkinNumber];
+    if (laterTeamControlItem.travelAgencyName == NULL) {
+        self.scenery_laebl.text = [NSString stringWithFormat:@"%@",@"无法显示旅行社名字"];
+    }else {
+        
+        self.scenery_laebl.text = [NSString stringWithFormat:@"%@",laterTeamControlItem.travelAgencyName];
+    }
 }
 
 

@@ -112,6 +112,7 @@
 		3A51D1741E6D0719005B86F6 /* XFJPleasePerfectMessageTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1731E6D0719005B86F6 /* XFJPleasePerfectMessageTopView.m */; };
 		3A51D1771E6D0EF5005B86F6 /* XFJPleaseUpPerfectPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1761E6D0EF5005B86F6 /* XFJPleaseUpPerfectPhotosView.m */; };
 		3A6239181E73E02B00D045BA /* XFJChooseSceneryFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */; };
+		3A62391B1E754E8900D045BA /* XFJSureUpPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A62391A1E754E8800D045BA /* XFJSureUpPhotosView.m */; };
 		3A756F171E657583005D2C02 /* tishi.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F141E657583005D2C02 /* tishi.png */; };
 		3A756F181E657583005D2C02 /* tishi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F151E657583005D2C02 /* tishi@2x.png */; };
 		3A756F191E657583005D2C02 /* tishi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F161E657583005D2C02 /* tishi@3x.png */; };
@@ -340,8 +341,8 @@
 		1C665BF51E69981E0059DE59 /* NewPhoneNueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPhoneNueViewController.m; sourceTree = "<group>"; };
 		1C665BF71E6999660059DE59 /* NewPhoneVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPhoneVerificationViewController.h; sourceTree = "<group>"; };
 		1C665BF81E6999660059DE59 /* NewPhoneVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPhoneVerificationViewController.m; sourceTree = "<group>"; };
-		1CA681BC1E680240007B6751 /* GRNetRequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRNetRequestClass.h; sourceTree = "<group>"; };
-		1CA681BD1E680240007B6751 /* GRNetRequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRNetRequestClass.m; sourceTree = "<group>"; };
+		1CA681BC1E680240007B6751 /* GRNetRequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GRNetRequestClass.h; path = ../Notice/GRNetRequestClass.h; sourceTree = "<group>"; };
+		1CA681BD1E680240007B6751 /* GRNetRequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRNetRequestClass.m; path = ../Notice/GRNetRequestClass.m; sourceTree = "<group>"; };
 		1CB523DC1E5195C600A205C3 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		1CB523DD1E5195C600A205C3 /* MessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
 		1CB523DF1E51AA8900A205C3 /* AnnouncementCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnnouncementCell.h; path = TravelingManage/Classes/Notice/AnnouncementCell.h; sourceTree = SOURCE_ROOT; };
@@ -513,6 +514,8 @@
 		3A51D1761E6D0EF5005B86F6 /* XFJPleaseUpPerfectPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJPleaseUpPerfectPhotosView.m; sourceTree = "<group>"; };
 		3A6239161E73E02B00D045BA /* XFJChooseSceneryFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJChooseSceneryFooterView.h; sourceTree = "<group>"; };
 		3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJChooseSceneryFooterView.m; sourceTree = "<group>"; };
+		3A6239191E754E8800D045BA /* XFJSureUpPhotosView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSureUpPhotosView.h; sourceTree = "<group>"; };
+		3A62391A1E754E8800D045BA /* XFJSureUpPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSureUpPhotosView.m; sourceTree = "<group>"; };
 		3A756F141E657583005D2C02 /* tishi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tishi.png; sourceTree = "<group>"; };
 		3A756F151E657583005D2C02 /* tishi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@2x.png"; sourceTree = "<group>"; };
 		3A756F161E657583005D2C02 /* tishi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@3x.png"; sourceTree = "<group>"; };
@@ -1422,6 +1425,8 @@
 				3A02C0A31E73C7A600966384 /* XFJChooseSceneryTableViewCell.m */,
 				3A6239161E73E02B00D045BA /* XFJChooseSceneryFooterView.h */,
 				3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */,
+				3A6239191E754E8800D045BA /* XFJSureUpPhotosView.h */,
+				3A62391A1E754E8800D045BA /* XFJSureUpPhotosView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1463,6 +1468,8 @@
 			children = (
 				3AC803331E6D6460005D2B71 /* UIPlaceHolderTextView.h */,
 				3AC803341E6D6460005D2B71 /* UIPlaceHolderTextView.m */,
+				1CA681BC1E680240007B6751 /* GRNetRequestClass.h */,
+				1CA681BD1E680240007B6751 /* GRNetRequestClass.m */,
 				3A99402F1E499D1600F898D2 /* NetWorkManager.h */,
 				3A9940301E499D1600F898D2 /* NetWorkManager.m */,
 				3A9940311E499D1600F898D2 /* UIImage+compressIMG.h */,
@@ -1591,8 +1598,6 @@
 		3AE2FF4D1E4D59EE00E380F9 /* Announcement */ = {
 			isa = PBXGroup;
 			children = (
-				1CA681BC1E680240007B6751 /* GRNetRequestClass.h */,
-				1CA681BD1E680240007B6751 /* GRNetRequestClass.m */,
 				3AE2FF4E1E4D59EE00E380F9 /* Controller */,
 				1C1939BF1E51470600882B8C /* View */,
 				1C1939C01E51472700882B8C /* Model */,
@@ -1985,6 +1990,7 @@
 				3A94749D1E4D9160002F1F9B /* LoginViewController.m in Sources */,
 				1CFDFE1A1E542C65001D6300 /* TZAssetCell.m in Sources */,
 				1CFDFE1B1E542C65001D6300 /* TZAssetModel.m in Sources */,
+				3A62391B1E754E8900D045BA /* XFJSureUpPhotosView.m in Sources */,
 				3AA475121E5EAB5E00FEB005 /* XFJSignView.m in Sources */,
 				3A18E54D1E5D6FB400BFE891 /* XFJOtherInformationTableViewCell.m in Sources */,
 				3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */,

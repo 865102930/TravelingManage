@@ -8,7 +8,7 @@
 
 
 #import <UIKit/UIKit.h>
-
+#import "XFJFindTeamInfoByStateItem.h"
 @interface XFJConventionMessageTableViewCell : UIView
 
 //团队编号
@@ -19,6 +19,8 @@
 
 //旅行社名称
 @property (nonatomic, assign) NSInteger travelName;
+
+@property (nonatomic, strong) XFJFindTeamInfoByStateItem *findTeamInfoByStateItem;
 
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XFJLeftFindTeamInfoItem.h"
 
 @protocol XFJLeftViewDelegate <NSObject>
 
@@ -27,5 +28,13 @@
 @property (nonatomic, copy) void (^pushMineTeamBlock)(NSInteger);
 //退出登录
 @property (nonatomic, copy) void (^logoutUserBlock)();
+//全部控制器
+@property (nonatomic, copy) void (^pushAllTeamTaskBlock)();
+//待审核
+@property (nonatomic, copy) void (^pushCheckTeamBlock)();
+//待评价
+@property (nonatomic, copy) void (^pushPleaseAskingBlock)();
+//点击侧滑栏跳转到主界面
+@property (nonatomic, copy) void (^presentToHomeController)(XFJLeftFindTeamInfoItem *);
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XFJFindTeamInfoByStateItem.h"
 @protocol XFJOpenGroupViewControllerDelegate <NSObject>
 
 - (void)teamPeopleNumber:(NSString *)peopleNumber teamId:(NSString *)teamId;
@@ -22,4 +22,5 @@
 
 @property (nonatomic, weak) id <XFJOpenGroupViewControllerDelegate>delegate;
 
+//@property (nonatomic, strong) XFJFindTeamInfoByStateItem *findTeamInfoByStateItem;
 @end

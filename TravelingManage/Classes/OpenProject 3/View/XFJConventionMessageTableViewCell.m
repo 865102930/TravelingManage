@@ -127,7 +127,7 @@
 {
     if (_groupText_field == nil) {
         _groupText_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"团 队 编 号" rightImage:@"xinghao" placeholder:@"请输入团队编号"];
-        [_groupText_field addTarget:self action:@selector(groupText_endText:) forControlEvents:UIControlEventEditingDidEnd];
+        [_groupText_field addTarget:self action:@selector(groupText_endText:) forControlEvents:UIControlEventEditingChanged];
         _groupText_field.tag = 10000;
     }
     return _groupText_field;
@@ -148,7 +148,7 @@
 {
     if (_groupTime_field == nil) {
         _groupTime_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"出 团 日 期" rightImage:@"xinghao" placeholder:@"2017-02-23"];
-        [_groupTime_field addTarget:self action:@selector(groupText_endText:) forControlEvents:UIControlEventEditingDidEnd];
+        [_groupTime_field addTarget:self action:@selector(groupText_endText:) forControlEvents:UIControlEventEditingChanged];
         _groupTime_field.tag = 10001;
     }
     return _groupTime_field;
@@ -170,6 +170,14 @@
         _findTravelAgencyList_array = [NSMutableArray array];
     }
     return _findTravelAgencyList_array;
+}
+
+- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    _findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.groupText_field.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamNo];
+    self.groupTime_field.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
+    self.travelServiceName_field.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.travelAgencyName];
 }
 
 - (UITableView *)check_traveView

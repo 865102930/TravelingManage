@@ -10,4 +10,12 @@
 
 @implementation XFJLaterTeamControlItem
 
+
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{
+             @"findNewTeamInfo_Id":@"id",
+             };
+}
+
 @end

@@ -291,16 +291,25 @@
 - (void)checkPending
 {
     NSLog(@"主人,您点击了待审核按钮~~");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseCheckTeamController)]) {
+        [self.delegate pushToPleaseCheckTeamController];
+    }
 }
 
 - (void)pleaseAppraise
 {
     NSLog(@"主人,您点击了待评价按钮~~");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseAskingTeamController)]) {
+        [self.delegate pushToPleaseAskingTeamController];
+    }
 }
 
 - (void)allAssignmentClick
 {
     NSLog(@"主人,您点击了全部任务按钮~~");
+    if ([self.delegate respondsToSelector:@selector(pushToAllTaskingTeamController)]) {
+        [self.delegate pushToAllTaskingTeamController];
+    }
 }
 
 - (void)exitButtonClick

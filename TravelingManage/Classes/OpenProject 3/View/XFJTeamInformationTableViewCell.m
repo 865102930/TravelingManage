@@ -169,7 +169,7 @@
 {
     if (_teamNumber_field == nil) {
         _teamNumber_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"团 队 人 数" rightImage:@"xinghao" placeholder:@"请输入团队人数"];
-        [_teamNumber_field addTarget:self action:@selector(teamNumber_endText:) forControlEvents:UIControlEventEditingDidEnd];
+        [_teamNumber_field addTarget:self action:@selector(teamNumber_endText:) forControlEvents:UIControlEventEditingChanged];
         _teamNumber_field.tag = 10003;
     }
     return _teamNumber_field;
@@ -272,7 +272,7 @@
 {
     if (_journeyDay_field == nil) {
         _journeyDay_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"行 程 天 数" rightImage:@"xinghao" placeholder:@"请输入行程天数"];
-        [_journeyDay_field addTarget:self action:@selector(teamNumber_endText:) forControlEvents:UIControlEventEditingDidEnd];
+        [_journeyDay_field addTarget:self action:@selector(teamNumber_endText:) forControlEvents:UIControlEventEditingChanged];
         _journeyDay_field.tag = 10004;
     }
     return _journeyDay_field;
@@ -285,6 +285,12 @@
     }else {
         self.teamDay = text_field.text;
     }
+}
+
+- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    _findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.teamNumber_field.text = [NSString stringWithFormat:@"%zd",findTeamInfoByStateItem.teamNum];
 }
 
 #pragma mark - 组数

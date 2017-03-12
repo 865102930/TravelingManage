@@ -54,7 +54,11 @@
     
     [self setUpInit];
     
+    //显示第0个控制器
+    [self addChildVCIntoScrollView:0];
+    
 }
+
 
 #pragma mark - 所有的请求接口
 - (void)setAllRequest
@@ -219,6 +223,11 @@
         }
         [self.titleView addSubview:titleButtons];
     }
+}
+
+- (void)setStrNumber:(NSInteger)strNumber
+{
+    _strNumber = strNumber;
 }
 
 - (void)contentWithNameLabel:(UILabel *)nameLabel contentButton:(UIButton *)contentButton
