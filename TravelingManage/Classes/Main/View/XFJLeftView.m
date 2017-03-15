@@ -83,7 +83,8 @@
     NSDictionary *dictParaments = @{
                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"],
                                     @"rows":@5,
-                                    @"page":[NSString stringWithFormat:@"%ld",(long)newPage]
+                                    @"page":[NSString stringWithFormat:@"%ld",(long)newPage],
+                                    @"teamState":@0
                                     };
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:LEFTFINDTEAMINFOLISTURL withParaments:dictParaments withSuccessBlock:^(id object) {
@@ -271,7 +272,8 @@
     NSLog(@"cell点击了我~~");
     __weak __typeof(self)wself = self;
     if (self.presentToHomeController) {
-        self.presentToHomeController(wself.leftFindTeamInfoItem_array[indexPath.row]);
+        self.isTeamId = YES;
+        self.presentToHomeController(wself.leftFindTeamInfoItem_array[indexPath.row],self.isTeamId);
     }
 }
 

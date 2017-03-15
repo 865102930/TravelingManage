@@ -246,7 +246,7 @@
     if (_status_button == nil) {
         _status_button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_status_button setTitleColor:kColorff47 forState:UIControlStateNormal];
-        [_status_button addTarget:self action:@selector(againStartButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [_status_button addTarget:self action:@selector(againStartButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         _status_button.layer.cornerRadius = 2.0;
         _status_button.layer.borderColor = kColorff47.CGColor;
         _status_button.layer.borderWidth = 0.5;
@@ -269,9 +269,12 @@
     return _cancel_button;
 }
 
-- (void)againStartButtonClick
+- (void)againStartButtonClick:(UIButton *)button
 {
     NSLog(@"主人,您点击了评价按钮~~");
+    if (self.againStartButtonClickBlock) {
+        self.againStartButtonClickBlock(button);
+    }
 }
 
 - (void)cancelButtonClick

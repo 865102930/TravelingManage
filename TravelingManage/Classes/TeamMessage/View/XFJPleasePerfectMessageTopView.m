@@ -141,13 +141,13 @@
     return _openTeamTimeContent_label;
 }
 
-//- (void)setFindTeamTasksItem:(NSMutableArray<XFJFindTeamTasksItem *> *)findTeamTasksItem
-//{
-//    _findTeamTasksItem = findTeamTasksItem;
-//    self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].vehicleNo];
-//    self.peopleWhereAreFromContent_label.text = [NSString stringWithFormat:@"%@%@%@",findTeamTasksItem[0].province,findTeamTasksItem[0].city,findTeamTasksItem[0].area];
-//    self.openTeamTimeContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamDate];
-//}
+- (void)setFindTeamTasksItem:(NSMutableArray<XFJFindTeamTasksItem *> *)findTeamTasksItem
+{
+    _findTeamTasksItem = findTeamTasksItem;
+    self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].vehicleNo];
+    self.peopleWhereAreFromContent_label.text = [NSString stringWithFormat:@"%@%@%@",findTeamTasksItem[0].province,findTeamTasksItem[0].city,findTeamTasksItem[0].area];
+    self.openTeamTimeContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamDate];
+}
 
 
 @end

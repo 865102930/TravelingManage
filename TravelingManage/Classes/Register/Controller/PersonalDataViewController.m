@@ -12,6 +12,8 @@
 #import "NewVerificationCodeViewController.h"
 #import "HomeViewController.h"
 #import "UIBarButtonItem+Item.h"
+#import "XFJLogoutView.h"
+#import "LoginViewController.h"
 @interface PersonalDataViewController ()
 @property (nonatomic, strong) UILabel *title_label;
 @property(nonatomic,strong)UIImageView *backImage;//返回
@@ -19,6 +21,8 @@
 @property(nonatomic,strong)UILabel     *titleL;//标题
 @property(nonatomic,strong)UIView      *headerView;
 @property(nonatomic,strong)UIView      *lineView;
+@property (nonatomic, strong) UIButton *logout_button;
+@property (nonatomic, strong) XFJLogoutView *logoutView;
 @end
 
 @implementation PersonalDataViewController
@@ -59,6 +63,14 @@
     }
     return _backImage;
 }
+- (XFJLogoutView *)logoutView
+{
+    if (_logoutView == nil) {
+        _logoutView = [[XFJLogoutView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 200)];
+        _logoutView.backgroundColor = [UIColor whiteColor];
+    }
+    return _logoutView;
+}
 
 - (UILabel *)titleL{
     if (!_titleL) {
@@ -77,8 +89,26 @@
     self.tableView.tableFooterView = [[UITableView alloc] init];
     self.tableView.tableHeaderView = self.headerView;
     _user = [NSUserDefaults standardUserDefaults];
+    self.tableView.tableFooterView = self.logoutView;
+//    [self.tableView addSubview:self.logoutView];
     [self creatUI];
     self.tableView.scrollEnabled = NO;
+//    [self.logoutView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(self.view.mas_left).mas_offset(17.0);
+//        make.right.mas_equalTo(self.view.mas_right).mas_offset(-17.0);
+//        make.height.mas_equalTo(50.0);
+//        make.bottom.mas_equalTo(self.view.mas_bottom);
+//    }];
+    __weak __typeof(self)wself = self;
+    self.logoutView.logout_buttonClickBlock = ^() {
+        //清空userId
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults removeObjectForKey:@"userId"];
+        [userDefaults synchronize];
+        //跳转到登录页面
+        LoginViewController *loginController = [[LoginViewController alloc] init];
+        [wself presentViewController:loginController animated:YES completion:nil];
+    };
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -105,8 +135,6 @@
         make.centerY.mas_equalTo(self.backImage);
         make.centerX.mas_equalTo(self.view);
     }];
-    
-    
 }
 
 #pragma mark - Table view data source

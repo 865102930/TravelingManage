@@ -9,6 +9,7 @@
 #import "XFJLeftTableFooterView.h"
 #import "XFJMineTeamViewController.h"
 #import <Masonry.h>
+#import "XFJFindTeamInFoStateItem.h"
 
 @interface XFJLeftTableFooterView()
 
@@ -30,6 +31,7 @@
 @property (nonatomic, strong) UIButton *allAssignment;
 //退出按钮
 @property (nonatomic, strong) UIButton *exit_button;
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamInFoStateItem *> *findTeamInFoStateItemArray;
 
 @end
 
@@ -53,6 +55,47 @@
     [self.firestBackGroundView addSubview:self.firestMenuButton];
     [self.firestBackGroundView addSubview:self.secondMenuButton];
     [self.firestBackGroundView addSubview:self.thirdMenuButton];
+    [self lineCountRequest];
+}
+
+#pragma mark - 每个标题中有多少为查看的数字接口
+- (void)lineCountRequest
+{
+    NSDictionary *dictParaments = @{
+                                    @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]
+                                    };
+    __weak __typeof(self)wself = self;
+    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDTEAMINFOSTATEURL withParaments:dictParaments withSuccessBlock:^(id object) {
+        if (object) {
+            NSLog(@"+++++++++++获取到的团队状态数字是 :%@",object);
+            [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[object objectForKey:@"rows"]]];
+            for (NSInteger i = 0; i < wself.findTeamInFoStateItemArray.count; i++) {
+                XFJFindTeamInFoStateItem *findTeamInFoStateItem = wself.findTeamInFoStateItemArray[i];
+                if (findTeamInFoStateItem.state == 0) {
+                }else if (findTeamInFoStateItem.state == 1) {
+                    [wself.firestMenuButton setTitle:[NSString stringWithFormat:@"待完善(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
+                }else if (findTeamInFoStateItem.state == 2) {
+                    [_secondMenuButton setTitle:[NSString stringWithFormat:@"待审核(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
+                }else {
+                    [_thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
+                }
+            }
+        }
+    } withFailureBlock:^(NSError *error) {
+        if (error) {
+            NSLog(@"++=========获取到的团队状态数字失败的是:%@",error);
+            [MBProgressHUD showHudTipStr:@"主人~~网络君错误啦!!" contentColor:HidWithColorContentBlack];
+        }
+    } progress:^(float progress) {
+    }];
+}
+
+- (NSMutableArray <XFJFindTeamInFoStateItem *> *)findTeamInFoStateItemArray
+{
+    if (_findTeamInFoStateItemArray == nil) {
+        _findTeamInFoStateItemArray = [NSMutableArray array];
+    }
+    return _findTeamInFoStateItemArray;
 }
 
 #pragma mark - 布局控件
@@ -124,7 +167,6 @@
     if (_firestMenuButton == nil) {
         _firestMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_firestMenuButton setImage:[UIImage originalWithImage:@"wanshan"] forState:UIControlStateNormal];
-        [_firestMenuButton setTitle:[NSString stringWithFormat:@"%@",@"待完善(0)"] forState:UIControlStateNormal];
         [_firestMenuButton setTitleColor:kColor5858 forState:UIControlStateNormal];
         _firestMenuButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
         _firestMenuButton.titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -139,7 +181,6 @@
     if (_secondMenuButton == nil) {
         _secondMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_secondMenuButton setImage:[UIImage originalWithImage:@"shenhe"] forState:UIControlStateNormal];
-        [_secondMenuButton setTitle:[NSString stringWithFormat:@"%@",@"待审核(0)"] forState:UIControlStateNormal];
         [_secondMenuButton setTitleColor:kColor5858 forState:UIControlStateNormal];
         _secondMenuButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
         _secondMenuButton.titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -153,7 +194,6 @@
     if (_thirdMenuButton == nil) {
         _thirdMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_thirdMenuButton setImage:[UIImage originalWithImage:@"pingjia"] forState:UIControlStateNormal];
-        [_thirdMenuButton setTitle:[NSString stringWithFormat:@"%@",@"待评价(0)"] forState:UIControlStateNormal];
         [_thirdMenuButton setTitleColor:kColor5858 forState:UIControlStateNormal];
         _thirdMenuButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
         _thirdMenuButton.titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -184,18 +224,18 @@
     return _allAssignment;
 }
 
-- (UIButton *)exit_button
-{
-    if (_exit_button == nil) {
-        _exit_button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_exit_button setTitle:@"退出" forState:UIControlStateNormal];
-        [_exit_button setTitleColor:kColorFFFF forState:UIControlStateNormal];
-        _exit_button.backgroundColor = kColorff47;
-        _exit_button.layer.cornerRadius = 8;
-        [_exit_button addTarget:self action:@selector(exitButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _exit_button;
-}
+//- (UIButton *)exit_button
+//{
+//    if (_exit_button == nil) {
+//        _exit_button = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_exit_button setTitle:@"退出" forState:UIControlStateNormal];
+//        [_exit_button setTitleColor:kColorFFFF forState:UIControlStateNormal];
+//        _exit_button.backgroundColor = kColorff47;
+//        _exit_button.layer.cornerRadius = 8;
+//        [_exit_button addTarget:self action:@selector(exitButtonClick) forControlEvents:UIControlEventTouchUpInside];
+//    }
+//    return _exit_button;
+//}
 
 - (void)changeMenu
 {

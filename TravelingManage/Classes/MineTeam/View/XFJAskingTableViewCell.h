@@ -12,6 +12,7 @@
 @interface XFJAskingTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) XFJFindTeamInfoByStateItem *findTeamInfoByStateItem;
+@property (nonatomic, copy) void (^againStartButtonClickBlock)(UIButton *);
 
 + (CGFloat)cellHeight;
 

@@ -228,6 +228,7 @@
         if ([responseObject[@"msg"] isEqualToString:@"success"]) {
             PersonalInformationViewController *PersonalInformationVC = [[PersonalInformationViewController alloc] init];
             PersonalInformationVC.phoneNum_text = self.registTextField_text;
+            PersonalInformationVC.idCode_text = self.idCodeTextF.text;
             [self.navigationController pushViewController:PersonalInformationVC animated:YES];
         }else{
             [MBProgressHUD showHUDMsg:@"验证码错误,请重新输入"];

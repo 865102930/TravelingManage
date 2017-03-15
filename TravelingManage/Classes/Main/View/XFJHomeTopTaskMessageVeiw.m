@@ -171,7 +171,7 @@
     [self.peopleMessageContent_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(22.0);
         make.right.mas_equalTo(self.mas_right).mas_offset(-50.0);
-        make.width.mas_equalTo(80.0);
+//        make.width.mas_equalTo(80.0);
     }];
     [self.peopleMessage_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(23.0);
@@ -211,10 +211,32 @@
     _laterTeamControlItem = laterTeamControlItem;
     self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",laterTeamControlItem.teamNo];
     self.peopleMessageContent_label.text = [NSString stringWithFormat:@"%@%@%@",laterTeamControlItem.province,laterTeamControlItem.city,laterTeamControlItem.area];
-    self.openTeamContent_label.text = [NSString stringWithFormat:@"%@",laterTeamControlItem.teamDate];
+    NSString *teamDateStr = [NSString stringWithFormat:@"%@",laterTeamControlItem.teamDate];
+    NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
+    self.openTeamContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
 }
 
 
+- (void)setLeftFindTeamInfoItem:(XFJLeftFindTeamInfoItem *)leftFindTeamInfoItem
+{
+    _leftFindTeamInfoItem = leftFindTeamInfoItem;
+    self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",leftFindTeamInfoItem.teamNo];
+    self.peopleMessageContent_label.text = [NSString stringWithFormat:@"%@%@%@",leftFindTeamInfoItem.province,leftFindTeamInfoItem.city,leftFindTeamInfoItem.area];
+    NSString *teamDateStr = [NSString stringWithFormat:@"%@",leftFindTeamInfoItem.teamDate];
+    NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
+    self.openTeamContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
+    if (leftFindTeamInfoItem.teamState == 0) {
+        [_state_button setTitle:@"任务中" forState:UIControlStateNormal];
+    }else if (leftFindTeamInfoItem.teamState == 1) {
+        [_state_button setTitle:@"待完善" forState:UIControlStateNormal];
+    }else if (leftFindTeamInfoItem.teamState == 2) {
+        [_state_button setTitle:@"待审核" forState:UIControlStateNormal];
+    }else if (leftFindTeamInfoItem.teamState == 3) {
+        [_state_button setTitle:@"已审核" forState:UIControlStateNormal];
+    }else {
+        [_state_button setTitle:@"审核不通过" forState:UIControlStateNormal];
+    }
+}
 
 
 

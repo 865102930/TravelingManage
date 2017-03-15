@@ -79,12 +79,13 @@
     }
     if (self.ButtonTypeNum == 1) {
         self.name_label.text = @"省";
+        self.star_imageView.image = [UIImage originalWithImage:@"xinghao"];
     }else if (self.ButtonTypeNum == 2) {
         self.name_label.text = @"市";
+        self.star_imageView.image = [UIImage originalWithImage:@"xinghao"];
     }else {
         self.name_label.text = @"区";
     }
-    self.star_imageView.image = [UIImage originalWithImage:@"xinghao"];
     self.name_label.textColor = kColor2f2f;
     self.name_label.font = [UIFont systemFontOfSize:13.0];
     [btn addSubview:self.name_label];

@@ -69,7 +69,7 @@
 {
     if (_signPhotosTitle_label == nil) {
         _signPhotosTitle_label = [[UILabel alloc] init];
-        _signPhotosTitle_label.text = @"签到点一凭证照片";
+//        _signPhotosTitle_label.text = @"签到点一凭证照片";
         _signPhotosTitle_label.textColor = kColor2f2f;
         _signPhotosTitle_label.font = [UIFont fontWithName:PingFang size:14.0];
     }
@@ -109,6 +109,9 @@
     if(self.delegate && [self.delegate respondsToSelector:@selector(chooseVoucherPhotosImage:)]) {
         [self.delegate chooseVoucherPhotosImage:self];
     }
+    if (self.photos_buttonBlock) {
+        self.photos_buttonBlock(addPicBtn);
+    }
 }
 
 - (void)setPhotoImage:(UIImage *)photoImage{
@@ -132,4 +135,15 @@
     
 }
 
+- (void)setTaskItemRows:(XFJTaskItemRows *)taskItemRows
+{
+    _taskItemRows = taskItemRows;
+    self.signPhotosTitle_label.text = [NSString stringWithFormat:@"%@凭证照片",taskItemRows.attractionsName];
+    
+    if (taskItemRows.photos_image == nil) {
+        [self.addPicBtn setImage:[UIImage imageNamed:@"add-img-"] forState:UIControlStateNormal];
+    }else{
+        [self.addPicBtn setImage:taskItemRows.photos_image forState:UIControlStateNormal];
+    }
+}
 @end

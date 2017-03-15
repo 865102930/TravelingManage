@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+@interface TasksItem : NSObject
+//景点id
+@property (nonatomic, assign) NSInteger attractionsId;
+//景点名称
+@property (nonatomic, strong) NSString *attractionsName;
+//任务id
+@property (nonatomic, assign) NSInteger taskId;
+
+@end
+
 @interface XFJFindTeamTasksItem : NSObject
 
 //团队编号
@@ -34,5 +44,10 @@
 @property (nonatomic, strong) NSString *vehicleNo;
 //景区名称
 @property (nonatomic, strong) NSString *attractionsName;
+
+//添加的图片
+@property (nonatomic, strong) UIImage *image_view;
+//任务数组
+@property (nonatomic, strong) NSArray <TasksItem * >*tasks;
 
 @end

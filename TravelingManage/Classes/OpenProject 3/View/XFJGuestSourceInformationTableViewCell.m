@@ -236,9 +236,9 @@
     bgScrollView.frame = CGRectMake(-30, 0, SCREEN_WIDTH + 30, 350);
     [bgScrollView addSubview:self.goalAttributeTableView];
     [self.goalAttributeTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.goalAttribute_button.mas_left);
+        make.left.mas_equalTo(self.goalAttribute_button.mas_left).mas_offset(95.0);
         make.right.mas_equalTo(self.goalAttribute_button.mas_right);
-        make.top.mas_equalTo(self.goalAttribute_button.mas_bottom).mas_offset(2.0);
+        make.top.mas_equalTo(self.goalAttribute_button.mas_bottom);
         make.height.mas_equalTo(196.0);
     }];
     self.goalAttribute_imageViewRight.image = [UIImage originalWithImage:@"triangle"];
@@ -266,6 +266,7 @@
         _goalAttributeTableView.backgroundColor = [UIColor whiteColor];
         [_goalAttributeTableView.layer setBorderWidth:1.0];
         _goalAttributeTableView.layer.borderColor = kBorderColor.CGColor;
+        _goalAttributeTableView.layer.cornerRadius = 5.0;
         _goalAttributeTableView.tag = 10001;
     }
     return _goalAttributeTableView;

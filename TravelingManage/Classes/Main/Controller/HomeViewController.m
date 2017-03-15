@@ -42,7 +42,7 @@
 #import "XFJChooseScenerySignView.h"
 #import "XFJPleaseDoITViewController.h"
 #import "XFJPleaseAskingViewController.h"
-
+#import "XFJFindTeamTaskItem.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -110,6 +110,9 @@
 @property (nonatomic, strong) XFJSignTeamTwoView *signTeamTwoView;
 @property (nonatomic, strong) XFJChooseScenerySignView *chooseScenerySignView;
 @property (nonatomic, strong) XFJFindAttractionsListItem *FindAttractionsListItem;
+//提供一个BOOL值
+@property (nonatomic, assign) BOOL isTeamId;
+@property (nonatomic, strong) XFJLeftFindTeamInfoItem *leftFindTeamInfoItem;
 
 @end
 
@@ -144,7 +147,6 @@
     self.isProjectItem == NO ? [self.view addSubview:self.announcementView] : [self.view addSubview:self.homeTopTaskMessageVeiw];
     
 #warning 当用户一开始进入app的时候,由于不存在任务,那么就显示这个新建任务,如果有任务了,那么此界面就不存在
-
     [self.maskView1 addSubview:self.leftView];
     //获取当前用户的位置信息
     [self getUserLocation];
@@ -265,8 +267,13 @@
         [wself.navigationController pushViewController:pleaseCheckTeamViewController animated:YES];
     };
     //将左侧的内容传到控制器中
-    self.leftView.presentToHomeController = ^(XFJLeftFindTeamInfoItem *leftFindTeamInfoItem) {
+    self.leftView.presentToHomeController = ^(XFJLeftFindTeamInfoItem *leftFindTeamInfoItem,BOOL isTeamId) {
         [wself remoSubViews];
+        [wself.view addSubview:wself.homeTopTaskMessageVeiw];
+        //请求获取左侧的接口
+        wself.homeTopTaskMessageVeiw.leftFindTeamInfoItem = leftFindTeamInfoItem;
+        wself.leftFindTeamInfoItem = leftFindTeamInfoItem;
+        wself.isTeamId = isTeamId;
     };
     //退出登
     self.leftView.logoutUserBlock = ^() {
@@ -329,6 +336,7 @@
         [wself.maskView1 addSubview:wself.chooseScenerySignView];
     };
     self.signTeamTwoView.hotelSign_block = ^() {
+        [wself.signTeamTwoView removeFromSuperview];
         //直接添加酒店签到页面
         [wself.view addSubview:wself.hotel_view];
     };
@@ -344,13 +352,27 @@
     };
 }
 
+#pragma mark - 请求获取左侧栏的接口
+- (void)requestWithLeftIndexPathOfRows:(XFJLeftFindTeamInfoItem *)leftFindTeamInfoItem
+{
+    [GRNetRequestClass POST:FINDTEAMTASKURL params:@{@"teamId":[NSString stringWithFormat:@"%zd",leftFindTeamInfoItem.findTeamInfoItem_id]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"--------请求到的消息是 :%@",responseObject);
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"+++++++++请求到的错误信息是 :%@",error);
+        }
+    }];
+}
+
 #pragma mark - 改变按钮的状态
 - (void)statusHomeTopButtonClickRequest
 {
-    NSLog(@"teamID:%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"]);
+    NSLog(@"------teamID:%zd",[NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id]);
     //参数
     NSDictionary *dictParaments = @{
-                                    @"id":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
+                                    @"id":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
                                     @"teamState":@1
                                     };
     __weak __typeof(self)wself = self;
@@ -1110,7 +1132,6 @@
             [MBProgressHUD showHudTipStr:@"亲~~网络错误" contentColor:HidWithColorContentBlack];
         }
     } progress:^(float progress) {
-        
     }];
 }
 
@@ -1177,7 +1198,7 @@
             if (isYes) {//这里表示在范围内
                 self.isContains = isYes;
                 [self.isYes_array addObject:findAttractionsListItem];
-                NSLog(@"打印为yes的景点和酒店个数是:%zd",self.isYes_array.count);
+                NSLog(@"r:%zd",self.isYes_array.count);
             }else {
                 NSLog(@"-----------这里表示不在范围内,可以直接给用户提示框");
             }
@@ -1301,28 +1322,6 @@
 {
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);
     BOOL isContains = MAPolygonContainsCoordinate(location, polygon, strarryCount);
-    //根据判断是否在范围内的值来做事情(4个和9个表示在范围内)
-    //        if (isContains) {//该处为YES则表示在
-    //            NSLog(@"-----------经纬度是否在多边形内部2 : %d",isContains);//0:标识不在 1:标识在
-    //            self.isContains = isContains;
-    //            //判断该范围的景点类型
-    //            if (self.stateType == 1) {//1则表示酒店
-    //                //该处加载的是有房间数量的签到页面(也就是酒店)
-    //                NSLog(@"酒店的状态值是 :%zd",self.stateType);
-    //                //此处添加酒店的签到view
-    //                self.isProjectItem == NO ? (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 200, 42, 41)) : (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 290, 42, 41));
-    //                self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.hotel_view];
-    //            }else {//0则表示是景区
-    //                //该出加载的是没有房间数量的签到页面(也就是景区)
-    //                NSLog(@"景区的状态值是:%zd------景区的id值是:%zd",self.stateType,self.attractions_id);
-    //                self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.sign_view];
-    //            }
-    //        }else {
-    //            //不在该签到的范围内
-    //            NSLog(@"不在景点范围内景点的状态值是:%zd",self.stateType);
-    //            //提示还没到签到区域,让用户到签到区域进行签到
-    //            //        [MBProgressHUD showHudTipStr:@"亲~~您还没有到达签到区域,请考虑是否签到?" contentColor:HidWithColorContentBlack];
-    //        }
     return isContains;
 }
 

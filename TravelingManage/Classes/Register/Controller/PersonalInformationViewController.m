@@ -104,7 +104,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    _user = [NSUserDefaults standardUserDefaults];
+    _user = [NSUserDefaults standardUserDefaults];
+    [_user synchronize];
     [self creatUI];
 }
 
@@ -194,6 +195,10 @@
 
 //注册
 - (void)userRegister {
+    if ([self isCorrect:self.idTextF.text] == NO) {//如果为YES就是正确的
+        [MBProgressHUD showHudTipStr:@"请输入正确的身份证号码!" contentColor:HidWithColorContentBlack];
+        return;
+    }
     NSDictionary *dictParaments = @{
                                     @"userMobile" : self.phoneNum_text,
                                     @"idCard" : self.idTextF.text,
@@ -204,19 +209,52 @@
         NSLog(@"注册dictParaments:%@",dictParaments);
         if ([responseObject[@"msg"] isEqualToString:@"success"]) {
             [MBProgressHUD showHUDMsg:@"注册成功"];
-            LoginViewController *LoginVC = [[LoginViewController alloc] init];
-            [self.navigationController pushViewController:LoginVC animated:YES];
+//            LoginViewController *LoginVC = [[LoginViewController alloc] init];
+//            [self.navigationController pushViewController:LoginVC animated:YES];
+            //登录
+            [self requestLogin];
         }else{
             [MBProgressHUD showHUDMsg:@"该手机号已注册"];
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error.code == NSURLErrorCancelled) return;
         [MBProgressHUD showHUDMsg:@"网络连接错误"];
-        
     }];
 }
 
-
+//登录请求
+- (void)requestLogin
+{
+    __weak typeof(self) weakself = self;
+    NSDictionary *dictParaments = @{
+                                    @"userMobile" : self.phoneTextF.text,
+                                    //  @"registrationId":@"10"
+                                    @"code" : self.idCode_text,
+                                    };
+    [GRNetRequestClass POST:LOGINURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        [MBProgressHUD hidenHud];
+        if (responseObject) {
+            if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+                NSDictionary *dict = responseObject[@"object"];
+                [_user setObject:dict[@"id"]forKey:@"userId"];
+                [_user setObject:dict[@"userMobile"]forKey:@"phone"];
+                [_user setObject:dict[@"userName"]forKey:@"userName"];
+                [_user setObject:dict[@"idCard"]forKey:@"idCard"];
+                [_user synchronize];
+                NSLog(@"----------------------------登录后得到的返回值------------------------------:%@",responseObject);
+                NSLog(@"phone:%@",[_user objectForKey:@"phone"]);
+                NSLog(@"userId:%@",[_user objectForKey:@"userId"]);
+                NSLog(@"userName:%@",[_user objectForKey:@"userName"]);
+                NSLog(@"idCard:%@",[_user objectForKey:@"idCard"]);
+                HomeViewController *homeVC = [[HomeViewController alloc] init];
+                [weakself.navigationController pushViewController:homeVC animated:YES];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        [MBProgressHUD hidenHud];
+        if (error.code == NSURLErrorCancelled) return;
+    }];
+}
 
 //返回
 - (void)backButtonClick{
@@ -236,5 +274,45 @@
         _nextButton.userInteractionEnabled = NO;
     }
 }
+
+/**
+ *  验证身份证号码是否正确的方法
+ *
+ *  @param IDNumber 传进身份证号码字符串
+ *
+ *  @return 返回YES或NO表示该身份证号码是否符合国家标准
+ */
+- (BOOL)isCorrect:(NSString *)IDNumber
+{
+    NSMutableArray *IDArray = [NSMutableArray array];
+    // 遍历身份证字符串,存入数组中
+    for (int i = 0; i < 18; i++) {
+        NSRange range = NSMakeRange(i, 1);
+        NSString *subString = [IDNumber substringWithRange:range];
+        [IDArray addObject:subString];
+    }
+    // 系数数组
+    NSArray *coefficientArray = [NSArray arrayWithObjects:@"7", @"9", @"10", @"5", @"8", @"4", @"2", @"1", @"6", @"3", @"7", @"9", @"10", @"5", @"8", @"4", @"2", nil];
+    // 余数数组
+    NSArray *remainderArray = [NSArray arrayWithObjects:@"1", @"0", @"X", @"9", @"8", @"7", @"6", @"5", @"4", @"3", @"2", nil];
+    // 每一位身份证号码和对应系数相乘之后相加所得的和
+    int sum = 0;
+    for (int i = 0; i < 17; i++) {
+        int coefficient = [coefficientArray[i] intValue];
+        int ID = [IDArray[i] intValue];
+        sum += coefficient * ID;
+    }
+    // 这个和除以11的余数对应的数
+    NSString *str = remainderArray[(sum % 11)];
+    // 身份证号码最后一位
+    NSString *string = [IDNumber substringFromIndex:17];
+    // 如果这个数字和身份证最后一位相同,则符合国家标准,返回YES
+    if ([str isEqualToString:string]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 
 @end

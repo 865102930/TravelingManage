@@ -75,7 +75,7 @@
 
 #define BASEURL @"http://118.178.224.151/teammgmtback"
 
-//#define BASEURL @"http://192.168.0.101:8080/teammgmtback"
+//#define BASEURL @"http://192.168.0.100:8080/teammgmtback"
 
 //注册接口
 #define REGISTURL (BASEURL@"/app/user/userRegister")
@@ -147,6 +147,12 @@
 #define MODIFYTEAMINFOURL (BASEURL@"/app/teamInfo/modifyTeamInfo")
 //取消团队
 #define DELETETEAMINFOURL (BASEURL@"/app/teamInfo/deleteTeamInfo")
+//团队id获取任务信息
+#define FINDTEAMTASKURL (BASEURL@"/app/teamInfo/findTeamTask")
+//完善团队图片和景点图片(完善图片)
+#define FINISHIMGURL (BASEURL@"/app/teamTask/finishImg")
+
+
 
 
 

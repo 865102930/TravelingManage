@@ -7,7 +7,17 @@
 //
 
 #import "XFJFindTeamTasksItem.h"
+//#import <MJExtension.h>
 
 @implementation XFJFindTeamTasksItem
 
+//告诉MJE框架,里面是个数组模型
++ (NSDictionary *)mj_objectClassInArray
+{
+    return @{
+             @"tasks":@"TasksItem"
+             };
+}
+
 @end
+

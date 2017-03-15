@@ -61,6 +61,11 @@
 		3A02C09E1E727B7200966384 /* XFJSignTeamTwoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C09D1E727B7200966384 /* XFJSignTeamTwoView.m */; };
 		3A02C0A11E73C03A00966384 /* XFJChooseScenerySignView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C0A01E73C03A00966384 /* XFJChooseScenerySignView.m */; };
 		3A02C0A41E73C7A600966384 /* XFJChooseSceneryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C0A31E73C7A600966384 /* XFJChooseSceneryTableViewCell.m */; };
+		3A03A4AE1E76C38300AADD4D /* XFJLogoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A03A4AD1E76C38200AADD4D /* XFJLogoutView.m */; };
+		3A03A4B11E78D8EB00AADD4D /* XFJTasksItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A03A4B01E78D8EB00AADD4D /* XFJTasksItemModel.m */; };
+		3A03A4B41E78D96D00AADD4D /* XFJTaskItemSecondModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A03A4B31E78D96D00AADD4D /* XFJTaskItemSecondModel.m */; };
+		3A03A4B71E78F05100AADD4D /* XFJTaskItemRows.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A03A4B61E78F05100AADD4D /* XFJTaskItemRows.m */; };
+		3A03A4BA1E79150100AADD4D /* XFJSureCommitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A03A4B91E79150100AADD4D /* XFJSureCommitView.m */; };
 		3A07C8F81E480B0A008A838D /* UIImage+XFJOriginalImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8F71E480B0A008A838D /* UIImage+XFJOriginalImageView.m */; };
 		3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8FF1E481A70008A838D /* UIBarButtonItem+XFJItem.m */; };
 		3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C9011E481A70008A838D /* UIImage+XFJColor.m */; };
@@ -294,6 +299,7 @@
 		3AF04E0F1E61358F00D96984 /* XFJHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF04E0E1E61358F00D96984 /* XFJHeaderView.m */; };
 		3AF0C5FB1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF0C5FA1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m */; };
 		3AF0D39A1E61FC4200EDECD1 /* XFJHotelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF0D3991E61FC4200EDECD1 /* XFJHotelView.m */; };
+		3AF3B17F1E7637F600FE4067 /* XFJFindTeamTaskItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF3B17E1E7637F600FE4067 /* XFJFindTeamTaskItem.m */; };
 		3AFC9A2A1E629D200049A758 /* input-box4-.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A271E629D200049A758 /* input-box4-.png */; };
 		3AFC9A2B1E629D200049A758 /* input-box4-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A281E629D200049A758 /* input-box4-@2x.png */; };
 		3AFC9A2C1E629D200049A758 /* input-box4-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A291E629D200049A758 /* input-box4-@3x.png */; };
@@ -419,6 +425,16 @@
 		3A02C0A01E73C03A00966384 /* XFJChooseScenerySignView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJChooseScenerySignView.m; sourceTree = "<group>"; };
 		3A02C0A21E73C7A600966384 /* XFJChooseSceneryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJChooseSceneryTableViewCell.h; sourceTree = "<group>"; };
 		3A02C0A31E73C7A600966384 /* XFJChooseSceneryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJChooseSceneryTableViewCell.m; sourceTree = "<group>"; };
+		3A03A4AC1E76C38200AADD4D /* XFJLogoutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJLogoutView.h; sourceTree = "<group>"; };
+		3A03A4AD1E76C38200AADD4D /* XFJLogoutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJLogoutView.m; sourceTree = "<group>"; };
+		3A03A4AF1E78D8EB00AADD4D /* XFJTasksItemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTasksItemModel.h; sourceTree = "<group>"; };
+		3A03A4B01E78D8EB00AADD4D /* XFJTasksItemModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTasksItemModel.m; sourceTree = "<group>"; };
+		3A03A4B21E78D96D00AADD4D /* XFJTaskItemSecondModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTaskItemSecondModel.h; sourceTree = "<group>"; };
+		3A03A4B31E78D96D00AADD4D /* XFJTaskItemSecondModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTaskItemSecondModel.m; sourceTree = "<group>"; };
+		3A03A4B51E78F05100AADD4D /* XFJTaskItemRows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTaskItemRows.h; sourceTree = "<group>"; };
+		3A03A4B61E78F05100AADD4D /* XFJTaskItemRows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTaskItemRows.m; sourceTree = "<group>"; };
+		3A03A4B81E79150100AADD4D /* XFJSureCommitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSureCommitView.h; sourceTree = "<group>"; };
+		3A03A4B91E79150100AADD4D /* XFJSureCommitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSureCommitView.m; sourceTree = "<group>"; };
 		3A07C8F61E480B0A008A838D /* UIImage+XFJOriginalImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+XFJOriginalImageView.h"; sourceTree = "<group>"; };
 		3A07C8F71E480B0A008A838D /* UIImage+XFJOriginalImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+XFJOriginalImageView.m"; sourceTree = "<group>"; };
 		3A07C8FD1E480FF0008A838D /* TravelingManage.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TravelingManage.pch; sourceTree = "<group>"; };
@@ -761,6 +777,8 @@
 		3AF0C5FA1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJLeftFindTeamInfoItem.m; sourceTree = "<group>"; };
 		3AF0D3981E61FC4200EDECD1 /* XFJHotelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJHotelView.h; sourceTree = "<group>"; };
 		3AF0D3991E61FC4200EDECD1 /* XFJHotelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJHotelView.m; sourceTree = "<group>"; };
+		3AF3B17D1E7637F600FE4067 /* XFJFindTeamTaskItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindTeamTaskItem.h; sourceTree = "<group>"; };
+		3AF3B17E1E7637F600FE4067 /* XFJFindTeamTaskItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindTeamTaskItem.m; sourceTree = "<group>"; };
 		3AFC9A271E629D200049A758 /* input-box4-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box4-.png"; sourceTree = "<group>"; };
 		3AFC9A281E629D200049A758 /* input-box4-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box4-@2x.png"; sourceTree = "<group>"; };
 		3AFC9A291E629D200049A758 /* input-box4-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box4-@3x.png"; sourceTree = "<group>"; };
@@ -1243,6 +1261,8 @@
 				3AFFB28C1E7023D20013185F /* XFJCheckFooterView.m */,
 				3A02C0991E7152C900966384 /* XFJAloneCheckView.h */,
 				3A02C09A1E7152C900966384 /* XFJAloneCheckView.m */,
+				3A03A4B81E79150100AADD4D /* XFJSureCommitView.h */,
+				3A03A4B91E79150100AADD4D /* XFJSureCommitView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1260,6 +1280,12 @@
 				3AFFB28F1E70EADD0013185F /* XFJFindParamsSystemListDoubleItem.m */,
 				1C06E0871E73C1540019FF1F /* PhotoModel.h */,
 				1C06E0881E73C1540019FF1F /* PhotoModel.m */,
+				3A03A4AF1E78D8EB00AADD4D /* XFJTasksItemModel.h */,
+				3A03A4B01E78D8EB00AADD4D /* XFJTasksItemModel.m */,
+				3A03A4B21E78D96D00AADD4D /* XFJTaskItemSecondModel.h */,
+				3A03A4B31E78D96D00AADD4D /* XFJTaskItemSecondModel.m */,
+				3A03A4B51E78F05100AADD4D /* XFJTaskItemRows.h */,
+				3A03A4B61E78F05100AADD4D /* XFJTaskItemRows.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1427,6 +1453,8 @@
 				3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */,
 				3A6239191E754E8800D045BA /* XFJSureUpPhotosView.h */,
 				3A62391A1E754E8800D045BA /* XFJSureUpPhotosView.m */,
+				3A03A4AC1E76C38200AADD4D /* XFJLogoutView.h */,
+				3A03A4AD1E76C38200AADD4D /* XFJLogoutView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1459,6 +1487,8 @@
 				3AF0C5FA1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m */,
 				3ACCE3991E69878E00B3526B /* XFJLaterTeamControlItem.h */,
 				3ACCE39A1E69878E00B3526B /* XFJLaterTeamControlItem.m */,
+				3AF3B17D1E7637F600FE4067 /* XFJFindTeamTaskItem.h */,
+				3AF3B17E1E7637F600FE4067 /* XFJFindTeamTaskItem.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1968,6 +1998,7 @@
 			files = (
 				3AF04E0F1E61358F00D96984 /* XFJHeaderView.m in Sources */,
 				3AE849E21E543DCA00A71C5E /* XFJAllTaskViewController.m in Sources */,
+				3AF3B17F1E7637F600FE4067 /* XFJFindTeamTaskItem.m in Sources */,
 				1C1939B81E4DB71B00882B8C /* PageButton.m in Sources */,
 				1C665B9C1E696E1D0059DE59 /* JTNavigationController.m in Sources */,
 				3A18E54B1E5D6FB400BFE891 /* XFJConventionMessageTableViewCell.m in Sources */,
@@ -2023,6 +2054,7 @@
 				3A10CFDF1E5BDBD200592564 /* NSObject+Common.m in Sources */,
 				3A51D1551E6AB0B3005B86F6 /* XFJCarPhotosPerfectCollectionViewCell.m in Sources */,
 				1C210C711E558B0600689677 /* PersonalDetailCell.m in Sources */,
+				3A03A4B41E78D96D00AADD4D /* XFJTaskItemSecondModel.m in Sources */,
 				3A51D1611E6AC9B3005B86F6 /* XFJTeamMessageTableViewCell.m in Sources */,
 				3A9940331E499D1600F898D2 /* NetWorkManager.m in Sources */,
 				3ACCE3921E69003200B3526B /* XFJSignMessageTimeView.m in Sources */,
@@ -2045,10 +2077,12 @@
 				3A18E5531E5D6FB400BFE891 /* XFJVoucherPhotosCollectionViewCell.m in Sources */,
 				3A756F201E657D03005D2C02 /* AlertView.m in Sources */,
 				3A00E3141E545DE200525150 /* XFJAllTaskTableViewCell.m in Sources */,
+				3A03A4B71E78F05100AADD4D /* XFJTaskItemRows.m in Sources */,
 				3A9474981E4D9137002F1F9B /* PersonalInformationViewController.m in Sources */,
 				3AFFB2681E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m in Sources */,
 				3AE849F11E54410F00A71C5E /* XFJSubscribeButton.m in Sources */,
 				1C665BF61E69981E0059DE59 /* NewPhoneNueViewController.m in Sources */,
+				3A03A4B11E78D8EB00AADD4D /* XFJTasksItemModel.m in Sources */,
 				3AC803381E6D7CEB005D2B71 /* XFJSignAppraiseTableViewCell.m in Sources */,
 				1C06E0891E73C1540019FF1F /* PhotoModel.m in Sources */,
 				1CFDFE221E542C65001D6300 /* TZVideoPlayerController.m in Sources */,
@@ -2064,6 +2098,7 @@
 				1CFDFE561E542C84001D6300 /* JFPhotoBrowserViewController.m in Sources */,
 				3ABDC9DC1E6EB5BF009D1AB3 /* XFJFindCustomAttrListItem.m in Sources */,
 				3A18E54C1E5D6FB400BFE891 /* XFJGuestSourceInformationTableViewCell.m in Sources */,
+				3A03A4AE1E76C38300AADD4D /* XFJLogoutView.m in Sources */,
 				3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */,
 				3AA475091E5E8E7700FEB005 /* XFJFindAttractionsListItem.m in Sources */,
 				3A02C0A11E73C03A00966384 /* XFJChooseScenerySignView.m in Sources */,
@@ -2081,6 +2116,7 @@
 				1CFDFDE81E53E3DD001D6300 /* AnnouncementDetailModel.m in Sources */,
 				3A51D14F1E6AA82A005B86F6 /* XFJOtherMessagePerfectView.m in Sources */,
 				3AEE6C011E6402B400410412 /* XFJTeamSignListItem.m in Sources */,
+				3A03A4BA1E79150100AADD4D /* XFJSureCommitView.m in Sources */,
 				1C665B991E6968310059DE59 /* NewVerificationCodeViewController.m in Sources */,
 				3A51D15E1E6AC543005B86F6 /* XFJTeamMessageBottomView.m in Sources */,
 				3A07C8F81E480B0A008A838D /* UIImage+XFJOriginalImageView.m in Sources */,

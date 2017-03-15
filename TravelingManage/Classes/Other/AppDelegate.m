@@ -50,6 +50,7 @@
         [self.window makeKeyAndVisible];
     }else {
         XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[LoginViewController alloc] init]];
+//        XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[XFJPleasePerfectMessageViewController alloc] init]];
         self.window.rootViewController = nav;
         [self.window makeKeyAndVisible];
     }

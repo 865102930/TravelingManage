@@ -20,5 +20,11 @@
 @property (nonatomic, strong) NSString *area;//区
 //车牌号
 @property (nonatomic, strong) NSString *vehicleNo;
+//团队id
+@property (nonatomic, assign) NSInteger findTeamInfoItem_id;
+//开团时间
+@property (nonatomic, strong) NSString *teamDate;
+//状态值：0:任务中 1:待完善 2:待审核 3:已审核 4:审核不通过
+@property (nonatomic, assign) NSInteger teamState;
 
 @end

@@ -11,4 +11,12 @@
 @implementation XFJLeftFindTeamInfoItem
 
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{
+             @"findTeamInfoItem_id":@"id",
+             };
+}
+
+
 @end

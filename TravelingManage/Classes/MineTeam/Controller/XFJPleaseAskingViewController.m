@@ -9,6 +9,7 @@
 #import "XFJPleaseAskingViewController.h"
 #import "XFJAskingTableViewCell.h"
 #import "XFJFindTeamInfoByStateItem.h"
+#import "XFJPleaseAppraiseViewController.h"
 
 @interface XFJPleaseAskingViewController () <UITableViewDelegate,UITableViewDataSource>
 
@@ -101,6 +102,16 @@
     if (cell == nil) {
         cell = [[XFJAskingTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
+    __weak __typeof(self)wself = self;
+    cell.againStartButtonClickBlock = ^(UIButton *button) {
+        UITableViewCell *cell = (UITableViewCell *)[button superview];
+        NSIndexPath *path = [self.allTaskTableView indexPathForCell:cell];
+        //这里可以获取到cell是具体是哪一个,就可以传相应的id
+        NSLog(@"-----------------index row%zd", [path row]);
+        XFJPleaseAppraiseViewController *pleaseAppraiseViewController = [[XFJPleaseAppraiseViewController alloc] init];
+        pleaseAppraiseViewController.teamId = wself.findTeamInfoByStateItem_array[path.row].findTeamInfoByState_Id;
+        [wself.navigationController pushViewController:pleaseAppraiseViewController animated:YES];
+    };
     cell.findTeamInfoByStateItem = self.findTeamInfoByStateItem_array[indexPath.row];
     return cell;
 }

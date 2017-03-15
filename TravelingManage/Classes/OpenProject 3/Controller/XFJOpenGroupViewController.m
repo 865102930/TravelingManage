@@ -170,7 +170,7 @@
 - (XFJUploadPhotosTableViewCell *)uploadPhotos_view
 {
     if (_uploadPhotos_view == nil) {
-        _uploadPhotos_view = [[XFJUploadPhotosTableViewCell alloc] initWithFrame:CGRectMake(0, 500, SCREEN_WIDTH, 200)];
+        _uploadPhotos_view = [[XFJUploadPhotosTableViewCell alloc] initWithFrame:CGRectMake(0, 390, SCREEN_WIDTH, 200)];
         _uploadPhotos_view.delegate = self;
     }
     return _uploadPhotos_view;
@@ -227,7 +227,7 @@
 #pragma mark - 处理左侧导航栏
 - (void)setUpLeftBarButtonItem
 {
-//    self.navigationItem.leftBarButtonItem = self.pushToLeftViewButton;
+    //    self.navigationItem.leftBarButtonItem = self.pushToLeftViewButton;
     self.navigationItem.titleView = self.title_label;
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
@@ -271,7 +271,7 @@
     [self.scroll_view addSubview:self.backGroundView];
     [self.scroll_view addSubview:self.conventionMessage_view];
     [self.header_view addSubview:self.carNumber_tableView];
-    [self.backGroundView addSubview:self.otherInformation_view];
+//    [self.backGroundView addSubview:self.otherInformation_view];
     [self.backGroundView addSubview:self.uploadPhotos_view];
     [self.backGroundView addSubview:self.teamInformation_view];
     [self.backGroundView addSubview:self.guestSourceInformation_view];
@@ -292,11 +292,11 @@
         make.width.mas_equalTo(SCREEN_WIDTH);
         make.height.mas_equalTo(208.0);
     }];
-    [self.otherInformation_view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.teamInformation_view.mas_bottom);
-        make.width.mas_equalTo(SCREEN_WIDTH);
-        make.height.mas_equalTo(110);
-    }];
+//    [self.otherInformation_view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(self.teamInformation_view.mas_bottom);
+//        make.width.mas_equalTo(SCREEN_WIDTH);
+//        make.height.mas_equalTo(110);
+//    }];
     [self.voucherPhotos_view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.uploadPhotos_view.mas_bottom);
         make.width.mas_equalTo(SCREEN_WIDTH);
@@ -438,21 +438,21 @@
         return;
     }
     NSDictionary *dictParaments = @{
-                                   @"teamNo":self.conventionMessage_view.groupName_text,//团队编号
-                                   @"teamDate":self.conventionMessage_view.groupTime_text,//出团日期
-                                   @"travelAgencyId":traveName,//旅行社id
-                                   @"teamVehicles":self.strNum,//车牌
-                                   @"province":self.guestSourceInformation_view.selectedProvince,//用户所在省
-                                   @"city":self.guestSourceInformation_view.selectedCity,//用户所在市
-                                   @"area":self.guestSourceInformation_view.selectedArea,//用户所在区
-                                   @"teamAttr":paramName1,//团队目的属性
-                                   @"teamNature":teamNature,//团队性质
-                                   @"teamNum":self.teamInformation_view.teamPeople_number,//团队人数
-                                   @"teamDay":self.teamInformation_view.teamDay,//团队天数
-                                   @"createuser":@7,//创建记录的用户id
-                                   @"certificateImg":self.voucherPicRoot,//凭证图片路径
-                                   @"teamVehicleImages":self.root,//车辆图片集合用,分割
-                                   @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]//导游id
+                                    @"teamNo":self.conventionMessage_view.groupName_text,//团队编号
+                                    @"teamDate":self.conventionMessage_view.groupTime_text,//出团日期
+                                    @"travelAgencyId":traveName,//旅行社id
+                                    @"teamVehicles":self.strNum,//车牌
+                                    @"province":self.guestSourceInformation_view.selectedProvince,//用户所在省
+                                    @"city":self.guestSourceInformation_view.selectedCity,//用户所在市
+                                    @"area":self.guestSourceInformation_view.selectedArea,//用户所在区
+                                    @"teamAttr":paramName1,//团队目的属性
+                                    @"teamNature":teamNature,//团队性质
+                                    @"teamNum":self.teamInformation_view.teamPeople_number,//团队人数
+                                    @"teamDay":self.teamInformation_view.teamDay,//团队天数
+                                    @"createuser":@7,//创建记录的用户id
+                                    @"certificateImg":self.voucherPicRoot,//凭证图片路径
+                                    @"teamVehicleImages":self.root,//车辆图片集合用,分割
+                                    @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]//导游id
                                     };
     NSLog(@"参数集合-----%@----%@---%@---%zd---%@----%@---%@----%@----%zd----%zd---%@---%@---%@---%@---%@",@7,self.conventionMessage_view.groupName_text,self.conventionMessage_view.groupTime_text,traveName,self.strNum,self.guestSourceInformation_view.selectedProvince,self.guestSourceInformation_view.selectedCity,self.guestSourceInformation_view.selectedArea,paramName1,teamNature,self.teamInformation_view.teamPeople_number,self.teamInformation_view.teamDay,@7,self.voucherPicRoot,self.root);
     __weak __typeof(self)wself = self;
@@ -473,9 +473,9 @@
             [userDefaults setObject:[NSString stringWithFormat:@"%@",self.dict1]forKey:@"TEAMID"];
             [userDefaults synchronize];
             //将值传到home控制器中
-//            if (wself.signViewBlock) {
-//                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,self.dict1);
-//            }
+            //            if (wself.signViewBlock) {
+            //                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,self.dict1);
+            //            }
             homeController.isProjectItem = YES;
             homeController.isFindTeamList = YES;
             [wself presentViewController:navVC animated:YES completion:nil];
@@ -546,7 +546,7 @@
                 [_dataArr addObjectsFromArray:array];
                 weakself.uploadPhotos_view.dataArr = _dataArr;
                 if (_dataArr.count <= 4) {
-                    self.uploadPhotos_view.frame = CGRectMake(0, 500, SCREEN_WIDTH, 200);
+                    self.uploadPhotos_view.frame = CGRectMake(0, 390, SCREEN_WIDTH, 200);
                 }
             });
         };
@@ -573,9 +573,9 @@
                 [_dataArray removeAllObjects];
                 [_dataArray addObjectsFromArray:array];
                 weakself.voucherPhotos_view.dataArr = _dataArray;
-//                if (_dataArr.count <= 4) {
-//                    self.uploadPhotos_view.frame = CGRectMake(0, 728, SCREEN_WIDTH, 200);
-//                }
+                //                if (_dataArr.count <= 4) {
+                //                    self.uploadPhotos_view.frame = CGRectMake(0, 728, SCREEN_WIDTH, 200);
+                //                }
             });
         };
         
@@ -585,16 +585,16 @@
 
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-        switch (buttonIndex) {
-            case 0:
-                [self openCamera];
-                break;
-            case 1:
-                [self openAlbum];
-                break;
-            default:
-                break;
-        }
+    switch (buttonIndex) {
+        case 0:
+            [self openCamera];
+            break;
+        case 1:
+            [self openAlbum];
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)openCamera
@@ -605,7 +605,7 @@
         ipc.delegate = self;
         [self presentViewController:ipc animated:YES completion:nil];
     } else {
-//        [MBProgressHUD showHUDMsg: @"请打开允许访问相机权限"];
+        //        [MBProgressHUD showHUDMsg: @"请打开允许访问相机权限"];
         NSLog(@"请打开允许访问相机权限");
     }
 }
@@ -617,7 +617,7 @@
         
         [self presentViewController:imagePickerVc animated:YES completion:nil];
     }else{
-//        [MBProgressHUD showHUDMsg: @"请打开允许访问相册权限" ];
+        //        [MBProgressHUD showHUDMsg: @"请打开允许访问相册权限" ];
     }
 }
 
@@ -647,20 +647,20 @@
 
 // 相册选的图片
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto{
-     if (self.maxImageCount == 6) {
+    if (self.maxImageCount == 6) {
         [self.dataArr addObjectsFromArray:photos];
         self.uploadPhotos_view.dataArr = self.dataArr;
         self.uploadPhotos_view.maxImageCount = 6;
-         if (self.dataArr.count < 4) {
-         }else {
-             self.uploadPhotos_view.frame = CGRectMake(0, 500, SCREEN_WIDTH, 290);
-         }
-     }else {
-         NSLog(@"self.maxImageCount == 1----------");
-         [self.dataArray addObjectsFromArray:photos];
-         self.voucherPhotos_view.dataArr = self.dataArray;
-         self.voucherPhotos_view.maxImageCount = 1;
-     }
+        if (self.dataArr.count < 4) {
+        }else {
+            self.uploadPhotos_view.frame = CGRectMake(0, 390, SCREEN_WIDTH, 290);
+        }
+    }else {
+        NSLog(@"self.maxImageCount == 1----------");
+        [self.dataArray addObjectsFromArray:photos];
+        self.voucherPhotos_view.dataArr = self.dataArray;
+        self.voucherPhotos_view.maxImageCount = 1;
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

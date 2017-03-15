@@ -346,9 +346,9 @@
         self.teamNumber_label2.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamNo];
         self.teamPeople_label2.text = [NSString stringWithFormat:@"%zd",findTeamInfoByStateItem.teamNum];
         self.travelServiceName_label2.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.travelAgencyName];
-        self.startTeamTime_label2.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
-
-    
+        NSString *teamDateStr = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
+        NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
+        self.startTeamTime_label2.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];    
 }
 
 @end

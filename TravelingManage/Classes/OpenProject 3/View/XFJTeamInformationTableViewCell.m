@@ -193,9 +193,9 @@
     NSLog(@"主人,您点击了团队性质~~");
     [self addSubview:self.teamDescription_tablewView];
     [self.teamDescription_tablewView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.teamProperties_button.mas_left);
+        make.left.mas_equalTo(self.teamProperties_button.mas_left).mas_offset(95.0);
         make.right.mas_equalTo(self.teamProperties_button.mas_right);
-        make.top.mas_equalTo(self.teamProperties_button.mas_bottom).mas_offset(2.0);
+        make.top.mas_equalTo(self.teamProperties_button.mas_bottom);
         make.height.mas_equalTo(196.0);
     }];
     self.teamProperties_imageViewRight.image = [UIImage originalWithImage:@"triangle"];
@@ -210,6 +210,7 @@
         _teamDescription_tablewView.backgroundColor = [UIColor whiteColor];
         [_teamDescription_tablewView.layer setBorderWidth:1.0];
         _teamDescription_tablewView.layer.borderColor = kBorderColor.CGColor;
+        _teamDescription_tablewView.layer.cornerRadius = 5.0;
         _teamDescription_tablewView.rowHeight = 38.0;
         _teamDescription_tablewView.tag = 1000;
     }
@@ -325,6 +326,11 @@
     self.teamNature = indexPath.row;
     NSLog(@"这里获取到的是用户点击的行号数:%zd",self.teamNature);
     [self.teamDescription_tablewView removeFromSuperview];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 38.0;
 }
 
 @end

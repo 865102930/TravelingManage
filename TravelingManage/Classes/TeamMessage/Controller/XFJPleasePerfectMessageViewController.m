@@ -16,6 +16,11 @@
 #import "XFJSignPhotosMessageTableViewCell.h"
 #import "XFJFindTeamTasksItem.h"
 #import "PhotoModel.h"
+#import "XFJTasksItemModel.h"
+#import "XFJTaskItemSecondModel.h"
+#import "XFJTaskItemRows.h"
+#import "XFJSureCommitView.h"
+
 @interface XFJPleasePerfectMessageViewController () <UIActionSheetDelegate,XFJPleaseUpPerfectPhotosViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,UITableViewDelegate,UITableViewDataSource,XFJSignPhotosMessageTableViewCellDelegate>
 
 @property (nonatomic, strong) UILabel *title_label;
@@ -31,6 +36,8 @@
 @property (nonatomic, strong) NSIndexPath *selectedIndexpath;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSMutableArray<PhotoModel *> *photoModelArr;
+@property (nonatomic, strong) NSMutableArray *task_array;
+@property (nonatomic, strong) XFJSureCommitView *sureCommitView;
 @end
 
 @implementation XFJPleasePerfectMessageViewController
@@ -64,6 +71,14 @@
     return _findTeamTasksItem;
 }
 
+- (NSMutableArray *)task_array
+{
+    if (_task_array == nil) {
+        _task_array = [NSMutableArray array];
+    }
+    return _task_array;
+}
+
 //顶部信息
 - (XFJPleasePerfectMessageTopView *)pleasePerfectMessageTopView
 {
@@ -82,6 +97,15 @@
         _pleaseUpPerfectPhotosView.delegate = self;
     }
     return _pleaseUpPerfectPhotosView;
+}
+
+- (XFJSureCommitView *)sureCommitView
+{
+    if (_sureCommitView == nil) {
+        _sureCommitView = [[XFJSureCommitView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 150.0)];
+        _sureCommitView.backgroundColor = [UIColor whiteColor];
+    }
+    return _sureCommitView;
 }
 //导航栏标题
 - (UILabel *)title_label
@@ -115,10 +139,32 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.tableHeaderView = self.headerView;
+    self.tableView.tableFooterView = self.sureCommitView;
     [self setInitWithNav];
     NSLog(@"-----++++++++++++传过来的TeamId是:%zd",self.teamId);
     //请求顶部的数据信息
     [self requestTopPerfectMessage];
+    
+    self.sureCommitView.sureButton_clickBlock = ^() {
+        //这里接入上传附件的接口(包括上传图片)
+        
+    };
+}
+
+#pragma mark - 确认提交
+- (void)requestSureCommentButtonClick
+{
+    NSDictionary *dictParams = @{
+                                 @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
+                                 @"teamVehicleImages":@"",//车辆图片
+                                 @"attractionsIds":@"",//景点id
+                                 @"taskImgs":@""//景点图片
+                                 };
+    [GRNetRequestClass POST:FINISHIMGURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
 }
 
 #pragma mark ---- setInitWithNav ----
@@ -142,6 +188,9 @@
             NSLog(@"------------++++++++++++获取到的值是 :%@",responseObject);
             wself.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]];
             wself.pleasePerfectMessageTopView.findTeamTasksItem = wself.findTeamTasksItem;
+            NSLog(@"++++++++++景点数组是 :%@",wself.findTeamTasksItem[0].tasks);
+            wself.task_array = [XFJTaskItemRows mj_objectArrayWithKeyValuesArray:wself.findTeamTasksItem[0].tasks];
+            [wself.tableView reloadData];
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
@@ -299,8 +348,10 @@
         }
     }else {
         NSLog(@"self.maxImageCount == 1----------");
+        [self.dataArray removeAllObjects];
         [self.dataArray addObjectsFromArray:photos];
         _image = photos[0];
+        self.cell.taskItemRows.photos_image = self.dataArray[0];
          [self.tableView reloadData];
     }
 }
@@ -312,7 +363,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return [self.task_array count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -323,15 +374,18 @@
     if (cell == nil) {
         cell = [[XFJSignPhotosMessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
+    
     cell.delegate = self;
-//    PhotoModel *photoM = self.photoModelArr[indexPath.row];
     cell.selectIndexPath = indexPath;
     self.cell = cell;
-    if(self.dataArray.count == 0){
-        cell.photoImage = nil;
-    }else{
-        cell.photoImage = self.image;
-    }
+    cell.photos_buttonBlock = ^(UIButton *button) {
+        UITableViewCell *cell = (UITableViewCell *)[button superview];
+        NSIndexPath *path = [self.tableView indexPathForCell:cell];
+        //这里可以获取到cell是具体是哪一个,就可以传相应的id
+        NSLog(@"---------=========--------index row%zd",[path row]);
+        //这里我能获取到具体是哪个按钮的点击
+    };
+    cell.taskItemRows = self.task_array[indexPath.row];
     return cell;
 }
 

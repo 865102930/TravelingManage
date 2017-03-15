@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XFJTaskItemRows.h"
 @class PhotoModel;
 @class XFJSignPhotosMessageTableViewCell;
 @protocol XFJSignPhotosMessageTableViewCellDelegate <NSObject>
@@ -26,8 +27,12 @@
 
 @property (nonatomic, weak) id <XFJSignPhotosMessageTableViewCellDelegate>delegate;
 
+@property (nonatomic, copy) void (^photos_buttonBlock)(UIButton *);
+
 @property (nonatomic, strong) NSIndexPath *selectIndexPath;
 
 @property (nonatomic, strong)PhotoModel *photoM;
+
+@property (nonatomic, strong) XFJTaskItemRows *taskItemRows;
 
 @end

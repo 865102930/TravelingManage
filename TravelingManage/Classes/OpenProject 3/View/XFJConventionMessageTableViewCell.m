@@ -189,6 +189,7 @@
         _check_traveView.backgroundColor = [UIColor whiteColor];
         [_check_traveView.layer setBorderWidth:1.0];
         _check_traveView.layer.borderColor = kBorderColor.CGColor;
+        _check_traveView.layer.cornerRadius = 5.0;
     }
     return _check_traveView;
 }
@@ -225,8 +226,8 @@
 {
     [[UIApplication sharedApplication].keyWindow addSubview:self.check_traveView];
     [self.check_traveView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.travelServiceName_field.mas_bottom).mas_offset(2.0);
-        make.left.mas_equalTo(self.travelServiceName_field.mas_left);
+        make.top.mas_equalTo(self.travelServiceName_field.mas_bottom);
+        make.left.mas_equalTo(self.travelServiceName_field.mas_left).mas_offset(95);
         make.right.mas_equalTo(self.travelServiceName_field.mas_right);
         make.height.mas_equalTo(33 * 6);
     }];

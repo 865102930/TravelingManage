@@ -14,7 +14,7 @@
 
 #define BaseUrl @"http://118.178.224.151/teammgmtback"
 
-//#define BaseUrl @"http://192.168.0.101:8080/teammgmtback"
+//#define BaseUrl @"http://192.168.0.100:8080/teammgmtback"
 
 @implementation NetWorkManager
 
