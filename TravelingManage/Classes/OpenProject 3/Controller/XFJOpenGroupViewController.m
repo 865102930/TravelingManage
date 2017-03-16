@@ -413,7 +413,7 @@
             NSLog(@"上传图片成功后的信息-------%@",root);
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (wself.root.length == 0) {
-                    [MBProgressHUD showHudTipStr:@"图片上传失败~~" contentColor:HidWithColorContentBlack];
+                    [MBProgressHUD showHudTipStr:@"图片上传失败" contentColor:HidWithColorContentBlack];
                     return ;
                 }
                 //开始任务的请求

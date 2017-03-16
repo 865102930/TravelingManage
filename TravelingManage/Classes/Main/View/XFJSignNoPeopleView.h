@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "XFJTeamSignListItem.h"
+#import "XFJFindTeamTaskItem.h"
 @interface XFJSignNoPeopleView : UIView
 
 //签退时候调用的block
@@ -18,6 +19,8 @@
 @property (nonatomic, strong) NSString *hourTeamTime;
 //获取到的分钟
 @property (nonatomic, strong) NSString *minteTeamTime;
+
+@property (nonatomic, strong) XFJFindTeamTaskItem *findTeamTaskItem;
 
 
 @end

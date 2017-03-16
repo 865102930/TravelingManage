@@ -54,6 +54,7 @@
             make.left.mas_equalTo(self.userName_label.mas_left);
             make.height.mas_equalTo(15.0);
         }];
+        
     }
     return self;
 }
@@ -64,8 +65,18 @@
     if (_headerImageView == nil) {
         _headerImageView = [[UIImageView alloc] init];
         [_headerImageView setImage:[UIImage originalWithImage:@"message"]];
+        _headerImageView.userInteractionEnabled = YES;
+        [_headerImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headerImageView:)]];
     }
     return _headerImageView;
+}
+
+#pragma mark - 头像的点击事件
+- (void)headerImageView:(UITapGestureRecognizer *)tapGestureRecognizer
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pushToNoticeOfController)]) {
+        [self.delegate pushToNoticeOfController];
+    }
 }
 
 #pragma mark - 查看个人详情页按钮

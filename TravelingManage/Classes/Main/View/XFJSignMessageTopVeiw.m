@@ -74,13 +74,14 @@
 - (void)setLaterTeamControlItem:(XFJLaterTeamControlItem *)laterTeamControlItem
 {
     _laterTeamControlItem = laterTeamControlItem;
-    self.peopleContent_label.text = [NSString stringWithFormat:@"%zd人",laterTeamControlItem.checkinNumber];
-    if (laterTeamControlItem.travelAgencyName == NULL) {
-        self.scenery_laebl.text = [NSString stringWithFormat:@"%@",@"无法显示旅行社名字"];
-    }else {
-        
-        self.scenery_laebl.text = [NSString stringWithFormat:@"%@",laterTeamControlItem.travelAgencyName];
-    }
+    
+}
+
+- (void)setTaskRowsItem:(XFJTaskRowsItem *)taskRowsItem
+{
+    _taskRowsItem = taskRowsItem;
+    self.peopleContent_label.text = [NSString stringWithFormat:@"%zd人",taskRowsItem.checkinNumber];
+    self.scenery_laebl.text = [NSString stringWithFormat:@"%@",taskRowsItem.attractionsName];
 }
 
 

@@ -183,7 +183,15 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.visitMessage_tableView.frame = CGRectMake(0, 45, SCREEN_WIDTH, self.TaskRowsItemArray.count * 62.0);
     return 62.0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.taskRowsItemArrayItemBlock) {
+        self.taskRowsItemArrayItemBlock(self.TaskRowsItemArray[indexPath.row]);
+    }
 }
 
 @end

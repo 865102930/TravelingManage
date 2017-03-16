@@ -224,6 +224,12 @@
     self.minuteContent_label.text = [NSString stringWithFormat:@"%@",minteTeamTime];
 }
 
+- (void)setFindTeamTaskItem:(XFJFindTeamTaskItem *)findTeamTaskItem
+{
+    _findTeamTaskItem = findTeamTaskItem;
+    self.peopleNumber_label.text = [NSString stringWithFormat:@"%zd",findTeamTaskItem.checkinNumber];
+}
+
 
 
 

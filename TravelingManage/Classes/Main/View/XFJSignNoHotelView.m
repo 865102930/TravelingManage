@@ -252,6 +252,13 @@
     self.inHouseTimeContent_label.text = [NSString stringWithFormat:@"%zd",hotelStayDay];
 }
 
+- (void)setFindTeamTaskItem:(XFJFindTeamTaskItem *)findTeamTaskItem
+{
+    _findTeamTaskItem = findTeamTaskItem;
+    self.peopleContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTaskItem.checkinNumber];
+    self.houseContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTaskItem.rooms];
+}
+
 
 
 @end

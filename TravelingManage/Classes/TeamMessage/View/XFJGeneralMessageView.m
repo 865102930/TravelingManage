@@ -408,7 +408,9 @@
     //行程天数
     self.teamDayContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTasksItem[0].teamDay];
     //出团日期
-    self.outTeamTimeContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamDate];
+    NSString *teamDateStr = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamDate];
+    NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
+    self.outTeamTimeContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
 }
 
 

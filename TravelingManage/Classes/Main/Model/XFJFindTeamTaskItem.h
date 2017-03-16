@@ -26,6 +26,8 @@
 @property (nonatomic, strong) NSString *CreateTime;
 //类型区分 0:景点 1:酒店
 @property (nonatomic, assign) NSInteger typeState;
+//房间数
+@property (nonatomic, assign) NSInteger rooms;
 
 
 @end

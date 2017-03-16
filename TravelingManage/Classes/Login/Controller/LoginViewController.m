@@ -278,8 +278,9 @@
     __weak typeof(self) weakself = self;
     NSDictionary *dictParaments = @{
                                     @"userMobile" : self.phoneTextF.text,
-                                    //  @"registrationId":@"10"
+                                    @"registrationId":@10,
                                     @"code" : self.idCodeTextF.text,
+                                    @"terminal":@2
                                     };
     [GRNetRequestClass POST:LOGINURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         [MBProgressHUD hidenHud];

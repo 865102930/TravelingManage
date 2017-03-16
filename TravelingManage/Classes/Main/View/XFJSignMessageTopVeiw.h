@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "XFJLaterTeamControlItem.h"
+#import "XFJTaskRowsItem.h"
 
 @interface XFJSignMessageTopVeiw : UIView
 
 @property (nonatomic, strong) XFJLaterTeamControlItem *laterTeamControlItem;
+@property (nonatomic, strong) XFJTaskRowsItem *taskRowsItem;
 
 @end

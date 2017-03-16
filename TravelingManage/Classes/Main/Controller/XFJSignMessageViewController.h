@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XFJTaskRowsItem.h"
 
 @interface XFJSignMessageViewController : UIViewController
+
+@property (nonatomic, strong) XFJTaskRowsItem *taskRowsItem;
+
+@property (nonatomic, assign) NSInteger findNewTeamInfo_Id;
 
 @end

@@ -15,6 +15,7 @@
 @property (nonatomic, assign) NSInteger findTeamInfoByState_Id;
 //确认提交
 @property (nonatomic, copy) void (^sureCommitBlock)(NSInteger);
+@property (nonatomic, copy) void (^taskRowsItemArrayItemBlock)(XFJTaskRowsItem *);
 
 
 @end

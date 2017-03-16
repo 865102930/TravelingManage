@@ -31,6 +31,8 @@
 #import "XFJEigthAttributeTableViewCell.h"
 #import "XFJMaskView.h"
 #import "XFJCheckBoxView.h"
+#import "XFJMineTeamViewController.h"
+#import "XFJSignMessageViewController.h"
 
 
 @interface XFJTeamMessageViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJCarPhotosWithPerfectViewDelegate,XFJUpPhotosOpenTeamMessageViewDelegate,UITableViewDelegate,UITableViewDataSource>
@@ -102,6 +104,12 @@
         wself.teamId = teamId;
         //上传图片接口
         [wself requestWithOpenTeam];
+    };
+    self.teamMessageBottomView.taskRowsItemArrayItemBlock = ^(XFJTaskRowsItem *taskRowsItem) {
+        XFJSignMessageViewController *signMessageController = [[XFJSignMessageViewController alloc] init];
+        signMessageController.taskRowsItem = taskRowsItem;
+        signMessageController.findNewTeamInfo_Id = wself.findTeamInfoByState_Id;
+        [wself.navigationController pushViewController:signMessageController animated:YES];
     };
     self.checkBoxView.chooseCheckBoxBlock = ^(NSString *resultStr) {
         [wself.checkBoxView removeFromSuperview];
@@ -214,7 +222,7 @@
                 }
                 //确认提交接口
                 [wself sureCommitWithAttributeTeamId:self.teamId];
-                //弹出确认提交和上传附件弹窗
+                //弹出确认提交和取消弹窗
                 [wself sureAndCommitShow:self.teamId];
             });
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -240,7 +248,7 @@
         if (responseObject) {
             NSString *success = [responseObject objectForKey:@"success"];
             if ([success intValue] == 1) {
-                [MBProgressHUD showHudTipStr:@"主人~您修改资料成功" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"修改资料成功!" contentColor:HidWithColorContentBlack];
             }
             NSLog(@"--------------修改信息完成后显示的结果是:%@",responseObject);
         }
@@ -289,11 +297,11 @@
 #pragma mark - 确认提交和上传附件
 - (void)sureAndCommitShow:(NSInteger)teamId
 {
-    UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"提交完成!" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"提交完成!\n欢迎对本次带团进行评价!" preferredStyle:UIAlertControllerStyleAlert];
     __weak __typeof(self)wself = self;
-    [alertVc addAction:[UIAlertAction actionWithTitle:@"上传附件" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
+    [alertVc addAction:[UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
         NSLog(@"主人~~您点击了上传附件按钮!");
-        [wself jumpPleasePerfectMessage:teamId];
+        [wself.navigationController popViewControllerAnimated:YES];
     }]];
     [alertVc addAction:[UIAlertAction actionWithTitle:@"立即评价" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSLog(@"主人~~您点击了立即评价按钮!");
@@ -345,7 +353,7 @@
 - (UITableView *)attrList_tableView
 {
     if (_attrList_tableView == nil) {
-        _attrList_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 323, SCREEN_WIDTH, 90) style:UITableViewStylePlain];
+        _attrList_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 293, SCREEN_WIDTH, 0.5) style:UITableViewStylePlain];
         _attrList_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _attrList_tableView.backgroundColor = [UIColor whiteColor];
         _attrList_tableView.delegate = self;
@@ -408,6 +416,9 @@
                 [wself.attrTypeArray addObject:[NSString stringWithFormat:@"%d",attrType]];
                 NSLog(@"+++++++++++返回的自定字段信息是 :%d",attrType);
             }
+            if (wself.findCustomAttrListItemArray.count == 0) {
+                [wself.otherMessagePerfectView removeFromSuperview];
+            }
             [wself.attrList_tableView reloadData];
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
@@ -430,7 +441,7 @@
     if (_scroll_view == nil) {
         _scroll_view = [[UIScrollView alloc] init];
         _scroll_view.frame = CGRectMake(0, 0, self.view.bounds.size.width, 1.2 * self.view.XFJ_Height);
-        _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 3);
+        _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2);
         _scroll_view.backgroundColor = kColoreeee;
         _scroll_view.showsHorizontalScrollIndicator = NO;
         _scroll_view.scrollEnabled = YES;

@@ -14,7 +14,7 @@
 #import <MJRefresh.h>
 #import "XFJLeftFindTeamInfoItem.h"
 
-@interface XFJLeftView()<UITableViewDelegate,UITableViewDataSource,XFJLeftTableFooterViewDelegate>
+@interface XFJLeftView()<UITableViewDelegate,UITableViewDataSource,XFJLeftTableFooterViewDelegate,XFJLeftTableHeaderViewDelegate>
 
 @property (nonatomic, strong) UIView *backGroundView;
 
@@ -128,6 +128,7 @@
 {
     if (_leftTableHeaderView == nil) {
         _leftTableHeaderView = [[XFJLeftTableHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.XFJ_Width, 85)];
+        _leftTableHeaderView.delegate = self;
     }
     return _leftTableHeaderView;
 }
@@ -143,6 +144,14 @@
         _leftTableFooterView.backgroundColor = [UIColor whiteColor];
     }
     return _leftTableFooterView;
+}
+
+#pragma mark - 跳转到通知控制器
+- (void)pushToNoticeOfController
+{
+    if (self.pushNoticeWithHeaderBlock) {
+        self.pushNoticeWithHeaderBlock();
+    }
 }
 
 #pragma mark - 一根或者多根手指开始触摸view的时候,系统会自动调用view下面的方法

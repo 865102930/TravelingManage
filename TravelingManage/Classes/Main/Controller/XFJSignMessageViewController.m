@@ -129,14 +129,20 @@
     _laterTeamControlItem = laterTeamControlItem;
 }
 
+- (void)setTaskRowsItem:(XFJTaskRowsItem *)taskRowsItem
+{
+    _taskRowsItem = taskRowsItem;
+    self.signMessageTopVeiw.taskRowsItem = taskRowsItem;
+}
+
 #pragma makr - 任务信息提交
 - (void)sureRequestUp
 {
     NSLog(@"--------------获取到的模型是 :%@",self.laterTeamControlItem);
     NSDictionary *dictParams = @{
-                                 @"id":[NSString stringWithFormat:@"%zd",self.laterTeamControlItem.taskId],//任务id
-                                 @"teamId":[NSString stringWithFormat:@"%zd",self.laterTeamControlItem.findNewTeamInfo_Id],//团队id
-                                 @"attractionsId":[NSString stringWithFormat:@"%zd",self.laterTeamControlItem.attractionsId],//景区id
+                                 @"id":[NSString stringWithFormat:@"%zd",self.taskRowsItem.taskId],//任务id
+                                 @"teamId":[NSString stringWithFormat:@"%zd",self.findNewTeamInfo_Id],//团队id
+                                 @"attractionsId":[NSString stringWithFormat:@"%zd",self.taskRowsItem.attractionsId],//景区id
                                  @"attracImagePath":self.voucherPicRoot,//非必传参数
                                  @"taskBack":@""//非必传参数
                                  };
@@ -146,7 +152,8 @@
             NSLog(@"responseObject:%@",responseObject);
             if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
                 [MBProgressHUD showHudTipStr:@"信息提交成功" contentColor:HidWithColorContentBlack];
-                [wself.navigationController popToRootViewControllerAnimated:YES];
+//                [wself.navigationController popToRootViewControllerAnimated:YES];
+                [wself.navigationController popViewControllerAnimated:YES];
             }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
@@ -228,8 +235,8 @@
             NSLog(@"+++++++++++获取到的最近的操作的团队是:%@",responseObject);
             NSDictionary *dict = [responseObject objectForKey:@"object"];
             XFJLaterTeamControlItem *laterTeamControlItem = [XFJLaterTeamControlItem mj_objectWithKeyValues:dict];
-            wself.signMessageTopVeiw.laterTeamControlItem = laterTeamControlItem;
-            wself.signMessageTimeView.laterTeamControlItem = laterTeamControlItem;
+//            wself.signMessageTopVeiw.laterTeamControlItem = laterTeamControlItem;
+//            wself.signMessageTimeView.laterTeamControlItem = laterTeamControlItem;
             wself.laterTeamControlItem = laterTeamControlItem;
             //如果状态值显示的是0就显示签到按钮
             //如果状态值显示的是1就是签退按钮

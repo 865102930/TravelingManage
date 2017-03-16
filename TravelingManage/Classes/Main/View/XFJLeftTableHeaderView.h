@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol XFJLeftTableHeaderViewDelegate <NSObject>
+
+@required
+- (void)pushToNoticeOfController;
+
+@end
+
 @interface XFJLeftTableHeaderView : UIView
 
 @property (nonatomic, copy) void(^changeUserInformationBlock)();
+@property (nonatomic, weak) id <XFJLeftTableHeaderViewDelegate> delegate;
 
 @end

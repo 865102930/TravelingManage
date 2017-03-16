@@ -113,6 +113,7 @@
 //提供一个BOOL值
 @property (nonatomic, assign) BOOL isTeamId;
 @property (nonatomic, strong) XFJLeftFindTeamInfoItem *leftFindTeamInfoItem;
+@property (nonatomic, strong) XFJFindTeamTaskItem *findTeamTaskItem;
 
 @end
 
@@ -270,10 +271,11 @@
     self.leftView.presentToHomeController = ^(XFJLeftFindTeamInfoItem *leftFindTeamInfoItem,BOOL isTeamId) {
         [wself remoSubViews];
         [wself.view addSubview:wself.homeTopTaskMessageVeiw];
-        //请求获取左侧的接口
         wself.homeTopTaskMessageVeiw.leftFindTeamInfoItem = leftFindTeamInfoItem;
         wself.leftFindTeamInfoItem = leftFindTeamInfoItem;
         wself.isTeamId = isTeamId;
+        //请求获取左侧的接口
+        [wself requestWithLeftIndexPathOfRows:leftFindTeamInfoItem];
     };
     //退出登
     self.leftView.logoutUserBlock = ^() {
@@ -291,8 +293,7 @@
     self.homeTopTaskMessageVeiw.jumpWithTeamMessageBlock = ^() {
         //这是点击顶部右侧的箭头按钮跳转的控制器
         //跳转到签到点信息
-        XFJSignMessageViewController *signMessageController = [[XFJSignMessageViewController alloc] init];
-        [wself.navigationController pushViewController:signMessageController animated:YES];
+        
     };
     //传递景点签到的内容
     self.sign_view.signModifyCount = ^(NSString *signNum, BOOL isSign) {
@@ -326,7 +327,14 @@
     };
     //任务按钮的状态改变
     self.homeTopTaskMessageVeiw.ExitStatusButtonClickBlock = ^() {
-        [wself statusHomeTopButtonClickRequest];
+        //弹出提示框
+        UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"该操作不可撤销,是否确认完成?" preferredStyle:UIAlertControllerStyleAlert];
+        [alertVc addAction:[UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
+        }]];
+        [alertVc addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [wself statusHomeTopButtonClickRequest];
+        }]];
+        [wself presentViewController:alertVc animated:NO completion:nil];
     };
     
     self.signTeamTwoView.scenerySign_Block = ^() {
@@ -345,19 +353,64 @@
     };
     self.chooseScenerySignView.chooseBlockButtonWithSure = ^(XFJFindAttractionsListItem *FindAttractionsListItem) {
         NSLog(@"------------获取到的值是 :%@",FindAttractionsListItem);
-        wself.FindAttractionsListItem = FindAttractionsListItem;
+//        wself.FindAttractionsListItem = FindAttractionsListItem;
         [wself.maskView1 removeFromSuperview];
         [wself.signTeamTwoView removeFromSuperview];
         [wself.view addSubview:wself.sign_view];
+    };
+    //跳转到通知页面
+    self.leftView.pushNoticeWithHeaderBlock = ^() {
+        [wself remoSubViews];
+        MessageListViewController *announcementController = [[MessageListViewController alloc] init];
+        [wself.navigationController pushViewController:announcementController animated:YES];
     };
 }
 
 #pragma mark - 请求获取左侧栏的接口
 - (void)requestWithLeftIndexPathOfRows:(XFJLeftFindTeamInfoItem *)leftFindTeamInfoItem
 {
+    self.leftFindTeamInfoItem = leftFindTeamInfoItem;
+    __weak __typeof(self)wself = self;
     [GRNetRequestClass POST:FINDTEAMTASKURL params:@{@"teamId":[NSString stringWithFormat:@"%zd",leftFindTeamInfoItem.findTeamInfoItem_id]} success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
-            NSLog(@"--------请求到的消息是 :%@",responseObject);
+            if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
+                XFJFindTeamTaskItem *findTeamTaskItem = [XFJFindTeamTaskItem mj_objectWithKeyValues:[responseObject objectForKey:@"object"]];
+                NSLog(@"--------请求到的消息是 :%@",findTeamTaskItem);
+                //如果获取到的object值是nil下面就显示景点选择页面
+                if ([[responseObject objectForKey:@"object"] isKindOfClass:[NSNull class]]) {
+                    //先将创建任务的界面移除
+                    [wself.task_view removeFromSuperview];
+                    [wself.signNoPeople_view removeFromSuperview];
+                    //添加酒店签退页面
+                    [wself.signNoHotel_view removeFromSuperview];
+                    //然后添加让用户选择的签到页面
+                    [wself.view addSubview:wself.signTeamTwoView];
+                }else {//来到这说明签到了此时应该显示的是签退页面
+                    if (findTeamTaskItem.typeState == 0) {//如果状态值是0表示景点,就显示景点的签退页面
+                        //先移除创建任务界面
+                        [wself.task_view removeFromSuperview];
+                        //移除用户选择界面
+                        [wself.signTeamTwoView removeFromSuperview];
+                        //移除酒店签退页面
+                        [wself.signNoHotel_view removeFromSuperview];
+                        //添加景点签退页面
+                        [wself.view addSubview:wself.signNoPeople_view];
+                        wself.signNoPeople_view.findTeamTaskItem = findTeamTaskItem;
+                    }else {//来到这表示是酒店就显示酒店的签退页面
+                        //移动定位的frame
+                        self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 250, 42, 41);
+                        //先移除创建任务界面
+                        [wself.task_view removeFromSuperview];
+                        //移除用户选择界面
+                        [wself.signTeamTwoView removeFromSuperview];
+                        //移除景区签退页面
+                        [wself.signNoPeople_view removeFromSuperview];
+                        //添加酒店签退页面
+                        [wself.view addSubview:wself.signNoHotel_view];
+                        wself.signNoHotel_view.findTeamTaskItem = findTeamTaskItem;
+                    }
+                }
+            }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
@@ -382,7 +435,7 @@
             //移除任务栏
             [wself.homeTopTaskMessageVeiw removeFromSuperview];
             [wself.view addSubview:self.announcementView];
-            [MBProgressHUD showHudTipStr:@"主人~~该团队已经结束,进入待完善状态" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"该团队已经结束,进入待完善状态" contentColor:HidWithColorContentBlack];
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
@@ -407,13 +460,14 @@
 - (void)signNoPeopleButtonClick1
 {
     NSLog(@"-----------------++++++=是否在签退的范围内:%d",self.isContains);
+    NSLog(@"-------侧滑页面中过来的teamId是:%zd",self.findTeamTaskItem.teamId);
     //签到的时候判断是否在景区内
     if (self.isContains) {//在景区范围内,可以签退
         //时间是达到规定的时间(YES)
         //遍历取出每个景点需要带的时间
         //时间没有达到规定的时间(NO)
         NSDictionary *dictParaments = @{
-                                        @"teamId":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
+                                        @"teamId":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
                                         @"taskState":[NSString stringWithFormat:@"%@",@"0"]
                                         };
         NSLog(@"签退需要传递的参数是:%@",dictParaments);
@@ -553,7 +607,7 @@
 - (void)signOutButtonClick
 {
     NSDictionary *dictParaments = @{
-                                    @"teamId":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
+                                    @"teamId":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
                                     @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractions_id]
                                     };
     __weak __typeof(self)wself = self;
@@ -561,10 +615,14 @@
         if ([[object objectForKey:@"success"] isEqual:@1]) {
             NSLog(@"主人,您签退成功~~~~打印后台返回的消息是:%@",object);
             //如果返回的是1,则成功,在这创建新建任务的view
+            [wself.signTeamTwoView removeFromSuperview];
             [wself.signNoHotel_view removeFromSuperview];
             [wself.signNoPeople_view removeFromSuperview];
             wself.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 200, 42, 41);
             [wself.view addSubview:self.task_view];
+            //只要签退成功,就按钮的状态改为完成
+            NSString *str;
+            wself.homeTopTaskMessageVeiw.isButton = str;
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
@@ -601,7 +659,7 @@
 {
     self.isHotelSignTime = YES;
     NSDictionary *dictParaments = @{
-                                    @"teamId":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
+                                    @"teamId": self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
                                     @"attractionsId":[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],//景区id
                                     @"userIdList":@2,//管理员id(可能是多个)
                                     @"checkinNumber":self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],//签到人数
@@ -646,7 +704,7 @@
 {
         self.isTaskTime = YES;
         NSDictionary *dictParaments = @{
-                                        @"teamId":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
+                                        @"teamId":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
                                         @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractions_id],//景区id
                                         @"userIdList":@2,//管理员id(可能是多个)
                                         @"checkinNumber":self.isSignModify ? self.signModifyCount : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],//签到人数
@@ -678,9 +736,10 @@
 - (void)requestTeamSignList
 {
     NSDictionary *dictParaments = @{
-                                    @"teamId":[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
+                                    @"teamId": self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
                                     @"taskState":@0
                                     };
+    
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNLISTURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
@@ -1218,6 +1277,7 @@
             [self.scenery_array addObject:findAttractionsListItem];
         }else {//这里表示酒店
             [self.hotel_array addObject:findAttractionsListItem];
+            self.FindAttractionsListItem = findAttractionsListItem;
         }
     }
     if (self.isContains) {//如果是yes就创建

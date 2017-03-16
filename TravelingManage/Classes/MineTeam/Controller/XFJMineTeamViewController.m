@@ -389,6 +389,11 @@
     [self titleMineTeamButtonClick:titleButton];
 }
 
+- (void)dealloc
+{
+    NSLog(@"我的控制器被销毁了~~");
+}
+
 
 
 @end

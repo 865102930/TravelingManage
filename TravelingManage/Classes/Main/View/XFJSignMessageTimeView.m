@@ -98,7 +98,7 @@
 {
     if (_signContent_label == nil) {
         _signContent_label = [[UILabel alloc] init];
-//        _signContent_label.text = @"2017-03-02";
+        _signContent_label.text = @"2017-03-02";
         _signContent_label.textColor = kColor2b2b;
         _signContent_label.font = [UIFont fontWithName:PingFang size:14.0];
     }

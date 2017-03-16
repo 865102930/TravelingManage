@@ -17,6 +17,7 @@
 @property (nonatomic, copy) void (^ExitStatusButtonClickBlock)();
 @property (nonatomic, strong) XFJLaterTeamControlItem *laterTeamControlItem;
 @property (nonatomic, strong) XFJLeftFindTeamInfoItem *leftFindTeamInfoItem;
+@property (nonatomic, strong) NSString *isButton;
 
 
 @end

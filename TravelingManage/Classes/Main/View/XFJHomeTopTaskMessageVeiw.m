@@ -85,7 +85,7 @@
         _peopleMessageContent_label.textAlignment = NSTextAlignmentLeft;
         _peopleMessageContent_label.font = [UIFont systemFontOfSize:14.0];
         _peopleMessageContent_label.textColor = kColor2f2f;
-        _peopleMessageContent_label.numberOfLines = 1;
+        _peopleMessageContent_label.numberOfLines = 0;
     }
     return _peopleMessageContent_label;
 }
@@ -132,9 +132,11 @@
         _state_button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_state_button setTitle:@"完成" forState:UIControlStateNormal];
         _state_button.layer.cornerRadius = 4.0;
-        _state_button.layer.borderColor = kColorff47.CGColor;
+        _state_button.layer.borderColor = kColoreeee.CGColor;
         _state_button.layer.borderWidth = 0.5;
-        [_state_button setTitleColor:kColorff47 forState:UIControlStateNormal];
+        _state_button.backgroundColor = kColoreeee;
+        _state_button.enabled = NO;
+        [_state_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _state_button.titleLabel.font = [UIFont systemFontOfSize:13.0];
         [_state_button addTarget:self action:@selector(stateButtonClick) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -171,7 +173,7 @@
     [self.peopleMessageContent_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(22.0);
         make.right.mas_equalTo(self.mas_right).mas_offset(-50.0);
-//        make.width.mas_equalTo(80.0);
+        make.width.mas_equalTo(80.0);
     }];
     [self.peopleMessage_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(23.0);
@@ -186,7 +188,7 @@
         make.left.mas_equalTo(self.openTeam_label.mas_right).mas_offset(9.0);
     }];
     [self.state_button mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.peopleMessageContent_label.mas_bottom).mas_offset(14.0);
+        make.top.mas_equalTo(self.peopleMessageContent_label.mas_bottom).mas_offset(0);
         make.right.mas_equalTo(self.mas_right).mas_offset(-50.0);
         make.width.mas_equalTo(62.0);
         make.height.mas_equalTo(25.0);
@@ -225,17 +227,28 @@
     NSString *teamDateStr = [NSString stringWithFormat:@"%@",leftFindTeamInfoItem.teamDate];
     NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
     self.openTeamContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
-    if (leftFindTeamInfoItem.teamState == 0) {
-        [_state_button setTitle:@"任务中" forState:UIControlStateNormal];
-    }else if (leftFindTeamInfoItem.teamState == 1) {
-        [_state_button setTitle:@"待完善" forState:UIControlStateNormal];
-    }else if (leftFindTeamInfoItem.teamState == 2) {
-        [_state_button setTitle:@"待审核" forState:UIControlStateNormal];
-    }else if (leftFindTeamInfoItem.teamState == 3) {
-        [_state_button setTitle:@"已审核" forState:UIControlStateNormal];
-    }else {
-        [_state_button setTitle:@"审核不通过" forState:UIControlStateNormal];
-    }
+//    if (leftFindTeamInfoItem.teamState == 0) {
+//        [_state_button setTitle:@"任务中" forState:UIControlStateNormal];
+//    }else if (leftFindTeamInfoItem.teamState == 1) {
+//        [_state_button setTitle:@"待完善" forState:UIControlStateNormal];
+//    }else if (leftFindTeamInfoItem.teamState == 2) {
+//        [_state_button setTitle:@"待审核" forState:UIControlStateNormal];
+//    }else if (leftFindTeamInfoItem.teamState == 3) {
+//        [_state_button setTitle:@"已审核" forState:UIControlStateNormal];
+//    }else {
+//        [_state_button setTitle:@"审核不通过" forState:UIControlStateNormal];
+//    }
+}
+
+- (void)setIsButton:(NSString *)isButton
+{
+    _isButton = isButton;
+    _state_button.layer.cornerRadius = 4.0;
+    _state_button.layer.borderColor = kColorff47.CGColor;
+    _state_button.layer.borderWidth = 0.5;
+    _state_button.backgroundColor = [UIColor whiteColor];
+    [_state_button setTitleColor:kColorff47 forState:UIControlStateNormal];
+    _state_button.enabled = YES;
 }
 
 

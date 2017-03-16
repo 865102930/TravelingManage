@@ -18,6 +18,9 @@
 @property (nonatomic, strong) NSString *attractionsTime;
 //景区id
 @property (nonatomic, assign) NSInteger attractionsId;
+//任务id
+@property (nonatomic, assign) NSInteger taskId;
+//
 
 
 @end

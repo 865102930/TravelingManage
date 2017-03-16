@@ -10,4 +10,11 @@
 
 @implementation XFJFindTeamTaskItem
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{
+             @"findTeamTaskItem_id":@"id",
+             };
+}
+
 @end

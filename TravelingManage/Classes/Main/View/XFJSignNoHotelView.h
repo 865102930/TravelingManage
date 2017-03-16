@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XFJFindTeamTaskItem.h"
 
 @interface XFJSignNoHotelView : UIView
 
@@ -16,5 +17,7 @@
 @property (nonatomic, assign) NSInteger hotelStayDay;
 
 @property (nonatomic, copy) void (^hotelSignNoButtonClickBlock)();
+
+@property (nonatomic, strong) XFJFindTeamTaskItem *findTeamTaskItem;
 
 @end
