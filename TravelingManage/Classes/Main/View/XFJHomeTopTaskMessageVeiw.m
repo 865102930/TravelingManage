@@ -132,9 +132,9 @@
         _state_button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_state_button setTitle:@"完成" forState:UIControlStateNormal];
         _state_button.layer.cornerRadius = 4.0;
-        _state_button.layer.borderColor = kColoreeee.CGColor;
+        _state_button.layer.borderColor = [UIColor whiteColor].CGColor;
         _state_button.layer.borderWidth = 0.5;
-        _state_button.backgroundColor = kColoreeee;
+        _state_button.backgroundColor = [UIColor whiteColor];
         _state_button.enabled = NO;
         [_state_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _state_button.titleLabel.font = [UIFont systemFontOfSize:13.0];
@@ -249,6 +249,17 @@
     _state_button.backgroundColor = [UIColor whiteColor];
     [_state_button setTitleColor:kColorff47 forState:UIControlStateNormal];
     _state_button.enabled = YES;
+}
+
+- (void)setIsButton1:(NSString *)isButton1
+{
+    _isButton1 = isButton1;
+    _state_button.layer.cornerRadius = 4.0;
+    _state_button.layer.borderColor = [UIColor whiteColor].CGColor;
+    _state_button.layer.borderWidth = 0.5;
+    _state_button.backgroundColor = [UIColor whiteColor];
+    [_state_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _state_button.enabled = NO;
 }
 
 

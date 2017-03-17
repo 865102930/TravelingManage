@@ -68,7 +68,7 @@
         _content_label.textAlignment = NSTextAlignmentLeft;
         _content_label.textColor = kColor6c6c;
         [_content_label setFont:[UIFont systemFontOfSize:12]];
-        _content_label.text = @"公告公告公告公告公告公告公告公告";
+        _content_label.text = @"公告";
         _content_label.lineBreakMode = NSLineBreakByWordWrapping;
     }
     return _content_label;

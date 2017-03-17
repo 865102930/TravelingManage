@@ -43,6 +43,8 @@
 #import "XFJPleaseDoITViewController.h"
 #import "XFJPleaseAskingViewController.h"
 #import "XFJFindTeamTaskItem.h"
+#import "XFJFindTeamTasksItem.h"
+#import "XFJTaskRowsItem.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -114,7 +116,8 @@
 @property (nonatomic, assign) BOOL isTeamId;
 @property (nonatomic, strong) XFJLeftFindTeamInfoItem *leftFindTeamInfoItem;
 @property (nonatomic, strong) XFJFindTeamTaskItem *findTeamTaskItem;
-
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *findTeamTasksItem;
+@property (nonatomic, strong) NSMutableArray <XFJTaskRowsItem *>*TaskRowsItemArray;
 @end
 
 @implementation HomeViewController
@@ -164,6 +167,22 @@
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
     keyboardManager.keyboardDistanceFromTextField = 50;
+}
+
+- (NSMutableArray <XFJFindTeamTasksItem *> *)findTeamTasksItem
+{
+    if (_findTeamTasksItem == nil) {
+        _findTeamTasksItem = [NSMutableArray array];
+    }
+    return _findTeamTasksItem;
+}
+
+- (NSMutableArray <XFJTaskRowsItem *> *)TaskRowsItemArray
+{
+    if (_TaskRowsItemArray == nil) {
+        _TaskRowsItemArray = [NSMutableArray array];
+    }
+    return _TaskRowsItemArray;
 }
 
 #pragma mark - 最近操作的团队
@@ -227,8 +246,6 @@
     }
     return _chooseScenerySignView;
 }
-
-
 
 #pragma mark - 给按钮添加一个滑动手势
 - (void)setUpPanGes
@@ -379,12 +396,14 @@
                 //如果获取到的object值是nil下面就显示景点选择页面
                 if ([[responseObject objectForKey:@"object"] isKindOfClass:[NSNull class]]) {
                     //先将创建任务的界面移除
-                    [wself.task_view removeFromSuperview];
-                    [wself.signNoPeople_view removeFromSuperview];
-                    //添加酒店签退页面
-                    [wself.signNoHotel_view removeFromSuperview];
-                    //然后添加让用户选择的签到页面
-                    [wself.view addSubview:wself.signTeamTwoView];
+//                    [wself.task_view removeFromSuperview];
+//                    [wself.signNoPeople_view removeFromSuperview];
+//                    //添加酒店签退页面
+//                    [wself.signNoHotel_view removeFromSuperview];
+//                    //然后添加让用户选择的签到页面
+//                    [wself.view addSubview:wself.signTeamTwoView];
+                    //来到这里需要判断是否有任务,
+                    [wself reuqestButtonWithFindTeamInfoItem_id:leftFindTeamInfoItem.findTeamInfoItem_id];
                 }else {//来到这说明签到了此时应该显示的是签退页面
                     if (findTeamTaskItem.typeState == 0) {//如果状态值是0表示景点,就显示景点的签退页面
                         //先移除创建任务界面
@@ -415,6 +434,37 @@
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"+++++++++请求到的错误信息是 :%@",error);
+        }
+    }];
+}
+
+#pragma mark - 调用判断按钮状态的接口
+- (void)reuqestButtonWithFindTeamInfoItem_id:(NSUInteger)findTeamInfoItem_id
+{
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:@{@"id":[NSString stringWithFormat:@"%zd",findTeamInfoItem_id]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++++获取到的团队信息查看任务是 :%@",responseObject);
+            NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
+            wself.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
+            for (NSInteger i = 0;i < findArray.count ; i++) {
+                NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
+                wself.TaskRowsItemArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
+                NSLog(@"wself.TaskRowsItemArray-------%@",wself.TaskRowsItemArray);
+            }
+            //如果没有任务,就代表用户连签到都没有签,此时显示让用户选择的签到任务点,并且完成按钮不可点击
+            NSString *str1;
+            wself.homeTopTaskMessageVeiw.isButton1 = str1;
+            [wself.task_view removeFromSuperview];
+            [wself.signNoPeople_view removeFromSuperview];
+            //添加酒店签退页面
+            [wself.signNoHotel_view removeFromSuperview];
+            //然后添加让用户选择的签到页面
+            [wself.view addSubview:wself.signTeamTwoView];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"--------------获取不到的团队信息查看任务是 :%@",error);
         }
     }];
 }
@@ -672,7 +722,7 @@
         if (object) {
             NSLog(@"-----------打印出来的签到成功信息是:%@",object);
             [wself setUpUserTimeWithUseApp:NO];
-            [MBProgressHUD showHudTipStr:@"亲~~您已经签到成功!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"您已经签到成功!" contentColor:HidWithColorContentBlack];
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
@@ -720,7 +770,7 @@
                 [wself requestTeamSignList];
                 //这里调用获取创建任务的当前时间
                 [wself setUpUserTimeWithUseApp:NO];
-                [MBProgressHUD showHudTipStr:@"亲~您已经签到成功!" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"您已经签到成功!" contentColor:HidWithColorContentBlack];
             }
         } withFailureBlock:^(NSError *error) {
             if (error) {

@@ -18,6 +18,7 @@
 @property (nonatomic, strong) XFJLaterTeamControlItem *laterTeamControlItem;
 @property (nonatomic, strong) XFJLeftFindTeamInfoItem *leftFindTeamInfoItem;
 @property (nonatomic, strong) NSString *isButton;
+@property (nonatomic, strong) NSString *isButton1;
 
 
 @end

@@ -101,13 +101,20 @@
 //    }];
     __weak __typeof(self)wself = self;
     self.logoutView.logout_buttonClickBlock = ^() {
-        //清空userId
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults removeObjectForKey:@"userId"];
-        [userDefaults synchronize];
-        //跳转到登录页面
-        LoginViewController *loginController = [[LoginViewController alloc] init];
-        [wself presentViewController:loginController animated:YES completion:nil];
+        //弹出提示框
+        UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"确定要退出吗?" preferredStyle:UIAlertControllerStyleAlert];
+        [alertVc addAction:[UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
+        }]];
+        [alertVc addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //清空userId
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults removeObjectForKey:@"userId"];
+            [userDefaults synchronize];
+            //跳转到登录页面
+            LoginViewController *loginController = [[LoginViewController alloc] init];
+            [wself presentViewController:loginController animated:YES completion:nil];
+        }]];
+        [wself presentViewController:alertVc animated:NO completion:nil];
     };
 }
 

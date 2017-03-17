@@ -9,6 +9,8 @@
 #import "XFJConventionMessageTableViewCell.h"
 #import "XFJFindTravelAgencyListItem.h"
 #import <Masonry.h>
+#import "GFCalendar.h"
+#import "XFJMaskView.h"
 
 @interface XFJConventionMessageTableViewCell() <UITableViewDataSource,UITableViewDelegate>
 
@@ -28,6 +30,16 @@
 
 @property (nonatomic, strong) NSMutableArray<XFJFindTravelAgencyListItem *> *findTravelAgencyList_array;
 
+@property (nonatomic, strong) UIButton *goalAttribute_button;
+
+@property (nonatomic, strong) UILabel *goalAttribute_label;
+
+@property (nonatomic, strong) UIImageView *goalAttribute_imageViewLeft;
+
+@property (nonatomic, strong) UILabel *goalAttributeContent_label;
+
+@property (nonatomic, strong) XFJMaskView *maskView1;
+
 @end
 
 @implementation XFJConventionMessageTableViewCell
@@ -39,6 +51,10 @@
         self.backgroundColor = [UIColor whiteColor];
         [self initControlWithConventionMessage];
         [self setUpConventionMessageWithMas];
+        __weak __typeof(self)wself = self;
+        self.maskView1.maskBlock = ^() {
+            [wself.maskView1 removeFromSuperview];
+        };
     }
     return self;
 }
@@ -50,7 +66,11 @@
     [self addSubview:self.conventionMessage_imageView];
     [self addSubview:self.conventionMessage_label];
     [self addSubview:self.groupText_field];
-    [self addSubview:self.groupTime_field];
+//    [self addSubview:self.groupTime_field];
+    [self addSubview:self.goalAttribute_button];
+    [self.goalAttribute_button addSubview:self.goalAttribute_label];
+    [self.goalAttribute_button addSubview:self.goalAttribute_imageViewLeft];
+    [self.goalAttribute_button addSubview:self.goalAttributeContent_label];
     [self addSubview:self.travelServiceName_field];
 }
 
@@ -79,17 +99,37 @@
         make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
         make.height.mas_equalTo(38.0);
     }];
-    [self.groupTime_field mas_makeConstraints:^(MASConstraintMaker *make) {
+//    [self.groupTime_field mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(self.groupText_field.mas_bottom).mas_offset(9.0);
+//        make.left.mas_equalTo(self.groupText_field.mas_left);
+//        make.right.mas_equalTo(self.groupText_field.mas_right);
+//        make.height.mas_equalTo(self.groupText_field.mas_height);
+//    }];
+    [self.goalAttribute_button mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.groupText_field.mas_bottom).mas_offset(9.0);
         make.left.mas_equalTo(self.groupText_field.mas_left);
         make.right.mas_equalTo(self.groupText_field.mas_right);
         make.height.mas_equalTo(self.groupText_field.mas_height);
     }];
+    [self.goalAttribute_label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.goalAttribute_button.mas_centerY);
+        make.left.mas_equalTo(self.goalAttribute_button.mas_left).mas_offset(15.0);
+    }];
+    [self.goalAttribute_imageViewLeft mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.goalAttribute_button.mas_top).mas_offset(13.0);
+        make.left.mas_equalTo(self.goalAttribute_label.mas_right).mas_offset(5.0);
+        make.height.mas_equalTo(5.0);
+        make.width.mas_equalTo(5.0);
+    }];
     [self.travelServiceName_field mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.groupTime_field.mas_bottom).mas_offset(9.0);
-        make.left.mas_equalTo(self.groupTime_field.mas_left);
-        make.right.mas_equalTo(self.groupTime_field.mas_right);
-        make.height.mas_equalTo(self.groupTime_field.mas_height);
+        make.top.mas_equalTo(self.goalAttribute_button.mas_bottom).mas_offset(9.0);
+        make.left.mas_equalTo(self.goalAttribute_button.mas_left);
+        make.right.mas_equalTo(self.goalAttribute_button.mas_right);
+        make.height.mas_equalTo(self.goalAttribute_button.mas_height);
+    }];
+    [self.goalAttributeContent_label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.goalAttribute_imageViewLeft.mas_right).mas_offset(18.0);
+        make.centerY.mas_equalTo(self.goalAttribute_label.mas_centerY);
     }];
 }
 
@@ -100,6 +140,14 @@
         _line_view.backgroundColor = kColoreeee;
     }
     return _line_view;
+}
+
+- (XFJMaskView *)maskView1
+{
+    if (_maskView1 == nil) {
+        _maskView1 = [[XFJMaskView alloc] initWithFrame:CGRectZero];
+    }
+    return _maskView1;
 }
 
 - (UIImageView *)conventionMessage_imageView
@@ -140,14 +188,77 @@
         self.groupName_text = groupText_field.text;
     }else if (groupText_field.tag == 10001) {
         NSLog(@"++++++++++++获取到用户输入的出团时间是:%@",groupText_field.text);
-        self.groupTime_text = groupText_field.text;
+//        self.groupTime_text = groupText_field.text;
     }
+}
+
+- (UIButton *)goalAttribute_button
+{
+    if (_goalAttribute_button == nil) {
+        _goalAttribute_button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _goalAttribute_button.layer.borderColor = kBorderColor.CGColor;
+        _goalAttribute_button.layer.borderWidth = 0.5;
+        _goalAttribute_button.layer.cornerRadius = 3.0;
+        _goalAttribute_button.clipsToBounds = YES;
+        _goalAttribute_button.layer.masksToBounds = YES;
+        [_goalAttribute_button addTarget:self action:@selector(goalAttributeButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _goalAttribute_button;
+}
+
+- (void)goalAttributeButtonClick
+{
+    CGFloat width = self.bounds.size.width - 20.0;
+    CGPoint origin = CGPointMake(10.0, 64.0 + 70.0);
+    GFCalendarView *calendar = [[GFCalendarView alloc] initWithFrameOrigin:origin width:width];
+    calendar.backgroundColor = [UIColor whiteColor];
+    // 点击某一天的回调
+    __weak __typeof(self)wself = self;
+    calendar.didSelectDayHandler = ^(NSInteger year, NSInteger month, NSInteger day) {
+        [wself.maskView1 removeFromSuperview];
+        NSLog(@"----------------选择的时间是 :%zd/%zd/%zd",year, month, day);
+        wself.groupTime_text = [NSString stringWithFormat:@"%zd/%zd/%zd",year,month,day];
+        wself.goalAttributeContent_label.text = [NSString stringWithFormat:@"%zd/%zd/%zd",year,month,day];
+    };
+    [[UIApplication sharedApplication].keyWindow addSubview:self.maskView1];
+    [self.maskView1 addSubview:calendar];
+}
+
+- (UILabel *)goalAttribute_label
+{
+    if (_goalAttribute_label == nil) {
+        _goalAttribute_label = [[UILabel alloc] init];
+        _goalAttribute_label.text = @"出 团 日 期";
+        _goalAttribute_label.textColor = kColor2f2f;
+        _goalAttribute_label.font = [UIFont systemFontOfSize:13.0];
+    }
+    return _goalAttribute_label;
+}
+
+- (UIImageView *)goalAttribute_imageViewLeft
+{
+    if (_goalAttribute_imageViewLeft == nil) {
+        _goalAttribute_imageViewLeft = [[UIImageView alloc] init];
+        _goalAttribute_imageViewLeft.image = [UIImage originalWithImage:@"xinghao"];
+    }
+    return _goalAttribute_imageViewLeft;
+}
+
+- (UILabel *)goalAttributeContent_label
+{
+    if (_goalAttributeContent_label == nil) {
+        _goalAttributeContent_label = [[UILabel alloc] init];
+        _goalAttributeContent_label.text = @"请输入出团日期";
+        _goalAttributeContent_label.textColor = kColor2f2f;
+        _goalAttributeContent_label.font = [UIFont systemFontOfSize:14.0];
+    }
+    return _goalAttributeContent_label;
 }
 
 - (UITextField *)groupTime_field
 {
     if (_groupTime_field == nil) {
-        _groupTime_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"出 团 日 期" rightImage:@"xinghao" placeholder:@"2017-02-23"];
+        _groupTime_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"出 团 日 期" rightImage:@"xinghao" placeholder:@"2017/02/23"];
         [_groupTime_field addTarget:self action:@selector(groupText_endText:) forControlEvents:UIControlEventEditingChanged];
         _groupTime_field.tag = 10001;
     }
@@ -269,7 +380,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.travelServiceName_field.text = self.findTravelAgencyList_array[indexPath.row].taName;
-    self.travelName = indexPath.row;
+    self.travelName = self.findTravelAgencyList_array[indexPath.row].findTravelAgencyList_id;//findTravelAgencyList_id
     NSLog(@"self.travelName类型的值是:%zd",self.travelName);
     [self.check_traveView removeFromSuperview];
 }
@@ -280,6 +391,8 @@
 {
     return 33.0;
 }
+
+
 
 
 

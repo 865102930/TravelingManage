@@ -27,18 +27,18 @@
 {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
-        [self addSubview:self.star_imageView];
+//        [self addSubview:self.star_imageView];
         [self addSubview:self.showPhotos_label];
         [self addSubview:self.collectionView];
         self.dataArr = [NSMutableArray array];
-        [self.star_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(18.0);
-            make.bottom.mas_equalTo(-25.0);
-            make.height.width.mas_equalTo(5.0);
-        }];
+//        [self.star_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(18.0);
+//            make.bottom.mas_equalTo(-25.0);
+//            make.height.width.mas_equalTo(5.0);
+//        }];
         [self.showPhotos_label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self.star_imageView.mas_right).mas_offset(2.0);
-            make.centerY.mas_equalTo(self.star_imageView.mas_centerY);
+            make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
+            make.bottom.mas_equalTo(self.mas_bottom).mas_equalTo(-25.0);
         }];
         [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(15.0);
@@ -51,14 +51,14 @@
     return self;
 }
 
-- (UIImageView *)star_imageView
-{
-    if (_star_imageView == nil) {
-        _star_imageView = [[UIImageView alloc] init];
-        _star_imageView.image = [UIImage originalWithImage:@"xinghao"];
-    }
-    return _star_imageView;
-}
+//- (UIImageView *)star_imageView
+//{
+//    if (_star_imageView == nil) {
+//        _star_imageView = [[UIImageView alloc] init];
+//        _star_imageView.image = [UIImage originalWithImage:@"xinghao"];
+//    }
+//    return _star_imageView;
+//}
 
 - (UILabel *)showPhotos_label
 {

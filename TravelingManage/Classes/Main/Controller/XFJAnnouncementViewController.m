@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.backgroundColor = BackgroudColor;
-    self.tableView.contentInset = UIEdgeInsetsMake(67, 0, 48, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(67, 0, 40, 0);
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.separatorStyle = NO;
@@ -45,7 +45,12 @@
 
 - (void)loadData{
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
-    [mgr POST:ANNOUNCEMENTLIST parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable responseObject) {
+    NSDictionary *dictParameters = @{
+                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"],//用户Id
+                                     @"Page":@1,//页数
+                                     @"rows":@10//行数
+                                     };
+    [mgr POST:ANNOUNCEMENTLIST parameters:dictParameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable responseObject) {
         [MBProgressHUD hidenHud];
         NSArray *dictArr = responseObject[@"rows"];
         _announcementModels = [AnnouncementModel mj_objectArrayWithKeyValuesArray:dictArr];
@@ -61,6 +66,7 @@
 #pragma mark   ----------tableViewDelegate datasource----------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"-----------公告模型的数量是 :%zd",self.announcementModels.count);
     return self.announcementModels.count;
     
 }

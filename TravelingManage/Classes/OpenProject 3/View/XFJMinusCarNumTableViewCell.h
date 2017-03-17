@@ -10,13 +10,15 @@
 
 
 #import <UIKit/UIKit.h>
+#import "XFJCarNumberItem.h"
 
 @interface XFJMinusCarNumTableViewCell : UITableViewCell
 
 @property (nonatomic, copy) void (^minusCarNumBlock)();
 
-
 @property (nonatomic, strong) NSString *textFieldStr;
+
+@property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberItemArray;
 
 
 @end

@@ -71,6 +71,7 @@
 {
     if (_carName_field == nil) {
         _carName_field = [UITextField textBackGroundImage:@"input-box2-" titleName:@"车    牌    号" rightImage:@"xinghao" placeholder:@"请输入车牌号"];
+        
     }
     return _carName_field;
 }
@@ -99,6 +100,15 @@
     if (textFieldStr.length != 0) {
         self.carName_field.text = [NSString stringWithFormat:@"%@",textFieldStr];
     }
+}
+
+- (void)setCarNumberItemArray:(NSMutableArray<XFJCarNumberItem *> *)carNumberItemArray
+{
+    _carNumberItemArray = carNumberItemArray;
+    if (carNumberItemArray.count == 0) {
+        return;
+    }
+    self.carName_field.text = [NSString stringWithFormat:@"%@",carNumberItemArray[0].plateHead];
 }
 
 

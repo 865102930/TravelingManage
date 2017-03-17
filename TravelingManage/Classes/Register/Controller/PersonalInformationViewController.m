@@ -171,6 +171,15 @@
             make.top.equalTo(_idTextF.mas_bottom).offset(17);
         }];
     }
+}
+
+#pragma mark ----- buttonClick
+//已阅读
+- (void)agreeClick: (UIButton *)button{
+
+}
+//马上进入
+- (void)getIntoButtonClick{
     if (_idTextF.text.length != 18){
         [self.promptL setHidden:NO];
         self.promptL.text = @"身份证号输入错误,请重新输入";
@@ -180,17 +189,8 @@
         }];
     }else {
         [self.promptL setHidden:YES];
+        [self userRegister];
     }
-}
-
-#pragma mark ----- buttonClick
-//已阅读
-- (void)agreeClick: (UIButton *)button{
-
-}
-//马上进入
-- (void)getIntoButtonClick{    
-    [self userRegister];
 }
 
 //注册

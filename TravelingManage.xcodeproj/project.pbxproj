@@ -70,6 +70,11 @@
 		3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8FF1E481A70008A838D /* UIBarButtonItem+XFJItem.m */; };
 		3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C9011E481A70008A838D /* UIImage+XFJColor.m */; };
 		3A07C9061E481A70008A838D /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C9031E481A70008A838D /* UIView+Frame.m */; };
+		3A0C818D1E7BAF9500920F2C /* GFCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C81841E7BAF9400920F2C /* GFCalendarCell.m */; };
+		3A0C818E1E7BAF9500920F2C /* GFCalendarMonth.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C81861E7BAF9400920F2C /* GFCalendarMonth.m */; };
+		3A0C818F1E7BAF9500920F2C /* GFCalendarScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C81881E7BAF9400920F2C /* GFCalendarScrollView.m */; };
+		3A0C81901E7BAF9500920F2C /* GFCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C818A1E7BAF9400920F2C /* GFCalendarView.m */; };
+		3A0C81911E7BAF9500920F2C /* NSDate+GFCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C818C1E7BAF9400920F2C /* NSDate+GFCalendar.m */; };
 		3A10CFDC1E5BD04F00592564 /* UITextField+XFJTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10CFDB1E5BD04F00592564 /* UITextField+XFJTextField.m */; };
 		3A10CFDF1E5BDBD200592564 /* NSObject+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10CFDE1E5BDBD200592564 /* NSObject+Common.m */; };
 		3A18E5231E5D24FC00BFE891 /* UIImage+image.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A18E5221E5D24FC00BFE891 /* UIImage+image.m */; };
@@ -444,6 +449,17 @@
 		3A07C9011E481A70008A838D /* UIImage+XFJColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+XFJColor.m"; sourceTree = "<group>"; };
 		3A07C9021E481A70008A838D /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
 		3A07C9031E481A70008A838D /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
+		3A0C81821E7BAF9400920F2C /* GFCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFCalendar.h; sourceTree = "<group>"; };
+		3A0C81831E7BAF9400920F2C /* GFCalendarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFCalendarCell.h; sourceTree = "<group>"; };
+		3A0C81841E7BAF9400920F2C /* GFCalendarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFCalendarCell.m; sourceTree = "<group>"; };
+		3A0C81851E7BAF9400920F2C /* GFCalendarMonth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFCalendarMonth.h; sourceTree = "<group>"; };
+		3A0C81861E7BAF9400920F2C /* GFCalendarMonth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFCalendarMonth.m; sourceTree = "<group>"; };
+		3A0C81871E7BAF9400920F2C /* GFCalendarScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFCalendarScrollView.h; sourceTree = "<group>"; };
+		3A0C81881E7BAF9400920F2C /* GFCalendarScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFCalendarScrollView.m; sourceTree = "<group>"; };
+		3A0C81891E7BAF9400920F2C /* GFCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFCalendarView.h; sourceTree = "<group>"; };
+		3A0C818A1E7BAF9400920F2C /* GFCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFCalendarView.m; sourceTree = "<group>"; };
+		3A0C818B1E7BAF9400920F2C /* NSDate+GFCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+GFCalendar.h"; sourceTree = "<group>"; };
+		3A0C818C1E7BAF9400920F2C /* NSDate+GFCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+GFCalendar.m"; sourceTree = "<group>"; };
 		3A10CFDA1E5BD04F00592564 /* UITextField+XFJTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+XFJTextField.h"; sourceTree = "<group>"; };
 		3A10CFDB1E5BD04F00592564 /* UITextField+XFJTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+XFJTextField.m"; sourceTree = "<group>"; };
 		3A10CFDD1E5BDBD200592564 /* NSObject+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Common.h"; sourceTree = "<group>"; };
@@ -897,6 +913,7 @@
 				1CFDFDED1E542C65001D6300 /* Controller */,
 				3A9EB5CC1E5C491B0064E61B /* Model */,
 				1CFDFE041E542C65001D6300 /* View */,
+				3A0C81811E7BAF9400920F2C /* GFCalendar */,
 			);
 			name = OpenProject;
 			path = "OpenProject 3";
@@ -1020,6 +1037,24 @@
 			);
 			name = JFImagePickerController;
 			path = "JFImagePickerController 2";
+			sourceTree = "<group>";
+		};
+		3A0C81811E7BAF9400920F2C /* GFCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				3A0C81821E7BAF9400920F2C /* GFCalendar.h */,
+				3A0C81831E7BAF9400920F2C /* GFCalendarCell.h */,
+				3A0C81841E7BAF9400920F2C /* GFCalendarCell.m */,
+				3A0C81851E7BAF9400920F2C /* GFCalendarMonth.h */,
+				3A0C81861E7BAF9400920F2C /* GFCalendarMonth.m */,
+				3A0C81871E7BAF9400920F2C /* GFCalendarScrollView.h */,
+				3A0C81881E7BAF9400920F2C /* GFCalendarScrollView.m */,
+				3A0C81891E7BAF9400920F2C /* GFCalendarView.h */,
+				3A0C818A1E7BAF9400920F2C /* GFCalendarView.m */,
+				3A0C818B1E7BAF9400920F2C /* NSDate+GFCalendar.h */,
+				3A0C818C1E7BAF9400920F2C /* NSDate+GFCalendar.m */,
+			);
+			path = GFCalendar;
 			sourceTree = "<group>";
 		};
 		3A1B7AB41E48028600A5B22D = {
@@ -2022,10 +2057,12 @@
 				1CFDFE1A1E542C65001D6300 /* TZAssetCell.m in Sources */,
 				1CFDFE1B1E542C65001D6300 /* TZAssetModel.m in Sources */,
 				3A62391B1E754E8900D045BA /* XFJSureUpPhotosView.m in Sources */,
+				3A0C818E1E7BAF9500920F2C /* GFCalendarMonth.m in Sources */,
 				3AA475121E5EAB5E00FEB005 /* XFJSignView.m in Sources */,
 				3A18E54D1E5D6FB400BFE891 /* XFJOtherInformationTableViewCell.m in Sources */,
 				3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */,
 				3A18E5511E5D6FB400BFE891 /* XFJUploadPhotosTableViewCell.m in Sources */,
+				3A0C818D1E7BAF9500920F2C /* GFCalendarCell.m in Sources */,
 				3A9EB5D21E5C50C90064E61B /* XFJTeamPropertiesItem.m in Sources */,
 				1CFDFE3A1E542C78001D6300 /* WSImageBroserCell.m in Sources */,
 				3A7A51281E4B1C72004FFB0F /* XFJLeftViewTableViewCell.m in Sources */,
@@ -2076,6 +2113,7 @@
 				1CFDFE231E542C65001D6300 /* UIView+Layout.m in Sources */,
 				3A18E5531E5D6FB400BFE891 /* XFJVoucherPhotosCollectionViewCell.m in Sources */,
 				3A756F201E657D03005D2C02 /* AlertView.m in Sources */,
+				3A0C818F1E7BAF9500920F2C /* GFCalendarScrollView.m in Sources */,
 				3A00E3141E545DE200525150 /* XFJAllTaskTableViewCell.m in Sources */,
 				3A03A4B71E78F05100AADD4D /* XFJTaskItemRows.m in Sources */,
 				3A9474981E4D9137002F1F9B /* PersonalInformationViewController.m in Sources */,
@@ -2083,6 +2121,7 @@
 				3AE849F11E54410F00A71C5E /* XFJSubscribeButton.m in Sources */,
 				1C665BF61E69981E0059DE59 /* NewPhoneNueViewController.m in Sources */,
 				3A03A4B11E78D8EB00AADD4D /* XFJTasksItemModel.m in Sources */,
+				3A0C81901E7BAF9500920F2C /* GFCalendarView.m in Sources */,
 				3AC803381E6D7CEB005D2B71 /* XFJSignAppraiseTableViewCell.m in Sources */,
 				1C06E0891E73C1540019FF1F /* PhotoModel.m in Sources */,
 				1CFDFE221E542C65001D6300 /* TZVideoPlayerController.m in Sources */,
@@ -2111,6 +2150,7 @@
 				3ACCE3891E684B6800B3526B /* XFJSignMessageTopVeiw.m in Sources */,
 				3AA475211E5EE4F300FEB005 /* XFJSceneryAnnotation.m in Sources */,
 				3A51D1741E6D0719005B86F6 /* XFJPleasePerfectMessageTopView.m in Sources */,
+				3A0C81911E7BAF9500920F2C /* NSDate+GFCalendar.m in Sources */,
 				3ACCE3861E684AE000B3526B /* XFJSignMessageViewController.m in Sources */,
 				1CFDFE531E542C84001D6300 /* JFImageManager.m in Sources */,
 				1CFDFDE81E53E3DD001D6300 /* AnnouncementDetailModel.m in Sources */,

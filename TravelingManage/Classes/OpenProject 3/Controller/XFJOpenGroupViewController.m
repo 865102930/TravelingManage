@@ -344,6 +344,7 @@
         if (object) {
             NSMutableArray *carArray = [object objectForKey:@"rows"];
             self.carNumberArray = [XFJCarNumberItem mj_objectArrayWithKeyValuesArray:carArray];
+            [wself.carNumber_tableView reloadData];
             NSLog(@"wself.carName_field.text的值是 :%@",wself.carNumberArray);
         }
     } withFailureBlock:^(NSError *error) {
@@ -366,8 +367,7 @@
 - (void)upLoadPic
 {
     if (self.dataArr.count == 0) {
-        NSLog(@"图片上传失败------");
-        [MBProgressHUD showHudTipStr:@"请上传车辆图片" contentColor:HidWithColorContentBlack];
+        return;
     }else {
         for (int i = 0; i < _dataArr.count; i++) {
             UIImage *image = _dataArr[i];
@@ -395,8 +395,13 @@
 #pragma mark - 上传凭证
 - (void)upLoadVoucherPic
 {
+    [MBProgressHUD showLoadHUD];
     if (self.dataArray.count == 0) {
-        [MBProgressHUD showHudTipStr:@"请上传凭证照片" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD hidenHud];
+        //如果照片为空,在这里提交
+        //开始任务的请求
+        [self startTaskButtonClick];
+        return;
     }else {
         UIImage *image = self.dataArray[0];
         NSData *imageData = [UIImage compressImage:image maxSize:300];
@@ -413,7 +418,8 @@
             NSLog(@"上传图片成功后的信息-------%@",root);
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (wself.root.length == 0) {
-                    [MBProgressHUD showHudTipStr:@"图片上传失败" contentColor:HidWithColorContentBlack];
+                    [MBProgressHUD hidenHud];
+//                    [MBProgressHUD showHudTipStr:@"图片上传失败" contentColor:HidWithColorContentBlack];
                     return ;
                 }
                 //开始任务的请求
@@ -421,6 +427,7 @@
             });
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"上传图片失败--------%@",error);
+            [MBProgressHUD hidenHud];
         }];
     }
 }
@@ -432,9 +439,7 @@
     NSNumber *paramName1 = [NSNumber numberWithInteger:self.guestSourceInformation_view.paramName1];
     NSNumber *teamNature = [NSNumber numberWithInteger:self.teamInformation_view.teamNature];
     if (self.conventionMessage_view.groupName_text == nil || self.conventionMessage_view.groupTime_text == nil || traveName == nil || self.strNum == nil || self.guestSourceInformation_view.selectedProvince == nil || self.guestSourceInformation_view.selectedCity == nil || self.guestSourceInformation_view.selectedArea == nil || paramName1 == nil || teamNature == nil || self.teamInformation_view.teamPeople_number == nil || self.teamInformation_view.teamDay == nil) {
-        self.voucherPicRoot = nil;
-        self.root = nil;
-        [MBProgressHUD showHudTipStr:@"主人~~请完善必填信息" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请完善必填信息" contentColor:HidWithColorContentBlack];
         return;
     }
     NSDictionary *dictParaments = @{
@@ -450,8 +455,8 @@
                                     @"teamNum":self.teamInformation_view.teamPeople_number,//团队人数
                                     @"teamDay":self.teamInformation_view.teamDay,//团队天数
                                     @"createuser":@7,//创建记录的用户id
-                                    @"certificateImg":self.voucherPicRoot,//凭证图片路径
-                                    @"teamVehicleImages":self.root,//车辆图片集合用,分割
+                                    @"certificateImg":[NSString stringWithFormat:@"%@",self.voucherPicRoot],//凭证图片路径
+                                    @"teamVehicleImages":[NSString stringWithFormat:@"%@",self.root],//车辆图片集合用,分割
                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]//导游id
                                     };
     NSLog(@"参数集合-----%@----%@---%@---%zd---%@----%@---%@----%@----%zd----%zd---%@---%@---%@---%@---%@",@7,self.conventionMessage_view.groupName_text,self.conventionMessage_view.groupTime_text,traveName,self.strNum,self.guestSourceInformation_view.selectedProvince,self.guestSourceInformation_view.selectedCity,self.guestSourceInformation_view.selectedArea,paramName1,teamNature,self.teamInformation_view.teamPeople_number,self.teamInformation_view.teamDay,@7,self.voucherPicRoot,self.root);
@@ -683,7 +688,13 @@
         NSLog(@"self.carNumberArray的值是:%@",self.carNumberArray);
         __weak typeof(self) weakself = self;
         cell.addCellBlock = ^(NSInteger srt,NSString *str1) {
-            [weakself addButtonClick];
+            //在这里需要判断输入的车牌号是否正确
+            if ([weakself validateCarNo:weakself.strNum]) {//如果为YES就增加
+                [weakself addButtonClick];
+            }else {//错误就提示用户
+                [MBProgressHUD showHudTipStr:@"车牌号输入不正确!" contentColor:HidWithColorContentBlack];
+                return ;
+            }
         };
         cell.carNumberBlock = ^(NSString *carNum) {
             NSLog(@"接收到的车牌号码是:%@",carNum);
@@ -692,6 +703,7 @@
         return cell;
     }else {
         XFJMinusCarNumTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kReuseIdentifier_XFJMinusCarNumTableViewCell forIndexPath:indexPath];
+        cell.carNumberItemArray = self.carNumberArray;
         __weak typeof(self) weakself = self;
         cell.minusCarNumBlock = ^() {
             [weakself add];
@@ -699,6 +711,18 @@
         return cell;
     }
     return nil;
+}
+
+#pragma mark - 判断车牌号是否正确
+- (BOOL)validateCarNo:(NSString *)carNo
+{
+    NSString *carRegex =@"^[\u4e00-\u9fa5]{1}[a-zA-Z]{1}[a-zA-Z_0-9]{4}[a-zA-Z_0-9_\u4e00-\u9fa5]$";
+    NSPredicate *carTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",carRegex];
+    if ([carTest evaluateWithObject:carNo]) {
+        return YES;
+    }else{
+        return NO;
+    }
 }
 
 - (void)add
@@ -717,6 +741,7 @@
 
 - (void)addButtonClick
 {
+    
     NSArray *visibleCells = [self.carNumber_tableView visibleCells];
     if (visibleCells.count > 5) {
         return;
@@ -727,7 +752,7 @@
     self.carNumber_tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, (self.addArray.count + 1) * 45);
     self.backGroundView.frame = CGRectMake(0, 210 + (self.addArray.count + 1) * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
     [self.carNumber_tableView insertRowsAtIndexPaths:self.addArray withRowAnimation:UITableViewRowAnimationLeft];
-    [self.carNumber_tableView reloadData];
+//    [self.carNumber_tableView reloadData];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
