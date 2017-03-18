@@ -69,6 +69,7 @@
 #pragma mark - 每个标题中有多少为查看的数字接口
 - (void)lineCountRequest
 {
+    [self.findTeamInFoStateItemArray removeAllObjects];
     NSDictionary *dictParaments = @{
                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]
                                     };
@@ -107,8 +108,6 @@
 - (void)setUpInitController
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    
 }
 
 - (UILabel *)title_label
@@ -164,11 +163,16 @@
 #pragma mark - 添加所有的控制器
 - (void)setUpAllVeiwController
 {
+    XFJTaskingViewController *taskingViewController = [[XFJTaskingViewController alloc] init];
     [self addChildViewController:[[XFJAllTaskViewController alloc] init]];
-    [self addChildViewController:[[XFJTaskingViewController alloc] init]];
+    [self addChildViewController:taskingViewController];
     [self addChildViewController:[[XFJPleaseDoITViewController alloc] init]];
     [self addChildViewController:[[XFJPleaseCheckViewController alloc] init]];
     [self addChildViewController:[[XFJPleaseAskingViewController alloc] init]];
+    __weak __typeof(self)wself = self;
+    taskingViewController.requestTitleBolock = ^() {
+        [wself lineCountRequest];
+    };
 }
 
 #pragma mark - 添加控件的方法

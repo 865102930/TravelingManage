@@ -135,6 +135,14 @@
 #pragma mark - 提交评论
 - (void)commitEvaluate_buttonClick
 {
+    NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
+                           @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
+                           @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
+                           @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
+                           @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
+                           };
+    NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
+    [self.totalStarArray addObject:dict];
     //转成json格式给服务器发送
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.totalStarArray options:NSJSONWritingPrettyPrinted error:&error];
@@ -150,7 +158,7 @@
     [GRNetRequestClass POST:EVALUATEURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
             NSLog(@"--------评价成功返回的结果是 :%@",responseObject);
-            [MBProgressHUD showHudTipStr:@"亲~~评论成功哦!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"评论成功!" contentColor:HidWithColorContentBlack];
             HomeViewController *home = [[HomeViewController alloc] init];
             JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:home];
             [wself presentViewController:navVC animated:YES completion:nil];
@@ -244,28 +252,22 @@
     if (cell == nil) {
         cell = [[XFJSignAppraiseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
+    __weak __typeof(self)wself = self;
     cell.teamScoreBlock1 = ^(NSString *scoreText1,NSInteger attractionsId1) {
         NSLog(@"获得到的scoreText1和attractionsId1是:%zd-----%zd",[scoreText1 intValue],attractionsId1);
-        self.teamScore1 = [scoreText1 intValue];
-        self.attractionsId = attractionsId1;
+        wself.teamScore1 = [scoreText1 intValue];
+        wself.attractionsId = attractionsId1;
     };
     cell.teamScoreBlock2 = ^(NSString *scoreText2,NSInteger attractionsId2) {
         NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText2 intValue],attractionsId2);
-        self.teamScore2 = [scoreText2 intValue];
-        self.attractionsId = attractionsId2;
+        wself.teamScore2 = [scoreText2 intValue];
+        wself.attractionsId = attractionsId2;
     };
     cell.teamScoreBlock3 = ^(NSString *scoreText3,NSInteger attractionsId3) {
         NSLog(@"获得到的scoreText3和attractionsId3是:%zd-----%zd",[scoreText3 intValue],attractionsId3);
-        self.teamScore3 = [scoreText3 intValue];
-        self.attractionsId = attractionsId3;
+        wself.teamScore3 = [scoreText3 intValue];
+        wself.attractionsId = attractionsId3;
     };
-    NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
-                           @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
-                           @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
-                           @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
-                           @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
-                           };
-    [self.totalStarArray addObject:dict];
     cell.findTeamTasksItemArray = self.TaskRowsItemArray[indexPath.row];
     return cell;
 }

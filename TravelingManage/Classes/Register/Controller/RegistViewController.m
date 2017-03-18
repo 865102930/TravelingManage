@@ -65,6 +65,7 @@
     if(!_phoneTextF){
         _phoneTextF = [UITextField textLeftImage:@"phoneNum" placeholder:@"请输入手机号" imageWidth:14 imageHeight:19 lineWidth: SCREEN_WIDTH - 48];
         [_phoneTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        _phoneTextF.keyboardType = UIKeyboardTypeNumberPad;
         [self.view addSubview:_phoneTextF];
     }
     return _phoneTextF;
@@ -161,11 +162,12 @@
 - (void)nextButtonClick{
     [self whetherRegistration];
 }
+
+
 //返回
 - (void)backButtonClick{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 #pragma mark ----- textFieldDelegate
 - (void)textFieldDidChange:(UITextField *)sender {
     if (sender.text.length == 11) {

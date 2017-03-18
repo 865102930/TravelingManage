@@ -74,6 +74,7 @@
     if(!_idTextF){
         _idTextF = [UITextField textLeftImage:@"idNumber" placeholder:@"请输入身份证验证码" imageWidth:14 imageHeight:19 lineWidth: SCREEN_WIDTH - 48];
         [_idTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        _idTextF.keyboardType = UIKeyboardTypeNumberPad;
         [_idTextF addTarget:self action:@selector(textFieldChange:) forControlEvents:UIControlEventEditingChanged];
         [self.view addSubview:_idTextF];
     }

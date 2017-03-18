@@ -71,6 +71,7 @@
     if (!_idCodeTextF) {
         _idCodeTextF =[UITextField textLeftImage:@"idCodeImage" placeholder:@"请输入验证码" imageWidth:17 imageHeight:15 lineWidth:(SCREEN_WIDTH - 111 - 17 - 48)];
         [_idCodeTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        _idCodeTextF.keyboardType = UIKeyboardTypeNumberPad;
         [self.view addSubview:_idCodeTextF];
     }
     return _idCodeTextF;

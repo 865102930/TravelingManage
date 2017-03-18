@@ -78,6 +78,7 @@
     if(!_phoneTextF){
         _phoneTextF = [UITextField textLeftImage:@"phoneNum" placeholder:@"请输入手机号" imageWidth:14 imageHeight:19 lineWidth:SCREEN_WIDTH - 48];
          [_phoneTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        _phoneTextF.keyboardType = UIKeyboardTypeNumberPad;
         [self.view addSubview:_phoneTextF];
     }
     return _phoneTextF;
@@ -92,6 +93,7 @@
     if (!_idCodeTextF) {
         _idCodeTextF =[UITextField textLeftImage:@"idCodeImage" placeholder:@"请输入验证码" imageWidth:17 imageHeight:15 lineWidth:(SCREEN_WIDTH - 111 - 17 - 48)];
          [_idCodeTextF addTarget:self action:@selector(idCodeTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        _idCodeTextF.keyboardType = UIKeyboardTypeNumberPad;
         [self.view addSubview:_idCodeTextF];
     }
     return _idCodeTextF;

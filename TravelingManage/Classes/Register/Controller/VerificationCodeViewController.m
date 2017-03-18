@@ -71,6 +71,7 @@
     if (!_idCodeTextF) {
         _idCodeTextF =[UITextField textLeftImage:@"idCodeImage" placeholder:@"请输入验证码" imageWidth:17 imageHeight:15 lineWidth:(SCREEN_WIDTH - 111 - 17 - 48)];
           [_idCodeTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        _idCodeTextF.keyboardType = UIKeyboardTypeNumberPad;
         [self.view addSubview:_idCodeTextF];
     }
     return _idCodeTextF;
@@ -78,7 +79,7 @@
 
 - (UIButton *)idCodeButton{
     if (!_idCodeButton) {
-        _idCodeButton = [UIButton buttonWithTitle:@"获取验证码" fontOfSize:15 target:self action:@selector(idCodeButtonClick)];
+        _idCodeButton = [UIButton buttonWithTitle:@"重新发送" fontOfSize:15 target:self action:@selector(idCodeButtonClick)];
         [self.view addSubview:_idCodeButton];
     }
     return _idCodeButton;

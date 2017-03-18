@@ -11,6 +11,9 @@
 
 @interface XFJAllTaskViewController : UIViewController
 
+//定义一个block用来对标题数量发送请求
+@property (nonatomic, copy) void (^requestTitleBolock)();
+
 - (XFJStateType)type;
 
 @end

@@ -922,7 +922,7 @@
 - (XFJAnnouncementView *)announcementView
 {
     if (_announcementView == nil) {
-        _announcementView = [[XFJAnnouncementView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 53)];
+        _announcementView = [[XFJAnnouncementView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 53)];
     }
     return _announcementView;
 }
@@ -977,7 +977,7 @@
 - (XFJHomeTopTaskMessageVeiw *)homeTopTaskMessageVeiw
 {
     if (_homeTopTaskMessageVeiw == nil) {
-        _homeTopTaskMessageVeiw = [[XFJHomeTopTaskMessageVeiw alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 98.0)];
+        _homeTopTaskMessageVeiw = [[XFJHomeTopTaskMessageVeiw alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 98.0)];
     }
     return _homeTopTaskMessageVeiw;
 }
@@ -1075,11 +1075,11 @@
     
 }
 
-- (void)loadView
-{
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.view = scrollView;
-}
+//- (void)loadView
+//{
+//    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//    self.view = scrollView;
+//}
 
 - (XFJSignView *)sign_view
 {

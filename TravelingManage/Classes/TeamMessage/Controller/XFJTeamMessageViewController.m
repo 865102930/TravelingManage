@@ -148,7 +148,6 @@
 {
     //上传图片
     [self upLoadPic];
-    [self upLoadVoucherPic];
 }
 
 - (NSMutableArray *)allRootImage
@@ -171,7 +170,8 @@
 - (void)upLoadPic
 {
     if (self.dataArr.count == 0) {
-        NSLog(@"图片上传失败------");
+        [MBProgressHUD showHudTipStr:@"请上传车辆照片!" contentColor:HidWithColorContentBlack];
+        return;
     }else {
         for (int i = 0; i < _dataArr.count; i++) {
             UIImage *image = _dataArr[i];
@@ -188,6 +188,7 @@
                 NSString *root = dict[@"object"];
                 [wself.allRootImage addObject:root];
                 wself.root = [wself.allRootImage componentsJoinedByString:@","];
+                [wself upLoadVoucherPic];
                 NSLog(@"上传图片成功后的信息-------%@+++++++%@",root,wself.root);
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSLog(@"上传图片失败--------%@",error);
@@ -199,9 +200,11 @@
 #pragma mark - 上传凭证
 - (void)upLoadVoucherPic
 {
-    if (self.dataArray == 0) {
-        NSLog(@"图片丢失~~~~~~");
+    if (self.dataArray.count == 0) {
+        [MBProgressHUD showHudTipStr:@"请上传凭证照片!" contentColor:HidWithColorContentBlack];
+        return;
     }else {
+        [MBProgressHUD showLoadHUD];
         UIImage *image = self.dataArray[0];
         NSData *imageData = [UIImage compressImage:image maxSize:300];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -211,6 +214,7 @@
             [formData appendPartWithFileData:imageData name:@"file" fileName:@"image.jpg" mimeType:@"image/jpg"];
         } progress:^(NSProgress * _Nonnull uploadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [MBProgressHUD hidenHud];
             NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
             NSString *root = dict[@"object"];
             wself.voucherPicRoot = root;
@@ -226,6 +230,7 @@
                 [wself sureAndCommitShow:self.teamId];
             });
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            [MBProgressHUD hidenHud];
             NSLog(@"上传图片失败--------%@",error);
         }];
     }
@@ -300,7 +305,6 @@
     UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"提交完成!\n欢迎对本次带团进行评价!" preferredStyle:UIAlertControllerStyleAlert];
     __weak __typeof(self)wself = self;
     [alertVc addAction:[UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
-        NSLog(@"主人~~您点击了上传附件按钮!");
         [wself.navigationController popViewControllerAnimated:YES];
     }]];
     [alertVc addAction:[UIAlertAction actionWithTitle:@"立即评价" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -441,7 +445,13 @@
     if (_scroll_view == nil) {
         _scroll_view = [[UIScrollView alloc] init];
         _scroll_view.frame = CGRectMake(0, 0, self.view.bounds.size.width, 1.2 * self.view.XFJ_Height);
-        _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2);
+        if (iphone6P) {
+            _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 1.7);
+        }else if (iphone5) {
+            _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2);
+        }else {
+            _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2);
+        }
         _scroll_view.backgroundColor = kColoreeee;
         _scroll_view.showsHorizontalScrollIndicator = NO;
         _scroll_view.scrollEnabled = YES;

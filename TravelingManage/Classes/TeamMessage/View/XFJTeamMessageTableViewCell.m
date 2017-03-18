@@ -149,7 +149,6 @@
 {
     if (_mintesContent_label == nil) {
         _mintesContent_label = [[UILabel alloc] init];
-        _mintesContent_label.text = @"01";
         _mintesContent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _mintesContent_label.textColor = kColorff47;
     }
@@ -171,7 +170,6 @@
 {
     if (_hourContent_label == nil) {
         _hourContent_label = [[UILabel alloc] init];
-        _hourContent_label.text = @"01";
         _hourContent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _hourContent_label.textColor = kColorff47;
     }
@@ -202,7 +200,6 @@
 {
     if (_peopleContent_label == nil) {
         _peopleContent_label = [[UILabel alloc] init];
-        _peopleContent_label.text = @"40";
         _peopleContent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _peopleContent_label.textColor = kColorff47;
     }
@@ -214,6 +211,19 @@
     _taskRowsItem = taskRowsItem;
     //景点
     self.sceneryMessage_label.text = [NSString stringWithFormat:@"%@",taskRowsItem.attractionsName];
+    //签到人数
+    self.peopleContent_label.text = [NSString stringWithFormat:@"%zd",taskRowsItem.checkinNumber];
+    if ([taskRowsItem.attractionsTime intValue] == 0) {
+        self.mintesContent_label.text = @"0";
+        self.hourContent_label.text = @"0";
+    }else {
+        NSString *teamDateStr = [NSString stringWithFormat:@"%@",taskRowsItem.attractionsTime];
+        NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@"."];
+        self.hourContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
+        CGFloat mintesContent_label = 0.83;
+        self.mintesContent_label.text = [NSString stringWithFormat:@"%d",(int)mintesContent_label * 60];
+//        self.mintesContent_label.text = @"0";
+    }
     NSLog(@"----------景点信息是 :%@",taskRowsItem.attractionsName);
     
 }

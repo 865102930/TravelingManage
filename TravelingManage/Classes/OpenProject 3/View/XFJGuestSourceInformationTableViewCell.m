@@ -239,7 +239,11 @@
         make.left.mas_equalTo(self.goalAttribute_button.mas_left).mas_offset(95.0);
         make.right.mas_equalTo(self.goalAttribute_button.mas_right);
         make.top.mas_equalTo(self.goalAttribute_button.mas_bottom);
-        make.height.mas_equalTo(196.0);
+        if (self.purposeArray.count > 5) {
+            make.height.mas_equalTo(196.0);
+        }else {
+            make.height.mas_equalTo(self.purposeArray.count * 33.0);
+        }
     }];
     self.goalAttribute_imageViewRight.image = [UIImage originalWithImage:@"triangle"];
 }

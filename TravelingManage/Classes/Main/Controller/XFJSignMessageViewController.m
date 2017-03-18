@@ -45,6 +45,7 @@
 @property (nonatomic, strong) NSString *root;
 @property (nonatomic, strong) NSString *voucherPicRoot;
 @property (nonatomic, strong) XFJLaterTeamControlItem *laterTeamControlItem;
+@property (nonatomic, assign) BOOL isUpHpotos;
 
 
 @end
@@ -95,8 +96,11 @@
 - (void)requestUpPhotos
 {
     if (self.dataArray.count == 0) {
-        [MBProgressHUD showHudTipStr:@"请上传凭证照片" contentColor:HidWithColorContentBlack];
+//        [MBProgressHUD showHudTipStr:@"请上传凭证照片" contentColor:HidWithColorContentBlack];
+        self.isUpHpotos = YES;
+        [self sureRequestUp];
     }else {
+        [MBProgressHUD showLoadHUD];
         UIImage *image = self.dataArray[0];
         NSData *imageData = [UIImage compressImage:image maxSize:300];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -106,6 +110,7 @@
             [formData appendPartWithFileData:imageData name:@"file" fileName:@"image.jpg" mimeType:@"image/jpg"];
         } progress:^(NSProgress * _Nonnull uploadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [MBProgressHUD hidenHud];
             NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
             NSString *root = dict[@"object"];
             wself.voucherPicRoot = root;
@@ -119,6 +124,7 @@
                 [wself sureRequestUp];
 //            });
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            [MBProgressHUD hidenHud];
             NSLog(@"上传图片失败--------%@",error);
         }];
     }
@@ -133,6 +139,7 @@
 {
     _taskRowsItem = taskRowsItem;
     self.signMessageTopVeiw.taskRowsItem = taskRowsItem;
+    self.signMessageTimeView.taskRowsItem = taskRowsItem;
 }
 
 #pragma makr - 任务信息提交
@@ -143,16 +150,17 @@
                                  @"id":[NSString stringWithFormat:@"%zd",self.taskRowsItem.taskId],//任务id
                                  @"teamId":[NSString stringWithFormat:@"%zd",self.findNewTeamInfo_Id],//团队id
                                  @"attractionsId":[NSString stringWithFormat:@"%zd",self.taskRowsItem.attractionsId],//景区id
-                                 @"attracImagePath":self.voucherPicRoot,//非必传参数
+                                 @"attracImagePath":self.isUpHpotos == YES ? @"" : self.voucherPicRoot,//非必传参数
                                  @"taskBack":@""//非必传参数
                                  };
+    NSLog(@"+++++=====----------打印的参数是:%@",dictParams);
     __weak __typeof(self)wself = self;
     [GRNetRequestClass POST:TASKPERFECTURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
             NSLog(@"responseObject:%@",responseObject);
+            [MBProgressHUD hidenHud];
             if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
                 [MBProgressHUD showHudTipStr:@"信息提交成功" contentColor:HidWithColorContentBlack];
-//                [wself.navigationController popToRootViewControllerAnimated:YES];
                 [wself.navigationController popViewControllerAnimated:YES];
             }
         }

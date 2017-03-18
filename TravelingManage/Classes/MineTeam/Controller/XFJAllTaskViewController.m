@@ -48,6 +48,8 @@
 
 - (void)requestAllStates
 {
+    //取消任务后删除之前所有的数组,然后添加
+    [self.findTeamInfoByStateItem_array removeAllObjects];
     NSDictionary *dictParaments = @{
                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"],
                                     @"teamState":(self.type == -1) ? @"" : @(self.type)
@@ -57,6 +59,7 @@
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDTEAMINFOBYSTATEUEL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
             NSLog(@"--------======++++---返回的请求信息是:%@",object);
+            [MBProgressHUD hidenHud];
             NSMutableArray *find_array = [object objectForKey:@"rows"];
             [wself.findTeamInfoByStateItem_array addObjectsFromArray:[XFJFindTeamInfoByStateItem mj_objectArrayWithKeyValuesArray:find_array]];
             [wself.allTaskTableView reloadData];
@@ -64,6 +67,7 @@
     } withFailureBlock:^(NSError *error) {
         if (error) {
             NSLog(@"----+++++++返回的请求错误信息是:%@",error);
+            [MBProgressHUD hidenHud];
         }
     } progress:^(float progress) {
         
@@ -156,15 +160,21 @@
 #pragma mark - 调用取消团队的接口
 - (void)requestCancelTeamTask:(NSInteger)findTeamInfoByState_Id
 {
+    __weak __typeof(self)wself = self;
     [GRNetRequestClass POST:DELETETEAMINFOURL params:@{@"id":[NSString stringWithFormat:@"%zd",findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
             if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
-                [MBProgressHUD showHudTipStr:@"主人~~您已经取消团队了!!" contentColor:HidWithColorContentBlack];
+//                [MBProgressHUD showHudTipStr:@"您已经取消团队了!!" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showLoadHUD];
+                [wself requestAllStates];
+                if (wself.requestTitleBolock) {
+                    wself.requestTitleBolock();
+                }
             }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
-            [MBProgressHUD showHudTipStr:@"主人~~您取消团队失败了,可能是网络问题!!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"您取消团队失败了,可能是网络问题!!" contentColor:HidWithColorContentBlack];
         }
     }];
 }

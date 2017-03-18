@@ -76,7 +76,7 @@
 {
     if (_carPhotos_label == nil) {
         _carPhotos_label = [[UILabel alloc] init];
-        _carPhotos_label.text = @"游览信息";
+        _carPhotos_label.text = @"签到点";
         _carPhotos_label.font = [UIFont fontWithName:PingFang size:13.0];
         _carPhotos_label.textColor = kColorFF38;
     }

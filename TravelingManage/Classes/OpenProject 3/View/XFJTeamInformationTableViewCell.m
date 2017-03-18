@@ -170,6 +170,7 @@
     if (_teamNumber_field == nil) {
         _teamNumber_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"团 队 人 数" rightImage:@"xinghao" placeholder:@"请输入团队人数"];
         [_teamNumber_field addTarget:self action:@selector(teamNumber_endText:) forControlEvents:UIControlEventEditingChanged];
+        _teamNumber_field.keyboardType = UIKeyboardTypeNumberPad;
         _teamNumber_field.tag = 10003;
     }
     return _teamNumber_field;
@@ -196,7 +197,11 @@
         make.left.mas_equalTo(self.teamProperties_button.mas_left).mas_offset(95.0);
         make.right.mas_equalTo(self.teamProperties_button.mas_right);
         make.top.mas_equalTo(self.teamProperties_button.mas_bottom);
-        make.height.mas_equalTo(196.0);
+        if (self.teamDescriptionArray.count > 5) {
+            make.height.mas_equalTo(196.0);
+        }else {
+            make.height.mas_equalTo(self.teamDescriptionArray.count * 33.0);
+        }
     }];
     self.teamProperties_imageViewRight.image = [UIImage originalWithImage:@"triangle"];
 }
@@ -274,6 +279,7 @@
     if (_journeyDay_field == nil) {
         _journeyDay_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"行 程 天 数" rightImage:@"xinghao" placeholder:@"请输入行程天数"];
         [_journeyDay_field addTarget:self action:@selector(teamNumber_endText:) forControlEvents:UIControlEventEditingChanged];
+        _journeyDay_field.keyboardType = UIKeyboardTypeNumberPad;
         _journeyDay_field.tag = 10004;
     }
     return _journeyDay_field;

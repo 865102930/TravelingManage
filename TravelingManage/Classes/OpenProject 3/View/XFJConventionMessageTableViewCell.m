@@ -40,6 +40,8 @@
 
 @property (nonatomic, strong) XFJMaskView *maskView1;
 
+@property (nonatomic, strong) NSMutableArray <XFJFindTravelAgencyListItem *> *result;
+
 @end
 
 @implementation XFJConventionMessageTableViewCell
@@ -159,6 +161,14 @@
     return _conventionMessage_imageView;
 }
 
+- (NSMutableArray <XFJFindTravelAgencyListItem *> *)result
+{
+    if (_result == nil) {
+        _result = [NSMutableArray array];
+    }
+    return _result;
+}
+
 - (UILabel *)conventionMessage_label
 {
     if (_conventionMessage_label == nil) {
@@ -176,6 +186,7 @@
     if (_groupText_field == nil) {
         _groupText_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"团 队 编 号" rightImage:@"xinghao" placeholder:@"请输入团队编号"];
         [_groupText_field addTarget:self action:@selector(groupText_endText:) forControlEvents:UIControlEventEditingChanged];
+        [_groupText_field becomeFirstResponder];
         _groupText_field.tag = 10000;
     }
     return _groupText_field;
@@ -185,7 +196,12 @@
 {
     if (groupText_field.tag == 10000) {
         NSLog(@"++++++++++++获取到用户输入的团队编号是:%@",groupText_field.text);
-        self.groupName_text = groupText_field.text;
+        if (groupText_field.text.length > 10) {
+            [MBProgressHUD showHudTipStr:@"请输入10位以内的编号!" contentColor:HidWithColorContentBlack];
+            return;
+        }else {
+            self.groupName_text = groupText_field.text;
+        }
     }else if (groupText_field.tag == 10001) {
         NSLog(@"++++++++++++获取到用户输入的出团时间是:%@",groupText_field.text);
 //        self.groupTime_text = groupText_field.text;
@@ -309,7 +325,6 @@
 #pragma mark - 当输入框有值的改变的时候调用
 - (void)textField_change:(UITextField *)text_field
 {
-    [self setUpCreatTraveTableView];
     NSDictionary *dictParaments = @{
                                     @"taName":text_field.text
                                     };
@@ -319,9 +334,7 @@
             NSLog(@"查询成功----------%@",object);
             NSMutableArray *arrayWithTraveList = [object objectForKey:@"rows"];
             wself.findTravelAgencyList_array = [XFJFindTravelAgencyListItem mj_objectArrayWithKeyValuesArray:arrayWithTraveList];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [wself.check_traveView reloadData];
-            });
+            [wself searchBarTextDidChange:text_field.text];
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
@@ -331,6 +344,25 @@
     } progress:^(float progress) {
     }];
 }
+#pragma mark - 根据输入的文字来筛选
+
+-(void)searchBarTextDidChange:(NSString *)searchText
+{
+    self.result = nil;
+    for (int i = 0; i < self.findTravelAgencyList_array.count; i++) {
+        NSString *string = self.findTravelAgencyList_array[i].taName;
+        if (string.length >= searchText.length) {
+            if([self.findTravelAgencyList_array[i].taName rangeOfString:searchText].location != NSNotFound){
+                [self.result addObject:self.findTravelAgencyList_array[i]];
+            }
+        }
+    }
+    if (self.result.count != 0) {
+        [self setUpCreatTraveTableView];
+        [self.check_traveView reloadData];
+    }
+}
+
 
 #pragma mark - 创建旅行社显示框
 - (void)setUpCreatTraveTableView
@@ -340,7 +372,11 @@
         make.top.mas_equalTo(self.travelServiceName_field.mas_bottom);
         make.left.mas_equalTo(self.travelServiceName_field.mas_left).mas_offset(95);
         make.right.mas_equalTo(self.travelServiceName_field.mas_right);
-        make.height.mas_equalTo(33 * 6);
+        if (self.result.count > 5) {
+            make.height.mas_equalTo(196.0);
+        }else {
+            make.height.mas_equalTo(33 * self.result.count);
+        }
     }];
 }
 
@@ -358,7 +394,7 @@
 #pragma mark - cell的个数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.findTravelAgencyList_array count];
+    return [self.result count];
 }
 
 #pragma makr - cell的内容
@@ -372,15 +408,15 @@
     cell.preservesSuperviewLayoutMargins = NO;
     cell.separatorInset = UIEdgeInsetsZero;
     cell.layoutMargins = UIEdgeInsetsZero;
-    cell.textLabel.text = [NSString stringWithFormat:@"%@",self.findTravelAgencyList_array[indexPath.row].taName];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@",self.result[indexPath.row].taName];
     return cell;
 }
 
 #pragma mark - cell的点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.travelServiceName_field.text = self.findTravelAgencyList_array[indexPath.row].taName;
-    self.travelName = self.findTravelAgencyList_array[indexPath.row].findTravelAgencyList_id;//findTravelAgencyList_id
+    self.travelServiceName_field.text = self.result[indexPath.row].taName;
+    self.travelName = self.result[indexPath.row].findTravelAgencyList_id;//findTravelAgencyList_id
     NSLog(@"self.travelName类型的值是:%zd",self.travelName);
     [self.check_traveView removeFromSuperview];
 }
@@ -389,6 +425,7 @@
 #pragma mark - cell的高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     return 33.0;
 }
 

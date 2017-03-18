@@ -98,7 +98,6 @@
 {
     if (_signContent_label == nil) {
         _signContent_label = [[UILabel alloc] init];
-        _signContent_label.text = @"2017-03-02";
         _signContent_label.textColor = kColor2b2b;
         _signContent_label.font = [UIFont fontWithName:PingFang size:14.0];
     }
@@ -140,7 +139,6 @@
 {
     if (_signNoContent_label == nil) {
         _signNoContent_label = [[UILabel alloc] init];
-        _signNoContent_label.text = @"2017-03-02";
         _signNoContent_label.textColor = kColor2b2b;
         _signNoContent_label.font = [UIFont fontWithName:PingFang size:14.0];
     }
@@ -155,6 +153,13 @@
     }else {
         self.signContent_label.text = [NSString stringWithFormat:@"%@",laterTeamControlItem.createTime];
     }
+}
+
+- (void)setTaskRowsItem:(XFJTaskRowsItem *)taskRowsItem
+{
+    _taskRowsItem = taskRowsItem;
+    self.signContent_label.text = [NSString stringWithFormat:@"%@",taskRowsItem.signTime];
+    self.signNoContent_label.text = [NSString stringWithFormat:@"%@",taskRowsItem.signoutTime];
 }
 
 
