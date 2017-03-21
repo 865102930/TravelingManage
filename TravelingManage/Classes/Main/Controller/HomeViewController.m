@@ -45,6 +45,8 @@
 #import "XFJFindTeamTaskItem.h"
 #import "XFJFindTeamTasksItem.h"
 #import "XFJTaskRowsItem.h"
+#import "XFJFindAttracUserListItem.h"
+#import "XFJFindAttracUserListView.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -118,6 +120,8 @@
 @property (nonatomic, strong) XFJFindTeamTaskItem *findTeamTaskItem;
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *findTeamTasksItem;
 @property (nonatomic, strong) NSMutableArray <XFJTaskRowsItem *>*TaskRowsItemArray;
+@property (nonatomic, strong) NSMutableArray <XFJFindAttracUserListItem *> *findAttracUserListItem_array;
+@property (nonatomic, strong) XFJFindAttracUserListView *findAttracUserListView;
 @end
 
 @implementation HomeViewController
@@ -185,6 +189,22 @@
     return _TaskRowsItemArray;
 }
 
+- (NSMutableArray <XFJFindAttracUserListItem *> *)findAttracUserListItem_array
+{
+    if (_findAttracUserListItem_array == nil) {
+        _findAttracUserListItem_array = [NSMutableArray array];
+    }
+    return _findAttracUserListItem_array;
+}
+
+- (XFJFindAttracUserListView *)findAttracUserListView
+{
+    if (_findAttracUserListView == nil) {
+        _findAttracUserListView = [[XFJFindAttracUserListView alloc] initWithFrame:CGRectMake(50, 150, SCREEN_WIDTH - 2 * 50, SCREEN_HEIGHT - 2 * 150)];
+        _findAttracUserListView.backgroundColor = [UIColor whiteColor];
+    }
+    return _findAttracUserListView;
+}
 #pragma mark - 最近操作的团队
 - (void)requestLatelyControl
 {
@@ -215,10 +235,42 @@
     [super viewWillAppear:animated];
     __weak __typeof(self)wself = self;
     self.sign_view.signButtonClickBlock = ^() {
-        //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
-        [wself signButtonClick1:wself.teamNumber teamId:wself.teamId];
-        [wself.sign_view removeFromSuperview];
+        //点击签到的时候请求这个获取管理员的接口
+        [wself requestWithAttractions_id:wself.attractions_id];
     };
+}
+
+#pragma mark - 根据景点id获取管理员的信息
+- (void)requestWithAttractions_id:(NSInteger)attractions_id
+{
+    NSDictionary *dictParams = @{
+                                 @"attractionsId":@5//[NSString stringWithFormat:@"%zd",attractions_id]
+                                 };
+    NSLog(@"----------------获取管理员传递的参数是 :%@",dictParams);
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDATTRACUSERLISTURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"++++++++++获取到的管理员的信息是 :%@",responseObject);
+            wself.findAttracUserListItem_array = [XFJFindAttracUserListItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]];
+            if (wself.findAttracUserListItem_array.count != 0) {
+                //弹出选择管理员的视图框
+                [wself.chooseScenerySignView removeFromSuperview];
+                [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
+                [wself.maskView1 addSubview:wself.findAttracUserListView];
+                wself.findAttracUserListView.findAttracUserListItem = wself.findAttracUserListItem_array;
+                //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
+//                [wself signButtonClick1:wself.teamNumber teamId:wself.teamId];
+//                [wself.sign_view removeFromSuperview];
+            }else {
+                [MBProgressHUD showHudTipStr:@"该景区不存在管理员!" contentColor:HidWithColorContentBlack];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"++++++++++获取不到管理员的信息是 :%@",error);
+        }
+    }];
+    
 }
 
 - (NSMutableArray *)scenery_array
@@ -395,13 +447,6 @@
                 wself.findTeamTaskItem = findTeamTaskItem;
                 //如果获取到的object值是nil下面就显示景点选择页面
                 if ([[responseObject objectForKey:@"object"] isKindOfClass:[NSNull class]]) {
-                    //先将创建任务的界面移除
-//                    [wself.task_view removeFromSuperview];
-//                    [wself.signNoPeople_view removeFromSuperview];
-//                    //添加酒店签退页面
-//                    [wself.signNoHotel_view removeFromSuperview];
-//                    //然后添加让用户选择的签到页面
-//                    [wself.view addSubview:wself.signTeamTwoView];
                     //来到这里需要判断是否有任务,
                     [wself reuqestButtonWithFindTeamInfoItem_id:leftFindTeamInfoItem.findTeamInfoItem_id];
                 }else {//来到这说明签到了此时应该显示的是签退页面
@@ -412,6 +457,8 @@
                         [wself.signTeamTwoView removeFromSuperview];
                         //移除酒店签退页面
                         [wself.signNoHotel_view removeFromSuperview];
+                        //移除景点签到页面
+                        [wself.sign_view removeFromSuperview];
                         //添加景点签退页面
                         [wself.view addSubview:wself.signNoPeople_view];
                         wself.signNoPeople_view.findTeamTaskItem = findTeamTaskItem;
@@ -420,6 +467,8 @@
                         [wself.task_view removeFromSuperview];
                         //移除用户选择界面
                         [wself.signTeamTwoView removeFromSuperview];
+                        //移除酒店签到页面
+                        [wself.hotel_view removeFromSuperview];
                         //移除景区签退页面
                         [wself.signNoPeople_view removeFromSuperview];
                         //添加酒店签退页面
@@ -455,6 +504,7 @@
             wself.homeTopTaskMessageVeiw.isButton1 = str1;
             [wself.task_view removeFromSuperview];
             [wself.signNoPeople_view removeFromSuperview];
+            [wself.hotel_view removeFromSuperview];
             //添加酒店签退页面
             [wself.signNoHotel_view removeFromSuperview];
             //然后添加让用户选择的签到页面
@@ -512,8 +562,6 @@
     NSLog(@"-------侧滑页面中过来的teamId是:%zd",self.findTeamTaskItem.teamId);
     //签到的时候判断是否在景区内
     if (self.isContains) {//在景区范围内,可以签退
-        //时间是达到规定的时间(YES)
-        //遍历取出每个景点需要带的时间
         //时间没有达到规定的时间(NO)
         NSDictionary *dictParaments = @{
                                         @"teamId":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
@@ -522,7 +570,7 @@
         NSLog(@"签退需要传递的参数是:%@",dictParaments);
         __weak __typeof(self)wself = self;
         [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNLISTURL withParaments:dictParaments withSuccessBlock:^(id object) {
-            if (object) {
+            if ([[object objectForKey:@"msg"] isEqualToString:@"success"]) {
                 NSLog(@"签退成功获取到后台返回的内容是:%@",object);
                 NSDictionary *dict = [object objectForKey:@"rows"];
                 //判断是否可以签退(此处一定是可以签退的,只是显示的签退的状态是否异常?)
@@ -556,7 +604,7 @@
         } progress:^(float progress) {
         }];
     }else {
-        NSLog(@"主人~~此时的签退为异常签退,是否还要执行签退??");
+        NSLog(@"此时的签退为异常签退,是否还要执行签退??");
     }
     //判断是否到达了景区规定的时间
     NSLog(@"主人~~您点击了签退按钮~~~~~~~~~~~~");
@@ -662,12 +710,10 @@
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNOUTURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if ([[object objectForKey:@"success"] isEqual:@1]) {
-            NSLog(@"主人,您签退成功~~~~打印后台返回的消息是:%@",object);
             //如果返回的是1,则成功,在这创建新建任务的view
             [wself.signTeamTwoView removeFromSuperview];
             [wself.signNoHotel_view removeFromSuperview];
             [wself.signNoPeople_view removeFromSuperview];
-//            wself.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 200, 42, 41);
             [wself.view addSubview:self.task_view];
             //只要签退成功,就按钮的状态改为完成
             NSString *str;
@@ -695,7 +741,6 @@
 - (void)hotelSignButtonWithPeople
 {
     [self.hotel_view removeFromSuperview];
-//    self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 250, 42, 41);
     [self.view addSubview:self.signNoHotel_view];
     self.signNoHotel_view.hotelSignPeopleCount = self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
     self.signNoHotel_view.hotelSignRoomCount = self.signRoomCount;
@@ -710,23 +755,19 @@
     NSDictionary *dictParaments = @{
                                     @"teamId": self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
                                     @"attractionsId":[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],//景区id
-                                    @"userIdList":@2,//管理员id(可能是多个)
+                                    @"userIdList":@3,//管理员id(可能是多个)
                                     @"checkinNumber":self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],//签到人数
                                     @"rooms":[NSString stringWithFormat:@"%@",self.signRoomCount]//房间数(可以不传)
                                     };
     NSLog(@"+++++++++++++提交的酒店签到的参数是 :%@",dictParaments);
-    NSLog(@"团队%@-----景区%@-----管理员%@-----签到人数%@-----房间数%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],@2,self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],@0);
-    
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
-            NSLog(@"-----------打印出来的签到成功信息是:%@",object);
             [wself setUpUserTimeWithUseApp:NO];
             [MBProgressHUD showHudTipStr:@"您已经签到成功!" contentColor:HidWithColorContentBlack];
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
-            NSLog(@"-----------签到失败的错误信息是:%@",error);
             [MBProgressHUD showHudTipStr:@"网络问题,签到失败" contentColor:HidWithColorContentBlack];
         }
     } progress:^(float progress) {
@@ -756,17 +797,14 @@
         NSDictionary *dictParaments = @{
                                         @"teamId":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
                                         @"attractionsId":[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],//景区id
-                                        @"userIdList":@2,//管理员id(可能是多个)
+                                        @"userIdList":@3,//管理员id(可能是多个)
                                         @"checkinNumber":self.isSignModify ? self.signModifyCount : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],//签到人数
                                         @"rooms":@0//房间数
                                         };
         NSLog(@"接入的签到参数是:%@",dictParaments);
-        NSLog(@"self.isSignModify的值是:%zd-----self.signModifyCount的值是:%@------self.teamNumber的值是:%@",self.isSignModify,self.signModifyCount,[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]);
-        NSLog(@"团队%@-----景区%@-----管理员%@-----签到人数%@-----房间数%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],[NSString stringWithFormat:@"%zd",self.attractions_id],@2,self.isSignModify ? self.signModifyCount : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],@0);
         __weak __typeof(self)wself = self;
         [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNURL withParaments:dictParaments withSuccessBlock:^(id object) {
             if ([[object objectForKey:@"msg"] isEqualToString:@"success"]) {//如果是这就表示签到成功
-                NSLog(@"-----------打印出来的签到成功信息是:%@",object);
                 [wself requestTeamSignList];
                 //这里调用获取创建任务的当前时间
                 [wself setUpUserTimeWithUseApp:NO];
@@ -777,7 +815,6 @@
             }
         } withFailureBlock:^(NSError *error) {
             if (error) {
-                NSLog(@"-----------签到失败的错误信息是:%@",error);
                 [MBProgressHUD showHudTipStr:@"网络问题,签到失败" contentColor:HidWithColorContentBlack];
             }
         } progress:^(float progress) {
@@ -797,12 +834,11 @@
         if (object) {
             NSDictionary *dictObject = [object objectForKey:@"rows"];
             wself.teamSignListArray = [XFJTeamSignListItem mj_objectArrayWithKeyValuesArray:dictObject];
-            NSLog(@"++++++++++++获取到的团队任务列表是:%@",object);
             wself.signNoPeople_view.signNoPeopleArray = wself.teamSignListArray;
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
-            NSLog(@"获取到的团队任务列表失败的是:%@",error);
+            [MBProgressHUD showHudTipStr:@"网络君错误!" contentColor:HidWithColorContentBlack];
         }
     } progress:^(float progress) {
     }];
@@ -835,7 +871,6 @@
 
 - (void)panHandle:(UIPanGestureRecognizer *)panGesture
 {
-    NSLog(@"主人在按钮上滑动~~");
     CGPoint touchPoint = [panGesture locationInView:self.view];
     //大于0为向右滑动，小于0位向左滑动
     CGFloat translationX = [panGesture translationInView:self.view].x;
@@ -911,7 +946,6 @@
 {
     [self remoSubViews];
     PersonalDataViewController *person = [[PersonalDataViewController alloc] init];
-    //[self.navigationController pushViewController:person animated:YES];
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:person];
     [self presentViewController:navVC animated:YES completion:nil];
 }
@@ -998,6 +1032,7 @@
     }else{
         [[UIApplication sharedApplication].keyWindow addSubview:self.maskView1];
         [self.chooseScenerySignView removeFromSuperview];
+        [self.findAttracUserListView removeFromSuperview];
         [self openLeftView:YES];
     }
 }
@@ -1065,7 +1100,6 @@
 {
     self.teamNumber = teamNum1;
     self.teamId = teamId;
-    NSLog(@"在这里获取到的团队数量是 : %@--------团队id是 :%@",self.teamNumber,self.teamId);
 }
 
 #pragma makr - 实现开团页面的代理方法(用于传值)
@@ -1073,17 +1107,9 @@
 {
     self.teamNumber = [NSString stringWithFormat:@"%@",peopleNumber];
     self.teamId = [NSString stringWithFormat:@"%@",teamId];
-    NSLog(@"====++++++++++++接收到的开团的人数是:%@-------开团id是:%@",self.teamNumber,self.teamId);
     self.sign_view.peopleNumberStr = peopleNumber;
     
 }
-
-//- (void)loadView
-//{
-//    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//    self.view = scrollView;
-//}
-
 - (XFJSignView *)sign_view
 {
     if (_sign_view == nil) {
@@ -1241,7 +1267,7 @@
     } withFailureBlock:^(NSError *error) {
         if (error) {
             NSLog(@"_______------+++++++++++++网络错误,打印错误信息是:%@",error);
-            [MBProgressHUD showHudTipStr:@"亲~~网络错误" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"网络错误" contentColor:HidWithColorContentBlack];
         }
     } progress:^(float progress) {
     }];
@@ -1317,7 +1343,6 @@
             NSLog(@"一个景点的点数数量是:%zd--------",strarray.count);
         }
     }
-//    [self.mapView showAnnotations:self.annotationArray edgePadding:UIEdgeInsetsMake(80, 80, 80, 80) animated:YES];
     [self.scenery_array removeAllObjects];
     [self.hotel_array removeAllObjects];
     //这里遍历所有在范围内的点数
@@ -1377,7 +1402,6 @@
     }
     //在这里将时时获取的时间赋值给签退页面
     if (self.isTeamId == YES) {
-        NSLog(@"--------请求到的消息是 :%@",self.findTeamTaskItem.createtime);
         NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.findTeamTaskItem.createtime];
         NSString *hourTime = [dict objectForKey:@"hourString"];
         self.signNoPeople_view.hourTeamTime = hourTime;
@@ -1391,7 +1415,6 @@
         //将所有的小时累加为天数
         NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
         self.signNoHotel_view.hotelStayDay = dayTime;
-        NSLog(@"这里重新获取到的时间是 :%@-------%@",hourTime,minteTime);
     }
 }
 
@@ -1441,11 +1464,9 @@
     if (isTime) {//就是当前是间
         NSString *nowDateTime = [formatter stringFromDate:date];
         self.nowDateTime = nowDateTime;
-        NSLog(@"%@===当前的时间=========年-月-日  时：分：秒=====================",nowDateTime);
     }else {//开始任务的时间
         NSString *DateStartTime = [formatter stringFromDate:date];
         self.DateStartTime = DateStartTime;
-        NSLog(@"%@===开始任务的时间=========年-月-日  时：分：秒=====================",DateStartTime);
     }
 }
 
@@ -1504,14 +1525,5 @@
     }
     return nil;
 }
-
-
-- (void)dealloc
-{
-    
-}
-
-
-
 
 @end

@@ -72,6 +72,7 @@
 #define kColor6262 [UIColor colorWithHexString:@"0x626262"]
 #define kColorB1B1 [UIColor colorWithHexString:@"0xB1B1B1"]
 #define kColorE0E0 [UIColor colorWithHexString:@"0xE0E0E0"]
+#define kColor0000 [UIColor colorWithHexString:@"0x000002"]
 
 #define BASEURL @"http://118.178.224.151/teammgmtback"
 
@@ -152,6 +153,9 @@
 #define FINDTEAMTASKURL (BASEURL@"/app/teamInfo/findTeamTask")
 //完善团队图片和景点图片(完善图片)
 #define FINISHIMGURL (BASEURL@"/app/teamTask/finishImg")
+//根据景区获取管理员
+#define FINDATTRACUSERLISTURL (BASEURL@"/app/attractions/findAttracUserList")
+
 
 
 

@@ -26,7 +26,14 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor redColor];
         [self addSubview:self.chooseScenerySign_tableView];
+        [self addSubview:self.chooseSceneryFooterView];
         [self.chooseScenerySign_tableView registerClass:[XFJChooseSceneryTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell];
+        [self.chooseSceneryFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.mas_left);
+            make.right.mas_equalTo(self.mas_right);
+            make.height.mas_equalTo(60.0);
+            make.bottom.mas_equalTo(self.mas_bottom);
+        }];
         __weak __typeof(self)wself = self;
         self.chooseSceneryFooterView.sureChoose_buttonClickBlock = ^() {
             if (wself.chooseBlockButtonWithSure) {
@@ -46,7 +53,7 @@
 - (XFJChooseSceneryFooterView *)chooseSceneryFooterView
 {
     if (_chooseSceneryFooterView == nil) {
-        _chooseSceneryFooterView = [[XFJChooseSceneryFooterView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 100)];
+        _chooseSceneryFooterView = [[XFJChooseSceneryFooterView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 60)];
         _chooseSceneryFooterView.backgroundColor = [UIColor whiteColor];
     }
     return _chooseSceneryFooterView;
@@ -59,7 +66,7 @@
         _chooseScenerySign_tableView.delegate = self;
         _chooseScenerySign_tableView.dataSource = self;
         _chooseScenerySign_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _chooseScenerySign_tableView.tableFooterView = self.chooseSceneryFooterView;
+//        _chooseScenerySign_tableView.tableFooterView = self.chooseSceneryFooterView;
     }
     return _chooseScenerySign_tableView;
 }
@@ -111,5 +118,10 @@
 {
     return [XFJChooseSceneryTableViewCell cellHeight];
 }
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 50.0;
+//}
 
 @end

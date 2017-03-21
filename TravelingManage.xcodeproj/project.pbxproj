@@ -123,6 +123,10 @@
 		3A51D1771E6D0EF5005B86F6 /* XFJPleaseUpPerfectPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51D1761E6D0EF5005B86F6 /* XFJPleaseUpPerfectPhotosView.m */; };
 		3A6239181E73E02B00D045BA /* XFJChooseSceneryFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */; };
 		3A62391B1E754E8900D045BA /* XFJSureUpPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A62391A1E754E8800D045BA /* XFJSureUpPhotosView.m */; };
+		3A700D8E1E8109F5008A2ADE /* XFJFindAttracUserListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A700D8D1E8109F5008A2ADE /* XFJFindAttracUserListItem.m */; };
+		3A700D911E811422008A2ADE /* XFJFindAttracUserListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A700D901E811422008A2ADE /* XFJFindAttracUserListView.m */; };
+		3A700D941E811C48008A2ADE /* XFJFindAttracUserListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A700D931E811C48008A2ADE /* XFJFindAttracUserListTableViewCell.m */; };
+		3A700D971E814202008A2ADE /* XFJFindAttracUserListFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A700D961E814202008A2ADE /* XFJFindAttracUserListFooterView.m */; };
 		3A756F171E657583005D2C02 /* tishi.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F141E657583005D2C02 /* tishi.png */; };
 		3A756F181E657583005D2C02 /* tishi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F151E657583005D2C02 /* tishi@2x.png */; };
 		3A756F191E657583005D2C02 /* tishi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A756F161E657583005D2C02 /* tishi@3x.png */; };
@@ -548,6 +552,14 @@
 		3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJChooseSceneryFooterView.m; sourceTree = "<group>"; };
 		3A6239191E754E8800D045BA /* XFJSureUpPhotosView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSureUpPhotosView.h; sourceTree = "<group>"; };
 		3A62391A1E754E8800D045BA /* XFJSureUpPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSureUpPhotosView.m; sourceTree = "<group>"; };
+		3A700D8C1E8109F5008A2ADE /* XFJFindAttracUserListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindAttracUserListItem.h; sourceTree = "<group>"; };
+		3A700D8D1E8109F5008A2ADE /* XFJFindAttracUserListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindAttracUserListItem.m; sourceTree = "<group>"; };
+		3A700D8F1E811422008A2ADE /* XFJFindAttracUserListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindAttracUserListView.h; sourceTree = "<group>"; };
+		3A700D901E811422008A2ADE /* XFJFindAttracUserListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindAttracUserListView.m; sourceTree = "<group>"; };
+		3A700D921E811C48008A2ADE /* XFJFindAttracUserListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindAttracUserListTableViewCell.h; sourceTree = "<group>"; };
+		3A700D931E811C48008A2ADE /* XFJFindAttracUserListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindAttracUserListTableViewCell.m; sourceTree = "<group>"; };
+		3A700D951E814202008A2ADE /* XFJFindAttracUserListFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindAttracUserListFooterView.h; sourceTree = "<group>"; };
+		3A700D961E814202008A2ADE /* XFJFindAttracUserListFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindAttracUserListFooterView.m; sourceTree = "<group>"; };
 		3A756F141E657583005D2C02 /* tishi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tishi.png; sourceTree = "<group>"; };
 		3A756F151E657583005D2C02 /* tishi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@2x.png"; sourceTree = "<group>"; };
 		3A756F161E657583005D2C02 /* tishi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tishi@3x.png"; sourceTree = "<group>"; };
@@ -1490,6 +1502,12 @@
 				3A62391A1E754E8800D045BA /* XFJSureUpPhotosView.m */,
 				3A03A4AC1E76C38200AADD4D /* XFJLogoutView.h */,
 				3A03A4AD1E76C38200AADD4D /* XFJLogoutView.m */,
+				3A700D8F1E811422008A2ADE /* XFJFindAttracUserListView.h */,
+				3A700D901E811422008A2ADE /* XFJFindAttracUserListView.m */,
+				3A700D921E811C48008A2ADE /* XFJFindAttracUserListTableViewCell.h */,
+				3A700D931E811C48008A2ADE /* XFJFindAttracUserListTableViewCell.m */,
+				3A700D951E814202008A2ADE /* XFJFindAttracUserListFooterView.h */,
+				3A700D961E814202008A2ADE /* XFJFindAttracUserListFooterView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1524,6 +1542,8 @@
 				3ACCE39A1E69878E00B3526B /* XFJLaterTeamControlItem.m */,
 				3AF3B17D1E7637F600FE4067 /* XFJFindTeamTaskItem.h */,
 				3AF3B17E1E7637F600FE4067 /* XFJFindTeamTaskItem.m */,
+				3A700D8C1E8109F5008A2ADE /* XFJFindAttracUserListItem.h */,
+				3A700D8D1E8109F5008A2ADE /* XFJFindAttracUserListItem.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2152,6 +2172,8 @@
 				3A51D1741E6D0719005B86F6 /* XFJPleasePerfectMessageTopView.m in Sources */,
 				3A0C81911E7BAF9500920F2C /* NSDate+GFCalendar.m in Sources */,
 				3ACCE3861E684AE000B3526B /* XFJSignMessageViewController.m in Sources */,
+				3A700D971E814202008A2ADE /* XFJFindAttracUserListFooterView.m in Sources */,
+				3A700D941E811C48008A2ADE /* XFJFindAttracUserListTableViewCell.m in Sources */,
 				1CFDFE531E542C84001D6300 /* JFImageManager.m in Sources */,
 				1CFDFDE81E53E3DD001D6300 /* AnnouncementDetailModel.m in Sources */,
 				3A51D14F1E6AA82A005B86F6 /* XFJOtherMessagePerfectView.m in Sources */,
@@ -2179,10 +2201,12 @@
 				3ACCE3981E697F6300B3526B /* XFJAskingTableViewCell.m in Sources */,
 				1CFDFE5A1E542CD3001D6300 /* UIBarButtonItem+Item.m in Sources */,
 				3AFFB27D1E6FFA810013185F /* CollectionViewCell.m in Sources */,
+				3A700D911E811422008A2ADE /* XFJFindAttracUserListView.m in Sources */,
 				3AF0D39A1E61FC4200EDECD1 /* XFJHotelView.m in Sources */,
 				3AFFB26B1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m in Sources */,
 				3A51D1581E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.m in Sources */,
 				1CFDFE3D1E542C78001D6300 /* WSImagePickerView.m in Sources */,
+				3A700D8E1E8109F5008A2ADE /* XFJFindAttracUserListItem.m in Sources */,
 				1CB523E11E51AA8900A205C3 /* AnnouncementCell.m in Sources */,
 				3AFFB28A1E701E7F0013185F /* XFJCheckBoxTableViewCell.m in Sources */,
 				3A18E5471E5D6FB400BFE891 /* LMComBoxView.m in Sources */,

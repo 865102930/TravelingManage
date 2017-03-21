@@ -118,7 +118,7 @@
         _hotelText_field = [[UITextField alloc] init];
         _hotelText_field.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
         [_hotelText_field addTarget:self action:@selector(hotelSignPeopleNumber:) forControlEvents:UIControlEventEditingChanged];
-        _hotelText_field.textAlignment = NSTextAlignmentRight;
+        _hotelText_field.textAlignment = NSTextAlignmentCenter;
         _hotelText_field.textColor = kColor8383;
         _hotelText_field.font = [UIFont systemFontOfSize:14.0];
         _hotelText_field.background = [UIImage originalWithImage:@"input-box4-"];
@@ -175,7 +175,7 @@
     if (_romeText_field == nil) {
         _romeText_field = [[UITextField alloc] init];
         _romeText_field.text = @"0";
-        _romeText_field.textAlignment = NSTextAlignmentRight;
+        _romeText_field.textAlignment = NSTextAlignmentCenter;
         _romeText_field.textColor = kColor8383;
         _romeText_field.font = [UIFont systemFontOfSize:14.0];
         [_romeText_field addTarget:self action:@selector(hotelSignRoomCount:) forControlEvents:UIControlEventEditingChanged];
