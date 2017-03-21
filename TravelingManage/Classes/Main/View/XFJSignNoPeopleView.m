@@ -209,7 +209,9 @@
 - (void)setSignNoPeopleArray:(NSMutableArray<XFJTeamSignListItem *> *)signNoPeopleArray
 {
     _signNoPeopleArray = signNoPeopleArray;
-    self.peopleNumber_label.text = [NSString stringWithFormat:@"%zd",signNoPeopleArray[0].checkinNumber];
+    if (signNoPeopleArray.count != 0) {
+        self.peopleNumber_label.text = [NSString stringWithFormat:@"%zd",signNoPeopleArray[0].checkinNumber];
+    }
 }
 
 - (void)setHourTeamTime:(NSString *)hourTeamTime
@@ -228,6 +230,12 @@
 {
     _findTeamTaskItem = findTeamTaskItem;
     self.peopleNumber_label.text = [NSString stringWithFormat:@"%zd",findTeamTaskItem.checkinNumber];
+}
+
+- (void)setTeamNum:(NSInteger)teamNum
+{
+    _teamNum = teamNum;
+    self.peopleNumber_label.text = [NSString stringWithFormat:@"%zd",teamNum];
 }
 
 

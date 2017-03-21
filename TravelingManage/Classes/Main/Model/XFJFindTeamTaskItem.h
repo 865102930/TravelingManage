@@ -23,7 +23,7 @@
 //签到人数
 @property (nonatomic, assign) NSInteger checkinNumber;
 //签到时间
-@property (nonatomic, strong) NSString *CreateTime;
+@property (nonatomic, strong) NSString *createtime;
 //类型区分 0:景点 1:酒店
 @property (nonatomic, assign) NSInteger typeState;
 //房间数

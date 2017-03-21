@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong) UITableView *chooseScenerySign_tableView;
 @property (nonatomic, strong) XFJChooseSceneryFooterView *chooseSceneryFooterView;
-@property (assign, nonatomic) NSIndexPath *selIndex;//单选，当前选中的行
+@property (nonatomic, assign) NSIndexPath *selIndex;//单选，当前选中的行
 @property (nonatomic, strong) XFJFindAttractionsListItem *findAttractionsListItem;
 @end
 
@@ -76,17 +76,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    XFJChooseSceneryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell forIndexPath:indexPath];
+//    XFJChooseSceneryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell forIndexPath:indexPath];
+    static NSString *const celID = @"cellID";
+    XFJChooseSceneryTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell == nil) {
+        cell = [[XFJChooseSceneryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:celID];
+    }
     NSLog(@"-----------这里获取到的值是 :%@",self.scenery_array[indexPath.row]);
     cell.findAttractionsListItem = self.scenery_array[indexPath.row];
-    __weak __typeof(self)wself = self;
-//    cell.chichButtonChooseBlock = ^(UIButton *button) {
-//        UITableViewCell *cell = (UITableViewCell *)[[button superview] superview];
-//        NSIndexPath *path = [self.chooseScenerySign_tableView indexPathForCell:cell];
-//        //这里可以获取到cell是具体是哪一个,就可以传相应的id
-//        NSLog(@"-----------------index row%zd", [path row]);
-//        
-//    };
+    if (_selIndex == indexPath) {
+        [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
+    }else {
+        [cell.sceneryContent_button setImage:[UIImage originalWithImage:@""] forState:UIControlStateNormal];
+    }
     return cell;
 }
 
@@ -101,8 +103,6 @@
     XFJChooseSceneryTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
     NSLog(@"-------------选择的是第%@个内容",self.scenery_array[indexPath.row]);
-    //-------------选择的是第<XFJFindAttractionsListItem: 0x170496490>个内容
-    //-------------选择的是第<XFJFindAttractionsListItem: 0x170496440>个内容
     XFJFindAttractionsListItem *findAttractionsListItem = self.scenery_array[indexPath.row];
     self.findAttractionsListItem = findAttractionsListItem;
 }

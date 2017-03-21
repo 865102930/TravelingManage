@@ -167,7 +167,6 @@
 - (void)setScenery_array:(NSMutableArray *)scenery_array
 {
     _scenery_array = scenery_array;
-//    self.scenten_inter = scenery_array.count;
     NSLog(@"+++++++++++景点的个数是 :%zd",scenery_array.count);
     //如果景区签到的个数为0,就让点击的按钮变灰色并且不让点击
     if (scenery_array.count == 0) {
@@ -181,7 +180,6 @@
 - (void)setHotel_array:(NSMutableArray *)hotel_array
 {
     _hotel_array = hotel_array;
-//    self.hotel_inter = hotel_array.count;
     //如果酒店签到的个数为0,就让点击的按钮变灰色并且不让点击
     if (hotel_array.count == 0) {
         self.hotelSign_view.backgroundColor = kColorE9E9;

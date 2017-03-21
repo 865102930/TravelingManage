@@ -22,5 +22,8 @@
 
 @property (nonatomic, strong) XFJFindTeamTaskItem *findTeamTaskItem;
 
+//用一个属性用来接收人数
+@property (nonatomic, assign) NSInteger teamNum;
+
 
 @end
