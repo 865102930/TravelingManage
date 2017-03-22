@@ -22,19 +22,12 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.sure_button];
-//        [self addSubview:self.line_view];
         [self.sure_button mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.mas_top).mas_offset(10.0);
             make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
             make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
             make.height.mas_equalTo(33.0);
         }];
-//        [self.line_view mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.top.mas_equalTo(self.mas_top);
-//            make.left.mas_equalTo(self.mas_left);
-//            make.right.mas_equalTo(self.mas_right);
-//            make.height.mas_equalTo(1.5);
-//        }];
     }
     return self;
 }

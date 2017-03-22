@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) UILabel *content_label;
 @property (nonatomic, strong) UIView *line_view;
+@property (nonatomic, strong) UIImageView *m_checkImageView;;
 
 @end
 
@@ -23,8 +24,9 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self addSubview:self.content_label];
         [self addSubview:self.line_view];
+        [self addSubview:self.m_checkImageView];
         [self.content_label mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.centerX.mas_equalTo(self.mas_centerX);
+            make.left.mas_equalTo(self.mas_left).mas_offset(15.0);
             make.centerY.mas_equalTo(self.mas_centerY);
         }];
         [self.line_view mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -33,8 +35,22 @@
             make.height.mas_equalTo(0.5);
             make.bottom.mas_equalTo(self.mas_bottom);
         }];
+        [self.m_checkImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.mas_right).mas_offset(-15.0);
+            make.centerY.mas_equalTo(self.mas_centerY);
+            make.height.width.mas_equalTo(14.0);
+        }];
     }
     return self;
+}
+
+- (UIImageView *)m_checkImageView
+{
+    if (_m_checkImageView == nil) {
+        _m_checkImageView = [[UIImageView alloc] initWithImage:[UIImage originalWithImage:@"notSelected"]];
+
+    }
+    return _m_checkImageView;
 }
 
 - (UILabel *)content_label
@@ -62,5 +78,26 @@
     _findAttracUserListItem = findAttracUserListItem;
     self.content_label.text = [NSString stringWithFormat:@"%@",findAttracUserListItem.userName];
 }
+
+- (void)setChecked:(BOOL)checked{
+    if (checked){
+        self.m_checkImageView.image = [UIImage originalWithImage:@"choice"];
+        self.backgroundView.backgroundColor = [UIColor colorWithRed:223.0/255.0 green:230.0/255.0 blue:250.0/255.0 alpha:1.0];
+    }else{
+        self.m_checkImageView.image = [UIImage originalWithImage:@"notSelected"];
+        self.backgroundView.backgroundColor = [UIColor whiteColor];
+    }
+    m_checked = checked;
+    
+}
+
++ (CGFloat)cellHeight
+{
+    return 80.0;
+}
+
+
+
+
 
 @end

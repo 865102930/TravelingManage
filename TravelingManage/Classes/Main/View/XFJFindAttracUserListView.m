@@ -14,7 +14,9 @@
 
 @property (nonatomic, strong) UITableView *findAttracUserList_tableView;
 @property (nonatomic, strong) XFJFindAttracUserListFooterView *findAttracUserListFooterView;
-
+@property (nonatomic, strong) NSMutableArray *contacts;
+//定义一个可变数组用来装点击的cell
+@property (nonatomic, strong) NSMutableArray *indexPathArray;
 @end
 
 @implementation XFJFindAttracUserListView
@@ -22,7 +24,6 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        
         self.backgroundColor = [UIColor redColor];
         [self addSubview:self.findAttracUserList_tableView];
         [self.findAttracUserList_tableView addSubview:self.findAttracUserListFooterView];
@@ -33,8 +34,30 @@
             make.right.mas_equalTo(self.mas_right);
             make.height.mas_equalTo(60.0);
         }];
+        __weak __typeof(self)wself = self;
+        self.findAttracUserListFooterView.sureUserButtonBlock = ^() {
+            if (wself.sureUserButtonClickBlock) {
+                wself.sureUserButtonClickBlock(wself.indexPathArray);
+            }
+        };
     }
     return self;
+}
+
+- (NSMutableArray *)indexPathArray
+{
+    if (_indexPathArray == nil) {
+        _indexPathArray = [NSMutableArray array];
+    }
+    return _indexPathArray;
+}
+
+- (NSMutableArray *)contacts
+{
+    if (_contacts == nil) {
+        _contacts = [NSMutableArray array];
+    }
+    return _contacts;
 }
 
 - (void)setFindAttracUserListItem:(NSMutableArray<XFJFindAttracUserListItem *> *)findAttracUserListItem
@@ -59,7 +82,9 @@
         _findAttracUserList_tableView.delegate = self;
         _findAttracUserList_tableView.dataSource = self;
         _findAttracUserList_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//        _findAttracUserList_tableView.tableFooterView = self.findAttracUserListFooterView;
+        _findAttracUserList_tableView.layer.cornerRadius = 8.0;
+        _findAttracUserList_tableView.layer.borderWidth = 0.5;
+        _findAttracUserList_tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
     }
     return _findAttracUserList_tableView;
 }
@@ -76,11 +101,30 @@
     return [self.findAttracUserListItem count];
 }
 
-
 #pragma mark - 每个cell的内容
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{    XFJFindAttracUserListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFindAttracUserListTableViewCell forIndexPath:indexPath];
+{
+    static NSString * identifier = @"Cell";
+    XFJFindAttracUserListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (cell == nil) {
+        cell = [[XFJFindAttracUserListTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
     cell.findAttracUserListItem = self.findAttracUserListItem[indexPath.row];
+    for (int i = 0; i < [self.findAttracUserListItem count]; i++) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setValue:@"NO" forKey:@"checked"];
+        [self.contacts addObject:dic];
+    }
+    NSUInteger row = [indexPath row];
+    NSMutableDictionary *dic = [self.contacts objectAtIndex:row];
+    if ([[dic objectForKey:@"checked"] isEqualToString:@"NO"]) {
+        [dic setObject:@"NO" forKey:@"checked"];
+        [cell setChecked:NO];
+        
+    }else{
+        [dic setObject:@"YES" forKey:@"checked"];
+        [cell setChecked:YES];
+    }
     return cell;
     
 }
@@ -88,7 +132,26 @@
 #pragma mark - cell得到点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    XFJFindAttracUserListTableViewCell *cell = (XFJFindAttracUserListTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    NSUInteger row = [indexPath row];
+    NSMutableDictionary *dic = [self.contacts objectAtIndex:row];
+    if ([[dic objectForKey:@"checked"] isEqualToString:@"NO"]) {
+        [dic setObject:@"YES" forKey:@"checked"];
+        [cell setChecked:YES];
+        [self.indexPathArray addObject:self.findAttracUserListItem[indexPath.row]];
+    }else{
+        [dic setObject:@"NO" forKey:@"checked"];
+        [cell setChecked:NO];
+        [self.indexPathArray removeObject:self.findAttracUserListItem[indexPath.row]];
+    }
     
+}
+
+#pragma mark - cell的高度
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [XFJFindAttracUserListTableViewCell cellHeight];
 }
 
 @end

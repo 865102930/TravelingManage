@@ -12,5 +12,6 @@
 @interface XFJFindAttracUserListView : UIView
 
 @property (nonatomic, strong) NSMutableArray <XFJFindAttracUserListItem *> *findAttracUserListItem;
+@property (nonatomic, strong) void (^sureUserButtonClickBlock)(NSMutableArray <XFJFindAttracUserListItem *>*);
 
 @end

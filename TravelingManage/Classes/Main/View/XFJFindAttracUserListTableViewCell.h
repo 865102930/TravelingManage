@@ -14,6 +14,16 @@
 
 @interface XFJFindAttracUserListTableViewCell : UITableViewCell
 
+{
+    BOOL  m_checked;
+}
+
+
 @property (nonatomic, strong) XFJFindAttracUserListItem *findAttracUserListItem;
+
+- (void)setChecked:(BOOL)checked;
+
++ (CGFloat)cellHeight;
+
 
 @end

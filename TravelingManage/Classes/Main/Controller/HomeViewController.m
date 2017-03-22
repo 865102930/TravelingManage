@@ -47,6 +47,7 @@
 #import "XFJTaskRowsItem.h"
 #import "XFJFindAttracUserListItem.h"
 #import "XFJFindAttracUserListView.h"
+#import "XFJChooseHotelSignView.h"
 
 @interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
@@ -122,6 +123,18 @@
 @property (nonatomic, strong) NSMutableArray <XFJTaskRowsItem *>*TaskRowsItemArray;
 @property (nonatomic, strong) NSMutableArray <XFJFindAttracUserListItem *> *findAttracUserListItem_array;
 @property (nonatomic, strong) XFJFindAttracUserListView *findAttracUserListView;
+//提供一个数组用来装管理员id
+@property (nonatomic, strong) NSMutableArray *userArray_id;
+//提供一个字符串用来接收数组的转化
+@property (nonatomic, strong) NSString *allUserStr;
+//提供一个数组,将符合签退范围的加入到数组中
+@property (nonatomic, strong) NSMutableArray *canSignOutArray_time;
+//提供一个数组,将不符合范围的签到点添加到数组中
+@property (nonatomic, strong) NSMutableArray *notCanSignOutArray_time;
+//是酒店签到
+@property (nonatomic, assign) BOOL isChooseSign;
+@property (nonatomic, strong) XFJChooseHotelSignView *chooseHotelSignView;
+
 @end
 
 @implementation HomeViewController
@@ -197,10 +210,37 @@
     return _findAttracUserListItem_array;
 }
 
+- (NSMutableArray *)userArray_id
+{
+    if (_userArray_id == nil) {
+        _userArray_id = [NSMutableArray array];
+    }
+    return _userArray_id;
+}
+
+- (NSMutableArray *)canSignOutArray_time
+{
+    if (_canSignOutArray_time == nil) {
+        _canSignOutArray_time = [NSMutableArray array];
+    }
+    return _canSignOutArray_time;
+}
+
+- (NSMutableArray *)notCanSignOutArray_time
+{
+    if (_notCanSignOutArray_time == nil) {
+        _notCanSignOutArray_time = [NSMutableArray array];
+    }
+    return _notCanSignOutArray_time;
+}
+
+
 - (XFJFindAttracUserListView *)findAttracUserListView
 {
     if (_findAttracUserListView == nil) {
         _findAttracUserListView = [[XFJFindAttracUserListView alloc] initWithFrame:CGRectMake(50, 150, SCREEN_WIDTH - 2 * 50, SCREEN_HEIGHT - 2 * 150)];
+        _findAttracUserListView.layer.cornerRadius = 8.0;
+        _findAttracUserListView.layer.borderWidth = 0.5;
         _findAttracUserListView.backgroundColor = [UIColor whiteColor];
     }
     return _findAttracUserListView;
@@ -244,7 +284,7 @@
 - (void)requestWithAttractions_id:(NSInteger)attractions_id
 {
     NSDictionary *dictParams = @{
-                                 @"attractionsId":@5//[NSString stringWithFormat:@"%zd",attractions_id]
+                                 @"attractionsId":[NSString stringWithFormat:@"%zd",attractions_id]
                                  };
     NSLog(@"----------------获取管理员传递的参数是 :%@",dictParams);
     __weak __typeof(self)wself = self;
@@ -258,9 +298,6 @@
                 [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
                 [wself.maskView1 addSubview:wself.findAttracUserListView];
                 wself.findAttracUserListView.findAttracUserListItem = wself.findAttracUserListItem_array;
-                //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
-//                [wself signButtonClick1:wself.teamNumber teamId:wself.teamId];
-//                [wself.sign_view removeFromSuperview];
             }else {
                 [MBProgressHUD showHudTipStr:@"该景区不存在管理员!" contentColor:HidWithColorContentBlack];
             }
@@ -293,9 +330,22 @@
 {
     if (_chooseScenerySignView == nil) {
         _chooseScenerySignView = [[XFJChooseScenerySignView alloc] initWithFrame:CGRectMake(50, 150, SCREEN_WIDTH - 2 * 50, SCREEN_HEIGHT - 2 * 150)];
+        _chooseScenerySignView.layer.cornerRadius = 8.0;
+        _chooseScenerySignView.layer.borderWidth = 0.5;
         _chooseScenerySignView.backgroundColor = [UIColor whiteColor];
     }
     return _chooseScenerySignView;
+}
+
+- (XFJChooseHotelSignView *)chooseHotelSignView
+{
+    if (_chooseHotelSignView == nil) {
+        _chooseHotelSignView = [[XFJChooseHotelSignView alloc] initWithFrame:CGRectMake(50, 150, SCREEN_WIDTH - 2 * 50, SCREEN_HEIGHT - 2 * 150)];
+        _chooseHotelSignView.layer.cornerRadius = 8.0;
+        _chooseHotelSignView.layer.borderWidth = 0.5;
+        _chooseHotelSignView.backgroundColor = [UIColor whiteColor];
+    }
+    return _chooseHotelSignView;
 }
 
 #pragma mark - 给按钮添加一个滑动手势
@@ -383,7 +433,9 @@
     };
     //点击酒店签到按钮执行的是酒店签到任务
     self.hotel_view.hotelSignButtonClickBlock = ^() {
-        [wself hotelSignButtonWithPeople];
+        wself.isChooseSign = YES;
+        //这里先不要调用酒店签到的接口直接调用加载管理员的页面
+        [wself requestWithAttractions_id:wself.FindAttractionsListItem.findAttractions_id];
     };
     //景区签退
     self.signNoPeople_view.signNoButtonClickBlock = ^() {
@@ -405,17 +457,19 @@
         }]];
         [wself presentViewController:alertVc animated:NO completion:nil];
     };
-    
+    //点击景区的选择按钮
     self.signTeamTwoView.scenerySign_Block = ^() {
       //添加遮盖
         [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
         //添加选择景点框
         [wself.maskView1 addSubview:wself.chooseScenerySignView];
     };
+    //点击了酒店的选择按钮
     self.signTeamTwoView.hotelSign_block = ^() {
-        [wself.signTeamTwoView removeFromSuperview];
-        //直接添加酒店签到页面
-        [wself.view addSubview:wself.hotel_view];
+        //添加遮盖
+        [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
+        //添加选择景点框
+        [wself.maskView1 addSubview:wself.chooseHotelSignView];
     };
     self.maskView1.maskBlock = ^() {
         [wself.maskView1 removeFromSuperview];
@@ -427,11 +481,35 @@
         [wself.signTeamTwoView removeFromSuperview];
         [wself.view addSubview:wself.sign_view];
     };
+    self.chooseHotelSignView.chooseBlockButtonWithSure = ^(XFJFindAttractionsListItem *findAttractionsListItem){
+        //接收用户选择的酒店中景区的id
+        wself.FindAttractionsListItem = findAttractionsListItem;
+        [wself.maskView1 removeFromSuperview];
+        [wself.signTeamTwoView removeFromSuperview];
+        //直接添加酒店签到页面
+        [wself.view addSubview:wself.hotel_view];
+    };
     //跳转到通知页面
     self.leftView.pushNoticeWithHeaderBlock = ^() {
         [wself remoSubViews];
         MessageListViewController *announcementController = [[MessageListViewController alloc] init];
         [wself.navigationController pushViewController:announcementController animated:YES];
+    };
+    
+    //用来接收传过来的管理员id
+    self.findAttracUserListView.sureUserButtonClickBlock = ^(NSMutableArray <XFJFindAttracUserListItem *> *indexPathArray_id) {
+        //遍历所有的管理员,取出选择的管理员id
+        for (NSInteger i = 0; i < indexPathArray_id.count; i++) {
+            //将遍历出来的管理员id加入到数组中
+            [wself.userArray_id addObject:indexPathArray_id[i].userId];
+        }
+        //将数组转化为字符串
+        wself.allUserStr = [wself.userArray_id componentsJoinedByString:@","];
+        NSLog(@"+++++++++++++++接收到的管理员id数组是 :%@",wself.allUserStr);
+        //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
+        [wself signButtonClick1:wself.teamNumber teamId:wself.teamId userId:wself.allUserStr];
+        [wself.maskView1 removeFromSuperview];
+        [wself.sign_view removeFromSuperview];
     };
 }
 
@@ -570,29 +648,39 @@
         NSLog(@"签退需要传递的参数是:%@",dictParaments);
         __weak __typeof(self)wself = self;
         [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNLISTURL withParaments:dictParaments withSuccessBlock:^(id object) {
-            if ([[object objectForKey:@"msg"] isEqualToString:@"success"]) {
+            if (object) {
                 NSLog(@"签退成功获取到后台返回的内容是:%@",object);
                 NSDictionary *dict = [object objectForKey:@"rows"];
                 //判断是否可以签退(此处一定是可以签退的,只是显示的签退的状态是否异常?)
                 wself.signNoPeople_array = [XFJSingNoPeopleItem mj_objectArrayWithKeyValuesArray:dict];
-                CGFloat restult = 0.0;
-                if (wself.isSignButtonClick) {//如果点击了酒店签退按钮
-                    restult = wself.dayTime;
-                }else {//没有点击酒店的签到按钮
+                CGFloat restult = 0.0f;
+//                if (wself.isSignButtonClick) {//如果点击了酒店签退按钮
+//                    restult = wself.dayTime;
+//                }else {//没有点击酒店的签到按钮
+//            }
+                if (wself.isSignButtonClick) {//酒店签退
+                    [wself signNoPeopleVeiwButtonClick];
+                }else{//景点签退
                     restult = [wself.signNoPeople_view.hourTeamTime intValue] + (CGFloat)[wself.signNoPeople_view.minteTeamTime integerValue] / 60;
-                }
-                NSLog(@"-----计算的时间是------ : %.2f",restult);
-                for (NSInteger i = 0; i < wself.signNoPeople_array.count; i++) {
-                    NSString *signNoPeopleItem = wself.signNoPeople_array[i].attractionsTime;
-                    NSLog(@"显示每个景点的必须的签退时间:%@",signNoPeopleItem);
-                    if ((restult > [signNoPeopleItem floatValue]) || signNoPeopleItem.length == 0) {//如果时间大于景点的时间显示正确的签退框
-                        NSLog(@"如果时间大于景点的时间显示正确的签退框");
+                    NSLog(@"在这里打印的小时是 :%d--------分钟是 :%f",[wself.signNoPeople_view.hourTeamTime intValue],(CGFloat)[wself.signNoPeople_view.minteTeamTime integerValue] / 60);
+                    for (NSInteger i = 0; i < wself.signNoPeople_array.count; i++) {
+                        NSString *signNoPeopleItem = wself.signNoPeople_array[i].attractionsTime;
+                        NSLog(@"显示每个景点的必须的签退时间:%@",signNoPeopleItem);
+                        if ((restult > [signNoPeopleItem floatValue]) || signNoPeopleItem.length == 0) {//如果时间大于景点的时间或者为空的时候显示正确的签退框
+                            NSLog(@"如果时间大于景点的时间显示正确的签退框");
+                            //提供一个数组,将符合签退范围的加入到数组中
+                            [wself.canSignOutArray_time addObject:wself.signNoPeople_array[i]];
+                        }else {
+                            //这里表示时间小于景点签退的时间显示错误的签退框
+                            NSLog(@"这里表示时间小于景点签退的时间显示错误的签退框");
+                            //提供一个数组,将不符合范围的签到点添加到数组中
+                            [wself.notCanSignOutArray_time addObject:wself.signNoPeople_array[i]];
+                        }
+                    }
+                    //在这里显示是否正常签退的提示框
+                    if (wself.canSignOutArray_time.count != 0) {//这里是弹出正常的弹框
                         [wself signNoPeopleVeiwButtonClick];
-                        //只要有一个达到要求,就直接退出
-                        return;
-                    }else {
-                        //这里表示时间小于景点签退的时间显示错误的签退框
-                        NSLog(@"这里表示时间小于景点签退的时间显示错误的签退框");
+                    }else if (wself.notCanSignOutArray_time.count != 0) {//这里是弹出的异常弹框
                         [wself showErrorHidView];
                     }
                 }
@@ -738,24 +826,25 @@
 }
 
 #pragma mark - 酒店签到任务
-- (void)hotelSignButtonWithPeople
+- (void)hotelSignButtonWithPeopleAllUserId:(NSString *)userId
 {
     [self.hotel_view removeFromSuperview];
+    [self.maskView1 removeFromSuperview];
     [self.view addSubview:self.signNoHotel_view];
     self.signNoHotel_view.hotelSignPeopleCount = self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
     self.signNoHotel_view.hotelSignRoomCount = self.signRoomCount;
     //在这里调用酒店签到的接口
-    [self hotelSignRequest];
+    [self hotelSignRequest:userId];
 }
 
 #pragma mark - 酒店签到接口
-- (void)hotelSignRequest
+- (void)hotelSignRequest:(NSString *)userId
 {
     self.isHotelSignTime = YES;
     NSDictionary *dictParaments = @{
                                     @"teamId": self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
                                     @"attractionsId":[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],//景区id
-                                    @"userIdList":@3,//管理员id(可能是多个)
+                                    @"userIdList":userId,//管理员id(可能是多个)
                                     @"checkinNumber":self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],//签到人数
                                     @"rooms":[NSString stringWithFormat:@"%@",self.signRoomCount]//房间数(可以不传)
                                     };
@@ -791,13 +880,13 @@
     [self setUpSignNoWithPeople];
 }
 
-- (void)signButtonClick1:(NSString *)teamNumber teamId:(NSString *)teamId
+- (void)signButtonClick1:(NSString *)teamNumber teamId:(NSString *)teamId userId:(NSString *)userId
 {
         self.isTaskTime = YES;
         NSDictionary *dictParaments = @{
                                         @"teamId":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],//团队
                                         @"attractionsId":[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],//景区id
-                                        @"userIdList":@3,//管理员id(可能是多个)
+                                        @"userIdList":userId,//管理员id(可能是多个)
                                         @"checkinNumber":self.isSignModify ? self.signModifyCount : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],//签到人数
                                         @"rooms":@0//房间数
                                         };
@@ -1032,6 +1121,7 @@
     }else{
         [[UIApplication sharedApplication].keyWindow addSubview:self.maskView1];
         [self.chooseScenerySignView removeFromSuperview];
+        [self.chooseHotelSignView removeFromSuperview];
         [self.findAttracUserListView removeFromSuperview];
         [self openLeftView:YES];
     }
@@ -1366,6 +1456,7 @@
         NSLog(@"----最终加入数组中为0的值是1 :%zd",self.scenery_array.count);
         self.chooseScenerySignView.scenery_array = self.scenery_array;
         self.signTeamTwoView.hotel_array = self.hotel_array;
+        self.chooseHotelSignView.hotel_array = self.hotel_array;
         NSLog(@"++++最终加入数组中为0的值是2 :%zd",self.hotel_array.count);
     }
     NSLog(@"------------添加的大头针数组是 : %@",self.annotationArray);

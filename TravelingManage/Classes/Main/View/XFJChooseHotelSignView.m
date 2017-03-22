@@ -1,42 +1,42 @@
 //
-//  XFJChooseScenerySignView.m
+//  XFJChooseHotelSignView.m
 //  TravelingManage
 //
-//  Created by 肖锋 on 2017/3/11.
+//  Created by 肖锋 on 2017/3/22.
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#import "XFJChooseScenerySignView.h"
+#import "XFJChooseHotelSignView.h"
 #import "XFJChooseSceneryTableViewCell.h"
-#import "XFJChooseSceneryFooterView.h"
 #import "XFJFindAttractionsListItem.h"
+#import "XFJChooseHotelFooterView.h"
 
-@interface XFJChooseScenerySignView() <UITableViewDataSource,UITableViewDelegate>
+@interface XFJChooseHotelSignView() <UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic, strong) UITableView *chooseScenerySign_tableView;
-@property (nonatomic, strong) XFJChooseSceneryFooterView *chooseSceneryFooterView;
+@property (nonatomic, strong) UITableView *chooseHotelSign_tableView;
 @property (nonatomic, assign) NSIndexPath *selIndex;//单选，当前选中的行
 @property (nonatomic, strong) XFJFindAttractionsListItem *findAttractionsListItem;
+@property (nonatomic, strong) XFJChooseHotelFooterView *chooseHotelFooterView;
+
 @end
 
-@implementation XFJChooseScenerySignView
-
+@implementation XFJChooseHotelSignView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor redColor];
-        [self addSubview:self.chooseScenerySign_tableView];
-        [self addSubview:self.chooseSceneryFooterView];
-        [self.chooseScenerySign_tableView registerClass:[XFJChooseSceneryTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell];
-        [self.chooseSceneryFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
+        [self addSubview:self.chooseHotelSign_tableView];
+        [self addSubview:self.chooseHotelFooterView];
+        [self.chooseHotelSign_tableView registerClass:[XFJChooseSceneryTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell];
+        [self.chooseHotelFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(self.mas_left);
             make.right.mas_equalTo(self.mas_right);
             make.height.mas_equalTo(60.0);
             make.bottom.mas_equalTo(self.mas_bottom);
         }];
         __weak __typeof(self)wself = self;
-        self.chooseSceneryFooterView.sureChoose_buttonClickBlock = ^() {
+        self.chooseHotelFooterView.sureChoose_buttonClickBlock = ^() {
             if (wself.chooseBlockButtonWithSure) {
                 wself.chooseBlockButtonWithSure(wself.findAttractionsListItem);
             }
@@ -45,34 +45,36 @@
     return self;
 }
 
-- (void)setScenery_array:(NSMutableArray *)scenery_array
+- (void)setHotel_array:(NSMutableArray *)hotel_array
 {
-    _scenery_array = scenery_array;
-    [self.chooseScenerySign_tableView reloadData];
+    _hotel_array = hotel_array;
+    
+    [self.chooseHotelSign_tableView reloadData];
 }
 
-- (XFJChooseSceneryFooterView *)chooseSceneryFooterView
+- (XFJChooseHotelFooterView *)chooseHotelFooterView
 {
-    if (_chooseSceneryFooterView == nil) {
-        _chooseSceneryFooterView = [[XFJChooseSceneryFooterView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 60)];
-        _chooseSceneryFooterView.backgroundColor = [UIColor whiteColor];
+    if (_chooseHotelFooterView == nil) {
+        _chooseHotelFooterView = [[XFJChooseHotelFooterView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 60)];
+        _chooseHotelFooterView.layer.cornerRadius = 8.0;
+        _chooseHotelFooterView.backgroundColor = [UIColor whiteColor];
     }
-    return _chooseSceneryFooterView;
+    return _chooseHotelFooterView;
 }
 
-- (UITableView *)chooseScenerySign_tableView
+- (UITableView *)chooseHotelSign_tableView
 {
-    if (_chooseScenerySign_tableView == nil) {
-        _chooseScenerySign_tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
-        _chooseScenerySign_tableView.delegate = self;
-        _chooseScenerySign_tableView.dataSource = self;
-        _chooseScenerySign_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _chooseScenerySign_tableView.layer.cornerRadius = 8.0;
-        _chooseScenerySign_tableView.layer.borderWidth = 0.5;
-        _chooseScenerySign_tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
-        _chooseScenerySign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
+    if (_chooseHotelSign_tableView == nil) {
+        _chooseHotelSign_tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
+        _chooseHotelSign_tableView.delegate = self;
+        _chooseHotelSign_tableView.dataSource = self;
+        _chooseHotelSign_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _chooseHotelSign_tableView.layer.cornerRadius = 8.0;
+        _chooseHotelSign_tableView.layer.borderWidth = 0.5;
+        _chooseHotelSign_tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
+        _chooseHotelSign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
     }
-    return _chooseScenerySign_tableView;
+    return _chooseHotelSign_tableView;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -82,19 +84,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.scenery_array count];
+    return [self.hotel_array count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    XFJChooseSceneryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell forIndexPath:indexPath];
+    //    XFJChooseSceneryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell forIndexPath:indexPath];
     static NSString *const celID = @"cellID";
     XFJChooseSceneryTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell == nil) {
         cell = [[XFJChooseSceneryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:celID];
     }
-    NSLog(@"-----------这里获取到的值是 :%@",self.scenery_array[indexPath.row]);
-    cell.findAttractionsListItem = self.scenery_array[indexPath.row];
+    NSLog(@"-----------这里获取到的值是 :%@",self.hotel_array[indexPath.row]);
+    cell.findAttractionsListItem = self.hotel_array[indexPath.row];
     if (_selIndex == indexPath) {
         [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
     }else {
@@ -113,8 +115,8 @@
     //当前选择的打勾
     XFJChooseSceneryTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
-    NSLog(@"-------------选择的是第%@个内容",self.scenery_array[indexPath.row]);
-    XFJFindAttractionsListItem *findAttractionsListItem = self.scenery_array[indexPath.row];
+    NSLog(@"-------------选择的是第%@个内容",self.hotel_array[indexPath.row]);
+    XFJFindAttractionsListItem *findAttractionsListItem = self.hotel_array[indexPath.row];
     self.findAttractionsListItem = findAttractionsListItem;
 }
 
