@@ -335,7 +335,7 @@
         [self.cancel_button setHidden:YES];
         [self.status_button setHidden:YES];
     }else if (findTeamInfoByStateItem.teamState == 3) {
-        self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"已审核任务"];
+        self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"审核通过"];
         [self.cancel_button setHidden:YES];
         [self.status_button setHidden:YES];
     }else {

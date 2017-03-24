@@ -169,24 +169,20 @@
     _scenery_array = scenery_array;
     NSLog(@"+++++++++++景点的个数是 :%zd",scenery_array.count);
     //如果景区签到的个数为0,就让点击的按钮变灰色并且不让点击
-    if (scenery_array.count == 0) {
-        self.scenerySign_view.backgroundColor = kColorE9E9;
-        self.scenerySign_label.textColor = kColorFFFF;
-        self.scenerySign_button.enabled = NO;
-        [self.scenerySign_button setImage:[UIImage originalWithImage:@"n-sign"] forState:UIControlStateNormal];
-    }
+    self.scenerySign_view.backgroundColor = kColorE9E9;
+    self.scenerySign_label.textColor = kColorFFFF;
+    self.scenerySign_button.enabled = NO;
+    [self.scenerySign_button setImage:[UIImage originalWithImage:@"n-sign"] forState:UIControlStateNormal];
 }
 
 - (void)setHotel_array:(NSMutableArray *)hotel_array
 {
     _hotel_array = hotel_array;
     //如果酒店签到的个数为0,就让点击的按钮变灰色并且不让点击
-    if (hotel_array.count == 0) {
-        self.hotelSign_view.backgroundColor = kColorE9E9;
-        self.hotelSign_label.textColor = kColorFFFF;
-        self.hotelSign_button.enabled = NO;
-        [self.hotelSign_button setImage:[UIImage originalWithImage:@"n-sign"] forState:UIControlStateNormal];
-    }
+    self.hotelSign_view.backgroundColor = kColorE9E9;
+    self.hotelSign_label.textColor = kColorFFFF;
+    self.hotelSign_button.enabled = NO;
+    [self.hotelSign_button setImage:[UIImage originalWithImage:@"n-sign"] forState:UIControlStateNormal];
 }
 
 

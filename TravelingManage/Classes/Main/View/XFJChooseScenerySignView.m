@@ -17,6 +17,7 @@
 @property (nonatomic, strong) XFJChooseSceneryFooterView *chooseSceneryFooterView;
 @property (nonatomic, assign) NSIndexPath *selIndex;//单选，当前选中的行
 @property (nonatomic, strong) XFJFindAttractionsListItem *findAttractionsListItem;
+
 @end
 
 @implementation XFJChooseScenerySignView
@@ -50,6 +51,7 @@
     _scenery_array = scenery_array;
     [self.chooseScenerySign_tableView reloadData];
 }
+
 
 - (XFJChooseSceneryFooterView *)chooseSceneryFooterView
 {
@@ -87,13 +89,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    XFJChooseSceneryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell forIndexPath:indexPath];
     static NSString *const celID = @"cellID";
     XFJChooseSceneryTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell == nil) {
         cell = [[XFJChooseSceneryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:celID];
     }
-    NSLog(@"-----------这里获取到的值是 :%@",self.scenery_array[indexPath.row]);
     cell.findAttractionsListItem = self.scenery_array[indexPath.row];
     if (_selIndex == indexPath) {
         [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
@@ -102,6 +102,7 @@
     }
     return cell;
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -113,10 +114,10 @@
     //当前选择的打勾
     XFJChooseSceneryTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
-    NSLog(@"-------------选择的是第%@个内容",self.scenery_array[indexPath.row]);
     XFJFindAttractionsListItem *findAttractionsListItem = self.scenery_array[indexPath.row];
     self.findAttractionsListItem = findAttractionsListItem;
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

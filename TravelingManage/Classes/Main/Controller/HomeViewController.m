@@ -109,9 +109,9 @@
 //用一个数组将景点为yes的景点保存起来
 @property (nonatomic, strong) NSMutableArray *isYes_array;
 //将为0的景区保存起来
-@property (nonatomic, strong) NSMutableArray *scenery_array;
+@property (nonatomic, strong) NSMutableArray <XFJFindAttractionsListItem *> *scenery_array;
 //将为1的酒店保存起来
-@property (nonatomic, strong) NSMutableArray *hotel_array;
+@property (nonatomic, strong) NSMutableArray <XFJFindAttractionsListItem *> *hotel_array;
 @property (nonatomic, strong) XFJSignTeamTwoView *signTeamTwoView;
 @property (nonatomic, strong) XFJChooseScenerySignView *chooseScenerySignView;
 @property (nonatomic, strong) XFJFindAttractionsListItem *FindAttractionsListItem;
@@ -134,9 +134,15 @@
 //是酒店签到
 @property (nonatomic, assign) BOOL isChooseSign;
 @property (nonatomic, strong) XFJChooseHotelSignView *chooseHotelSignView;
-
+@property (nonatomic, strong) NSThread *thread;
+//定义一个可变数组用来接收景区个数
+@property (nonatomic, strong) NSMutableArray *scArray;
+//定义一个可变数组用来接收酒店个数
+@property (nonatomic, strong) NSMutableArray *hotArray;
+@property (nonatomic, strong) XFJLaterTeamControlItem *laterTeamControlItem;
 @end
 
+static BOOL over = NO;
 @implementation HomeViewController
 
 - (void)viewDidLoad {
@@ -161,8 +167,6 @@
     self.navigationItem.leftBarButtonItem = self.user_SttingButtonItem;
     self.navigationItem.rightBarButtonItem = self.projectButtonItem;
     
-    //这里调用最近操作的团队信息(用BOOL值来判断)
-    self.isFindTeamList == YES ? [self.view addSubview:self.announcementView] : [self requestLatelyControl];
     
     //这是添加的公告(如果开始进来的时候没有任务,就显示公告,后面则显示新建任务的标题栏)
     self.isProjectItem == NO ? [self.view addSubview:self.announcementView] : [self.view addSubview:self.homeTopTaskMessageVeiw];
@@ -171,6 +175,9 @@
     [self.maskView1 addSubview:self.leftView];
     //获取当前用户的位置信息
     [self getUserLocation];
+    
+    //这里调用最近操作的团队信息(用BOOL值来判断)
+//    self.isFindTeamList == YES ? [self.view addSubview:self.announcementView] : [self requestLatelyControl];
 #warning 一开始是公告栏(此个页面是在后面添加的)
     //这是添加的home顶部的任务
 //    [self.view addSubview:self.homeTopTaskMessageVeiw];
@@ -184,6 +191,95 @@
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
     keyboardManager.keyboardDistanceFromTextField = 50;
+    
+    [self.thread start];
+}
+
+- (NSThread *)thread
+{
+    if (_thread == nil) {
+        _thread = [[NSThread alloc]initWithTarget:self selector:@selector(threadFunc) object:nil];
+    }
+    return _thread;
+}
+
+- (void)threadFunc
+{
+    __weak __typeof(self)wself = self;
+    while (YES) {
+        [NSThread sleepForTimeInterval:1];
+        if ([NSThread isMultiThreaded]) {
+            [self setUpUserTimeWithUseApp:YES];
+            if (self.isTaskTime) {
+                NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.DateStartTime];
+                NSString *hourTime = [dict objectForKey:@"hourString"];
+                NSString *minteTime = [dict objectForKey:@"minuteString"];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //回调或者说是通知主线程刷新
+                    wself.signNoPeople_view.minteTeamTime = minteTime;
+                    wself.signNoPeople_view.hourTeamTime = hourTime;
+                });
+                NSLog(@"---------------时时获取的差值是 :%@",dict);
+            }else {
+                NSLog(@"亲~~在这里就不再调用时时获取时间了!!!");
+            }
+            if (self.isHotelSignTime) {
+                NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.DateStartTime];
+                NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
+                NSString *hotelHourTime = [dict objectForKey:@"hourString"];//小时
+                NSString *hotelMinteTime = [dict objectForKey:@"minuteString"];//分钟
+                //分钟转化为小时
+                CGFloat minteToHour = [hotelMinteTime integerValue] / (CGFloat)60;
+                //将所有的小时相加得到所有的小时
+                CGFloat allHourTime = [hotelHourTime integerValue] + minteToHour;
+                //将所有的小时累加为天数
+                NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //回调或者说是通知主线程刷新
+                    wself.signNoHotel_view.hotelStayDay = dayTime;
+                    wself.dayTime = dayTime;
+                });
+            }
+            //在这里将时时获取的时间赋值给签退页面
+            if (self.isTeamId == YES) {
+                NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.findTeamTaskItem.createtime];
+                NSString *hourTime = [dict objectForKey:@"hourString"];
+                NSString *minteTime = [dict objectForKey:@"minuteString"];
+                NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
+                //分钟转化为小时
+                CGFloat minteToHour = [minteTime integerValue] / (CGFloat)60;
+                //将所有的小时相加得到所有的小时
+                CGFloat allHourTime = [hourTime integerValue] + minteToHour;
+                //将所有的小时累加为天数
+                NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //回调或者说是通知主线程刷新
+                    wself.signNoPeople_view.hourTeamTime = hourTime;
+                    wself.signNoPeople_view.minteTeamTime = minteTime;
+                    wself.signNoHotel_view.hotelStayDay = dayTime;
+                });
+            }
+        }
+        if (over) {
+            break;
+        }
+    }
+}
+
+- (NSMutableArray *)scArray
+{
+    if (_scArray == nil) {
+        _scArray = [NSMutableArray array];
+    }
+    return _scArray;
+}
+
+- (NSMutableArray *)hotArray
+{
+    if (_hotArray == nil) {
+        _hotArray = [NSMutableArray array];
+    }
+    return _hotArray;
 }
 
 - (NSMutableArray <XFJFindTeamTasksItem *> *)findTeamTasksItem
@@ -259,14 +355,94 @@
             NSDictionary *dict = [responseObject objectForKey:@"object"];
             XFJLaterTeamControlItem *laterTeamControlItem = [XFJLaterTeamControlItem mj_objectWithKeyValues:dict];
             wself.homeTopTaskMessageVeiw.laterTeamControlItem = laterTeamControlItem;
-            //如果状态值显示的是0就显示签到按钮
-            //如果状态值显示的是1就是签退按钮
+            [wself requestInfoTasksWithFindNewTeamInfo_Id:laterTeamControlItem.findNewTeamInfo_Id];
             NSLog(@"========打印出来的最近团队的参数模型是:%@",laterTeamControlItem);
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"+++++++++++++获取不到的最近的操作的团队打印的错误信息是:%@",error);
         }
+    }];
+}
+
+#pragma mark - 刚进来的时候判断下面的状态
+- (void)requestInfoTasksWithFindNewTeamInfo_Id:(NSUInteger)findNewTeamInfo_Id
+{
+    NSLog(@"wself.scArray的值是 :%zd--------wself.hotArray的值是 :%zd--------self.scenery_array的值是 :%zd+++++++self.hotel_array的值是 :%zd",self.scArray.count,self.hotArray.count,self.scenery_array.count,self.hotel_array.count);
+    NSDictionary *dictParaments = @{
+                                    @"id":[NSString stringWithFormat:@"%zd",findNewTeamInfo_Id]
+                                    };
+    NSLog(@"++++++++++++调用29个接口,获取任务信息的参数是:%@",dictParaments);
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++++获取到的团队信息查看任务是 :%@",responseObject);
+            NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
+            wself.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
+            
+            for (NSInteger i = 0;i < findArray.count ; i++) {
+                NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
+                NSLog(@"--=++++++++++++++++获取到的字典是 :%@",dict);
+                wself.TaskRowsItemArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
+                NSLog(@"wself.TaskRowsItemArray-------%@",wself.TaskRowsItemArray);
+            }
+            NSLog(@"===============在范围内的所有景区点数是 :%zd",wself.scenery_array.count);
+            //遍历所有的任务,查看是否正在进行(签到过了或者签退过了)
+            //对景点的id遍历并且存起来
+//            [wself.scArray removeAllObjects];
+//            [wself.hotArray removeAllObjects];
+            for (NSInteger i = 0; i < wself.scenery_array.count; i++) {
+                NSInteger findAttractions_id = wself.scenery_array[i].findAttractions_id;
+                [wself.scArray addObject:[NSString stringWithFormat:@"%zd",findAttractions_id]];
+            }
+            for (NSInteger j = 0; j < wself.TaskRowsItemArray.count; j++) {
+                NSInteger attractionsId = wself.TaskRowsItemArray[j].attractionsId;
+                [wself.scArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if ([obj isEqualToString:[NSString stringWithFormat:@"%zd",attractionsId]]) {
+                        [wself.scArray removeObject:[NSString stringWithFormat:@"%zd",attractionsId]];
+                    }
+                }];
+            }
+            if (wself.scArray.count == 0) {
+                NSString *str;
+                wself.homeTopTaskMessageVeiw.isButton = str;
+                [wself.view addSubview:wself.signTeamTwoView];
+                //直接置灰
+                wself.signTeamTwoView.scenery_array = wself.TaskRowsItemArray;
+            }else {
+                //是原来的样式
+                NSString *str;
+                wself.homeTopTaskMessageVeiw.isButton = str;
+                [wself.view addSubview:wself.signTeamTwoView];
+            }
+            //对酒店中的景点遍历并且存起来
+            for (NSInteger i = 0; i < wself.hotel_array.count; i++) {
+                NSInteger findHotelAttractions_id = wself.hotel_array[i].findAttractions_id;
+                [wself.hotArray addObject:[NSString stringWithFormat:@"%zd",findHotelAttractions_id]];
+            }
+            NSLog(@"wself.hotArray :%zd",wself.hotArray.count);
+            for (NSInteger i = 0; i < wself.TaskRowsItemArray.count; i++) {
+                NSInteger attractionsId = wself.TaskRowsItemArray[i].attractionsId;
+                [wself.hotArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if ([obj isEqualToString:[NSString stringWithFormat:@"%zd",attractionsId]]) {
+                        [wself.hotArray removeObject:[NSString stringWithFormat:@"%zd",attractionsId]];
+                    }
+                }];
+            }
+            if (wself.hotArray.count == 0) {
+                NSString *str;
+                wself.homeTopTaskMessageVeiw.isButton = str;
+                [wself.view addSubview:wself.signTeamTwoView];
+                //直接置灰
+                wself.signTeamTwoView.hotel_array = wself.TaskRowsItemArray;
+            }else {
+                //是原来的样式
+                NSString *str;
+                wself.homeTopTaskMessageVeiw.isButton = str;
+                [wself.view addSubview:wself.signTeamTwoView];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
     }];
 }
 
@@ -310,7 +486,7 @@
     
 }
 
-- (NSMutableArray *)scenery_array
+- (NSMutableArray <XFJFindAttractionsListItem *> *)scenery_array
 {
     if (_scenery_array == nil) {
         _scenery_array = [NSMutableArray array];
@@ -318,7 +494,7 @@
     return _scenery_array;
 }
 
-- (NSMutableArray *)hotel_array
+- (NSMutableArray <XFJFindAttractionsListItem *> *)hotel_array
 {
     if (_hotel_array == nil) {
         _hotel_array = [NSMutableArray array];
@@ -375,7 +551,6 @@
     //待评价
     self.leftView.pushPleaseAskingBlock = ^() {
         [wself remoSubViews];
-//        XFJPleaseAskingViewController *pleaseAskingViewController = [[XFJPleaseAskingViewController alloc] init];
         XFJMineTeamViewController *pleaseAskingViewController = [[XFJMineTeamViewController alloc] init];
         [wself.navigationController pushViewController:pleaseAskingViewController animated:YES];
     };
@@ -437,6 +612,7 @@
         //这里先不要调用酒店签到的接口直接调用加载管理员的页面
         [wself requestWithAttractions_id:wself.FindAttractionsListItem.findAttractions_id];
     };
+    
     //景区签退
     self.signNoPeople_view.signNoButtonClickBlock = ^() {
         [wself signNoPeopleButtonClick1];
@@ -498,18 +674,34 @@
     
     //用来接收传过来的管理员id
     self.findAttracUserListView.sureUserButtonClickBlock = ^(NSMutableArray <XFJFindAttracUserListItem *> *indexPathArray_id) {
-        //遍历所有的管理员,取出选择的管理员id
-        for (NSInteger i = 0; i < indexPathArray_id.count; i++) {
-            //将遍历出来的管理员id加入到数组中
-            [wself.userArray_id addObject:indexPathArray_id[i].userId];
+        if (wself.isChooseSign == YES) {
+            NSLog(@"+++++++++++++这里点击的是酒店的管理员值");
+            //移除之前的管理员id
+            [wself.userArray_id removeAllObjects];
+            //遍历所有的管理员,取出选择的管理员id
+            for (NSInteger i = 0; i < indexPathArray_id.count; i++) {
+                //将遍历出来的管理员id加入到数组中
+                [wself.userArray_id addObject:indexPathArray_id[i].userId];
+            }
+            //将数组转化为字符串
+            wself.allUserStr = [wself.userArray_id componentsJoinedByString:@","];
+            [wself hotelSignButtonWithPeopleAllUserId:wself.allUserStr];
+        }else {
+            //遍历所有的管理员,取出选择的管理员id
+            //移除之前的管理员id
+            [wself.userArray_id removeAllObjects];
+            for (NSInteger i = 0; i < indexPathArray_id.count; i++) {
+                //将遍历出来的管理员id加入到数组中
+                [wself.userArray_id addObject:indexPathArray_id[i].userId];
+            }
+            //将数组转化为字符串
+            wself.allUserStr = [wself.userArray_id componentsJoinedByString:@","];
+            NSLog(@"+++++++++++++++接收到的管理员id数组是 :%@",wself.allUserStr);
+            //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
+            [wself signButtonClick1:wself.teamNumber teamId:wself.teamId userId:wself.allUserStr];
+            [wself.maskView1 removeFromSuperview];
+            [wself.sign_view removeFromSuperview];
         }
-        //将数组转化为字符串
-        wself.allUserStr = [wself.userArray_id componentsJoinedByString:@","];
-        NSLog(@"+++++++++++++++接收到的管理员id数组是 :%@",wself.allUserStr);
-        //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
-        [wself signButtonClick1:wself.teamNumber teamId:wself.teamId userId:wself.allUserStr];
-        [wself.maskView1 removeFromSuperview];
-        [wself.sign_view removeFromSuperview];
     };
 }
 
@@ -578,15 +770,16 @@
                 NSLog(@"wself.TaskRowsItemArray-------%@",wself.TaskRowsItemArray);
             }
             //如果没有任务,就代表用户连签到都没有签,此时显示让用户选择的签到任务点,并且完成按钮不可点击
-            NSString *str1;
-            wself.homeTopTaskMessageVeiw.isButton1 = str1;
+//            NSString *str1;
+//            wself.homeTopTaskMessageVeiw.isButton1 = str1;
             [wself.task_view removeFromSuperview];
             [wself.signNoPeople_view removeFromSuperview];
             [wself.hotel_view removeFromSuperview];
             //添加酒店签退页面
             [wself.signNoHotel_view removeFromSuperview];
             //然后添加让用户选择的签到页面
-            [wself.view addSubview:wself.signTeamTwoView];
+//            [wself.view addSubview:wself.signTeamTwoView];
+            [wself requestWithInfoTasks];
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
@@ -611,7 +804,9 @@
             //移除任务栏
             [wself.homeTopTaskMessageVeiw removeFromSuperview];
             [wself.location_button setFrame:CGRectMake(SCREEN_WIDTH - SCREEN_WIDTH * 0.1 - 10, 120, SCREEN_WIDTH * 0.1, SCREEN_WIDTH * 0.1)];
-            [wself.view addSubview:self.announcementView];
+            [wself.view addSubview:wself.announcementView];
+            [wself.signTeamTwoView removeFromSuperview];
+            [wself.view addSubview:wself.task_view];
             [MBProgressHUD showHudTipStr:@"该团队已经结束,进入待完善状态" contentColor:HidWithColorContentBlack];
         }
     } withFailureBlock:^(NSError *error) {
@@ -756,6 +951,7 @@
     AlertView *popV =  [AlertView showInPoint:self.view.center];
     popV.delegate = self;
 }
+
 //点击弹框上面的确认按钮
 - (void)presentViewClickBtn:(AlertView *)alertView3
 {
@@ -791,6 +987,8 @@
 #pragma mark - 调用签退的接口(景点和酒店签退)
 - (void)signOutButtonClick
 {
+    //取消 线程
+    [self.thread cancel];
     NSDictionary *dictParaments = @{
                                     @"teamId":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
                                     @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractions_id]
@@ -802,7 +1000,9 @@
             [wself.signTeamTwoView removeFromSuperview];
             [wself.signNoHotel_view removeFromSuperview];
             [wself.signNoPeople_view removeFromSuperview];
-            [wself.view addSubview:self.task_view];
+//            [wself.view addSubview:self.task_view];
+            //这里先不要添加创建任务的弹窗(直接调用请求的任务的29个接口,判断任务是否存在)
+            [wself requestWithInfoTasks];
             //只要签退成功,就按钮的状态改为完成
             NSString *str;
             wself.homeTopTaskMessageVeiw.isButton = str;
@@ -815,6 +1015,86 @@
     } progress:^(float progress) {
     }];
 }
+
+#pragma mark - 调用29个接口,获取任务信息
+- (void)requestWithInfoTasks
+{
+    NSDictionary *dictParaments = @{
+                                    @"id":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
+                                    };
+    NSLog(@"++++++++++++调用29个接口,获取任务信息的参数是:%@",dictParaments);
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++++获取到的团队信息查看任务是 :%@",responseObject);
+            NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
+            wself.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
+            
+            for (NSInteger i = 0;i < findArray.count ; i++) {
+                NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
+                NSLog(@"--=++++++++++++++++获取到的字典是 :%@",dict);
+                wself.TaskRowsItemArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
+                NSLog(@"wself.TaskRowsItemArray-------%@",wself.TaskRowsItemArray);
+            }
+            NSLog(@"===============在范围内的所有景区点数是 :%zd",wself.scenery_array.count);
+            //遍历所有的任务,查看是否正在进行(签到过了或者签退过了)
+            //对景点的id遍历并且存起来
+            [wself.scArray removeAllObjects];
+            [wself.hotArray removeAllObjects];
+            for (NSInteger i = 0; i < wself.scenery_array.count; i++) {
+                NSInteger findAttractions_id = wself.scenery_array[i].findAttractions_id;
+                [wself.scArray addObject:[NSString stringWithFormat:@"%zd",findAttractions_id]];
+            }
+            //对酒店中的景点遍历并且存起来
+            for (NSInteger i = 0; i < wself.hotel_array.count; i++) {
+                NSInteger findHotelAttractions_id = wself.hotel_array[i].findAttractions_id;
+                [wself.hotArray addObject:[NSString stringWithFormat:@"%zd",findHotelAttractions_id]];
+            }
+            for (NSInteger j = 0; j < wself.TaskRowsItemArray.count; j++) {
+                NSInteger attractionsId = wself.TaskRowsItemArray[j].attractionsId;
+                [wself.scArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if ([obj isEqualToString:[NSString stringWithFormat:@"%zd",attractionsId]]) {
+                        [wself.scArray removeObject:[NSString stringWithFormat:@"%zd",attractionsId]];
+                    }
+                }];
+            }
+            if (wself.scArray.count == 0) {
+                NSString *str;
+                wself.homeTopTaskMessageVeiw.isButton = str;
+                [wself.view addSubview:wself.signTeamTwoView];
+                //直接置灰
+                wself.signTeamTwoView.scenery_array = wself.TaskRowsItemArray;
+            }else {
+                //是原来的样式
+                NSString *str;
+                wself.homeTopTaskMessageVeiw.isButton = str;
+                [wself.view addSubview:wself.signTeamTwoView];
+            }
+            for (NSInteger i = 0; i < wself.TaskRowsItemArray.count; i++) {
+                NSInteger attractionsId = wself.TaskRowsItemArray[i].attractionsId;
+                [wself.hotArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if ([obj isEqualToString:[NSString stringWithFormat:@"%zd",attractionsId]]) {
+                        [wself.hotArray removeObject:[NSString stringWithFormat:@"%zd",attractionsId]];
+                    }
+                }];
+            }
+            if (wself.hotArray.count == 0) {
+                NSString *str;
+                wself.homeTopTaskMessageVeiw.isButton = str;
+                [wself.view addSubview:wself.signTeamTwoView];
+                //直接置灰
+                wself.signTeamTwoView.hotel_array = wself.TaskRowsItemArray;
+            }else {
+                //是原来的样式
+                NSString *str;
+                wself.homeTopTaskMessageVeiw.isButton = str;
+                [wself.view addSubview:wself.signTeamTwoView];
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+    }];
+}
+
 
 
 - (NSMutableArray <XFJSingNoPeopleItem *> *)signNoPeople_array
@@ -1317,7 +1597,7 @@
             if (!wself.currentCity) {
                 wself.currentCity = @"无法定位当前城市";
             }
-        //发送获取当前位置用户周边的景区
+            //发送获取当前位置用户周边的景区
             [wself requestAttractionsListWithProvince:self.currentProvince city:wself.currentCity];
         }else if (error == nil && placemarks.count == 0) {
             NSLog(@"No location and error return");
@@ -1438,9 +1718,7 @@
     //这里遍历所有在范围内的点数
     for (NSInteger i = 0; i < self.isYes_array.count; i++) {
         XFJFindAttractionsListItem *findAttractionsListItem = [self.isYes_array objectAtIndex:i];
-        NSLog(@"-------++++++这里打印所有的在范围内的点数是 :%zd",self.isYes_array.count);
         NSInteger typeState = findAttractionsListItem.typeState;
-        NSLog(@"=============在范围内的状态值是 :%zd",typeState);
         if (typeState == 0) {//景区
             [self.scenery_array addObject:findAttractionsListItem];
         }else {//这里表示酒店
@@ -1450,63 +1728,21 @@
     }
     
     if (self.isContains) {//如果是yes就创建
-//        self.isProjectItem == NO ? (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 200, 42, 41)) : (self.location_button.frame = CGRectMake(11, SCREEN_HEIGHT - 290, 42, 41));
-        self.isProjectItem == NO ? [self.view addSubview:self.task_view] : [self.view addSubview:self.signTeamTwoView];
-        self.signTeamTwoView.scenery_array = self.scenery_array;
+        self.isProjectItem == NO ? @"" : [self.view addSubview:self.signTeamTwoView];//[self.view addSubview:self.task_view]
         NSLog(@"----最终加入数组中为0的值是1 :%zd",self.scenery_array.count);
         self.chooseScenerySignView.scenery_array = self.scenery_array;
-        self.signTeamTwoView.hotel_array = self.hotel_array;
         self.chooseHotelSignView.hotel_array = self.hotel_array;
         NSLog(@"++++最终加入数组中为0的值是2 :%zd",self.hotel_array.count);
     }
     NSLog(@"------------添加的大头针数组是 : %@",self.annotationArray);
+    NSLog(@"self.scenery_array的值是 :%zd+++++++self.hotel_array的值是 :%zd",self.scenery_array.count,self.hotel_array.count);
+    self.isFindTeamList == YES ? [self.view addSubview:self.announcementView] : [self requestLatelyControl];
 }
 
 #pragma mark - 随时更新用户的位子
 - (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation
 {
     //在这里一直获取用户的时间使用app的时间
-    [self setUpUserTimeWithUseApp:YES];
-    if (self.isTaskTime) {
-        NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.DateStartTime];
-        NSString *hourTime = [dict objectForKey:@"hourString"];
-        self.signNoPeople_view.hourTeamTime = hourTime;
-        NSString *minteTime = [dict objectForKey:@"minuteString"];
-        self.signNoPeople_view.minteTeamTime = minteTime;
-        NSLog(@"---------------时时获取的差值是 :%@",dict);
-    }else {
-        NSLog(@"亲~~在这里就不再调用时时获取时间了!!!");
-    }
-    if (self.isHotelSignTime) {
-        NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.DateStartTime];
-        NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
-        NSString *hotelHourTime = [dict objectForKey:@"hourString"];//小时
-        NSString *hotelMinteTime = [dict objectForKey:@"minuteString"];//分钟
-        //分钟转化为小时
-        CGFloat minteToHour = [hotelMinteTime integerValue] / (CGFloat)60;
-        //将所有的小时相加得到所有的小时
-        CGFloat allHourTime = [hotelHourTime integerValue] + minteToHour;
-        //将所有的小时累加为天数
-        NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
-        self.signNoHotel_view.hotelStayDay = dayTime;
-        self.dayTime = dayTime;
-    }
-    //在这里将时时获取的时间赋值给签退页面
-    if (self.isTeamId == YES) {
-        NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.findTeamTaskItem.createtime];
-        NSString *hourTime = [dict objectForKey:@"hourString"];
-        self.signNoPeople_view.hourTeamTime = hourTime;
-        NSString *minteTime = [dict objectForKey:@"minuteString"];
-        self.signNoPeople_view.minteTeamTime = minteTime;
-        NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
-        //分钟转化为小时
-        CGFloat minteToHour = [minteTime integerValue] / (CGFloat)60;
-        //将所有的小时相加得到所有的小时
-        CGFloat allHourTime = [hourTime integerValue] + minteToHour;
-        //将所有的小时累加为天数
-        NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
-        self.signNoHotel_view.hotelStayDay = dayTime;
-    }
 }
 
 #pragma mark - 时时获取用户在景区呆的时间

@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSMutableArray *contacts;
 //定义一个可变数组用来装点击的cell
 @property (nonatomic, strong) NSMutableArray *indexPathArray;
+@property (nonatomic, strong) NSMutableArray *indexPath_array;
 @end
 
 @implementation XFJFindAttracUserListView
@@ -37,7 +38,7 @@
         __weak __typeof(self)wself = self;
         self.findAttracUserListFooterView.sureUserButtonBlock = ^() {
             if (wself.sureUserButtonClickBlock) {
-                wself.sureUserButtonClickBlock(wself.indexPathArray);
+                wself.sureUserButtonClickBlock(wself.indexPath_array);
             }
         };
     }
@@ -58,6 +59,14 @@
         _contacts = [NSMutableArray array];
     }
     return _contacts;
+}
+
+- (NSMutableArray *)indexPath_array
+{
+    if (_indexPath_array == nil) {
+        _indexPath_array = [NSMutableArray array];
+    }
+    return _indexPath_array;
 }
 
 - (void)setFindAttracUserListItem:(NSMutableArray<XFJFindAttracUserListItem *> *)findAttracUserListItem
@@ -132,6 +141,7 @@
 #pragma mark - cell得到点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.indexPath_array removeAllObjects];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     XFJFindAttracUserListTableViewCell *cell = (XFJFindAttracUserListTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     NSUInteger row = [indexPath row];
@@ -145,7 +155,8 @@
         [cell setChecked:NO];
         [self.indexPathArray removeObject:self.findAttracUserListItem[indexPath.row]];
     }
-    
+    self.indexPath_array = self.indexPathArray;
+    NSLog(@"------------------值是 :%zd",self.indexPath_array.count);
 }
 
 #pragma mark - cell的高度

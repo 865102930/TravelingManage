@@ -83,7 +83,7 @@
                 <constraint firstAttribute="trailing" secondItem="FBR-5y-Mmt" secondAttribute="trailing" id="zrG-Ge-25b"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-1607" y="74"/>
+            <point key="canvasLocation" x="-1672" y="67"/>
         </view>
         <view contentMode="scaleToFill" id="1Gp-Ts-hsH" customClass="AlertView">
             <rect key="frame" x="0.0" y="0.0" width="288" height="172"/>
@@ -115,7 +115,7 @@
                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="scanSign:" destination="-1" eventType="touchUpInside" id="G09-Ve-dNR"/>
+                        <action selector="manualSign:" destination="-1" eventType="touchUpInside" id="Sj6-cI-TFh"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Qg-G8-tax">
@@ -131,7 +131,7 @@
                         <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="manualSign:" destination="-1" eventType="touchUpInside" id="7Zc-DD-AYO"/>
+                        <action selector="scanSign:" destination="-1" eventType="touchUpInside" id="KNV-uI-1cc"/>
                     </connections>
                 </button>
             </subviews>
