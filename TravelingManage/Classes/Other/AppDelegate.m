@@ -12,6 +12,7 @@
 #import <AMapFoundationKit/AMapFoundationKit.h>
 #import "LoginViewController.h"
 #import "XFJPleasePerfectMessageViewController.h"
+#import "PersonalInformationViewController.h"
 
 @interface AppDelegate ()
 
@@ -50,7 +51,7 @@
         [self.window makeKeyAndVisible];
     }else {
         XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[LoginViewController alloc] init]];
-//        XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[XFJPleasePerfectMessageViewController alloc] init]];
+//        XFJNavigationController *nav = [[XFJNavigationController alloc] initWithRootViewController:[[PersonalInformationViewController alloc] init]];
         self.window.rootViewController = nav;
         [self.window makeKeyAndVisible];
     }

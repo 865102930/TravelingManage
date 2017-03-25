@@ -16,6 +16,8 @@
 @property (nonatomic, strong) XFJFindAttractionsListItem *findAttractionsListItem;
 @property (nonatomic, copy) void (^chichButtonChooseBlock)(UIButton *);
 @property (nonatomic, strong) UIButton *sceneryContent_button;
+@property (nonatomic, strong) XFJFindAttractionsListItem *findAttractionsListItem2;
+
 
 + (CGFloat)cellHeight;
 

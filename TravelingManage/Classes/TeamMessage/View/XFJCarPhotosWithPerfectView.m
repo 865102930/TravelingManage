@@ -64,7 +64,7 @@
             make.top.mas_equalTo(self.carPhotos_label.mas_bottom).mas_offset(15.0);
             make.left.mas_equalTo(self.carPhotos_imageView.mas_left);
             make.right.mas_equalTo(-18.0);
-            make.bottom.mas_equalTo(self.carPhotosMessage_label.mas_top).mas_offset(-20);
+            make.bottom.mas_equalTo(self.carPhotosMessage_label.mas_top).mas_offset(-10);
         }];
         
         [self.collectionView registerClass:[XFJCarPhotosPerfectCollectionViewCell class] forCellWithReuseIdentifier:KCellIdentifier_XFJCarPhotosPerfectCollectionViewCell];

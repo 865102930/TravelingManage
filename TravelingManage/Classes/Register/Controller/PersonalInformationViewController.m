@@ -199,19 +199,69 @@
     if ([self isCorrect:self.idTextF.text] == NO) {//如果为YES就是正确的
         [MBProgressHUD showHudTipStr:@"请输入正确的身份证号码!" contentColor:HidWithColorContentBlack];
         return;
+    }else {
+        [self requestIdCardIsRegister];
     }
+//    NSDictionary *dictParaments = @{
+//                                    @"userMobile": self.phoneNum_text,
+//                                    @"idCard"    : self.idTextF.text,
+//                                    @"userName"  : self.nameTextF.text,
+//                                    };
+//    [GRNetRequestClass POST:REGISTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"注册responseObject:%@",responseObject);
+//        NSLog(@"注册dictParaments:%@",dictParaments);
+//        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+//            [MBProgressHUD showHUDMsg:@"注册成功"];
+////            LoginViewController *LoginVC = [[LoginViewController alloc] init];
+////            [self.navigationController pushViewController:LoginVC animated:YES];
+//            //登录
+//            [self requestLogin];
+//        }else{
+//            [MBProgressHUD showHUDMsg:@"该手机号已注册"];
+//        }
+//    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+//        if (error.code == NSURLErrorCancelled) return;
+//        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+//    }];
+}
+
+#pragma mark - 判断身份证是否注册过
+- (void)requestIdCardIsRegister
+{
+    NSDictionary *dictParams = @{
+                                 @"idCard":self.idTextF.text
+                                 };
+    NSLog(@"--------参数是 :%@",dictParams);
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:USERREGISTERIDCARDURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([[responseObject objectForKey:@"msg"] isEqualToString:@"repeat"]) {
+            [MBProgressHUD showHudTipStr:@"该身份证已注册" contentColor:HidWithColorContentBlack];
+        }else if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
+            [wself requestWithIdCardRegister];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            NSLog(@"--------error : %@",error);
+            [MBProgressHUD showHudTipStr:@"可能是网络错误" contentColor:HidWithColorContentBlack];
+        }
+    }];
+}
+
+#pragma Mark- 注册接口
+- (void)requestWithIdCardRegister
+{
     NSDictionary *dictParaments = @{
-                                    @"userMobile" : self.phoneNum_text,
-                                    @"idCard" : self.idTextF.text,
-                                    @"userName" : self.nameTextF.text,
+                                    @"userMobile": self.phoneNum_text,
+                                    @"idCard"    : self.idTextF.text,
+                                    @"userName"  : self.nameTextF.text,
                                     };
     [GRNetRequestClass POST:REGISTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"注册responseObject:%@",responseObject);
         NSLog(@"注册dictParaments:%@",dictParaments);
         if ([responseObject[@"msg"] isEqualToString:@"success"]) {
             [MBProgressHUD showHUDMsg:@"注册成功"];
-//            LoginViewController *LoginVC = [[LoginViewController alloc] init];
-//            [self.navigationController pushViewController:LoginVC animated:YES];
+    //            LoginViewController *LoginVC = [[LoginViewController alloc] init];
+    //            [self.navigationController pushViewController:LoginVC animated:YES];
             //登录
             [self requestLogin];
         }else{

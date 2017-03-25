@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "XFJFindAttractionsListItem.h"
 
+
 @interface XFJChooseScenerySignView : UIView
 
-@property (nonatomic, strong) NSMutableArray *scenery_array;
+@property (nonatomic, strong) NSMutableArray <XFJFindAttractionsListItem *> *scenery_array;
 @property (nonatomic, copy) void (^chooseBlockButtonWithSure)(XFJFindAttractionsListItem *);
+
 
 @end

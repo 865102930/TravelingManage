@@ -92,6 +92,13 @@
 {
     _findAttractionsListItem = findAttractionsListItem;
     self.sceneryContent_label.text = [NSString stringWithFormat:@"%@",findAttractionsListItem.attractionsName];
+    
+}
+
+- (void)setFindAttractionsListItem2:(XFJFindAttractionsListItem *)findAttractionsListItem2
+{
+    _findAttractionsListItem2 = findAttractionsListItem2;
+    [self.sceneryContent_button setImage:[UIImage originalWithImage:@"selected-g"] forState:UIControlStateNormal];
 }
 
 

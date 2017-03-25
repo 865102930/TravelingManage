@@ -383,12 +383,10 @@ static BOOL over = NO;
     __weak __typeof(self)wself = self;
     [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
-            NSLog(@"+++++++++++++获取到的团队信息查看任务是 :%@",responseObject);
             NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
             wself.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
             for (NSInteger i = 0;i < findArray.count ; i++) {
                 NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
-                NSLog(@"--=++++++++++++++++获取到的字典是 :%@",dict);
                 wself.TaskRowsItemArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
                 if (wself.TaskRowsItemArray.count == 0) {
                     [wself.view addSubview:wself.signTeamTwoView];
@@ -398,7 +396,6 @@ static BOOL over = NO;
                 }
                 NSLog(@"wself.TaskRowsItemArray-------%@",wself.TaskRowsItemArray);
             }
-            NSLog(@"===============在范围内的所有景区点数是 :%zd",wself.scenery_array.count);
             //遍历所有的任务,查看是否正在进行(签到过了或者签退过了)
             //对景点的id遍历并且存起来
             [wself.scArray removeAllObjects];
@@ -1008,26 +1005,45 @@ static BOOL over = NO;
                                     @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractions_id]
                                     };
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNOUTURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if ([[object objectForKey:@"success"] isEqual:@1]) {
+    [GRNetRequestClass POST:TEAMSIGNOUTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([[responseObject objectForKey:@"success"] isEqual:@1]) {
             //如果返回的是1,则成功,在这创建新建任务的view
             [wself.signTeamTwoView removeFromSuperview];
             [wself.signNoHotel_view removeFromSuperview];
             [wself.signNoPeople_view removeFromSuperview];
-//            [wself.view addSubview:self.task_view];
+            //            [wself.view addSubview:self.task_view];
             //这里先不要添加创建任务的弹窗(直接调用请求的任务的29个接口,判断任务是否存在)
             [wself requestWithInfoTasks];
             //只要签退成功,就按钮的状态改为完成
             NSString *str;
             wself.homeTopTaskMessageVeiw.isButton = str;
         }
-    } withFailureBlock:^(NSError *error) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"主人,您签退异常---打印后台返回的错误消息是 :%@",error);
             [MBProgressHUD showHudTipStr:@"签退失败,可能是网络问题" contentColor:HidWithColorContentBlack];
         }
-    } progress:^(float progress) {
     }];
+//    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNOUTURL withParaments:dictParaments withSuccessBlock:^(id object) {
+//        if ([[object objectForKey:@"success"] isEqual:@1]) {
+//            //如果返回的是1,则成功,在这创建新建任务的view
+//            [wself.signTeamTwoView removeFromSuperview];
+//            [wself.signNoHotel_view removeFromSuperview];
+//            [wself.signNoPeople_view removeFromSuperview];
+////            [wself.view addSubview:self.task_view];
+//            //这里先不要添加创建任务的弹窗(直接调用请求的任务的29个接口,判断任务是否存在)
+//            [wself requestWithInfoTasks];
+//            //只要签退成功,就按钮的状态改为完成
+//            NSString *str;
+//            wself.homeTopTaskMessageVeiw.isButton = str;
+//        }
+//    } withFailureBlock:^(NSError *error) {
+//        if (error) {
+//            NSLog(@"主人,您签退异常---打印后台返回的错误消息是 :%@",error);
+//            [MBProgressHUD showHudTipStr:@"签退失败,可能是网络问题" contentColor:HidWithColorContentBlack];
+//        }
+//    } progress:^(float progress) {
+//    }];
 }
 
 #pragma mark - 调用29个接口,获取任务信息
@@ -1076,7 +1092,7 @@ static BOOL over = NO;
                 //是原来的样式
                 [wself.view addSubview:wself.signTeamTwoView];
                 wself.signTeamTwoView.scenery_array2 = wself.TaskRowsItemArray;
-                dispatch_async(dispatch_get_main_queue(), ^{
+//                dispatch_async(dispatch_get_main_queue(), ^{
                     if (wself.TaskRowsItemArray.count == 0) {
                         NSString *str;
                         wself.homeTopTaskMessageVeiw.isButton1 = str;
@@ -1084,7 +1100,7 @@ static BOOL over = NO;
                         NSString *str;
                         wself.homeTopTaskMessageVeiw.isButton = str;
                     }
-                });
+//                });
             }
             for (NSInteger i = 0; i < wself.TaskRowsItemArray.count; i++) {
                 NSInteger attractionsId = wself.TaskRowsItemArray[i].attractionsId;
@@ -1104,7 +1120,7 @@ static BOOL over = NO;
                 //是原来的样式
                 [wself.view addSubview:wself.signTeamTwoView];
                 wself.signTeamTwoView.hotel_array2 = wself.TaskRowsItemArray;
-                dispatch_async(dispatch_get_main_queue(), ^{
+//                dispatch_async(dispatch_get_main_queue(), ^{
                     if (wself.TaskRowsItemArray.count == 0) {
                         NSString *str;
                         wself.homeTopTaskMessageVeiw.isButton1 = str;
@@ -1112,7 +1128,7 @@ static BOOL over = NO;
                         NSString *str;
                         wself.homeTopTaskMessageVeiw.isButton = str;
                     }
-                });
+//                });
                 
             }
         }
@@ -1158,11 +1174,11 @@ static BOOL over = NO;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
             [wself setUpUserTimeWithUseApp:NO];
-            [MBProgressHUD showHudTipStr:@"您已经签到成功!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"签到成功!" contentColor:HidWithColorContentBlack];
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
-            [MBProgressHUD showHudTipStr:@"网络问题,签到失败" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"网络问题,签到失败!" contentColor:HidWithColorContentBlack];
         }
     } progress:^(float progress) {
         
@@ -1203,13 +1219,13 @@ static BOOL over = NO;
                 //这里调用获取创建任务的当前时间
                 [wself setUpUserTimeWithUseApp:NO];
                 [wself setUpSignNoWithPeople];
-                [MBProgressHUD showHudTipStr:@"您已经签到成功!" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"签到成功!" contentColor:HidWithColorContentBlack];
             }else {
-                [MBProgressHUD showHudTipStr:@"您重复签到" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"重复签到!" contentColor:HidWithColorContentBlack];
             }
         } withFailureBlock:^(NSError *error) {
             if (error) {
-                [MBProgressHUD showHudTipStr:@"网络问题,签到失败" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"网络问题,签到失败!" contentColor:HidWithColorContentBlack];
             }
         } progress:^(float progress) {
             
@@ -1751,16 +1767,11 @@ static BOOL over = NO;
             self.FindAttractionsListItem = findAttractionsListItem;
         }
     }
-    
     if (self.isContains) {//如果是yes就创建
         self.isProjectItem == NO ? @"" : [self.view addSubview:self.signTeamTwoView];//[self.view addSubview:self.task_view]
-        NSLog(@"----最终加入数组中为0的值是1 :%zd",self.scenery_array.count);
         self.chooseScenerySignView.scenery_array = self.scenery_array;
         self.chooseHotelSignView.hotel_array = self.hotel_array;
-        NSLog(@"++++最终加入数组中为0的值是2 :%zd",self.hotel_array.count);
     }
-    NSLog(@"------------添加的大头针数组是 : %@",self.annotationArray);
-    NSLog(@"self.scenery_array的值是 :%zd+++++++self.hotel_array的值是 :%zd",self.scenery_array.count,self.hotel_array.count);
     self.isFindTeamList == YES ? @"" : [self requestLatelyControl];
 }
 

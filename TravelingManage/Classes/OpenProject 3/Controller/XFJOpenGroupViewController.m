@@ -459,7 +459,7 @@
                                     @"teamVehicleImages":[NSString stringWithFormat:@"%@",self.root],//车辆图片集合用,分割
                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]//导游id
                                     };
-    NSLog(@"参数集合-----%@----%@---%@---%zd---%@----%@---%@----%@----%zd----%zd---%@---%@---%@---%@---%@",@7,self.conventionMessage_view.groupName_text,self.conventionMessage_view.groupTime_text,traveName,self.strNum,self.guestSourceInformation_view.selectedProvince,self.guestSourceInformation_view.selectedCity,self.guestSourceInformation_view.selectedArea,paramName1,teamNature,self.teamInformation_view.teamPeople_number,self.teamInformation_view.teamDay,@7,self.voucherPicRoot,self.root);
+    NSLog(@"++++++++++++++开团传递的参数是 :%@",dictParaments);
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:MODIFYTEAMINFOURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {

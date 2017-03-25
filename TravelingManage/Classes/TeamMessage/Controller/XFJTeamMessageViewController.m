@@ -80,7 +80,7 @@
     
     [self.view addSubview:self.scroll_view];
     [self.scroll_view addSubview:self.backGround_view];
-    [self.scroll_view addSubview:self.pleasePerfectView];
+//    [self.scroll_view addSubview:self.pleasePerfectView];
     [self.scroll_view addSubview:self.generalMessageView];
     [self.scroll_view addSubview:self.otherMessagePerfectView];
     [self.backGround_view addSubview:self.carPhotosWithPerfectView];
@@ -357,7 +357,7 @@
 - (UITableView *)attrList_tableView
 {
     if (_attrList_tableView == nil) {
-        _attrList_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 293, SCREEN_WIDTH, 0.5) style:UITableViewStylePlain];
+        _attrList_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 243, SCREEN_WIDTH, 0.5) style:UITableViewStylePlain];
         _attrList_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _attrList_tableView.backgroundColor = [UIColor whiteColor];
         _attrList_tableView.delegate = self;
@@ -454,7 +454,8 @@
         }
         _scroll_view.backgroundColor = kColoreeee;
         _scroll_view.showsHorizontalScrollIndicator = NO;
-        _scroll_view.scrollEnabled = YES;
+//        _scroll_view.scrollEnabled = YES;
+//        _scroll_view.pagingEnabled = YES;
     }
     return _scroll_view;
 }
@@ -471,7 +472,7 @@
 - (XFJGeneralMessageView *)generalMessageView
 {
     if (_generalMessageView == nil) {
-        _generalMessageView = [[XFJGeneralMessageView alloc] initWithFrame:CGRectMake(0, 73, SCREEN_WIDTH, 220)];
+        _generalMessageView = [[XFJGeneralMessageView alloc] initWithFrame:CGRectMake(0, 1, SCREEN_WIDTH, 220)];
         _generalMessageView.backgroundColor = [UIColor whiteColor];
     }
     return _generalMessageView;
@@ -480,7 +481,7 @@
 - (XFJOtherMessagePerfectView *)otherMessagePerfectView
 {
     if (_otherMessagePerfectView == nil) {
-        _otherMessagePerfectView = [[XFJOtherMessagePerfectView alloc] initWithFrame:CGRectMake(0, 293, SCREEN_WIDTH, 100)];
+        _otherMessagePerfectView = [[XFJOtherMessagePerfectView alloc] initWithFrame:CGRectMake(0, 221, SCREEN_WIDTH, 50)];
         _otherMessagePerfectView.backgroundColor = [UIColor whiteColor];
     }
     return _otherMessagePerfectView;
@@ -763,7 +764,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.attrList_tableView.frame = CGRectMake(0, 323, SCREEN_WIDTH, 80 * self.findCustomAttrListItemArray.count);
+    self.attrList_tableView.frame = CGRectMake(0, 263, SCREEN_WIDTH, 80 * self.findCustomAttrListItemArray.count);
+    self.scroll_view.contentSize = CGSizeMake(0 ,self.findCustomAttrListItemArray.count * 240);
+    [self.teamMessageBottomView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.view.mas_left);
+        make.right.mas_equalTo(self.view.mas_right);
+        make.height.mas_equalTo(self.findCustomAttrListItemArray.count * 100);
+        make.top.mas_equalTo(self.upPhotosOpenTeamMessageView.mas_bottom);
+    }];
     NSInteger i = indexPath.row;
     NSString *ty_pe = self.attrTypeArray[i];
     if ([ty_pe intValue] == 0) {

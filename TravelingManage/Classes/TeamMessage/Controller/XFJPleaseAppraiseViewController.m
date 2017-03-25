@@ -187,7 +187,7 @@
     if (_assessmentScroll_view == nil) {
         _assessmentScroll_view = [[UIScrollView alloc] init];
         _assessmentScroll_view.frame = CGRectMake(0, 0, self.view.bounds.size.width, 1.2 * self.view.XFJ_Height);
-        _assessmentScroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 1.5);
+        _assessmentScroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 1.3);
         _assessmentScroll_view.backgroundColor = kColoreeee;
         _assessmentScroll_view.showsHorizontalScrollIndicator = NO;
         _assessmentScroll_view.scrollEnabled = YES;
@@ -275,6 +275,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.signAppraise_tableView.frame = CGRectMake(0, 225.0, SCREEN_WIDTH, [self.TaskRowsItemArray count] * 180);
+    self.assessmentScroll_view.contentSize = CGSizeMake(0, [self.TaskRowsItemArray count] * 280);
     return 180.0;
 }
 

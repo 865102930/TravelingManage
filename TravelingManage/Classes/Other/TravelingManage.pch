@@ -78,7 +78,6 @@
 
 //#define BASEURL @"http://192.168.0.101:80/teammgmtback"
 
-
 //注册接口
 #define REGISTURL (BASEURL@"/app/user/userRegister")
 //获取注册验证码和登录验证码
@@ -155,6 +154,11 @@
 #define FINISHIMGURL (BASEURL@"/app/teamTask/finishImg")
 //根据景区获取管理员
 #define FINDATTRACUSERLISTURL (BASEURL@"/app/attractions/findAttracUserList")
+//查询电话号码是否已经存在
+#define USERREGISTERURL (BASEURL@"/app/user/userRegister")
+//查询身份证是否已经存在
+#define USERREGISTERIDCARDURL (BASEURL@"/app/user/queryID")
+
 
 
 

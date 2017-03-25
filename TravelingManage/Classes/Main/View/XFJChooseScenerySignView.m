@@ -46,7 +46,7 @@
     return self;
 }
 
-- (void)setScenery_array:(NSMutableArray *)scenery_array
+- (void)setScenery_array:(NSMutableArray <XFJFindAttractionsListItem *>*)scenery_array
 {
     _scenery_array = scenery_array;
     [self.chooseScenerySign_tableView reloadData];
