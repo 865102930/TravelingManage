@@ -15,6 +15,10 @@
 //酒店
 @property (nonatomic, strong) NSMutableArray *hotel_array;
 
+@property (nonatomic, strong) NSMutableArray *scenery_array2;
+
+@property (nonatomic, strong) NSMutableArray *hotel_array2;
+
 @property (nonatomic, copy) void (^scenerySign_Block)();
 
 @property (nonatomic, copy) void (^hotelSign_block)();

@@ -169,7 +169,7 @@ static BOOL over = NO;
     
     
     //这是添加的公告(如果开始进来的时候没有任务,就显示公告,后面则显示新建任务的标题栏)
-    self.isProjectItem == NO ? [self.view addSubview:self.announcementView] : [self.view addSubview:self.homeTopTaskMessageVeiw];
+    self.isProjectItem == NO ? [self.view addSubview:self.announcementView] : [self addHeaderView];
     
 #warning 当用户一开始进入app的时候,由于不存在任务,那么就显示这个新建任务,如果有任务了,那么此界面就不存在
     [self.maskView1 addSubview:self.leftView];
@@ -193,6 +193,13 @@ static BOOL over = NO;
     keyboardManager.keyboardDistanceFromTextField = 50;
     
     [self.thread start];
+}
+
+#pragma mark - 添加头部视图
+- (void)addHeaderView
+{
+    [self.announcementView removeFromSuperview];
+    [self.view addSubview:self.homeTopTaskMessageVeiw];
 }
 
 - (NSThread *)thread
@@ -344,6 +351,7 @@ static BOOL over = NO;
 #pragma mark - 最近操作的团队
 - (void)requestLatelyControl
 {
+    [self.announcementView removeFromSuperview];
     NSDictionary *dictParams = @{
                                  @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]//这个数据暂时写死
                                  };
@@ -368,7 +376,6 @@ static BOOL over = NO;
 #pragma mark - 刚进来的时候判断下面的状态
 - (void)requestInfoTasksWithFindNewTeamInfo_Id:(NSUInteger)findNewTeamInfo_Id
 {
-    NSLog(@"wself.scArray的值是 :%zd--------wself.hotArray的值是 :%zd--------self.scenery_array的值是 :%zd+++++++self.hotel_array的值是 :%zd",self.scArray.count,self.hotArray.count,self.scenery_array.count,self.hotel_array.count);
     NSDictionary *dictParaments = @{
                                     @"id":[NSString stringWithFormat:@"%zd",findNewTeamInfo_Id]
                                     };
@@ -379,18 +386,23 @@ static BOOL over = NO;
             NSLog(@"+++++++++++++获取到的团队信息查看任务是 :%@",responseObject);
             NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
             wself.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
-            
             for (NSInteger i = 0;i < findArray.count ; i++) {
                 NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
                 NSLog(@"--=++++++++++++++++获取到的字典是 :%@",dict);
                 wself.TaskRowsItemArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
+                if (wself.TaskRowsItemArray.count == 0) {
+                    [wself.view addSubview:wself.signTeamTwoView];
+                    NSString *str1;
+                    wself.homeTopTaskMessageVeiw.isButton1 = str1;
+                    return ;
+                }
                 NSLog(@"wself.TaskRowsItemArray-------%@",wself.TaskRowsItemArray);
             }
             NSLog(@"===============在范围内的所有景区点数是 :%zd",wself.scenery_array.count);
             //遍历所有的任务,查看是否正在进行(签到过了或者签退过了)
             //对景点的id遍历并且存起来
-//            [wself.scArray removeAllObjects];
-//            [wself.hotArray removeAllObjects];
+            [wself.scArray removeAllObjects];
+            [wself.hotArray removeAllObjects];
             for (NSInteger i = 0; i < wself.scenery_array.count; i++) {
                 NSInteger findAttractions_id = wself.scenery_array[i].findAttractions_id;
                 [wself.scArray addObject:[NSString stringWithFormat:@"%zd",findAttractions_id]];
@@ -404,16 +416,17 @@ static BOOL over = NO;
                 }];
             }
             if (wself.scArray.count == 0) {
-                NSString *str;
-                wself.homeTopTaskMessageVeiw.isButton = str;
                 [wself.view addSubview:wself.signTeamTwoView];
+                NSString *str1;
+                wself.homeTopTaskMessageVeiw.isButton = str1;
                 //直接置灰
                 wself.signTeamTwoView.scenery_array = wself.TaskRowsItemArray;
             }else {
                 //是原来的样式
+                [wself.view addSubview:wself.signTeamTwoView];
                 NSString *str;
                 wself.homeTopTaskMessageVeiw.isButton = str;
-                [wself.view addSubview:wself.signTeamTwoView];
+                wself.signTeamTwoView.scenery_array2 = wself.TaskRowsItemArray;
             }
             //对酒店中的景点遍历并且存起来
             for (NSInteger i = 0; i < wself.hotel_array.count; i++) {
@@ -430,16 +443,17 @@ static BOOL over = NO;
                 }];
             }
             if (wself.hotArray.count == 0) {
-                NSString *str;
-                wself.homeTopTaskMessageVeiw.isButton = str;
                 [wself.view addSubview:wself.signTeamTwoView];
+                NSString *str2;
+                wself.homeTopTaskMessageVeiw.isButton = str2;
                 //直接置灰
                 wself.signTeamTwoView.hotel_array = wself.TaskRowsItemArray;
             }else {
                 //是原来的样式
+                [wself.view addSubview:wself.signTeamTwoView];
                 NSString *str;
                 wself.homeTopTaskMessageVeiw.isButton = str;
-                [wself.view addSubview:wself.signTeamTwoView];
+                wself.signTeamTwoView.hotel_array2 = wself.TaskRowsItemArray;
             }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1022,21 +1036,15 @@ static BOOL over = NO;
     NSDictionary *dictParaments = @{
                                     @"id":self.isTeamId == YES ? [NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"],
                                     };
-    NSLog(@"++++++++++++调用29个接口,获取任务信息的参数是:%@",dictParaments);
     __weak __typeof(self)wself = self;
     [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
-            NSLog(@"+++++++++++++获取到的团队信息查看任务是 :%@",responseObject);
             NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
             wself.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
-            
             for (NSInteger i = 0;i < findArray.count ; i++) {
                 NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
-                NSLog(@"--=++++++++++++++++获取到的字典是 :%@",dict);
                 wself.TaskRowsItemArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
-                NSLog(@"wself.TaskRowsItemArray-------%@",wself.TaskRowsItemArray);
             }
-            NSLog(@"===============在范围内的所有景区点数是 :%zd",wself.scenery_array.count);
             //遍历所有的任务,查看是否正在进行(签到过了或者签退过了)
             //对景点的id遍历并且存起来
             [wself.scArray removeAllObjects];
@@ -1059,16 +1067,24 @@ static BOOL over = NO;
                 }];
             }
             if (wself.scArray.count == 0) {
-                NSString *str;
-                wself.homeTopTaskMessageVeiw.isButton = str;
                 [wself.view addSubview:wself.signTeamTwoView];
+                NSString *str1;
+                wself.homeTopTaskMessageVeiw.isButton = str1;
                 //直接置灰
                 wself.signTeamTwoView.scenery_array = wself.TaskRowsItemArray;
             }else {
                 //是原来的样式
-                NSString *str;
-                wself.homeTopTaskMessageVeiw.isButton = str;
                 [wself.view addSubview:wself.signTeamTwoView];
+                wself.signTeamTwoView.scenery_array2 = wself.TaskRowsItemArray;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (wself.TaskRowsItemArray.count == 0) {
+                        NSString *str;
+                        wself.homeTopTaskMessageVeiw.isButton1 = str;
+                    }else {
+                        NSString *str;
+                        wself.homeTopTaskMessageVeiw.isButton = str;
+                    }
+                });
             }
             for (NSInteger i = 0; i < wself.TaskRowsItemArray.count; i++) {
                 NSInteger attractionsId = wself.TaskRowsItemArray[i].attractionsId;
@@ -1079,16 +1095,25 @@ static BOOL over = NO;
                 }];
             }
             if (wself.hotArray.count == 0) {
-                NSString *str;
-                wself.homeTopTaskMessageVeiw.isButton = str;
                 [wself.view addSubview:wself.signTeamTwoView];
+                NSString *str2;
+                wself.homeTopTaskMessageVeiw.isButton = str2;
                 //直接置灰
                 wself.signTeamTwoView.hotel_array = wself.TaskRowsItemArray;
             }else {
                 //是原来的样式
-                NSString *str;
-                wself.homeTopTaskMessageVeiw.isButton = str;
                 [wself.view addSubview:wself.signTeamTwoView];
+                wself.signTeamTwoView.hotel_array2 = wself.TaskRowsItemArray;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (wself.TaskRowsItemArray.count == 0) {
+                        NSString *str;
+                        wself.homeTopTaskMessageVeiw.isButton1 = str;
+                    }else {
+                        NSString *str;
+                        wself.homeTopTaskMessageVeiw.isButton = str;
+                    }
+                });
+                
             }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1736,7 +1761,7 @@ static BOOL over = NO;
     }
     NSLog(@"------------添加的大头针数组是 : %@",self.annotationArray);
     NSLog(@"self.scenery_array的值是 :%zd+++++++self.hotel_array的值是 :%zd",self.scenery_array.count,self.hotel_array.count);
-    self.isFindTeamList == YES ? [self.view addSubview:self.announcementView] : [self requestLatelyControl];
+    self.isFindTeamList == YES ? @"" : [self requestLatelyControl];
 }
 
 #pragma mark - 随时更新用户的位子

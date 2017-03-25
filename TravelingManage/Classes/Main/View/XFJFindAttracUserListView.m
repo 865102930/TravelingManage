@@ -135,7 +135,6 @@
         [cell setChecked:YES];
     }
     return cell;
-    
 }
 
 #pragma mark - cell得到点击事件

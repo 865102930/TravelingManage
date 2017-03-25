@@ -185,6 +185,24 @@
     [self.hotelSign_button setImage:[UIImage originalWithImage:@"n-sign"] forState:UIControlStateNormal];
 }
 
+#pragma mark - 正常颜色
+- (void)setHotel_array2:(NSMutableArray *)hotel_array2
+{
+    _hotel_array2 = hotel_array2;
+    self.hotelSign_view.backgroundColor = [UIColor whiteColor];
+    self.hotelSign_label.textColor = RedColor;
+    self.hotelSign_button.enabled = YES;
+    [self.hotelSign_button setImage:[UIImage originalWithImage:@"sign"] forState:UIControlStateNormal];
+}
+
+- (void)setScenery_array2:(NSMutableArray *)scenery_array2
+{
+    _scenery_array2 = scenery_array2;
+    self.scenerySign_view.backgroundColor = [UIColor whiteColor];
+    self.scenerySign_label.textColor = RedColor;
+    self.scenerySign_button.enabled = YES;
+    [self.scenerySign_button setImage:[UIImage originalWithImage:@"sign"] forState:UIControlStateNormal];
+}
 
 
 @end
