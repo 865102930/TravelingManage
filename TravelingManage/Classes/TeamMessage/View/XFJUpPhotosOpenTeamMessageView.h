@@ -27,4 +27,6 @@
 
 @property (nonatomic, assign) NSInteger maxImageCount;
 
+@property (nonatomic, strong) NSMutableArray *imageView_array;
+
 @end

@@ -33,6 +33,8 @@
 #import "XFJCheckBoxView.h"
 #import "XFJMineTeamViewController.h"
 #import "XFJSignMessageViewController.h"
+#import "XFJFindTeamCarItem.h"
+#import "XFJFindTeamCarImageItem.h"
 
 
 @interface XFJTeamMessageViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJCarPhotosWithPerfectViewDelegate,XFJUpPhotosOpenTeamMessageViewDelegate,UITableViewDelegate,UITableViewDataSource>
@@ -67,6 +69,9 @@
 //这个用来装所有的自定义信息的集合
 @property (nonatomic, strong) NSMutableArray *allAttribute_array;
 @property (nonatomic, strong) NSString *AttributeStr;
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamCarItem *> *findTeamCarItem_array;
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamCarImageItem *> *findTeamCarImageItem_array;
+@property (nonatomic, strong) NSMutableArray *image_array;
 
 
 @end
@@ -96,6 +101,12 @@
     
     //请求到的自定页面数据
     [self requestTeamMessage];
+    
+    //获取团队的车牌号
+    [self requestCertificateImgWithTeamId];
+    
+    //获取车牌照片
+    [self requestCarImageViewWithTeamId];
     
     //请求自定义字段数据
     [self requestFindCustomAttrListMessage:self.findTeamInfoByState_Id];
@@ -164,6 +175,30 @@
         _allAttribute_array = [NSMutableArray array];
     }
     return _allAttribute_array;
+}
+
+- (NSMutableArray <XFJFindTeamCarItem *> *)findTeamCarItem_array
+{
+    if (_findTeamCarItem_array == nil) {
+        _findTeamCarItem_array = [NSMutableArray array];
+    }
+    return _findTeamCarItem_array;
+}
+
+- (NSMutableArray *)image_array
+{
+    if (_image_array == nil) {
+        _image_array = [NSMutableArray array];
+    }
+    return _image_array;
+}
+
+- (NSMutableArray <XFJFindTeamCarImageItem *> *)findTeamCarImageItem_array
+{
+    if (_findTeamCarImageItem_array == nil) {
+        _findTeamCarImageItem_array = [NSMutableArray array];
+    }
+    return _findTeamCarImageItem_array;
 }
 
 #pragma mark - 图片上传车辆照片
@@ -391,12 +426,46 @@
     [GRNetRequestClass POST:FINDTEAMINFOTASKSURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
             NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
-            wself.findTeamTasksItemArray = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
-            wself.generalMessageView.findTeamTasksItem = wself.findTeamTasksItemArray;
+            wself.generalMessageView.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
+            [wself.image_array addObject:wself.generalMessageView.findTeamTasksItem[0].certificateImg];
+            wself.upPhotosOpenTeamMessageView.imageView_array = wself.image_array;
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"++++++++获取团队信息资料失败的是 :%@",error);
+        }
+    }];
+}
+
+#pragma mark - 凭证图片查询
+- (void)requestCertificateImgWithTeamId
+{
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDTEAMVEHICLESURL params:@{@"teamId":[NSString stringWithFormat:@"%zd",self.findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++获取到的车牌的信息是 :%@",responseObject);
+            wself.generalMessageView.findTeamCarItem = [XFJFindTeamCarItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"网络君错误!" contentColor:HidWithColorContentBlack];
+        }
+    }];
+}
+
+#pragma mark - 车辆图片查询
+- (void)requestCarImageViewWithTeamId
+{
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:TEAMVEHICLEIMAGESURL params:@{@"teamId":[NSString stringWithFormat:@"%zd",self.findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++获取到的车牌的信息是 :%@",responseObject);
+            wself.findTeamCarImageItem_array = [XFJFindTeamCarImageItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]];
+            wself.carPhotosWithPerfectView.carImageView_array = wself.findTeamCarImageItem_array;
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"网络君错误!" contentColor:HidWithColorContentBlack];
         }
     }];
 }
@@ -452,7 +521,7 @@
         }else {
             _scroll_view.contentSize = CGSizeMake(0, self.view.XFJ_Height * 2);
         }
-        _scroll_view.backgroundColor = kColoreeee;
+        _scroll_view.backgroundColor = [UIColor whiteColor];
         _scroll_view.showsHorizontalScrollIndicator = NO;
 //        _scroll_view.scrollEnabled = YES;
 //        _scroll_view.pagingEnabled = YES;
@@ -595,9 +664,6 @@
                 [_dataArray removeAllObjects];
                 [_dataArray addObjectsFromArray:array];
                 weakself.upPhotosOpenTeamMessageView.dataArr = _dataArray;
-                //                if (_dataArr.count <= 4) {
-                //                    self.uploadPhotos_view.frame = CGRectMake(0, 728, SCREEN_WIDTH, 200);
-                //                }
             });
         };
         

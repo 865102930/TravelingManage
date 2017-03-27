@@ -219,8 +219,39 @@
     [self.collectionView reloadData];
 }
 
+
 - (void)setMaxImageCount:(NSInteger)maxImageCount{
     _maxImageCount = maxImageCount;
+}
+
+- (void)setCarImageView_array:(NSMutableArray <XFJFindTeamCarImageItem *> *)carImageView_array
+{
+    _carImageView_array = carImageView_array;
+    [self downloadCarImagesWithImageViewArray:carImageView_array];
+}
+
+//开启子线程下载图片
+- (void)downloadCarImagesWithImageViewArray:(NSMutableArray <XFJFindTeamCarImageItem *> *)picStrs
+{
+    _dataArr = [NSMutableArray array];
+    dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    __weak typeof(self) weakself = self;
+    dispatch_async(queue, ^{
+        __strong typeof(weakself) strongself = weakself;
+        for (XFJFindTeamCarImageItem *imageUrl in picStrs ) {
+            NSString *url = [NSString stringWithFormat:@"%@/%@",IMAGEVIEWBASEURL,imageUrl.imagePath];
+            NSData *resultData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+            UIImage *img = [UIImage imageWithData:resultData];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if(img){
+                    [strongself.dataArr addObject:img];
+                }
+                self.maxImageCount = 6;
+                [weakself.collectionView reloadData];
+            });
+        }
+        
+    });
 }
 
 

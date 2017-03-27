@@ -87,8 +87,6 @@
     if (self.addCellBlock) {
         self.addCellBlock(buttonTag.tag,self.carName_field.text);
     }
-//    [self.carName_field setText:@""];
-    
 }
 
 

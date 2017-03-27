@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "XFJFindTeamTasksItem.h"
+#import "XFJFindTeamCarItem.h"
 
 @interface XFJGeneralMessageView : UIView
 
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *findTeamTasksItem;
+
+//提供一个属性接收团队id
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamCarItem *> *findTeamCarItem;
 
 @end

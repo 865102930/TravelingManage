@@ -138,6 +138,7 @@
 #pragma mark - cell的个数
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    NSLog(@"-----------cell的个数是 :%zd",self.dataArr.count);
     if (self.dataArr.count < 1) {
         return self.dataArr.count + 1;
     }else {
@@ -152,6 +153,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     XFJTeamMessagePerfectCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:KCellIdentifier_XFJTeamMessagePerfectCollectionViewCell forIndexPath:indexPath];
+    NSLog(@"-----------cell的个数是2 :%zd",self.dataArr.count);
     if(self.dataArr.count == 0){
         cell.photoImg = nil;
     }else{
@@ -225,6 +227,37 @@
 - (void)setMaxImageCount:(NSInteger)maxImageCount
 {
     _maxImageCount = maxImageCount;
+}
+
+- (void)setImageView_array:(NSMutableArray *)imageView_array
+{
+    _imageView_array = imageView_array;
+    [self downloadImagesWithImageViewArray:imageView_array];
+}
+
+//开启子线程下载图片
+- (void)downloadImagesWithImageViewArray:(NSMutableArray *)picStrs
+{
+    _dataArr = [NSMutableArray array];
+    dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    __weak typeof(self) weakself = self;
+    dispatch_async(queue, ^{
+        __strong typeof(weakself) strongself = weakself;
+        for (NSString *imageUrl in picStrs ) {
+            NSString *url = [NSString stringWithFormat:@"%@/%@",IMAGEVIEWBASEURL,imageUrl];
+            NSData *resultData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+            UIImage *img = [UIImage imageWithData:resultData];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if(img){
+                    [strongself.dataArr addObject:img];
+                }
+                self.maxImageCount = 1;
+                //放在这个位置,有几张图片就会刷新几次页面
+                [weakself.collectionView reloadData];
+            });
+        }
+        
+    });
 }
 
 

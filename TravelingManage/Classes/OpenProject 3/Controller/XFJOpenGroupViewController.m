@@ -435,6 +435,7 @@
 #pragma mark - 开始任务
 - (void)startTaskButtonClick
 {
+    NSLog(@"+++++++++++++++++接收到的车牌号码是:%@",self.strNum);
     NSNumber *traveName = [NSNumber numberWithInteger:self.conventionMessage_view.travelName];
     NSNumber *paramName1 = [NSNumber numberWithInteger:self.guestSourceInformation_view.paramName1];
     NSNumber *teamNature = [NSNumber numberWithInteger:self.teamInformation_view.teamNature];
@@ -463,6 +464,7 @@
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:MODIFYTEAMINFOURL withParaments:dictParaments withSuccessBlock:^(id object) {
         if (object) {
+            [MBProgressHUD hidenHud];
             NSLog(@"+++++======---------团队创建成功,成功信息是:%@",object);
             NSDictionary *dict = [object objectForKey:@"object"];
             self.dict1 = [dict objectForKey:@"id"];
@@ -477,10 +479,6 @@
             [userDefaults setObject:[NSString stringWithFormat:@"%@",wself.teamInformation_view.teamPeople_number] forKey:@"TEAMPEOPLENUMBER"];
             [userDefaults setObject:[NSString stringWithFormat:@"%@",self.dict1]forKey:@"TEAMID"];
             [userDefaults synchronize];
-            //将值传到home控制器中
-            //            if (wself.signViewBlock) {
-            //                wself.signViewBlock(wself.teamInformation_view.teamPeople_number,self.dict1);
-            //            }
             homeController.isProjectItem = YES;
             homeController.isFindTeamList = YES;
             [wself presentViewController:navVC animated:YES completion:nil];
@@ -610,7 +608,6 @@
         ipc.delegate = self;
         [self presentViewController:ipc animated:YES completion:nil];
     } else {
-        //        [MBProgressHUD showHUDMsg: @"请打开允许访问相机权限"];
         NSLog(@"请打开允许访问相机权限");
     }
 }
@@ -622,7 +619,6 @@
         
         [self presentViewController:imagePickerVc animated:YES completion:nil];
     }else{
-        //        [MBProgressHUD showHUDMsg: @"请打开允许访问相册权限" ];
     }
 }
 
@@ -697,8 +693,8 @@
             }
         };
         cell.carNumberBlock = ^(NSString *carNum) {
-            NSLog(@"接收到的车牌号码是:%@",carNum);
             weakself.strNum = carNum;
+            NSLog(@"接收到的车牌号码是:%@",carNum);
         };
         return cell;
     }else {
@@ -752,7 +748,6 @@
     self.carNumber_tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, (self.addArray.count + 1) * 45);
     self.backGroundView.frame = CGRectMake(0, 210 + (self.addArray.count + 1) * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
     [self.carNumber_tableView insertRowsAtIndexPaths:self.addArray withRowAnimation:UITableViewRowAnimationLeft];
-//    [self.carNumber_tableView reloadData];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

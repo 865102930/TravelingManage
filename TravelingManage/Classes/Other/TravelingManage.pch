@@ -74,9 +74,13 @@
 #define kColorE0E0 [UIColor colorWithHexString:@"0xE0E0E0"]
 #define kColor0000 [UIColor colorWithHexString:@"0x000002"]
 
+//基本的 URL
 #define BASEURL @"http://118.178.224.151/teammgmtback"
 
-//#define BASEURL @"http://192.168.0.101:80/teammgmtback"
+//下载图片的URL
+#define IMAGEVIEWBASEURL @"http://118.178.224.151/data"
+
+//#define BASEURL @"http://192.168.0.180:80/teammgmtback"
 
 //注册接口
 #define REGISTURL (BASEURL@"/app/user/userRegister")
@@ -158,6 +162,10 @@
 #define USERREGISTERURL (BASEURL@"/app/user/userRegister")
 //查询身份证是否已经存在
 #define USERREGISTERIDCARDURL (BASEURL@"/app/user/queryID")
+//团队车牌查询
+#define FINDTEAMVEHICLESURL (BASEURL@"/app/teamInfo/findTeamVehicles")
+//车辆图片查询
+#define TEAMVEHICLEIMAGESURL (BASEURL@"/app/teamTask/teamVehicleImages")
 
 
 

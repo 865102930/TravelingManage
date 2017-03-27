@@ -697,6 +697,7 @@ static BOOL over = NO;
             //将数组转化为字符串
             wself.allUserStr = [wself.userArray_id componentsJoinedByString:@","];
             [wself hotelSignButtonWithPeopleAllUserId:wself.allUserStr];
+            wself.isChooseSign = NO;
         }else {
             //遍历所有的管理员,取出选择的管理员id
             //移除之前的管理员id
@@ -832,7 +833,7 @@ static BOOL over = NO;
 - (XFJSignTeamTwoView *)signTeamTwoView
 {
     if (_signTeamTwoView == nil) {
-        _signTeamTwoView = [[XFJSignTeamTwoView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 98.0)];
+        _signTeamTwoView = [[XFJSignTeamTwoView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 76.0, SCREEN_WIDTH, 76.0)];
         _signTeamTwoView.backgroundColor = [UIColor whiteColor];
     }
     return _signTeamTwoView;

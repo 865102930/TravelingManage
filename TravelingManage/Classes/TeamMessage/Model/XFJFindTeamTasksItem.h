@@ -44,10 +44,11 @@
 @property (nonatomic, strong) NSString *vehicleNo;
 //景区名称
 @property (nonatomic, strong) NSString *attractionsName;
-
 //添加的图片
 @property (nonatomic, strong) UIImage *image_view;
 //任务数组
 @property (nonatomic, strong) NSArray <TasksItem * >*tasks;
+//团队凭证图片
+@property (nonatomic, strong) NSString *certificateImg;
 
 @end

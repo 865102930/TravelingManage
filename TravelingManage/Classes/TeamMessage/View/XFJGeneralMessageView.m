@@ -166,7 +166,7 @@
 {
     if (_line_view == nil) {
         _line_view = [[UIView alloc] init];
-        _line_view.backgroundColor = kColoreeee;
+        _line_view.backgroundColor = [UIColor whiteColor];
     }
     return _line_view;
 }
@@ -388,6 +388,13 @@
     return _outTeamTimeContent_label;
 }
 
+- (void)setFindTeamCarItem:(NSMutableArray<XFJFindTeamCarItem *> *)findTeamCarItem
+{
+    _findTeamCarItem = findTeamCarItem;
+    //车牌号
+    self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",findTeamCarItem[0].vehicleNo];
+}
+
 - (void)setFindTeamTasksItem:(NSMutableArray<XFJFindTeamTasksItem *> *)findTeamTasksItem
 {
     _findTeamTasksItem = findTeamTasksItem;
@@ -395,8 +402,6 @@
     self.teamNumberContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTasksItem[0].teamNo];
     //旅行社名称
      self.traveingNameContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].travelAgencyName];
-    //车牌号
-    self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].vehicleNo];
     //客源地
     self.whereAreFromContent_label.text = [NSString stringWithFormat:@"%@%@%@",findTeamTasksItem[0].province,findTeamTasksItem[0].city,findTeamTasksItem[0].area];
     //目的属性
@@ -412,6 +417,7 @@
     NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
     self.outTeamTimeContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
 }
+
 
 
 

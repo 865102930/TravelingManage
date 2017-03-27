@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XFJFindTeamCarImageItem.h"
 
 @class XFJCarPhotosWithPerfectView;
 @protocol XFJCarPhotosWithPerfectViewDelegate  <NSObject>
@@ -25,5 +26,7 @@
 @property (nonatomic, weak) id <XFJCarPhotosWithPerfectViewDelegate> delegate;
 
 @property (nonatomic, strong) NSIndexPath *selectIndexPath;
+
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamCarImageItem *> *carImageView_array;
 
 @end
