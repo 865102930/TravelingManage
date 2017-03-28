@@ -41,6 +41,11 @@
                 wself.chooseBlockButtonWithSure(wself.findAttractionsListItem);
             }
         };
+        self.chooseHotelFooterView.cancelChoose_buttonClickBlock = ^() {
+            if (wself.chooseBlockButtonWithCancel) {
+                wself.chooseBlockButtonWithCancel();
+            }
+        };
     }
     return self;
 }

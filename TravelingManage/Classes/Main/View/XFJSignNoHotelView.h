@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "XFJFindTeamTaskItem.h"
+#import "XFJLaterTeamControlItem.h"
 
 @interface XFJSignNoHotelView : UIView
 
@@ -19,5 +20,7 @@
 @property (nonatomic, copy) void (^hotelSignNoButtonClickBlock)();
 
 @property (nonatomic, strong) XFJFindTeamTaskItem *findTeamTaskItem;
+
+@property (nonatomic, strong) XFJLaterTeamControlItem *laterTeamControlItem;
 
 @end

@@ -13,5 +13,6 @@
 
 @property (nonatomic, strong) NSMutableArray *hotel_array;
 @property (nonatomic, copy) void (^chooseBlockButtonWithSure)(XFJFindAttractionsListItem *);
+@property (nonatomic, copy) void (^chooseBlockButtonWithCancel)();
 
 @end

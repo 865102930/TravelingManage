@@ -11,5 +11,6 @@
 @interface XFJChooseSceneryFooterView : UITableViewHeaderFooterView
 
 @property (nonatomic, copy) void (^sureChoose_buttonClickBlock)();
+@property (nonatomic, copy) void (^cancelChoose_buttonClickBlock)();
 
 @end

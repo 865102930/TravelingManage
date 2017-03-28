@@ -11,5 +11,6 @@
 @interface XFJChooseHotelFooterView : UIView
 
 @property (nonatomic, copy) void (^sureChoose_buttonClickBlock)();
+@property (nonatomic, copy) void (^cancelChoose_buttonClickBlock)();
 
 @end

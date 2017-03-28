@@ -259,6 +259,11 @@
     self.houseContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTaskItem.rooms];
 }
 
-
+- (void)setLaterTeamControlItem:(XFJLaterTeamControlItem *)laterTeamControlItem
+{
+    _laterTeamControlItem = laterTeamControlItem;
+    self.peopleContent_label.text = [NSString stringWithFormat:@"%zd",laterTeamControlItem.checkinNumber];
+    self.houseContent_label.text = [NSString stringWithFormat:@"%zd",laterTeamControlItem.rooms];
+}
 
 @end

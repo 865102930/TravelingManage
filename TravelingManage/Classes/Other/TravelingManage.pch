@@ -73,7 +73,7 @@
 #define kColorB1B1 [UIColor colorWithHexString:@"0xB1B1B1"]
 #define kColorE0E0 [UIColor colorWithHexString:@"0xE0E0E0"]
 #define kColor0000 [UIColor colorWithHexString:@"0x000002"]
-
+#define kColor7979 [UIColor colorWithHexString:@"0x797979"]
 //基本的 URL
 #define BASEURL @"http://118.178.224.151/teammgmtback"
 

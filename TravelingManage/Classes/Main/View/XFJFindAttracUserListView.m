@@ -41,6 +41,11 @@
                 wself.sureUserButtonClickBlock(wself.indexPath_array);
             }
         };
+        self.findAttracUserListFooterView.cancelUserButtonBlock = ^() {
+            if (wself.cancelUserButtonClickBlock) {
+                wself.cancelUserButtonClickBlock();
+            }
+        };
     }
     return self;
 }

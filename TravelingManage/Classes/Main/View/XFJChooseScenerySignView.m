@@ -42,6 +42,11 @@
                 wself.chooseBlockButtonWithSure(wself.findAttractionsListItem);
             }
         };
+        self.chooseSceneryFooterView.cancelChoose_buttonClickBlock = ^() {
+            if (wself.chooseBlockButtonWithCancel) {
+                wself.chooseBlockButtonWithCancel();
+            }
+        };
     }
     return self;
 }

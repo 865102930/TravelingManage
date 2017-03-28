@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSMutableArray <XFJFindAttractionsListItem *> *scenery_array;
 @property (nonatomic, copy) void (^chooseBlockButtonWithSure)(XFJFindAttractionsListItem *);
+@property (nonatomic, copy) void (^chooseBlockButtonWithCancel)();
 
 
 @end

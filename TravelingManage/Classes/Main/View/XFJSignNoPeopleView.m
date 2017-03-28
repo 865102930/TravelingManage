@@ -239,6 +239,11 @@
 }
 
 
+-(void)setLaterTeamControlItem:(XFJLaterTeamControlItem *)laterTeamControlItem
+{
+    _laterTeamControlItem = laterTeamControlItem;
+    self.peopleNumber_label.text = [NSString stringWithFormat:@"%zd",laterTeamControlItem.checkinNumber];
+}
 
 
 

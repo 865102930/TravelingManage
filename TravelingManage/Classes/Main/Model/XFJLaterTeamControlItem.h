@@ -34,5 +34,11 @@
 @property (nonatomic, assign) NSInteger taskId;
 //景区id
 @property (nonatomic, assign) NSInteger attractionsId;
+//签退页面的样式
+@property (nonatomic, assign) NSInteger typeState;
+//房间数
+@property (nonatomic, assign) NSInteger rooms;
+
+@property (nonatomic, strong) NSString *createtime;
 
 @end

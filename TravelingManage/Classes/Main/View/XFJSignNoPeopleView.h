@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "XFJTeamSignListItem.h"
 #import "XFJFindTeamTaskItem.h"
+#import "XFJLaterTeamControlItem.h"
 @interface XFJSignNoPeopleView : UIView
 
 //签退时候调用的block
@@ -24,6 +25,8 @@
 
 //用一个属性用来接收人数
 @property (nonatomic, assign) NSInteger teamNum;
+
+@property (nonatomic, strong) XFJLaterTeamControlItem *laterTeamControlItem;
 
 
 @end

@@ -11,5 +11,6 @@
 @interface XFJFindAttracUserListFooterView : UIView
 
 @property (nonatomic, copy) void (^sureUserButtonBlock)();
+@property (nonatomic, copy) void (^cancelUserButtonBlock)();
 
 @end

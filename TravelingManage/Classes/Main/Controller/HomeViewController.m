@@ -133,6 +133,7 @@
 @property (nonatomic, strong) NSMutableArray *notCanSignOutArray_time;
 //是酒店签到
 @property (nonatomic, assign) BOOL isChooseSign;
+@property (nonatomic, assign) BOOL isFirestEnterSignTime;
 @property (nonatomic, strong) XFJChooseHotelSignView *chooseHotelSignView;
 @property (nonatomic, strong) NSThread *thread;
 //定义一个可变数组用来接收景区个数
@@ -166,7 +167,6 @@ static BOOL over = NO;
     self.navigationItem.titleView = self.title_label;
     self.navigationItem.leftBarButtonItem = self.user_SttingButtonItem;
     self.navigationItem.rightBarButtonItem = self.projectButtonItem;
-    
     
     //这是添加的公告(如果开始进来的时候没有任务,就显示公告,后面则显示新建任务的标题栏)
     self.isProjectItem == NO ? [self.view addSubview:self.announcementView] : [self addHeaderView];
@@ -227,6 +227,9 @@ static BOOL over = NO;
                     wself.signNoPeople_view.hourTeamTime = hourTime;
                 });
                 NSLog(@"---------------时时获取的差值是 :%@",dict);
+                self.isHotelSignTime = NO;
+                self.isTeamId = NO;
+                self.isFirestEnterSignTime = NO;
             }else {
                 NSLog(@"亲~~在这里就不再调用时时获取时间了!!!");
             }
@@ -246,6 +249,9 @@ static BOOL over = NO;
                     wself.signNoHotel_view.hotelStayDay = dayTime;
                     wself.dayTime = dayTime;
                 });
+                self.isTaskTime = NO;
+                self.isTeamId = NO;
+                self.isFirestEnterSignTime = NO;
             }
             //在这里将时时获取的时间赋值给签退页面
             if (self.isTeamId == YES) {
@@ -265,12 +271,44 @@ static BOOL over = NO;
                     wself.signNoPeople_view.minteTeamTime = minteTime;
                     wself.signNoHotel_view.hotelStayDay = dayTime;
                 });
+                self.isHotelSignTime = NO;
+                self.isTaskTime = NO;
+                self.isFirestEnterSignTime = NO;
+            }
+            //获取最近操作的团队
+            if (self.isFirestEnterSignTime) {
+                NSLog(@"=======+++++++这里传递的时间参数是 :%@--------最近团队的值是 :%zd",self.laterTeamControlItem.createtime,self.isFirestEnterSignTime);
+                NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.laterTeamControlItem.createtime];
+                NSString *hourTime = [dict objectForKey:@"hourString"];
+                NSString *minteTime = [dict objectForKey:@"minuteString"];
+                NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
+                //分钟转化为小时
+                CGFloat minteToHour = [minteTime integerValue] / (CGFloat)60;
+                //将所有的小时相加得到所有的小时
+                CGFloat allHourTime = [hourTime integerValue] + minteToHour;
+                //将所有的小时累加为天数
+                NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //回调或者说是通知主线程刷新
+                    wself.signNoPeople_view.hourTeamTime = hourTime;
+                    wself.signNoPeople_view.minteTeamTime = minteTime;
+                    wself.signNoHotel_view.hotelStayDay = dayTime;
+                });
+                self.isHotelSignTime = NO;
+                self.isTaskTime = NO;
+                self.isTeamId = NO;
             }
         }
         if (over) {
             break;
         }
     }
+}
+
+- (void)setLaterTeamControlItem:(XFJLaterTeamControlItem *)laterTeamControlItem
+{
+    _laterTeamControlItem = laterTeamControlItem;
+    
 }
 
 - (NSMutableArray *)scArray
@@ -362,8 +400,25 @@ static BOOL over = NO;
             [wself.view addSubview:wself.homeTopTaskMessageVeiw];
             NSDictionary *dict = [responseObject objectForKey:@"object"];
             XFJLaterTeamControlItem *laterTeamControlItem = [XFJLaterTeamControlItem mj_objectWithKeyValues:dict];
+            wself.laterTeamControlItem = laterTeamControlItem;
             wself.homeTopTaskMessageVeiw.laterTeamControlItem = laterTeamControlItem;
-            [wself requestInfoTasksWithFindNewTeamInfo_Id:laterTeamControlItem.findNewTeamInfo_Id];
+            if (dict != nil) {
+                if ([laterTeamControlItem.taskState isEqualToString:@"0"]) {//已经签到过了此时显示签退页面
+                    wself.isFirestEnterSignTime = YES;
+                    if (laterTeamControlItem.typeState == 0) {
+                        [wself.view addSubview:wself.signNoPeople_view];
+                        wself.signNoPeople_view.laterTeamControlItem = laterTeamControlItem;
+                    }else {
+                        [wself.view addSubview:wself.signNoHotel_view];
+                        wself.signNoHotel_view.laterTeamControlItem = laterTeamControlItem;
+                    }
+                }else {
+                    [wself requestInfoTasksWithFindNewTeamInfo_Id:laterTeamControlItem.findNewTeamInfo_Id];
+                }
+            }else {
+                [wself requestInfoTasksWithFindNewTeamInfo_Id:laterTeamControlItem.findNewTeamInfo_Id];
+            }
+            
             NSLog(@"========打印出来的最近团队的参数模型是:%@",laterTeamControlItem);
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
@@ -696,7 +751,13 @@ static BOOL over = NO;
             }
             //将数组转化为字符串
             wself.allUserStr = [wself.userArray_id componentsJoinedByString:@","];
-            [wself hotelSignButtonWithPeopleAllUserId:wself.allUserStr];
+            if (wself.isContains) {//如果YES就表示在范围内,可以签到
+                //在这里调用酒店签到的接口
+                [wself hotelSignButtonWithPeopleAllUserId:wself.allUserStr];
+            }else {//表示不在范围内,是否任然签到?
+                [wself isTrueHotelSign];
+                return ;
+            }
             wself.isChooseSign = NO;
         }else {
             //遍历所有的管理员,取出选择的管理员id
@@ -709,11 +770,25 @@ static BOOL over = NO;
             //将数组转化为字符串
             wself.allUserStr = [wself.userArray_id componentsJoinedByString:@","];
             NSLog(@"+++++++++++++++接收到的管理员id数组是 :%@",wself.allUserStr);
-            //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
-            [wself signButtonClick1:wself.teamNumber teamId:wself.teamId userId:wself.allUserStr];
+            if (wself.isContains) {//在景区范围内
+                //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
+                [wself signButtonClick1:wself.teamNumber teamId:wself.teamId userId:wself.allUserStr];
+            }else {//不在景区范围内
+                [wself isTureScSign];
+                return;
+            }
             [wself.maskView1 removeFromSuperview];
             [wself.sign_view removeFromSuperview];
         }
+    };
+    self.chooseScenerySignView.chooseBlockButtonWithCancel= ^() {
+        [wself.maskView1 removeFromSuperview];
+    };
+    self.findAttracUserListView.cancelUserButtonClickBlock = ^() {
+        [wself.maskView1 removeFromSuperview];
+    };
+    self.chooseHotelSignView.chooseBlockButtonWithCancel = ^() {
+        [wself.maskView1 removeFromSuperview];
     };
 }
 
@@ -899,10 +974,22 @@ static BOOL over = NO;
         } progress:^(float progress) {
         }];
     }else {
-        NSLog(@"此时的签退为异常签退,是否还要执行签退??");
+        //不在景区范围内是否签退
+        [self isTrueSignOutButtonClick];
     }
-    //判断是否到达了景区规定的时间
-    NSLog(@"主人~~您点击了签退按钮~~~~~~~~~~~~");
+}
+#pragma mark - 不在范围内的签退
+- (void)isTrueSignOutButtonClick
+{
+    //弹出提示框
+    __weak __typeof(self)wself = self;
+    UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"不在区域范围内,是否签退?" preferredStyle:UIAlertControllerStyleAlert];
+    [alertVc addAction:[UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
+    }]];
+    [alertVc addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [wself signOutButtonClick];
+    }]];
+    [wself presentViewController:alertVc animated:NO completion:nil];
 }
 #warning 时间小于景点签退的时间显示错误的签退框(错误的提示框)
 #pragma mark - showErrorHidView
@@ -1025,26 +1112,6 @@ static BOOL over = NO;
             [MBProgressHUD showHudTipStr:@"签退失败,可能是网络问题" contentColor:HidWithColorContentBlack];
         }
     }];
-//    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMSIGNOUTURL withParaments:dictParaments withSuccessBlock:^(id object) {
-//        if ([[object objectForKey:@"success"] isEqual:@1]) {
-//            //如果返回的是1,则成功,在这创建新建任务的view
-//            [wself.signTeamTwoView removeFromSuperview];
-//            [wself.signNoHotel_view removeFromSuperview];
-//            [wself.signNoPeople_view removeFromSuperview];
-////            [wself.view addSubview:self.task_view];
-//            //这里先不要添加创建任务的弹窗(直接调用请求的任务的29个接口,判断任务是否存在)
-//            [wself requestWithInfoTasks];
-//            //只要签退成功,就按钮的状态改为完成
-//            NSString *str;
-//            wself.homeTopTaskMessageVeiw.isButton = str;
-//        }
-//    } withFailureBlock:^(NSError *error) {
-//        if (error) {
-//            NSLog(@"主人,您签退异常---打印后台返回的错误消息是 :%@",error);
-//            [MBProgressHUD showHudTipStr:@"签退失败,可能是网络问题" contentColor:HidWithColorContentBlack];
-//        }
-//    } progress:^(float progress) {
-//    }];
 }
 
 #pragma mark - 调用29个接口,获取任务信息
@@ -1155,8 +1222,12 @@ static BOOL over = NO;
     [self.view addSubview:self.signNoHotel_view];
     self.signNoHotel_view.hotelSignPeopleCount = self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
     self.signNoHotel_view.hotelSignRoomCount = self.signRoomCount;
-    //在这里调用酒店签到的接口
-    [self hotelSignRequest:userId];
+}
+
+- (void)isTrueHotelSign
+{
+    //弹出提示框
+    [MBProgressHUD showHudTipStr:@"不在酒店范围内,无法签到!" contentColor:HidWithColorContentBlack];
 }
 
 #pragma mark - 酒店签到接口
@@ -1200,6 +1271,12 @@ static BOOL over = NO;
 {
     [self.sign_view removeFromSuperview];
     [self setUpSignNoWithPeople];
+}
+
+- (void)isTureScSign
+{
+    //弹出提示框
+    [MBProgressHUD showHudTipStr:@"不在景区范围内,无法签到!" contentColor:HidWithColorContentBlack];
 }
 
 - (void)signButtonClick1:(NSString *)teamNumber teamId:(NSString *)teamId userId:(NSString *)userId
@@ -1768,11 +1845,11 @@ static BOOL over = NO;
             self.FindAttractionsListItem = findAttractionsListItem;
         }
     }
-    if (self.isContains) {//如果是yes就创建
+//    if (self.isContains) {//如果是yes就创建
         self.isProjectItem == NO ? @"" : [self.view addSubview:self.signTeamTwoView];//[self.view addSubview:self.task_view]
         self.chooseScenerySignView.scenery_array = self.scenery_array;
         self.chooseHotelSignView.hotel_array = self.hotel_array;
-    }
+//    }
     self.isFindTeamList == YES ? @"" : [self requestLatelyControl];
 }
 
