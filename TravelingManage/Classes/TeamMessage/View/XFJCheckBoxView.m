@@ -29,12 +29,24 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.checkBox_tableView];
+        [self addSubview:self.checkFooterView];
+        [self.checkFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.mas_left);
+            make.right.mas_equalTo(self.mas_right);
+            make.height.mas_equalTo(60.0);
+            make.bottom.mas_equalTo(self.mas_bottom);
+        }];
         [self.checkBox_tableView registerClass:[XFJCheckBoxTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJCheckBoxTableViewCell];
         __weak __typeof(self)wself = self;
         self.checkFooterView.presentChoosrNumberBlock = ^() {
             NSLog(@"------------在最终拿到的每行的值是 :%@",wself.reasonStr);
             if (wself.chooseCheckBoxBlock) {
                 wself.chooseCheckBoxBlock(wself.reasonStr);
+            }
+        };
+        self.checkFooterView.cancel_buttonClickBlock = ^() {
+            if (wself.cancelMaskviewBlock) {
+                wself.cancelMaskviewBlock();
             }
         };
     }
@@ -44,7 +56,7 @@
 - (XFJCheckFooterView *)checkFooterView
 {
     if (_checkFooterView == nil) {
-        _checkFooterView = [[XFJCheckFooterView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 100)];
+        _checkFooterView = [[XFJCheckFooterView alloc] init];
         _checkFooterView.backgroundColor = [UIColor whiteColor];
     }
     return _checkFooterView;
@@ -80,7 +92,10 @@
         _checkBox_tableView.delegate = self;
         _checkBox_tableView.dataSource = self;
         _checkBox_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _checkBox_tableView.tableFooterView = self.checkFooterView;
+        _checkBox_tableView.layer.borderWidth = 0.5;
+        _checkBox_tableView.layer.cornerRadius = 8.0;
+        _checkBox_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
+//        _checkBox_tableView.tableFooterView = self.checkFooterView;
     }
     return _checkBox_tableView;
 }

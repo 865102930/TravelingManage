@@ -224,6 +224,7 @@
 
 - (void)goalAttributeButtonClick
 {
+    [self.groupText_field resignFirstResponder];
     CGFloat width = self.bounds.size.width - 20.0;
     CGPoint origin = CGPointMake(10.0, 64.0 + 70.0);
     GFCalendarView *calendar = [[GFCalendarView alloc] initWithFrameOrigin:origin width:width];
@@ -264,7 +265,7 @@
 {
     if (_goalAttributeContent_label == nil) {
         _goalAttributeContent_label = [[UILabel alloc] init];
-        _goalAttributeContent_label.text = @"请输入出团日期";
+        _goalAttributeContent_label.text = @"请选择出团日期";
         _goalAttributeContent_label.textColor = kColor2f2f;
         _goalAttributeContent_label.font = [UIFont systemFontOfSize:14.0];
     }

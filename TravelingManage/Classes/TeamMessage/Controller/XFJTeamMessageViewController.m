@@ -127,7 +127,12 @@
         [wself.maskView1 removeFromSuperview];
         NSLog(@"--------------在这里拿到所有用户选择的信息是 :%@",resultStr);
         wself.AttributeStr = resultStr;
+        
         [wself.attrList_tableView reloadData];
+    };
+    self.checkBoxView.cancelMaskviewBlock = ^() {
+        [wself.checkBoxView removeFromSuperview];
+        [wself.maskView1 removeFromSuperview];
     };
     self.maskView1.maskBlock = ^() {
         [wself.maskView1 removeFromSuperview];
@@ -313,6 +318,9 @@
 {
     if (_checkBoxView == nil) {
         _checkBoxView = [[XFJCheckBoxView alloc] initWithFrame:CGRectMake(50, 150, SCREEN_WIDTH - 2 * 50, SCREEN_HEIGHT - 2 * 150)];
+        _checkBoxView.layer.borderWidth = 0.5;
+        _checkBoxView.layer.cornerRadius = 8.0;
+        _checkBoxView.layer.borderColor = [UIColor whiteColor].CGColor;
     }
     return _checkBoxView;
 }
@@ -617,16 +625,18 @@
 
 
 
-- (void)jumpCell:(XFJCarPhotosWithPerfectView *)cell indexPath:(NSIndexPath *)indexPath
+- (void)jumpCell:(XFJCarPhotosWithPerfectView *)cell indexPath:(NSIndexPath *)indexPath array:(NSMutableArray *)array
 {
     NSMutableArray *tmpArray = [[NSMutableArray alloc] init];
+    _dataArr = array;
+    NSLog(@"-----------------打印的indexPath.row是:%zd-------_dataArr.count的值是 :%zd",indexPath.row,_dataArr.count);
     if(indexPath.row < _dataArr.count) {
         for (UIImage *image in _dataArr) {
             WSImageModel *model = [[WSImageModel alloc] init];
             model.image = image;
             [tmpArray addObject:model];
         }
-        WSPhotosBroseVC *vc = [[WSPhotosBroseVC alloc] init];;
+        WSPhotosBroseVC *vc = [[WSPhotosBroseVC alloc] init];
         vc.imageArray = tmpArray;
         vc.showIndex = indexPath.row;
         __weak typeof (self)weakself = self;
@@ -767,6 +777,7 @@
     NSString *ty_pe = self.attrTypeArray[i];
     if ([ty_pe intValue] == 0) {
         XFJFirestAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFirestAttributeTableViewCell forIndexPath:indexPath];
+        
         NSLog(@"---------获取的back值是0 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         return cell;
     }else if ([ty_pe intValue] == 1) {
@@ -806,6 +817,8 @@
     }else {
         XFJEigthAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJEigthAttributeTableViewCell forIndexPath:indexPath];
         cell.teamAttr = self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr;
+        cell.findCustomAttrListItemArray = self.findCustomAttrListItemArray[[ty_pe intValue]];
+        cell.attributeStr = self.AttributeStr;
         NSLog(@"---------获取的back值是7 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         __weak __typeof(self)wself = self;
         cell.presentMaskViewBlock = ^(NSString *typesStr) {

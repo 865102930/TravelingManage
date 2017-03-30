@@ -267,7 +267,7 @@
 {
     if (_teamPropertiesContent_label == nil) {
         _teamPropertiesContent_label = [[UILabel alloc] init];
-        _teamPropertiesContent_label.text = @"请输入团队性质";
+        _teamPropertiesContent_label.text = @"请选择团队性质";
         _teamPropertiesContent_label.textColor = kColor2f2f;
         _teamPropertiesContent_label.font = [UIFont systemFontOfSize:14.0];
     }

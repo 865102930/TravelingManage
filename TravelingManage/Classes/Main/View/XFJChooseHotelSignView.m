@@ -37,8 +37,13 @@
         }];
         __weak __typeof(self)wself = self;
         self.chooseHotelFooterView.sureChoose_buttonClickBlock = ^() {
-            if (wself.chooseBlockButtonWithSure) {
-                wself.chooseBlockButtonWithSure(wself.findAttractionsListItem);
+            if (wself.findAttractionsListItem == nil) {
+                [MBProgressHUD showHudTipStr:@"请选择签到的酒店!" contentColor:HidWithColorContentBlack];
+                return ;
+            }else {
+                if (wself.chooseBlockButtonWithSure) {
+                    wself.chooseBlockButtonWithSure(wself.findAttractionsListItem);
+                }
             }
         };
         self.chooseHotelFooterView.cancelChoose_buttonClickBlock = ^() {

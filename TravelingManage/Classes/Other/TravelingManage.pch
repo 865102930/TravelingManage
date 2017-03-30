@@ -166,6 +166,8 @@
 #define FINDTEAMVEHICLESURL (BASEURL@"/app/teamInfo/findTeamVehicles")
 //车辆图片查询
 #define TEAMVEHICLEIMAGESURL (BASEURL@"/app/teamTask/teamVehicleImages")
+//根据团队id查询景区自定义字段
+#define FINDCUSTOMESURL (BASEURL@"/app/teamTask/findCustomes")
 
 
 

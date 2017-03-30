@@ -11,7 +11,9 @@
 
 @interface XFJEigthAttributeTableViewCell() <UITextFieldDelegate>
 
-@property (nonatomic, strong) UITextField *quality_field;
+@property (nonatomic, strong) UIButton *quality_button;
+@property (nonatomic, strong) UILabel *quality_label;
+@property (nonatomic, strong) UILabel *qualityContent_label;
 @property (nonatomic, strong) UIButton *four_button;
 @property (nonatomic, strong) NSString *types;
 
@@ -23,30 +25,65 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        [self addSubview:self.quality_field];
-        [self.quality_field addSubview:self.four_button];
-        [self.quality_field mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self addSubview:self.quality_button];
+        [self.quality_button addSubview:self.four_button];
+        [self.quality_button addSubview:self.quality_label];
+        [self.quality_button addSubview:self.qualityContent_label];
+        [self.quality_button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.mas_top).mas_offset(9.0);
             make.left.mas_equalTo(self.mas_left).mas_equalTo(18.0);
             make.right.mas_equalTo(self.mas_right).mas_offset(-18.0);
             make.height.mas_equalTo(35.0);
         }];
+        [self.quality_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.quality_button.mas_left).mas_offset(15.0);
+            make.centerY.mas_equalTo(self.quality_button.mas_centerY);
+        }];
+        [self.qualityContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.quality_label.mas_right).mas_offset(25.0);
+            make.centerY.mas_equalTo(self.quality_button.mas_centerY);
+        }];
         [self.four_button mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(self.quality_field.mas_right).mas_offset(-10.0);
+            make.right.mas_equalTo(self.quality_button.mas_right).mas_offset(-10.0);
             make.height.with.mas_equalTo(11.0);
-            make.top.mas_equalTo(self.quality_field.mas_top).mas_offset(13.0);
+            make.top.mas_equalTo(self.quality_button.mas_top).mas_offset(13.0);
         }];
     }
     return self;
 }
 
-- (UITextField *)quality_field
+- (UIButton *)quality_button
 {
-    if (_quality_field == nil) {
-        _quality_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"属          性" rightImage:@"xinghao" placeholder:@"请选择属性"];
-        _quality_field.delegate = self;
+    if (_quality_button == nil) {
+        _quality_button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _quality_button.layer.borderColor = kBorderColor.CGColor;
+        _quality_button.layer.borderWidth = 0.5;
+        _quality_button.layer.cornerRadius = 3.0;
+        _quality_button.clipsToBounds = YES;
+        _quality_button.layer.masksToBounds = YES;
+        [_quality_button addTarget:self action:@selector(chooseMessageButtonClick) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _quality_field;
+    return _quality_button;
+}
+
+- (UILabel *)quality_label
+{
+    if (_quality_label == nil) {
+        _quality_label = [[UILabel alloc] init];
+        _quality_label.font = [UIFont fontWithName:PingFang size:13.0];
+        _quality_label.textColor = kColor2f2f;
+    }
+    return _quality_label;
+}
+
+- (UILabel *)qualityContent_label
+{
+    if (_qualityContent_label == nil) {
+        _qualityContent_label = [[UILabel alloc] init];
+        _qualityContent_label.font = [UIFont fontWithName:PingFang size:14.0];
+        _qualityContent_label.textColor = kColor2f2f;
+    }
+    return _qualityContent_label;
 }
 
 - (UIButton *)four_button
@@ -67,10 +104,17 @@
     }
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+- (void)setAttributeStr:(NSString *)attributeStr
 {
-    return NO;
+    _attributeStr = attributeStr;
+    if (attributeStr == nil) {
+        self.qualityContent_label.text = [NSString stringWithFormat:@"%@",@"请选择属性"];
+    }else {
+        NSString *attributeStr1 = [attributeStr stringByReplacingOccurrencesOfString:@"&" withString:@","];
+        self.qualityContent_label.text = [NSString stringWithFormat:@"%@",attributeStr1];
+    }
 }
+
 
 - (void)setTeamAttr:(NSString *)teamAttr
 {
@@ -78,6 +122,11 @@
     self.types = teamAttr;
 }
 
+- (void)setFindCustomAttrListItemArray:(XFJFindCustomAttrListItem *)findCustomAttrListItemArray
+{
+    _findCustomAttrListItemArray = findCustomAttrListItemArray;
+    self.quality_label.text = [NSString stringWithFormat:@"%@",findCustomAttrListItemArray.userName];
+}
 
 
 @end

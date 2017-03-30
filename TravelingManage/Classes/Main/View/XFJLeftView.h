@@ -35,11 +35,13 @@
 //待评价
 @property (nonatomic, copy) void (^pushPleaseAskingBlock)();
 //点击侧滑栏跳转到主界面
-@property (nonatomic, copy) void (^presentToHomeController)(XFJLeftFindTeamInfoItem *,BOOL);
+@property (nonatomic, copy) void (^presentToHomeController)(XFJLeftFindTeamInfoItem *,BOOL,BOOL);
 //跳转到通知页面
 @property (nonatomic, copy) void (^pushNoticeWithHeaderBlock)();
 
 //提供一个BOOL值作为判断
 @property (nonatomic, assign) BOOL isTeamId;
+
+@property (nonatomic, assign) BOOL isEnter;
 
 @end

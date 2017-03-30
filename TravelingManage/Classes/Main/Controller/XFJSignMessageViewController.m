@@ -299,7 +299,7 @@
 - (void)requestFindCustomAttrListMessage:(NSInteger)teamId
 {
     NSDictionary *dictParams = @{
-                                 @"userId":@32,
+                                 @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"],
                                  @"teamAttractionsType":@1
                                  };
     __weak __typeof(self)wself = self;

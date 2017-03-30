@@ -171,8 +171,8 @@
     }
     if (index == 0) {
         if (indexPath.row < index ) {
-            if([self.delegate respondsToSelector:@selector(jumpCell:indexPath:)]) {
-                [self.delegate jumpCell:self indexPath:indexPath];
+            if([self.delegate respondsToSelector:@selector(jumpCell:indexPath:array:)]) {
+                [self.delegate jumpCell:self indexPath:indexPath array:self.dataArr];
             }
             return;
         }
@@ -185,15 +185,15 @@
             [self.delegate chooseImage:self];
         }else
         {
-            if([self.delegate respondsToSelector:@selector(jumpCell:indexPath:)]) {
-                [self.delegate jumpCell:self indexPath:indexPath];
+            if([self.delegate respondsToSelector:@selector(jumpCell:indexPath:array:)]) {
+                [self.delegate jumpCell:self indexPath:indexPath array:self.dataArr];
             }
             return;
         }
     }else {
         if (indexPath.row + 1 < index ) {
-            if([self.delegate respondsToSelector:@selector(jumpCell:indexPath:)]) {
-                [self.delegate jumpCell:self indexPath:indexPath];
+            if([self.delegate respondsToSelector:@selector(jumpCell:indexPath:array:)]) {
+                [self.delegate jumpCell:self indexPath:indexPath array:self.dataArr];
             }
             return;
         }

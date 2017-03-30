@@ -220,9 +220,9 @@
         NSString *teamDateStr = [NSString stringWithFormat:@"%@",taskRowsItem.attractionsTime];
         NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@"."];
         self.hourContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
-        CGFloat mintesContent_label = 0.83;
-        self.mintesContent_label.text = [NSString stringWithFormat:@"%d",(int)mintesContent_label * 60];
-//        self.mintesContent_label.text = @"0";
+        
+//        NSLog(@"=========%f",[teamDateStr floatValue] % i);
+//        self.mintesContent_label.text = [NSString stringWithFormat:@"%d",(int)mintesContent_label * 60];
     }
     NSLog(@"----------景点信息是 :%@",taskRowsItem.attractionsName);
     

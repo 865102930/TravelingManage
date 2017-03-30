@@ -10,11 +10,16 @@
 #define KCellIdentifier_XFJEigthAttributeTableViewCell @"XFJEigthAttributeTableViewCell"
 
 #import <UIKit/UIKit.h>
+#import "XFJFindCustomAttrListItem.h"
 
 @interface XFJEigthAttributeTableViewCell : UITableViewCell
 
 @property (nonatomic, copy) void (^presentMaskViewBlock)(NSString *);
 
 @property (nonatomic, strong) NSString *teamAttr;
+
+@property (nonatomic, strong) XFJFindCustomAttrListItem *findCustomAttrListItemArray;
+
+@property (nonatomic, strong) NSString * attributeStr;
 
 @end

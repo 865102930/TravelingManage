@@ -21,7 +21,7 @@
 @interface XFJFindTeamTasksItem : NSObject
 
 //团队编号
-@property (nonatomic, assign) NSInteger teamNo;
+@property (nonatomic, strong) NSString *teamNo;
 //出团时间
 @property (nonatomic, strong) NSString *teamDate;
 //省

@@ -104,7 +104,7 @@
 //    _listTable.layer.borderColor = kBorderColor.CGColor;
 //    _listTable.tag = 100001;
 //    [_supView addSubview:_listTable];
-    titleLabel.text = [_titlesList objectAtIndex:_defaultIndex];
+//    titleLabel.text = [_titlesList objectAtIndex:_defaultIndex];
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {

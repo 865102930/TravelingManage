@@ -60,8 +60,14 @@
         //请求数据
         [self requestViewContent];
         self.leftTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(requestLeftView)];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestSecondLeftContent) name:@"FRESHENLEFTREQUEST" object:nil];
     }
     return self;
+}
+
+- (void)requestSecondLeftContent
+{
+    [self.leftTableView reloadData];
 }
 
 - (void)requestViewContent
@@ -282,7 +288,8 @@
     __weak __typeof(self)wself = self;
     if (self.presentToHomeController) {
         self.isTeamId = YES;
-        self.presentToHomeController(wself.leftFindTeamInfoItem_array[indexPath.row],self.isTeamId);
+        self.isEnter = NO;
+        self.presentToHomeController(wself.leftFindTeamInfoItem_array[indexPath.row],self.isTeamId,self.isEnter);
     }
 }
 

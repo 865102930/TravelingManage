@@ -196,15 +196,15 @@
     [self.arrow_button mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).mas_offset(37.0);
         make.right.mas_equalTo(self.mas_right).mas_offset(-21.0);
-        make.height.mas_equalTo(17.0);
-        make.width.mas_equalTo(12.0);
+        make.height.mas_equalTo(30.0);
+        make.width.mas_equalTo(30.0);
     }];
 }
 
 - (void)teamMessage
 {
     if (self.jumpWithTeamMessageBlock) {
-        self.jumpWithTeamMessageBlock();
+        self.jumpWithTeamMessageBlock(self.laterTeamControlItem.findNewTeamInfo_Id);
     }
 }
 

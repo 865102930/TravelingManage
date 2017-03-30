@@ -38,8 +38,13 @@
         }];
         __weak __typeof(self)wself = self;
         self.chooseSceneryFooterView.sureChoose_buttonClickBlock = ^() {
-            if (wself.chooseBlockButtonWithSure) {
-                wself.chooseBlockButtonWithSure(wself.findAttractionsListItem);
+            if (wself.findAttractionsListItem == nil) {
+                [MBProgressHUD showHudTipStr:@"请选择签到的景区!" contentColor:HidWithColorContentBlack];
+                return ;
+            }else {
+                if (wself.chooseBlockButtonWithSure) {
+                    wself.chooseBlockButtonWithSure(wself.findAttractionsListItem);
+                }
             }
         };
         self.chooseSceneryFooterView.cancelChoose_buttonClickBlock = ^() {
@@ -76,6 +81,7 @@
         _chooseScenerySign_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _chooseScenerySign_tableView.layer.cornerRadius = 8.0;
         _chooseScenerySign_tableView.layer.borderWidth = 0.5;
+        _chooseScenerySign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
         _chooseScenerySign_tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
         _chooseScenerySign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
     }

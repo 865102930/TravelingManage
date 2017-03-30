@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSString *backStr;
 @property (nonatomic, copy) void (^chooseCheckBoxBlock)(NSString *);
+@property (nonatomic, copy) void (^cancelMaskviewBlock)();
 
 @end

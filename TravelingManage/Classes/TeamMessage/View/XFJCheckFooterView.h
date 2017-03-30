@@ -11,5 +11,6 @@
 @interface XFJCheckFooterView : UITableViewHeaderFooterView
 
 @property (nonatomic, copy) void (^presentChoosrNumberBlock)();
+@property (nonatomic, copy) void (^cancel_buttonClickBlock)();
 
 @end

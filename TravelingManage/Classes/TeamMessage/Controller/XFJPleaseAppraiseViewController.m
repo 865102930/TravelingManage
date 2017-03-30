@@ -254,28 +254,41 @@
     }
     __weak __typeof(self)wself = self;
     cell.teamScoreBlock1 = ^(NSString *scoreText1,NSInteger attractionsId1) {
-        NSLog(@"获得到的scoreText1和attractionsId1是:%zd-----%zd",[scoreText1 intValue],attractionsId1);
         wself.teamScore1 = [scoreText1 intValue];
         wself.attractionsId = attractionsId1;
+        NSLog(@"获得到的scoreText1和attractionsId1是:%zd-----%zd",[scoreText1 intValue],wself.teamScore1);
     };
     cell.teamScoreBlock2 = ^(NSString *scoreText2,NSInteger attractionsId2) {
-        NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText2 intValue],attractionsId2);
         wself.teamScore2 = [scoreText2 intValue];
         wself.attractionsId = attractionsId2;
+        NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText2 intValue],wself.teamScore2);
     };
     cell.teamScoreBlock3 = ^(NSString *scoreText3,NSInteger attractionsId3) {
-        NSLog(@"获得到的scoreText3和attractionsId3是:%zd-----%zd",[scoreText3 intValue],attractionsId3);
         wself.teamScore3 = [scoreText3 intValue];
         wself.attractionsId = attractionsId3;
+        NSLog(@"获得到的scoreText3和attractionsId3是:%zd-----%zd",[scoreText3 intValue],wself.teamScore3);
     };
     cell.findTeamTasksItemArray = self.TaskRowsItemArray[indexPath.row];
     return cell;
 }
 
+- (void)dictionaryParams
+{
+    NSDictionary *dict = @{
+                           @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
+                           @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
+                           @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
+                           @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
+                           @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
+                           };
+    NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
+    [self.totalStarArray addObject:dict];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.signAppraise_tableView.frame = CGRectMake(0, 225.0, SCREEN_WIDTH, [self.TaskRowsItemArray count] * 180);
-    self.assessmentScroll_view.contentSize = CGSizeMake(0, [self.TaskRowsItemArray count] * 280);
+    self.assessmentScroll_view.contentSize = CGSizeMake(0, [self.TaskRowsItemArray count] * 350);
     return 180.0;
 }
 

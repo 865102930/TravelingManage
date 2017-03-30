@@ -399,7 +399,7 @@
 {
     _findTeamTasksItem = findTeamTasksItem;
     //团队编号
-    self.teamNumberContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTasksItem[0].teamNo];
+    self.teamNumberContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamNo];
     //旅行社名称
      self.traveingNameContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].travelAgencyName];
     //客源地
@@ -407,11 +407,11 @@
     //目的属性
     self.endContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamAttrVal];
     //团队人数
-    self.teamPeopleNumberContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTasksItem[0].teamNum];
+    self.teamPeopleNumberContent_label.text = [NSString stringWithFormat:@"%zd人",findTeamTasksItem[0].teamNum];
     //团队性质
     self.teamPropertyContent_label.text = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamNatureVal];
     //行程天数
-    self.teamDayContent_label.text = [NSString stringWithFormat:@"%zd",findTeamTasksItem[0].teamDay];
+    self.teamDayContent_label.text = [NSString stringWithFormat:@"%zd天",findTeamTasksItem[0].teamDay];
     //出团日期
     NSString *teamDateStr = [NSString stringWithFormat:@"%@",findTeamTasksItem[0].teamDate];
     NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];

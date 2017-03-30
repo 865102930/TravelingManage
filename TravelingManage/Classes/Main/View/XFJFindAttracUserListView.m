@@ -37,8 +37,13 @@
         }];
         __weak __typeof(self)wself = self;
         self.findAttracUserListFooterView.sureUserButtonBlock = ^() {
-            if (wself.sureUserButtonClickBlock) {
-                wself.sureUserButtonClickBlock(wself.indexPath_array);
+            if (wself.indexPath_array.count == 0) {
+                [MBProgressHUD showHudTipStr:@"请选择旅游局!" contentColor:HidWithColorContentBlack];
+                return ;
+            }else {
+                if (wself.sureUserButtonClickBlock) {
+                    wself.sureUserButtonClickBlock(wself.indexPath_array);
+                }
             }
         };
         self.findAttracUserListFooterView.cancelUserButtonBlock = ^() {
@@ -77,7 +82,7 @@
 - (void)setFindAttracUserListItem:(NSMutableArray<XFJFindAttracUserListItem *> *)findAttracUserListItem
 {
     _findAttracUserListItem = findAttracUserListItem;
-    
+    [self.findAttracUserList_tableView reloadData];
 }
 
 - (XFJFindAttracUserListFooterView *)findAttracUserListFooterView
@@ -98,6 +103,7 @@
         _findAttracUserList_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _findAttracUserList_tableView.layer.cornerRadius = 8.0;
         _findAttracUserList_tableView.layer.borderWidth = 0.5;
+        _findAttracUserList_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
         _findAttracUserList_tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
     }
     return _findAttracUserList_tableView;

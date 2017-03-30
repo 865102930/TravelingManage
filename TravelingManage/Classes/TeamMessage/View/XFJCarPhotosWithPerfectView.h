@@ -13,7 +13,7 @@
 @protocol XFJCarPhotosWithPerfectViewDelegate  <NSObject>
 
 - (void)chooseImage:(XFJCarPhotosWithPerfectView *)SerPhotoCell;
-- (void)jumpCell:(XFJCarPhotosWithPerfectView *)cell indexPath:(NSIndexPath *)indexPath ;
+- (void)jumpCell:(XFJCarPhotosWithPerfectView *)cell indexPath:(NSIndexPath *)indexPath array:(NSMutableArray *)array ;
 
 @end
 

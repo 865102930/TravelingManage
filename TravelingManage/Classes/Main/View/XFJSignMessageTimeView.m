@@ -158,7 +158,7 @@
 - (void)setTaskRowsItem:(XFJTaskRowsItem *)taskRowsItem
 {
     _taskRowsItem = taskRowsItem;
-    self.signContent_label.text = [NSString stringWithFormat:@"%@",taskRowsItem.signTime];
+    self.signContent_label.text = [NSString stringWithFormat:@"%@",taskRowsItem.createtime];
     self.signNoContent_label.text = [NSString stringWithFormat:@"%@",taskRowsItem.signoutTime];
 }
 

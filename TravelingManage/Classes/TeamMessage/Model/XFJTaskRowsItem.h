@@ -21,9 +21,11 @@
 //任务id
 @property (nonatomic, assign) NSInteger taskId;
 //签到时间
-@property (nonatomic, strong) NSString *signTime;
+@property (nonatomic, strong) NSString *createtime;
 //签退时间
 @property (nonatomic, strong) NSString *signoutTime;
+
+
 
 
 

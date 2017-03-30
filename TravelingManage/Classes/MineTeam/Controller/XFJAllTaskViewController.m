@@ -122,7 +122,6 @@
         NSLog(@"----------+++++++-------index row%zd", [path row]);
         //点击冲洗开始后,跳转到开团界面
         XFJOpenGroupViewController *openGroupViewController = [[XFJOpenGroupViewController alloc] init];
-//        openGroupViewController.findTeamInfoByStateItem = wself.findTeamInfoByStateItem_array[path.row];
         [wself.navigationController pushViewController:openGroupViewController animated:YES];
     };
     cell.pleasePerfectDataBlock = ^(UIButton *button) {
@@ -139,7 +138,14 @@
         NSIndexPath *path = [self.allTaskTableView indexPathForCell:cell];
         //这里可以获取到cell是具体是哪一个,就可以传相应的id
         NSLog(@"---------=========--------index row%zd", [path row]);
-        [wself requestCancelTeamTask:wself.findTeamInfoByStateItem_array[path.row].findTeamInfoByState_Id];
+        //弹出提示框
+        UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消任务?" preferredStyle:UIAlertControllerStyleAlert];
+        [alertVc addAction:[UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
+        }]];
+        [alertVc addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [wself requestCancelTeamTask:wself.findTeamInfoByStateItem_array[path.row].findTeamInfoByState_Id];
+        }]];
+        [wself presentViewController:alertVc animated:NO completion:nil];
     };
     cell.findTeamInfoByStateItem = self.findTeamInfoByStateItem_array[indexPath.row];
     return cell;
@@ -164,7 +170,6 @@
     [GRNetRequestClass POST:DELETETEAMINFOURL params:@{@"id":[NSString stringWithFormat:@"%zd",findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
             if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
-//                [MBProgressHUD showHudTipStr:@"您已经取消团队了!!" contentColor:HidWithColorContentBlack];
                 [MBProgressHUD showLoadHUD];
                 [wself requestAllStates];
                 if (wself.requestTitleBolock) {

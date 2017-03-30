@@ -12,7 +12,7 @@
 
 @interface XFJHomeTopTaskMessageVeiw : UIView
 
-@property (nonatomic, copy) void (^jumpWithTeamMessageBlock)();
+@property (nonatomic, copy) void (^jumpWithTeamMessageBlock)(NSInteger);
 //任务状态的改变
 @property (nonatomic, copy) void (^ExitStatusButtonClickBlock)();
 @property (nonatomic, strong) XFJLaterTeamControlItem *laterTeamControlItem;
