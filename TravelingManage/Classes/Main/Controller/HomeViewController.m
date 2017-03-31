@@ -118,6 +118,7 @@
 @property (nonatomic, strong) XFJFindAttractionsListItem *FindAttractionsListItem;
 //提供一个BOOL值
 @property (nonatomic, assign) BOOL isTeamId;
+@property (nonatomic, assign) BOOL isSecondTeamId;
 @property (nonatomic, strong) XFJLeftFindTeamInfoItem *leftFindTeamInfoItem;
 @property (nonatomic, strong) XFJFindTeamTaskItem *findTeamTaskItem;
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *findTeamTasksItem;
@@ -218,8 +219,10 @@ static BOOL over = NO;
     while (YES) {
         [NSThread sleepForTimeInterval:1];
         if ([NSThread isMultiThreaded]) {
-            [self setUpUserTimeWithUseApp:YES];
-            if (self.isTaskTime) {
+            if (self.isTaskTime == YES) {//开始景区签到的时候调用
+                [self setUpUserTimeWithUseApp:NO];
+                wself.signNoPeople_view.minteTeamTime = 0;
+                wself.signNoPeople_view.hourTeamTime = 0;
                 NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.DateStartTime];
                 NSString *hourTime = [dict objectForKey:@"hourString"];
                 NSString *minteTime = [dict objectForKey:@"minuteString"];
@@ -229,13 +232,10 @@ static BOOL over = NO;
                     wself.signNoPeople_view.hourTeamTime = hourTime;
                 });
                 NSLog(@"---------------时时获取的差值是 :%@",dict);
-                self.isHotelSignTime = NO;
-//                self.isTeamId = NO;
-                self.isFirestEnterSignTime = NO;
-            }else {
-                NSLog(@"亲~~在这里就不再调用时时获取时间了!!!");
-            }
-            if (self.isHotelSignTime) {
+//                self.isHotelSignTime = NO;
+//                self.isFirestEnterSignTime = NO;
+            }else if (self.isHotelSignTime == YES) {//开始酒店签到的时候调用
+                [self setUpUserTimeWithUseApp:NO];
                 wself.signNoHotel_view.hotelStayDay = 0;
                 NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.DateStartTime];
                 NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
@@ -252,12 +252,13 @@ static BOOL over = NO;
                     wself.signNoHotel_view.hotelStayDay = dayTime;
                     wself.dayTime = dayTime;
                 });
-                self.isTaskTime = NO;
-//                self.isTeamId = NO;
-                self.isFirestEnterSignTime = NO;
-            }
-            //在这里将时时获取的时间赋值给签退页面
-            if (self.isTeamId == YES) {
+//                self.isTaskTime = NO;
+//                self.isFirestEnterSignTime = NO;
+            }else if (self.isTeamId == YES) {//点击侧边栏的时候对时间的调用
+                [self setUpUserTimeWithUseApp:YES];
+                wself.signNoPeople_view.hourTeamTime = 0;
+                wself.signNoPeople_view.minteTeamTime = 0;
+                wself.signNoHotel_view.hotelStayDay = 0;
                 NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.findTeamTaskItem.createtime];
                 NSString *hourTime = [dict objectForKey:@"hourString"];
                 NSString *minteTime = [dict objectForKey:@"minuteString"];
@@ -274,13 +275,14 @@ static BOOL over = NO;
                     wself.signNoPeople_view.minteTeamTime = minteTime;
                     wself.signNoHotel_view.hotelStayDay = dayTime;
                 });
-                self.isHotelSignTime = NO;
-                self.isTaskTime = NO;
-                self.isFirestEnterSignTime = NO;
-            }
-            //获取最近操作的团队
-            if (self.isFirestEnterSignTime) {
-                NSLog(@"=======+++++++这里传递的时间参数是 :%@--------最近团队的值是 :%zd",self.laterTeamControlItem.createtime,self.isFirestEnterSignTime);
+//                self.isHotelSignTime = NO;
+//                self.isTaskTime = NO;
+//                self.isFirestEnterSignTime = NO;
+            }else if (self.isFirestEnterSignTime == YES) {//app刚开始进入的时候调用
+                [self setUpUserTimeWithUseApp:YES];
+                wself.signNoPeople_view.hourTeamTime = 0;
+                wself.signNoPeople_view.minteTeamTime = 0;
+                wself.signNoHotel_view.hotelStayDay = 0;
                 NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.laterTeamControlItem.createtime];
                 NSString *hourTime = [dict objectForKey:@"hourString"];
                 NSString *minteTime = [dict objectForKey:@"minuteString"];
@@ -297,10 +299,82 @@ static BOOL over = NO;
                     wself.signNoPeople_view.minteTeamTime = minteTime;
                     wself.signNoHotel_view.hotelStayDay = dayTime;
                 });
-                self.isHotelSignTime = NO;
-                self.isTaskTime = NO;
-//                self.isTeamId = NO;
+//                self.isHotelSignTime = NO;
+//                self.isTaskTime = NO;
             }
+//            if (self.isHotelSignTime) {
+//                [self setUpUserTimeWithUseApp:NO];
+//                wself.signNoHotel_view.hotelStayDay = 0;
+//                NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.DateStartTime];
+//                NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
+//                NSString *hotelHourTime = [dict objectForKey:@"hourString"];//小时
+//                NSString *hotelMinteTime = [dict objectForKey:@"minuteString"];//分钟
+//                //分钟转化为小时
+//                CGFloat minteToHour = [hotelMinteTime integerValue] / (CGFloat)60;
+//                //将所有的小时相加得到所有的小时
+//                CGFloat allHourTime = [hotelHourTime integerValue] + minteToHour;
+//                //将所有的小时累加为天数
+//                NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    //回调或者说是通知主线程刷新
+//                    wself.signNoHotel_view.hotelStayDay = dayTime;
+//                    wself.dayTime = dayTime;
+//                });
+//                self.isTaskTime = NO;
+//                self.isFirestEnterSignTime = NO;
+//            }
+            //在这里将时时获取的时间赋值给签退页面
+//            if (self.isTeamId == YES) {
+//                [self setUpUserTimeWithUseApp:YES];
+//                wself.signNoPeople_view.hourTeamTime = 0;
+//                wself.signNoPeople_view.minteTeamTime = 0;
+//                wself.signNoHotel_view.hotelStayDay = 0;
+//                NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.findTeamTaskItem.createtime];
+//                NSString *hourTime = [dict objectForKey:@"hourString"];
+//                NSString *minteTime = [dict objectForKey:@"minuteString"];
+//                NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
+//                //分钟转化为小时
+//                CGFloat minteToHour = [minteTime integerValue] / (CGFloat)60;
+//                //将所有的小时相加得到所有的小时
+//                CGFloat allHourTime = [hourTime integerValue] + minteToHour;
+//                //将所有的小时累加为天数
+//                NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    //回调或者说是通知主线程刷新
+//                    wself.signNoPeople_view.hourTeamTime = hourTime;
+//                    wself.signNoPeople_view.minteTeamTime = minteTime;
+//                    wself.signNoHotel_view.hotelStayDay = dayTime;
+//                });
+//                self.isHotelSignTime = NO;
+//                self.isTaskTime = NO;
+//                self.isFirestEnterSignTime = NO;
+//            }
+            //获取最近操作的团队
+//            if (self.isFirestEnterSignTime) {
+//                NSLog(@"=======+++++++这里传递的时间参数是 :%@--------最近团队的值是 :%zd",self.laterTeamControlItem.createtime,self.isFirestEnterSignTime);
+//                [self setUpUserTimeWithUseApp:YES];
+//                wself.signNoPeople_view.hourTeamTime = 0;
+//                wself.signNoPeople_view.minteTeamTime = 0;
+//                wself.signNoHotel_view.hotelStayDay = 0;
+//                NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.laterTeamControlItem.createtime];
+//                NSString *hourTime = [dict objectForKey:@"hourString"];
+//                NSString *minteTime = [dict objectForKey:@"minuteString"];
+//                NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
+//                //分钟转化为小时
+//                CGFloat minteToHour = [minteTime integerValue] / (CGFloat)60;
+//                //将所有的小时相加得到所有的小时
+//                CGFloat allHourTime = [hourTime integerValue] + minteToHour;
+//                //将所有的小时累加为天数
+//                NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    //回调或者说是通知主线程刷新
+//                    wself.signNoPeople_view.hourTeamTime = hourTime;
+//                    wself.signNoPeople_view.minteTeamTime = minteTime;
+//                    wself.signNoHotel_view.hotelStayDay = dayTime;
+//                });
+//                self.isHotelSignTime = NO;
+//                self.isTaskTime = NO;
+//            }
         }
         if (over) {
             break;
@@ -404,6 +478,12 @@ static BOOL over = NO;
             [wself.view addSubview:wself.homeTopTaskMessageVeiw];
             NSDictionary *dict = [responseObject objectForKey:@"object"];
             XFJLaterTeamControlItem *laterTeamControlItem = [XFJLaterTeamControlItem mj_objectWithKeyValues:dict];
+            if (laterTeamControlItem.teamNo == nil) {
+                [wself.view addSubview:wself.task_view];
+                [wself.view addSubview:wself.announcementView];
+                [wself.homeTopTaskMessageVeiw removeFromSuperview];
+                return ;
+            }
             wself.laterTeamControlItem = laterTeamControlItem;
             wself.homeTopTaskMessageVeiw.laterTeamControlItem = laterTeamControlItem;
             wself.isEnter = YES;
@@ -639,15 +719,17 @@ static BOOL over = NO;
         [wself.navigationController pushViewController:pleaseDoITViewController animated:YES];
     };
     //待审核
-    self.leftView.pushCheckTeamBlock = ^() {
+    self.leftView.pushCheckTeamBlock = ^(NSInteger strNumber) {
         [wself remoSubViews];
         XFJMineTeamViewController *pleaseCheckTeamViewController = [[XFJMineTeamViewController alloc] init];
+        pleaseCheckTeamViewController.strNumber = strNumber;
         [wself.navigationController pushViewController:pleaseCheckTeamViewController animated:YES];
     };
     //待评价
-    self.leftView.pushPleaseAskingBlock = ^() {
+    self.leftView.pushPleaseAskingBlock = ^(NSInteger strNumber) {
         [wself remoSubViews];
         XFJMineTeamViewController *pleaseAskingViewController = [[XFJMineTeamViewController alloc] init];
+        pleaseAskingViewController.strNumber = strNumber;
         [wself.navigationController pushViewController:pleaseAskingViewController animated:YES];
     };
     //将左侧的内容传到控制器中
@@ -659,7 +741,10 @@ static BOOL over = NO;
         wself.homeTopTaskMessageVeiw.leftFindTeamInfoItem = leftFindTeamInfoItem;
         wself.leftFindTeamInfoItem = leftFindTeamInfoItem;
         wself.isTeamId = isTeamId;
+        wself.isSecondTeamId = isTeamId;
         wself.isEnter = isEnter;
+        wself.isTaskTime = NO;
+        wself.isHotelSignTime = NO;
         //请求获取左侧的接口
         [wself requestWithLeftIndexPathOfRows:leftFindTeamInfoItem];
     };
@@ -678,16 +763,15 @@ static BOOL over = NO;
     };
     self.homeTopTaskMessageVeiw.jumpWithTeamMessageBlock = ^(NSInteger findTeamInfoByState_Id) {
         //这是点击顶部右侧的箭头按钮跳转的控制器
-        if (wself.isProjectItem) {//如果是YES就直接传入刚创建的团队id
+        if (wself.isSecondProjectItem == YES) {//如果是YES就直接传入刚创建的团队id
             XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
             teamMessageViewController.findTeamInfoByState_Id = [[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"] intValue];
             [wself.navigationController pushViewController:teamMessageViewController animated:YES];
-            wself.isProjectItem = NO;
-        }else if (wself.isTeamId){ //如果是侧滑栏传递过来的id
+            wself.isSecondProjectItem = NO;
+        }else if (wself.isSecondTeamId == YES){ //如果是侧滑栏传递过来的id
             XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
             teamMessageViewController.findTeamInfoByState_Id = wself.leftFindTeamInfoItem.findTeamInfoItem_id;
             [wself.navigationController pushViewController:teamMessageViewController animated:YES];
-            wself.isTeamId = NO;
         }else {//否则就直接加载最近任务的id
             //跳转到签到点信息
             XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
@@ -1432,6 +1516,7 @@ static BOOL over = NO;
                 [MBProgressHUD showHudTipStr:@"签到成功!" contentColor:HidWithColorContentBlack];
             }else {
                 [MBProgressHUD showHudTipStr:@"景区重复签到!" contentColor:HidWithColorContentBlack];
+                self.isTaskTime = NO;
             }
         } withFailureBlock:^(NSError *error) {
             if (error) {
@@ -2018,7 +2103,11 @@ static BOOL over = NO;
     if (timeInt < 3600) {
         minuteString = [NSString stringWithFormat:@"%d", timeInt / 60];
     }
-    return @{@"dayString":dayString,@"hourString":hourString,@"minuteString":minuteString};
+    return @{
+             @"dayString":dayString,
+             @"hourString":hourString,
+             @"minuteString":minuteString
+             };
 }
 
 #pragma mark - 获取当前的时间

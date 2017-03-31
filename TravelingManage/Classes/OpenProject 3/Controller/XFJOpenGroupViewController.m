@@ -480,6 +480,7 @@
             [userDefaults setObject:[NSString stringWithFormat:@"%@",self.dict1]forKey:@"TEAMID"];
             [userDefaults synchronize];
             homeController.isProjectItem = YES;
+            homeController.isSecondProjectItem = YES;
             homeController.isFindTeamList = YES;
             [wself presentViewController:navVC animated:YES completion:nil];
         }

@@ -56,9 +56,35 @@
     
     //显示第0个控制器
     [self addChildVCIntoScrollView:0];
-    
+    if (self.strNumber == 2) {
+        for (UIView *subView in self.titleView.subviews) {
+            if ([subView isKindOfClass:[UIButton class]]) {
+                if (subView.tag == 2) {
+                    NSLog(@"subview==%@",subView);
+                    [self titleMineTeamButtonClick:(UIButton *)subView];
+                }
+            }
+        }
+    }else if (self.strNumber == 3) {
+        for (UIView *subView in self.titleView.subviews) {
+            if ([subView isKindOfClass:[UIButton class]]) {
+                if (subView.tag == 3) {
+                    NSLog(@"subview==%@",subView);
+                    [self titleMineTeamButtonClick:(UIButton *)subView];
+                }
+            }
+        }
+    }else if (self.strNumber == 4){
+        for (UIView *subView in self.titleView.subviews) {
+            if ([subView isKindOfClass:[UIButton class]]) {
+                if (subView.tag == 4) {
+                    NSLog(@"subview==%@",subView);
+                    [self titleMineTeamButtonClick:(UIButton *)subView];
+                }
+            }
+        }
+    }
 }
-
 
 #pragma mark - 所有的请求接口
 - (void)setAllRequest
@@ -232,6 +258,7 @@
 - (void)setStrNumber:(NSInteger)strNumber
 {
     _strNumber = strNumber;
+    
 }
 
 - (void)contentWithNameLabel:(UILabel *)nameLabel contentButton:(UIButton *)contentButton

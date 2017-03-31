@@ -9,6 +9,7 @@
 #import "PersonalInformationViewController.h"
 #import "HomeViewController.h"
 #import "LoginViewController.h"
+#import "JTNavigationController.h"
 @interface PersonalInformationViewController ()<UITextFieldDelegate>
 @property(nonatomic,strong)UIImageView *backgroundImage;//背景图片
 @property(nonatomic,strong)UIImageView *backImage;//返回
@@ -256,12 +257,8 @@
                                     @"userName"  : self.nameTextF.text,
                                     };
     [GRNetRequestClass POST:REGISTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"注册responseObject:%@",responseObject);
-        NSLog(@"注册dictParaments:%@",dictParaments);
         if ([responseObject[@"msg"] isEqualToString:@"success"]) {
             [MBProgressHUD showHUDMsg:@"注册成功"];
-    //            LoginViewController *LoginVC = [[LoginViewController alloc] init];
-    //            [self.navigationController pushViewController:LoginVC animated:YES];
             //登录
             [self requestLogin];
         }else{
@@ -278,10 +275,12 @@
 {
     __weak typeof(self) weakself = self;
     NSDictionary *dictParaments = @{
-                                    @"userMobile" : self.phoneTextF.text,
-                                    //  @"registrationId":@"10"
+                                    @"userMobile" : self.phoneNum_text,
+                                    @"registrationId":@10,
                                     @"code" : self.idCode_text,
+                                    @"terminal":@2
                                     };
+    NSLog(@"--------------登录参数是 :%@",dictParaments);
     [GRNetRequestClass POST:LOGINURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         [MBProgressHUD hidenHud];
         if (responseObject) {
@@ -298,7 +297,9 @@
                 NSLog(@"userName:%@",[_user objectForKey:@"userName"]);
                 NSLog(@"idCard:%@",[_user objectForKey:@"idCard"]);
                 HomeViewController *homeVC = [[HomeViewController alloc] init];
-                [weakself.navigationController pushViewController:homeVC animated:YES];
+                JTNavigationController *navVC = [[JTNavigationController alloc] initWithRootViewController:homeVC];
+                [weakself presentViewController:navVC animated:YES completion:nil];
+//                [weakself.navigationController pushViewController:homeVC animated:YES];
             }
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {

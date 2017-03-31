@@ -10,6 +10,7 @@
 #import "XFJChooseSceneryTableViewCell.h"
 #import "XFJFindAttractionsListItem.h"
 #import "XFJChooseHotelFooterView.h"
+#import "XFJChooseScreneryTitleTableViewCell.h"
 
 @interface XFJChooseHotelSignView() <UITableViewDataSource,UITableViewDelegate>
 
@@ -17,6 +18,8 @@
 @property (nonatomic, assign) NSIndexPath *selIndex;//单选，当前选中的行
 @property (nonatomic, strong) XFJFindAttractionsListItem *findAttractionsListItem;
 @property (nonatomic, strong) XFJChooseHotelFooterView *chooseHotelFooterView;
+@property (nonatomic, strong) XFJChooseScreneryTitleTableViewCell *chooseScreneryTitleTableViewCell;
+
 
 @end
 
@@ -27,14 +30,14 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor redColor];
         [self addSubview:self.chooseHotelSign_tableView];
-        [self addSubview:self.chooseHotelFooterView];
+//        [self addSubview:self.chooseHotelFooterView];
         [self.chooseHotelSign_tableView registerClass:[XFJChooseSceneryTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell];
-        [self.chooseHotelFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self.mas_left);
-            make.right.mas_equalTo(self.mas_right);
-            make.height.mas_equalTo(60.0);
-            make.bottom.mas_equalTo(self.mas_bottom);
-        }];
+//        [self.chooseHotelFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(self.mas_left);
+//            make.right.mas_equalTo(self.mas_right);
+//            make.height.mas_equalTo(60.0);
+//            make.bottom.mas_equalTo(self.mas_bottom);
+//        }];
         __weak __typeof(self)wself = self;
         self.chooseHotelFooterView.sureChoose_buttonClickBlock = ^() {
             if (wself.findAttractionsListItem == nil) {
@@ -71,6 +74,16 @@
     return _chooseHotelFooterView;
 }
 
+- (XFJChooseScreneryTitleTableViewCell *)chooseScreneryTitleTableViewCell
+{
+    if (_chooseScreneryTitleTableViewCell == nil) {
+        _chooseScreneryTitleTableViewCell = [[XFJChooseScreneryTitleTableViewCell alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 60)];
+        [_chooseScreneryTitleTableViewCell screneryTitle:@"请选择您所在酒店"];
+    }
+    return _chooseScreneryTitleTableViewCell;
+}
+
+
 - (UITableView *)chooseHotelSign_tableView
 {
     if (_chooseHotelSign_tableView == nil) {
@@ -82,6 +95,8 @@
         _chooseHotelSign_tableView.layer.borderWidth = 0.5;
         _chooseHotelSign_tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
         _chooseHotelSign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
+        _chooseHotelSign_tableView.tableFooterView = self.chooseHotelFooterView;
+        _chooseHotelSign_tableView.tableHeaderView = self.chooseScreneryTitleTableViewCell;
     }
     return _chooseHotelSign_tableView;
 }

@@ -31,9 +31,9 @@
 //全部控制器
 @property (nonatomic, copy) void (^pushAllTeamTaskBlock)();
 //待审核
-@property (nonatomic, copy) void (^pushCheckTeamBlock)();
+@property (nonatomic, copy) void (^pushCheckTeamBlock)(NSInteger);
 //待评价
-@property (nonatomic, copy) void (^pushPleaseAskingBlock)();
+@property (nonatomic, copy) void (^pushPleaseAskingBlock)(NSInteger);
 //点击侧滑栏跳转到主界面
 @property (nonatomic, copy) void (^presentToHomeController)(XFJLeftFindTeamInfoItem *,BOOL,BOOL);
 //跳转到通知页面

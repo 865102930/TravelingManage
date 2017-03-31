@@ -191,18 +191,18 @@
     }
 }
 #pragma mark - 待审核
-- (void)pushToPleaseCheckTeamController
+- (void)pushToPleaseCheckTeamController:(NSInteger)strNumber
 {
     if (self.pushCheckTeamBlock) {
-        self.pushCheckTeamBlock();
+        self.pushCheckTeamBlock(strNumber);
     }
 }
 
 #pragma makr - 待评价
-- (void)pushToPleaseAskingTeamController
+- (void)pushToPleaseAskingTeamController:(NSInteger)strNumber
 {
     if (self.pushPleaseAskingBlock) {
-        self.pushPleaseAskingBlock();
+        self.pushPleaseAskingBlock(strNumber);
     }
 }
 

@@ -9,11 +9,13 @@
 #import "XFJFindAttracUserListView.h"
 #import "XFJFindAttracUserListTableViewCell.h"
 #import "XFJFindAttracUserListFooterView.h"
+#import "XFJChooseScreneryTitleTableViewCell.h"
 
 @interface XFJFindAttracUserListView() <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *findAttracUserList_tableView;
 @property (nonatomic, strong) XFJFindAttracUserListFooterView *findAttracUserListFooterView;
+@property (nonatomic, strong) XFJChooseScreneryTitleTableViewCell *chooseScreneryTitleTableViewCell;
 @property (nonatomic, strong) NSMutableArray *contacts;
 //定义一个可变数组用来装点击的cell
 @property (nonatomic, strong) NSMutableArray *indexPathArray;
@@ -27,14 +29,14 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor redColor];
         [self addSubview:self.findAttracUserList_tableView];
-        [self.findAttracUserList_tableView addSubview:self.findAttracUserListFooterView];
+//        [self.findAttracUserList_tableView addSubview:self.findAttracUserListFooterView];
         [self.findAttracUserList_tableView registerClass:[XFJFindAttracUserListTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJFindAttracUserListTableViewCell];
-        [self.findAttracUserListFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(self.mas_bottom);
-            make.left.mas_equalTo(self.mas_left);
-            make.right.mas_equalTo(self.mas_right);
-            make.height.mas_equalTo(60.0);
-        }];
+//        [self.findAttracUserListFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.bottom.mas_equalTo(self.mas_bottom);
+//            make.left.mas_equalTo(self.mas_left);
+//            make.right.mas_equalTo(self.mas_right);
+//            make.height.mas_equalTo(60.0);
+//        }];
         __weak __typeof(self)wself = self;
         self.findAttracUserListFooterView.sureUserButtonBlock = ^() {
             if (wself.indexPath_array.count == 0) {
@@ -78,6 +80,14 @@
     }
     return _indexPath_array;
 }
+- (XFJChooseScreneryTitleTableViewCell *)chooseScreneryTitleTableViewCell
+{
+    if (_chooseScreneryTitleTableViewCell == nil) {
+        _chooseScreneryTitleTableViewCell = [[XFJChooseScreneryTitleTableViewCell alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 60)];
+        [_chooseScreneryTitleTableViewCell screneryTitle:@"请选择旅游局"];
+    }
+    return _chooseScreneryTitleTableViewCell;
+}
 
 - (void)setFindAttracUserListItem:(NSMutableArray<XFJFindAttracUserListItem *> *)findAttracUserListItem
 {
@@ -105,6 +115,8 @@
         _findAttracUserList_tableView.layer.borderWidth = 0.5;
         _findAttracUserList_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
         _findAttracUserList_tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
+        _findAttracUserList_tableView.tableFooterView = self.findAttracUserListFooterView;
+        _findAttracUserList_tableView.tableHeaderView = self.chooseScreneryTitleTableViewCell;
     }
     return _findAttracUserList_tableView;
 }

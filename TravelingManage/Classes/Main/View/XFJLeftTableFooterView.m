@@ -331,16 +331,18 @@
 - (void)checkPending
 {
     NSLog(@"主人,您点击了待审核按钮~~");
-    if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseCheckTeamController)]) {
-        [self.delegate pushToPleaseCheckTeamController];
+    NSInteger strNumber = 3;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseCheckTeamController:)]) {
+        [self.delegate pushToPleaseCheckTeamController:strNumber];
     }
 }
 
 - (void)pleaseAppraise
 {
     NSLog(@"主人,您点击了待评价按钮~~");
-    if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseAskingTeamController)]) {
-        [self.delegate pushToPleaseAskingTeamController];
+    NSInteger strNumber = 4;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseAskingTeamController:)]) {
+        [self.delegate pushToPleaseAskingTeamController:strNumber];
     }
 }
 
