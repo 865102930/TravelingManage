@@ -10,11 +10,13 @@
 #import "XFJChooseSceneryTableViewCell.h"
 #import "XFJChooseSceneryFooterView.h"
 #import "XFJFindAttractionsListItem.h"
+#import "XFJChooseScreneryTitleTableViewCell.h"
 
 @interface XFJChooseScenerySignView() <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *chooseScenerySign_tableView;
 @property (nonatomic, strong) XFJChooseSceneryFooterView *chooseSceneryFooterView;
+@property (nonatomic, strong) XFJChooseScreneryTitleTableViewCell *chooseScreneryTitleTableViewCell;
 @property (nonatomic, assign) NSIndexPath *selIndex;//单选，当前选中的行
 @property (nonatomic, strong) XFJFindAttractionsListItem *findAttractionsListItem;
 
@@ -28,14 +30,14 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor redColor];
         [self addSubview:self.chooseScenerySign_tableView];
-        [self addSubview:self.chooseSceneryFooterView];
+//        [self addSubview:self.chooseSceneryFooterView];
         [self.chooseScenerySign_tableView registerClass:[XFJChooseSceneryTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell];
-        [self.chooseSceneryFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self.mas_left);
-            make.right.mas_equalTo(self.mas_right);
-            make.height.mas_equalTo(60.0);
-            make.bottom.mas_equalTo(self.mas_bottom);
-        }];
+//        [self.chooseSceneryFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(self.mas_left);
+//            make.right.mas_equalTo(self.mas_right);
+//            make.height.mas_equalTo(60.0);
+//            make.bottom.mas_equalTo(self.mas_bottom);
+//        }];
         __weak __typeof(self)wself = self;
         self.chooseSceneryFooterView.sureChoose_buttonClickBlock = ^() {
             if (wself.findAttractionsListItem == nil) {
@@ -72,6 +74,15 @@
     return _chooseSceneryFooterView;
 }
 
+- (XFJChooseScreneryTitleTableViewCell *)chooseScreneryTitleTableViewCell
+{
+    if (_chooseScreneryTitleTableViewCell == nil) {
+        _chooseScreneryTitleTableViewCell = [[XFJChooseScreneryTitleTableViewCell alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 60)];
+        [_chooseScreneryTitleTableViewCell screneryTitle:@"请选择您所在的景区"];
+    }
+    return _chooseScreneryTitleTableViewCell;
+}
+
 - (UITableView *)chooseScenerySign_tableView
 {
     if (_chooseScenerySign_tableView == nil) {
@@ -84,6 +95,8 @@
         _chooseScenerySign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
         _chooseScenerySign_tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
         _chooseScenerySign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
+        _chooseScenerySign_tableView.tableHeaderView = self.chooseScreneryTitleTableViewCell;
+        _chooseScenerySign_tableView.tableFooterView = self.chooseSceneryFooterView;
     }
     return _chooseScenerySign_tableView;
 }

@@ -523,8 +523,6 @@ static BOOL over = NO;
     [super viewWillAppear:animated];
     __weak __typeof(self)wself = self;
     self.sign_view.signButtonClickBlock = ^() {
-        //点击签到的时候请求这个获取管理员的接口
-//        [wself requestWithAttractions_id:wself.attractions_id];
         if (wself.isContains) {//在景区范围内
             //先判断是否在范围内(如果不在就直接返回,否则就直接进行下面的步骤)
             [wself signButtonClick1:wself.teamNumber teamId:wself.teamId userId:wself.allUserStr];
@@ -534,6 +532,17 @@ static BOOL over = NO;
         }
     };
     
+}
+
+#pragma mark - 判断是否含有除数字以外的字符
+- (BOOL) deptNumInputShouldNumber:(NSString *)str
+{
+    NSString *regex = @"[0-9]*";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    if ([pred evaluateWithObject:str]) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - 根据景点id获取管理员的信息

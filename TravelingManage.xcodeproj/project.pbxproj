@@ -198,6 +198,7 @@
 		3A9EB5CF1E5C495C0064E61B /* XFJPurposeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EB5CE1E5C495C0064E61B /* XFJPurposeItem.m */; };
 		3A9EB5D21E5C50C90064E61B /* XFJTeamPropertiesItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EB5D11E5C50C90064E61B /* XFJTeamPropertiesItem.m */; };
 		3A9EB5D51E5C64750064E61B /* XFJCarNumberItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EB5D41E5C64750064E61B /* XFJCarNumberItem.m */; };
+		3AA10DEB1E8D2A8E00A55648 /* XFJChooseScreneryTitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA10DEA1E8D2A8E00A55648 /* XFJChooseScreneryTitleTableViewCell.m */; };
 		3AA475091E5E8E7700FEB005 /* XFJFindAttractionsListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA475081E5E8E7700FEB005 /* XFJFindAttractionsListItem.m */; };
 		3AA4750D1E5EA44F00FEB005 /* wodeweizhi.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AA4750A1E5EA44F00FEB005 /* wodeweizhi.png */; };
 		3AA4750E1E5EA44F00FEB005 /* wodeweizhi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AA4750B1E5EA44F00FEB005 /* wodeweizhi@2x.png */; };
@@ -667,6 +668,8 @@
 		3A9EB5D11E5C50C90064E61B /* XFJTeamPropertiesItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamPropertiesItem.m; sourceTree = "<group>"; };
 		3A9EB5D31E5C64750064E61B /* XFJCarNumberItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJCarNumberItem.h; sourceTree = "<group>"; };
 		3A9EB5D41E5C64750064E61B /* XFJCarNumberItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCarNumberItem.m; sourceTree = "<group>"; };
+		3AA10DE91E8D2A8E00A55648 /* XFJChooseScreneryTitleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJChooseScreneryTitleTableViewCell.h; sourceTree = "<group>"; };
+		3AA10DEA1E8D2A8E00A55648 /* XFJChooseScreneryTitleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJChooseScreneryTitleTableViewCell.m; sourceTree = "<group>"; };
 		3AA475071E5E8E7700FEB005 /* XFJFindAttractionsListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindAttractionsListItem.h; sourceTree = "<group>"; };
 		3AA475081E5E8E7700FEB005 /* XFJFindAttractionsListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindAttractionsListItem.m; sourceTree = "<group>"; };
 		3AA4750A1E5EA44F00FEB005 /* wodeweizhi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wodeweizhi.png; sourceTree = "<group>"; };
@@ -1512,6 +1515,8 @@
 				3A02C0A01E73C03A00966384 /* XFJChooseScenerySignView.m */,
 				3A02C0A21E73C7A600966384 /* XFJChooseSceneryTableViewCell.h */,
 				3A02C0A31E73C7A600966384 /* XFJChooseSceneryTableViewCell.m */,
+				3AA10DE91E8D2A8E00A55648 /* XFJChooseScreneryTitleTableViewCell.h */,
+				3AA10DEA1E8D2A8E00A55648 /* XFJChooseScreneryTitleTableViewCell.m */,
 				3A6239161E73E02B00D045BA /* XFJChooseSceneryFooterView.h */,
 				3A6239171E73E02B00D045BA /* XFJChooseSceneryFooterView.m */,
 				3A6239191E754E8800D045BA /* XFJSureUpPhotosView.h */,
@@ -2171,6 +2176,7 @@
 				3A18E54A1E5D6FB400BFE891 /* XFJMinusCarNumTableViewCell.m in Sources */,
 				3A18E5521E5D6FB400BFE891 /* XFJVoucherPhotosView.m in Sources */,
 				1CFDFE201E542C65001D6300 /* TZPhotoPreviewCell.m in Sources */,
+				3AA10DEB1E8D2A8E00A55648 /* XFJChooseScreneryTitleTableViewCell.m in Sources */,
 				3A756F311E66E3D4005D2C02 /* XFJFindTeamInfoByStateItem.m in Sources */,
 				3A7A510C1E4B0219004FFB0F /* XFJLeftTableHeaderView.m in Sources */,
 				1CFDFE511E542C84001D6300 /* JFImageCollectionViewController.m in Sources */,

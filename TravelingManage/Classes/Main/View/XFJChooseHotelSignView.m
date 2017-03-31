@@ -58,7 +58,6 @@
 - (void)setHotel_array:(NSMutableArray *)hotel_array
 {
     _hotel_array = hotel_array;
-    
     [self.chooseHotelSign_tableView reloadData];
 }
 
