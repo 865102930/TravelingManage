@@ -153,14 +153,15 @@
     if(self.dataArr.count == 0){
         cell.photoImg = nil;
     }else{
+        NSLog(@"indexPath.item的值是 :%zd-------%zd",indexPath.item,self.dataArr.count - 1);
         cell.photoImg = indexPath.item <= self.dataArr.count - 1 ? self.dataArr[indexPath.item] : nil;
     }
     return cell;
 }
 
 #pragma mark - cell的点击
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
     NSInteger index = 0;
     if (self.dataArr.count == 0) {
         index = 0;
@@ -191,7 +192,7 @@
             return;
         }
     }else {
-        if (indexPath.row + 1 < index ) {
+        if (indexPath.row + 1 < index) {
             if([self.delegate respondsToSelector:@selector(jumpCell:indexPath:array:)]) {
                 [self.delegate jumpCell:self indexPath:indexPath array:self.dataArr];
             }
@@ -250,9 +251,7 @@
                 [weakself.collectionView reloadData];
             });
         }
-        
     });
 }
-
 
 @end

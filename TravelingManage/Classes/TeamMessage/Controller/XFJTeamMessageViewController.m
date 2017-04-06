@@ -222,7 +222,6 @@
             [manager POST:UPLOADIMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                 [formData appendPartWithFileData:imageData name:@"file" fileName:@"image.jpg" mimeType:@"image/jpg"];
             } progress:^(NSProgress * _Nonnull uploadProgress) {
-                
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                 NSString *root = dict[@"object"];
@@ -437,6 +436,7 @@
             wself.generalMessageView.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
             [wself.image_array addObject:wself.generalMessageView.findTeamTasksItem[0].certificateImg];
             wself.upPhotosOpenTeamMessageView.imageView_array = wself.image_array;
+//            wself.dataArray = wself.image_array;
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
@@ -448,6 +448,7 @@
 #pragma mark - 凭证图片查询
 - (void)requestCertificateImgWithTeamId
 {
+    NSLog(@"----------传递的团队id参数是 :%@",[NSString stringWithFormat:@"%zd",self.findTeamInfoByState_Id]);
     __weak __typeof(self)wself = self;
     [GRNetRequestClass POST:FINDTEAMVEHICLESURL params:@{@"teamId":[NSString stringWithFormat:@"%zd",self.findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
@@ -470,6 +471,7 @@
             NSLog(@"+++++++++++获取到的车牌的信息是 :%@",responseObject);
             wself.findTeamCarImageItem_array = [XFJFindTeamCarImageItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]];
             wself.carPhotosWithPerfectView.carImageView_array = wself.findTeamCarImageItem_array;
+            wself.dataArr = wself.findTeamCarImageItem_array;
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
@@ -493,7 +495,6 @@
             wself.findCustomAttrListItemArray = [XFJFindCustomAttrListItem mj_objectArrayWithKeyValuesArray:rowsArray];
             for (NSInteger i = 0; i < wself.findCustomAttrListItemArray.count; i++) {
                 int attrType = wself.findCustomAttrListItemArray[i].attrType;
-//                [wself.attrTypeArray addObject:attrType];
                 [wself.attrTypeArray addObject:[NSString stringWithFormat:@"%d",attrType]];
                 NSLog(@"+++++++++++返回的自定字段信息是 :%d",attrType);
             }
@@ -531,8 +532,6 @@
         }
         _scroll_view.backgroundColor = [UIColor whiteColor];
         _scroll_view.showsHorizontalScrollIndicator = NO;
-//        _scroll_view.scrollEnabled = YES;
-//        _scroll_view.pagingEnabled = YES;
     }
     return _scroll_view;
 }
@@ -804,11 +803,11 @@
         return cell;
     }else if ([ty_pe intValue] == 5) {
         XFJSixAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSixAttributeTableViewCell forIndexPath:indexPath];
-        NSLog(@"---------获取的back值是5 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
+//        NSLog(@"---------获取的back值是5 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         return cell;
     }else if ([ty_pe intValue] == 6) {
         XFJSevenTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJSevenTableViewCell forIndexPath:indexPath];
-        NSLog(@"---------获取的back值是6 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
+//        NSLog(@"---------获取的back值是6 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         __weak __typeof(self)wself = self;
         cell.presentPickPhotosBlock = ^(TZImagePickerController *pickerController) {
           [wself presentViewController:pickerController animated:YES completion:nil];
