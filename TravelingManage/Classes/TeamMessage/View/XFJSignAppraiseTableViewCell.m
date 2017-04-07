@@ -10,7 +10,6 @@
 #import "SYStarRatingView.h"
 
 @interface XFJSignAppraiseTableViewCell() <StarRatingViewDelegate>
-
 @property (nonatomic, strong) UIView *line_view;
 @property (nonatomic, strong) UIImageView *signTitle_imageView;
 @property (nonatomic, strong) UILabel *signTitle_label;
