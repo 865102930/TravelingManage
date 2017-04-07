@@ -14,4 +14,10 @@
 //目的属性类型
 @property (nonatomic, strong) NSString *paramName;
 
+//目的属性id
+@property (nonatomic, assign) NSInteger purpose_id;
+
+@property (nonatomic, assign) NSInteger paramVal;
+
+
 @end

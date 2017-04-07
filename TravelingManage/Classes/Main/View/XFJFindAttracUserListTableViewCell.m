@@ -30,9 +30,9 @@
             make.centerY.mas_equalTo(self.mas_centerY);
         }];
         [self.line_view mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self.mas_left).mas_offset(15.0);
-            make.right.mas_equalTo(self.mas_right).mas_offset(-15.0);
-            make.height.mas_equalTo(0.5);
+            make.left.mas_equalTo(self.mas_left);
+            make.right.mas_equalTo(self.mas_right);
+            make.height.mas_equalTo(1.0);
             make.bottom.mas_equalTo(self.mas_bottom);
         }];
         [self.m_checkImageView mas_updateConstraints:^(MASConstraintMaker *make) {

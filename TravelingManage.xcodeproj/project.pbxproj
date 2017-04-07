@@ -24,7 +24,6 @@
 		1CB523E11E51AA8900A205C3 /* AnnouncementCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523E01E51AA8900A205C3 /* AnnouncementCell.m */; };
 		1CB523E41E51ABA100A205C3 /* AnnouncementModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523E31E51ABA100A205C3 /* AnnouncementModel.m */; };
 		1CB523EA1E51AFF600A205C3 /* AnnouncementDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB523E91E51AFF600A205C3 /* AnnouncementDetailViewController.m */; };
-		1CB5240A1E53080C00A205C3 /* area.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1CB524091E53080C00A205C3 /* area.plist */; };
 		1CB5240C1E53082900A205C3 /* down_dark0.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CB5240B1E53082900A205C3 /* down_dark0.png */; };
 		1CFDFDE81E53E3DD001D6300 /* AnnouncementDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFDFDE71E53E3DD001D6300 /* AnnouncementDetailModel.m */; };
 		1CFDFDEB1E541CBB001D6300 /* AnnouncementDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFDFDEA1E541CBB001D6300 /* AnnouncementDetailCell.m */; };
@@ -300,6 +299,7 @@
 		3AE849EB1E543EE500A71C5E /* XFJPleaseCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849EA1E543EE500A71C5E /* XFJPleaseCheckViewController.m */; };
 		3AE849EE1E543F1300A71C5E /* XFJPleaseAskingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849ED1E543F1300A71C5E /* XFJPleaseAskingViewController.m */; };
 		3AE849F11E54410F00A71C5E /* XFJSubscribeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE849F01E54410F00A71C5E /* XFJSubscribeButton.m */; };
+		3AEC804E1E97268C005EF4E0 /* area.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AEC804D1E97268C005EF4E0 /* area.plist */; };
 		3AEE6C011E6402B400410412 /* XFJTeamSignListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE6C001E6402B400410412 /* XFJTeamSignListItem.m */; };
 		3AEE6C081E641F6F00410412 /* group-.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AEE6C021E641F6F00410412 /* group-.png */; };
 		3AEE6C091E641F6F00410412 /* group-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AEE6C031E641F6F00410412 /* group-@2x.png */; };
@@ -371,7 +371,6 @@
 		1CB523E31E51ABA100A205C3 /* AnnouncementModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnouncementModel.m; sourceTree = "<group>"; };
 		1CB523E81E51AFF600A205C3 /* AnnouncementDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnnouncementDetailViewController.h; path = TravelingManage/Classes/Notice/AnnouncementDetailViewController.h; sourceTree = SOURCE_ROOT; };
 		1CB523E91E51AFF600A205C3 /* AnnouncementDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnnouncementDetailViewController.m; path = TravelingManage/Classes/Notice/AnnouncementDetailViewController.m; sourceTree = SOURCE_ROOT; };
-		1CB524091E53080C00A205C3 /* area.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = area.plist; sourceTree = "<group>"; };
 		1CB5240B1E53082900A205C3 /* down_dark0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_dark0.png; sourceTree = "<group>"; };
 		1CFDFDE61E53E3DD001D6300 /* AnnouncementDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnouncementDetailModel.h; sourceTree = "<group>"; };
 		1CFDFDE71E53E3DD001D6300 /* AnnouncementDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnouncementDetailModel.m; sourceTree = "<group>"; };
@@ -800,6 +799,7 @@
 		3AE849ED1E543F1300A71C5E /* XFJPleaseAskingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJPleaseAskingViewController.m; sourceTree = "<group>"; };
 		3AE849EF1E54410F00A71C5E /* XFJSubscribeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSubscribeButton.h; sourceTree = "<group>"; };
 		3AE849F01E54410F00A71C5E /* XFJSubscribeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSubscribeButton.m; sourceTree = "<group>"; };
+		3AEC804D1E97268C005EF4E0 /* area.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = area.plist; sourceTree = "<group>"; };
 		3AEE6BFF1E6402B400410412 /* XFJTeamSignListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJTeamSignListItem.h; sourceTree = "<group>"; };
 		3AEE6C001E6402B400410412 /* XFJTeamSignListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJTeamSignListItem.m; sourceTree = "<group>"; };
 		3AEE6C021E641F6F00410412 /* group-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group-.png"; sourceTree = "<group>"; };
@@ -1200,7 +1200,7 @@
 				3A1B7AE21E48053C00A5B22D /* AppDelegate.h */,
 				3A1B7AE31E48053C00A5B22D /* AppDelegate.m */,
 				3A1B7AE41E48053C00A5B22D /* Info.plist */,
-				1CB524091E53080C00A205C3 /* area.plist */,
+				3AEC804D1E97268C005EF4E0 /* area.plist */,
 				3A1B7AE51E48053C00A5B22D /* main.m */,
 			);
 			path = Other;
@@ -1964,7 +1964,6 @@
 				3A9474A81E4D92CA002F1F9B /* Assets.xcassets in Resources */,
 				3A7A51191E4B04AF004FFB0F /* xiugai@3x.png in Resources */,
 				3AE2FF3C1E4D491600E380F9 /* gonggao@2x.png in Resources */,
-				1CB5240A1E53080C00A205C3 /* area.plist in Resources */,
 				3A9B892D1E4C45C4004E3B05 /* triangle@2x.png in Resources */,
 				3AFFB2811E6FFA9D0013185F /* photo_delete@2x.png in Resources */,
 				3AE2FF471E4D4FA100E380F9 /* laba.png in Resources */,
@@ -1988,6 +1987,7 @@
 				3AC8032C1E6D53BF005D2B71 /* backgroundStar.png in Resources */,
 				3A756F181E657583005D2C02 /* tishi@2x.png in Resources */,
 				3AE7FA401E55506C003E3505 /* huise@2x.png in Resources */,
+				3AEC804E1E97268C005EF4E0 /* area.plist in Resources */,
 				3A9B892C1E4C45C4004E3B05 /* triangle.png in Resources */,
 				3A9B89201E4C1C10004E3B05 /* quanbu.png in Resources */,
 				3A7A51181E4B04AF004FFB0F /* xiugai@2x.png in Resources */,

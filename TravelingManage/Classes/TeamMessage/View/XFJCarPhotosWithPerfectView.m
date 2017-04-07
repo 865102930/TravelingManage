@@ -24,6 +24,8 @@
 
 @end
 
+
+
 @implementation XFJCarPhotosWithPerfectView
 
 - (instancetype)initWithFrame:(CGRect)frame

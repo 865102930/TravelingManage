@@ -21,6 +21,7 @@
 @property (nonatomic, strong) UILabel *mintesContent_label;
 @property (nonatomic, strong) UILabel *mintes_label;
 @property (nonatomic, strong) UIButton *return_button;
+@property (nonatomic, strong) UIView *redCicle_view;
 
 @end
 
@@ -42,6 +43,7 @@
         [self addSubview:self.people_label];
         [self addSubview:self.peopleContent_label];
         [self addSubview:self.peopleTitle_imageView];
+        [self addSubview:self.redCicle_view];
         [self.sceneryMessage_label mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(self.mas_centerY);
             make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
@@ -58,17 +60,17 @@
             make.height.mas_equalTo(12.0);
             make.width.mas_equalTo(12.0);
         }];
-        [self.mintes_label mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.centerY.mas_equalTo(self.sceneryMessage_label.mas_centerY);
-            make.right.mas_equalTo(self.return_button.mas_left).mas_offset(-9.0);
-        }];
-        [self.mintesContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.centerY.mas_equalTo(self.sceneryMessage_label.mas_centerY);
-            make.right.mas_equalTo(self.mintes_label.mas_left).mas_offset(-3.0);
-        }];
+//        [self.mintes_label mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.centerY.mas_equalTo(self.sceneryMessage_label.mas_centerY);
+//            make.right.mas_equalTo(self.return_button.mas_left).mas_offset(-9.0);
+//        }];
+//        [self.mintesContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.centerY.mas_equalTo(self.sceneryMessage_label.mas_centerY);
+//            make.right.mas_equalTo(self.mintes_label.mas_left).mas_offset(-3.0);
+//        }];
         [self.hour_label mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(self.sceneryMessage_label.mas_centerY);
-            make.right.mas_equalTo(self.mintesContent_label.mas_left).mas_offset(-3.0);
+            make.right.mas_equalTo(self.mas_right).mas_offset(-30.0);
         }];
         [self.hourContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(self.sceneryMessage_label.mas_centerY);
@@ -92,6 +94,11 @@
             make.centerY.mas_equalTo(self.sceneryMessage_label.mas_centerY);
             make.right.mas_equalTo(self.peopleContent_label.mas_left).mas_offset(-5.0);
         }];
+        [self.redCicle_view mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.mas_right).mas_offset(-20.0);
+            make.top.mas_equalTo(self.mas_top).mas_offset(10.0);
+            make.height.width.mas_equalTo(5.0);
+        }];
     }
     return self;
 }
@@ -103,6 +110,16 @@
         _line_view.backgroundColor = [UIColor whiteColor];
     }
     return _line_view;
+}
+
+- (UIView *)redCicle_view
+{
+    if (_redCicle_view == nil) {
+        _redCicle_view = [[UIView alloc] init];
+        _redCicle_view.layer.cornerRadius = 2.5;
+        _redCicle_view.backgroundColor = [UIColor redColor];
+    }
+    return _redCicle_view;
 }
 
 - (UILabel *)sceneryMessage_label
@@ -214,12 +231,11 @@
     //签到人数
     self.peopleContent_label.text = [NSString stringWithFormat:@"%zd",taskRowsItem.checkinNumber];
     if ([taskRowsItem.attractionsTime intValue] == 0) {
-        self.mintesContent_label.text = @"0";
         self.hourContent_label.text = @"0";
     }else {
-        NSString *teamDateStr = [NSString stringWithFormat:@"%@",taskRowsItem.attractionsTime];
-        NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@"."];
-        self.hourContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
+        self.hourContent_label.text = [NSString stringWithFormat:@"%@",taskRowsItem.attractionsTime];
+//        NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@"."];
+//        self.hourContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
         
 //        NSLog(@"=========%f",[teamDateStr floatValue] % i);
 //        self.mintesContent_label.text = [NSString stringWithFormat:@"%d",(int)mintesContent_label * 60];

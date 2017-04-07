@@ -30,9 +30,9 @@
             make.right.mas_equalTo(self.mas_right).mas_offset(-33.0);
         }];
         [self.line_view mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(15.0);
-            make.right.mas_equalTo(-15.0);
-            make.height.mas_equalTo(0.5);
+            make.left.mas_equalTo(self.mas_left);
+            make.right.mas_equalTo(self.mas_right);
+            make.height.mas_equalTo(1.0);
             make.bottom.mas_equalTo(self.mas_bottom);
         }];
         [self.sceneryContent_label mas_updateConstraints:^(MASConstraintMaker *make) {

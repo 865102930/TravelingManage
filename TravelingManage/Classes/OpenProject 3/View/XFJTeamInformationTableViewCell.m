@@ -329,7 +329,7 @@
     self.teamProperties_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
     NSString *indeStr = [NSString stringWithFormat:@"%@",self.teamDescriptionArray[indexPath.row].paramName];
     self.teamPropertiesContent_label.text = indeStr;
-    self.teamNature = indexPath.row;
+    self.teamNature = self.teamDescriptionArray[indexPath.row].paramVal;
     NSLog(@"这里获取到的是用户点击的行号数:%zd",self.teamNature);
     [self.teamDescription_tablewView removeFromSuperview];
 }

@@ -10,4 +10,11 @@
 
 @implementation XFJPurposeItem
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{
+             @"purpose_id":@"id",
+             };
+}
+
 @end

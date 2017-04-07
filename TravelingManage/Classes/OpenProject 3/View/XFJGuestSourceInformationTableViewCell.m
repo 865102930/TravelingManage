@@ -495,7 +495,7 @@
     self.goalAttribute_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
     NSString *indeStr = [NSString stringWithFormat:@"%@",self.purposeArray[indexPath.row].paramName];
     self.goalAttributeContent_label.text = indeStr;
-    self.paramName1 = indexPath.row;
+    self.paramName1 = self.purposeArray[indexPath.row].paramVal;
     [self.goalAttributeTableView removeFromSuperview];
     bgScrollView.frame = CGRectMake(-30, 0, SCREEN_WIDTH + 30, 228);
 }
