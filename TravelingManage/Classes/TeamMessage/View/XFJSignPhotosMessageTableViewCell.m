@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UILabel *signPhotosMessage_label;
 @property (nonatomic, strong) UIImageView *star_imageView;
 
+
 @end
 
 @implementation XFJSignPhotosMessageTableViewCell
@@ -132,7 +133,6 @@
     }
     _signPhotosTitle_label = photoM.signPhotosTitle_label;
     _signPhotosMessage_label = photoM.signPhotosMessage_label;
-    
 }
 
 - (void)setTaskItemRows:(XFJTaskItemRows *)taskItemRows

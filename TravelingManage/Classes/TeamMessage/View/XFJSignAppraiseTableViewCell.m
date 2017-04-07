@@ -9,12 +9,7 @@
 #import "XFJSignAppraiseTableViewCell.h"
 #import "SYStarRatingView.h"
 
-@interface XFJSignAppraiseTableViewCell() <StarRatingViewDelegate> {
-    NSInteger secentID;
-    NSInteger environmentID;
-    NSInteger facilityID;
-}
-
+@interface XFJSignAppraiseTableViewCell() <StarRatingViewDelegate>
 @property (nonatomic, strong) UIView *line_view;
 @property (nonatomic, strong) UIImageView *signTitle_imageView;
 @property (nonatomic, strong) UILabel *signTitle_label;
@@ -141,8 +136,9 @@
     return _installationEquipment_label;
 }
 
+
 #pragma mark - 评星的代理方法
--(void)starRatingView:(SYStarRatingView *)view score:(float)score
+- (void)starRatingView:(SYStarRatingView *)view score:(float)score
 {
     if (view.tag == 1) {
         NSLog(@"+++++++++++++用户的评价分数是1 :%@",[NSString stringWithFormat:@"%0.2f",score * 10]);
@@ -160,7 +156,6 @@
             self.teamScoreBlock3([NSString stringWithFormat:@"%0.2f",score * 10],self.attractionsId);
         }
     }
-    
 }
 
 - (void)setFindTeamTasksItemArray:(XFJTaskRowsItem *)findTeamTasksItemArray

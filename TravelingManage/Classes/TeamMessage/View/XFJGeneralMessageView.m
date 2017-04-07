@@ -391,8 +391,14 @@
 - (void)setFindTeamCarItem:(NSMutableArray<XFJFindTeamCarItem *> *)findTeamCarItem
 {
     _findTeamCarItem = findTeamCarItem;
-    //车牌号
-    self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",findTeamCarItem[0].vehicleNo];
+    //如果车牌号是空
+    if (findTeamCarItem.count == 0) {
+        NSLog(@"改车牌号无法显示......");
+    }else {
+        //如果车牌号不为空
+        //车牌号
+        self.carNumberContent_label.text = [NSString stringWithFormat:@"%@",findTeamCarItem[0].vehicleNo];
+    }
 }
 
 - (void)setFindTeamTasksItem:(NSMutableArray<XFJFindTeamTasksItem *> *)findTeamTasksItem
