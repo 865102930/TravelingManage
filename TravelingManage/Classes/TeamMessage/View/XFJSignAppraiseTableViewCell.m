@@ -9,7 +9,11 @@
 #import "XFJSignAppraiseTableViewCell.h"
 #import "SYStarRatingView.h"
 
-@interface XFJSignAppraiseTableViewCell() <StarRatingViewDelegate>
+@interface XFJSignAppraiseTableViewCell() <StarRatingViewDelegate> {
+    NSInteger secentID;
+    NSInteger environmentID;
+    NSInteger facilityID;
+}
 
 @property (nonatomic, strong) UIView *line_view;
 @property (nonatomic, strong) UIImageView *signTitle_imageView;

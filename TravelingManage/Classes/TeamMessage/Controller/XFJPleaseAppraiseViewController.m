@@ -18,7 +18,10 @@
 #import "HomeViewController.h"
 #import "JTNavigationController.h"
 
-@interface XFJPleaseAppraiseViewController () <UITableViewDelegate,UITableViewDataSource>
+@interface XFJPleaseAppraiseViewController () <UITableViewDelegate,UITableViewDataSource> {
+    NSMutableDictionary *dictionary;
+    NSMutableSet *set;
+}
 
 @property (nonatomic, strong) UILabel *title_label;
 @property (nonatomic, strong) UIScrollView *assessmentScroll_view;
@@ -41,6 +44,7 @@
 //景区id
 @property (nonatomic, assign) NSInteger attractionsId;
 @property (nonatomic, strong) NSMutableArray *totalStarArray;
+
 @end
 
 @implementation XFJPleaseAppraiseViewController
@@ -49,8 +53,10 @@
     [super viewDidLoad];
     //获取景区名字的接口调用
     [self requestWithTeamForNname];
-    
     [self setInitWithNav];
+    
+    dictionary = [NSMutableDictionary dictionary];
+    set = [NSMutableSet set];
     
 }
 
@@ -135,26 +141,55 @@
 #pragma mark - 提交评论
 - (void)commitEvaluate_buttonClick
 {
-    NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
-                           @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
-                           @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
-                           @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
-                           @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
-                           };
-    NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
-    [self.totalStarArray addObject:dict];
-    //转成json格式给服务器发送
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.totalStarArray options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    NSDictionary *dictParams = @{
-                                 @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],
-                                 @"teamScore":[NSString stringWithFormat:@"%zd",self.teamScore],//团队评分
-                                 @"teamComment":[NSString stringWithFormat:@"%@",self.commit_text],//团队评论
-                                 @"attrJson":jsonString//设施设备
-                                 };
+//    NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
+//                           @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
+//                           @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
+//                           @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
+//                           @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
+//                           };
+//    NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
+//    [self.totalStarArray addObject:dict];
+    NSDictionary *dictParams;
+    if (set.count > 0) {
+        NSArray *dataArray = [set allObjects];
+        NSDictionary *dictionarys = dataArray[0];
+        [self.totalStarArray removeAllObjects];
+        for (NSString *key in [dictionarys allKeys]) {
+            [self.totalStarArray addObject:dictionarys[key]];
+            NSLog(@"******%@", self.totalStarArray);
+        }
+        //转成json格式给服务器发送
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.totalStarArray options:NSJSONWritingPrettyPrinted error:&error];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        dictParams = @{
+                                     @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],
+                                     @"teamScore":[NSString stringWithFormat:@"%zd",self.teamScore],//团队评分
+                                     @"teamComment":[NSString stringWithFormat:@"%@",self.commit_text],//团队评论
+                                     @"attrJson":jsonString//设施设备
+                                     };
         NSLog(@"+++++++++打印的提交评论时候的参数值是 :%@",dictParams);
+    } else {
+        NSDictionary *dict = @{
+                               @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
+                               @"ssScore":@10,//景区服务
+                               @"ehScore":@10,//环境卫生
+                               @"feScore":@10 //设施设备
+                               };
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        dictParams = @{
+                                     @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],
+                                     @"teamScore":@5,//团队评分
+                                     @"teamComment":[NSString stringWithFormat:@"%@",self.commit_text],//团队评论
+                                     @"attrJson":jsonString//设施设备
+                                     };
+        NSLog(@"+++++++++打印的提交评论时候的参数值是 :%@",dictParams);
+    }
+    
+#warning 提交评价注释了,上传时解除
     __weak __typeof(self)wself = self;
+    
     [GRNetRequestClass POST:EVALUATEURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
             NSLog(@"--------评价成功返回的结果是 :%@",responseObject);
@@ -252,22 +287,43 @@
     if (cell == nil) {
         cell = [[XFJSignAppraiseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     __weak __typeof(self)wself = self;
     cell.teamScoreBlock1 = ^(NSString *scoreText1,NSInteger attractionsId1) {
         wself.teamScore1 = [scoreText1 intValue];
         wself.attractionsId = attractionsId1;
-        NSLog(@"获得到的scoreText1和attractionsId1是:%zd-----%zd",[scoreText1 intValue],wself.teamScore1);
+        [dic setValue:[NSString stringWithFormat:@"%ld", wself.teamScore1] forKey:@"scoreText1"];
+        [dictionary setValue:dic forKey:[NSString stringWithFormat:@"%ld", wself.attractionsId]];
+        NSLog(@"%@", dictionary);
+        NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText1 intValue],wself.teamScore1);
+        if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
+            [self dictionaryParams];
+        }
     };
     cell.teamScoreBlock2 = ^(NSString *scoreText2,NSInteger attractionsId2) {
         wself.teamScore2 = [scoreText2 intValue];
         wself.attractionsId = attractionsId2;
+        [dic setValue:[NSString stringWithFormat:@"%ld", wself.teamScore2] forKey:@"scoreText2"];
+        [dictionary setValue:dic forKey:[NSString stringWithFormat:@"%ld", wself.attractionsId]];
+        NSLog(@"%@", dictionary);
         NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText2 intValue],wself.teamScore2);
+        if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
+            [self dictionaryParams];
+        }
     };
     cell.teamScoreBlock3 = ^(NSString *scoreText3,NSInteger attractionsId3) {
         wself.teamScore3 = [scoreText3 intValue];
         wself.attractionsId = attractionsId3;
+        [dic setValue:[NSString stringWithFormat:@"%ld", wself.teamScore3] forKey:@"scoreText3"];
+        [dictionary setValue:dic forKey:[NSString stringWithFormat:@"%ld", wself.attractionsId]];
+        NSLog(@"%@", dictionary);
         NSLog(@"获得到的scoreText3和attractionsId3是:%zd-----%zd",[scoreText3 intValue],wself.teamScore3);
+        if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
+            [self dictionaryParams];
+        }
     };
+    
     cell.findTeamTasksItemArray = self.TaskRowsItemArray[indexPath.row];
     return cell;
 }
@@ -279,10 +335,11 @@
                            @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
                            @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
                            @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
-                           @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
+                           @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3] //设施设备
                            };
-    NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
-    [self.totalStarArray addObject:dict];
+//    NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
+    [dictionary setValue:dict forKey:[NSString stringWithFormat:@"%ld", self.attractionsId]];
+    [set addObject:dictionary];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
