@@ -578,6 +578,7 @@ static BOOL over = NO;
                         [wself.maskView1 removeFromSuperview];
                         [wself.view addSubview:wself.hotel_view];
                         wself.isOnlyUserSign = NO;
+                        wself.isChooseSign = NO;
                     }else {//景区
                         [wself.signTeamTwoView removeFromSuperview];
                         [wself.maskView1 removeFromSuperview];
@@ -588,7 +589,7 @@ static BOOL over = NO;
                     wself.findAttracUserListView.findAttracUserListItem = wself.findAttracUserListItem_array;
                 }
             }else {//能来到这,就说明没有管理员
-//                [MBProgressHUD showHudTipStr:@"该景区不存在管理员!" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"该景区不存在管理员!" contentColor:HidWithColorContentBlack];
                 if (wself.isOnlyUserSign == YES) {//酒店
                     [wself.signTeamTwoView removeFromSuperview];
                     [wself.maskView1 removeFromSuperview];
@@ -995,6 +996,13 @@ static BOOL over = NO;
         }
     } progress:^(float progress) {
     }];
+}
+
+#pragma mark - 在view即将消失的时候调用销毁通知
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FRESHENLEFTREQUEST" object:nil];
 }
 
 #pragma mark - 初始化签到view
