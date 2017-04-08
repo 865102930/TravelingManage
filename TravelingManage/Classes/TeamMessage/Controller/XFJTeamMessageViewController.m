@@ -434,9 +434,12 @@
         if (responseObject) {
             NSMutableArray *findArray = [responseObject objectForKey:@"rows"];
             wself.generalMessageView.findTeamTasksItem = [XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray];
-            [wself.image_array addObject:wself.generalMessageView.findTeamTasksItem[0].certificateImg];
+            if ([XFJFindTeamTasksItem mj_objectArrayWithKeyValuesArray:findArray].count == 0) {
+                return ;
+            }else {
+                [wself.image_array addObject:wself.generalMessageView.findTeamTasksItem[0].certificateImg];
+            }
             wself.upPhotosOpenTeamMessageView.imageView_array = wself.image_array;
-//            wself.dataArray = wself.image_array;
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {

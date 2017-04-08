@@ -17,6 +17,9 @@
 //天数
 @property (nonatomic, assign) NSInteger hotelStayDay;
 
+//小时
+@property (nonatomic, assign) NSInteger hotelStayHour;
+
 @property (nonatomic, copy) void (^hotelSignNoButtonClickBlock)();
 
 @property (nonatomic, strong) XFJFindTeamTaskItem *findTeamTaskItem;

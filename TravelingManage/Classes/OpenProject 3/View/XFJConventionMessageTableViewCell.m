@@ -204,7 +204,6 @@
         }
     }else if (groupText_field.tag == 10001) {
         NSLog(@"++++++++++++获取到用户输入的出团时间是:%@",groupText_field.text);
-//        self.groupTime_text = groupText_field.text;
     }
 }
 

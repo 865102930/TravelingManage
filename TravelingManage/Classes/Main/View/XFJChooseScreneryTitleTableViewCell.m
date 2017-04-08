@@ -27,9 +27,9 @@
             make.centerY.mas_equalTo(self.mas_centerY);
         }];
         [self.screneryTitleBottom_view mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(15.0);
-            make.right.mas_equalTo(-15.0);
-            make.height.mas_equalTo(0.5);
+            make.left.mas_equalTo(self.mas_left);
+            make.right.mas_equalTo(self.mas_right);
+            make.height.mas_equalTo(1.0);
             make.bottom.mas_equalTo(self.mas_bottom);
         }];
     }
@@ -40,7 +40,8 @@
 {
     if (_screneryTitle_label == nil) {
         _screneryTitle_label = [[UILabel alloc] init];
-//        _screneryTitle_label.text = @"请选择您所在的景区";
+        _screneryTitle_label.font = [UIFont fontWithName:PingFang size:15.0];
+        _screneryTitle_label.textColor = kColor0000;
     }
     return _screneryTitle_label;
 }

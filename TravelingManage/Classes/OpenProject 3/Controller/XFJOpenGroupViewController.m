@@ -419,7 +419,6 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (wself.root.length == 0) {
                     [MBProgressHUD hidenHud];
-//                    [MBProgressHUD showHudTipStr:@"图片上传失败" contentColor:HidWithColorContentBlack];
                     return ;
                 }
                 //开始任务的请求
@@ -435,13 +434,60 @@
 #pragma mark - 开始任务
 - (void)startTaskButtonClick
 {
-    NSLog(@"+++++++++++++++++接收到的车牌号码是:%@",self.strNum);
     NSNumber *traveName = [NSNumber numberWithInteger:self.conventionMessage_view.travelName];
     NSNumber *paramName1 = [NSNumber numberWithInteger:self.guestSourceInformation_view.paramName1];
     NSNumber *teamNature = [NSNumber numberWithInteger:self.teamInformation_view.teamNature];
-    if (self.conventionMessage_view.groupName_text == nil || self.conventionMessage_view.groupTime_text == nil || traveName == nil || self.strNum == nil || self.guestSourceInformation_view.selectedProvince == nil || self.guestSourceInformation_view.selectedCity == nil || self.guestSourceInformation_view.selectedArea == nil || paramName1 == nil || teamNature == nil || self.teamInformation_view.teamPeople_number == nil || self.teamInformation_view.teamDay == nil) {
-        [MBProgressHUD showHudTipStr:@"请完善必填信息" contentColor:HidWithColorContentBlack];
+    if (self.conventionMessage_view.groupName_text == nil) {
+        [MBProgressHUD showHudTipStr:@"请填写团队编号" contentColor:HidWithColorContentBlack];
         return;
+    }
+    if (self.conventionMessage_view.groupTime_text == nil) {
+        [MBProgressHUD showHudTipStr:@"请填写出团日期" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    if ([traveName isEqualToNumber:@0]) {
+        [MBProgressHUD showHudTipStr:@"请选择旅行社名称" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    if (self.strNum == nil) {
+        [MBProgressHUD showHudTipStr:@"请填写车牌号" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    if (self.guestSourceInformation_view.selectedProvince == nil) {
+        [MBProgressHUD showHudTipStr:@"请选择所在的省" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    if (self.guestSourceInformation_view.selectedCity == nil) {
+        [MBProgressHUD showHudTipStr:@"请选择所在的市" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    if ([paramName1 isEqualToNumber:@0]) {
+        [MBProgressHUD showHudTipStr:@"请选择目的属性" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    if (self.teamInformation_view.teamPeople_number == nil) {
+        [MBProgressHUD showHudTipStr:@"请选择开团人数" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    if ([teamNature isEqualToNumber:@0]) {
+        [MBProgressHUD showHudTipStr:@"请选择团队性质" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    if (self.teamInformation_view.teamDay == nil) {
+        [MBProgressHUD showHudTipStr:@"请选择行程天数" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    NSString *voucherPicRootStr;
+    NSString *rootStr;
+    if (self.voucherPicRoot == nil) {
+        voucherPicRootStr = [NSString stringWithFormat:@""];
+    }else {
+        voucherPicRootStr = [NSString stringWithFormat:@"%@",self.voucherPicRoot];
+    }
+    if (self.root == nil) {
+        rootStr = [NSString stringWithFormat:@""];
+    }else {
+        rootStr = [NSString stringWithFormat:@"%@",self.root];
     }
     NSDictionary *dictParaments = @{
                                     @"teamNo":self.conventionMessage_view.groupName_text,//团队编号
@@ -456,8 +502,8 @@
                                     @"teamNum":self.teamInformation_view.teamPeople_number,//团队人数
                                     @"teamDay":self.teamInformation_view.teamDay,//团队天数
                                     @"createuser":@7,//创建记录的用户id
-                                    @"certificateImg":[NSString stringWithFormat:@"%@",self.voucherPicRoot],//凭证图片路径
-                                    @"teamVehicleImages":[NSString stringWithFormat:@"%@",self.root],//车辆图片集合用,分割
+                                    @"certificateImg":voucherPicRootStr,//凭证图片路径
+                                    @"teamVehicleImages":rootStr,//车辆图片集合用,分割
                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]//导游id
                                     };
     NSLog(@"++++++++++++++开团传递的参数是 :%@",dictParaments);

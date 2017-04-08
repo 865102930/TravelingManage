@@ -25,7 +25,10 @@
 @property (nonatomic, strong) UILabel *inHouseTime_label;
 
 @property (nonatomic, strong) UIButton *inHouseSign_button;
-
+//小时(值)
+@property (nonatomic, strong) UILabel *inHouseSignOutHourContent_label;
+//小时(文字)
+@property (nonatomic, strong) UILabel *inHouseSignOutHour_label;
 
 @end
 
@@ -40,6 +43,8 @@
         [self addSubview:self.house_imageView];
         [self addSubview:self.houseContent_label];
         [self addSubview:self.houseName_label];
+        [self addSubview:self.inHouseSignOutHour_label];
+        [self addSubview:self.inHouseSignOutHourContent_label];
         [self addSubview:self.inHouseDay_label];
         [self addSubview:self.inHouseTimeContent_label];
         [self addSubview:self.inHouseTime_label];
@@ -71,8 +76,16 @@
             make.left.mas_equalTo(self.houseContent_label.mas_right).mas_offset(7.0);
             make.centerY.mas_equalTo(self.people_imageView.mas_centerY);
         }];
+        [self.inHouseSignOutHour_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.mas_right).mas_offset(-20.0);
+            make.centerY.mas_equalTo(self.people_imageView.mas_centerY);
+        }];
+        [self.inHouseSignOutHourContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.inHouseSignOutHour_label.mas_left).mas_offset(-7.0);
+            make.centerY.mas_equalTo(self.people_imageView.mas_centerY);
+        }];
         [self.inHouseDay_label mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(self.mas_right).mas_offset(-27.0);
+            make.right.mas_equalTo(self.inHouseSignOutHourContent_label.mas_left).mas_offset(-5.0);
             make.centerY.mas_equalTo(self.people_imageView.mas_centerY);
         }];
         [self.inHouseTimeContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -80,15 +93,16 @@
             make.centerY.mas_equalTo(self.people_imageView.mas_centerY);
         }];
         [self.inHouseTime_label mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(self.inHouseTimeContent_label.mas_left).mas_offset(-17.0);
+            make.right.mas_equalTo(self.inHouseTimeContent_label.mas_left).mas_offset(-5.0);
             make.centerY.mas_equalTo(self.people_imageView.mas_centerY);
         }];
         [self.cuttingLine_view mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(self.people_imageView.mas_centerY);
             make.width.mas_equalTo(0.3);
             make.height.mas_equalTo(14.0);
-            make.right.mas_equalTo(self.inHouseTime_label.mas_left).mas_offset(-10);
+            make.right.mas_equalTo(self.inHouseTime_label.mas_left).mas_offset(-5);
         }];
+        
         [self.inHouseSign_button mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.people_imageView.mas_bottom).mas_offset(25.0);
             make.centerX.mas_equalTo(self.mas_centerX);
@@ -144,7 +158,6 @@
 {
     if (_houseContent_label == nil) {
         _houseContent_label = [[UILabel alloc] init];
-//        _houseContent_label.text = [NSString stringWithFormat:@"%@",@"30"];
         _houseContent_label.textColor = RedColor;
         _houseContent_label.font = [UIFont fontWithName:PingFang size:14.0];
         _houseContent_label.textAlignment = NSTextAlignmentLeft;
@@ -186,15 +199,37 @@
     return _inHouseDay_label;
 }
 
+- (UILabel *)inHouseSignOutHour_label
+{
+    if (_inHouseSignOutHour_label == nil) {
+        _inHouseSignOutHour_label = [[UILabel alloc] init];
+        _inHouseSignOutHour_label.text = [NSString stringWithFormat:@"%@",@"时"];
+        _inHouseSignOutHour_label.textColor = kColor6F6F;
+        _inHouseSignOutHour_label.font = [UIFont fontWithName:PingFang size:13];
+        _inHouseSignOutHour_label.textAlignment = NSTextAlignmentLeft;
+    }
+    return _inHouseSignOutHour_label;
+}
+
+- (UILabel *)inHouseSignOutHourContent_label
+{
+    if (_inHouseSignOutHourContent_label == nil) {
+        _inHouseSignOutHourContent_label = [[UILabel alloc] init];
+        _inHouseSignOutHourContent_label.textColor = RedColor;
+        _inHouseSignOutHourContent_label.font = [UIFont fontWithName:PingFang size:14.0];
+        _inHouseSignOutHourContent_label.textAlignment = NSTextAlignmentRight;
+        _inHouseSignOutHourContent_label.text = [NSString stringWithFormat:@"%@",@"0"];
+    }
+    return _inHouseSignOutHourContent_label;
+}
+
 - (UILabel *)inHouseTimeContent_label
 {
     if (_inHouseTimeContent_label == nil) {
         _inHouseTimeContent_label = [[UILabel alloc] init];
-        //这里是将控制器中的小时数量转化为天数然后在赋值
-//        _inHouseTimeContent_label.text = [NSString stringWithFormat:@"%@",@"3"];
         _inHouseTimeContent_label.textColor = RedColor;
         _inHouseTimeContent_label.font = [UIFont fontWithName:PingFang size:14.0];
-        _inHouseTimeContent_label.textAlignment = NSTextAlignmentLeft;
+        _inHouseTimeContent_label.textAlignment = NSTextAlignmentCenter;
     }
     return _inHouseTimeContent_label;
 }
@@ -228,7 +263,6 @@
 
 - (void)hotelSignNoButton
 {
-    NSLog(@"主人~~您点击了酒店签退按钮~~");
     if (self.hotelSignNoButtonClickBlock) {
         self.hotelSignNoButtonClickBlock();
     }
@@ -246,10 +280,18 @@
     self.houseContent_label.text = [NSString stringWithFormat:@"%@",hotelSignRoomCount];
 }
 
+#pragma mark - 天数
 - (void)setHotelStayDay:(NSInteger)hotelStayDay
 {
     _hotelStayDay = hotelStayDay;
     self.inHouseTimeContent_label.text = [NSString stringWithFormat:@"%zd",hotelStayDay];
+}
+
+#pragma mark - 小时
+- (void)setHotelStayHour:(NSInteger)hotelStayHour
+{
+    _hotelStayHour = hotelStayHour;
+    self.inHouseSignOutHourContent_label.text = [NSString stringWithFormat:@"%zd",hotelStayHour];
 }
 
 - (void)setFindTeamTaskItem:(XFJFindTeamTaskItem *)findTeamTaskItem

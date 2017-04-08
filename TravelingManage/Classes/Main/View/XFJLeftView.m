@@ -67,7 +67,9 @@
 
 - (void)requestSecondLeftContent
 {
-    [self.leftTableView reloadData];
+    self.newPage = 1;
+    [self.leftFindTeamInfoItem_array removeAllObjects];
+    [self requestViewContent];
 }
 
 - (void)requestViewContent

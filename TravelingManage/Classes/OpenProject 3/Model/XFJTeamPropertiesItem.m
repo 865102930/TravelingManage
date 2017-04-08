@@ -10,4 +10,12 @@
 
 @implementation XFJTeamPropertiesItem
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{
+             @"teamProperties_id":@"id",
+             };
+}
+
+
 @end

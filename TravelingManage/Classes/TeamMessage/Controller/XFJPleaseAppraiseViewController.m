@@ -7,7 +7,6 @@
 //
 
 //跳转到评价控制器
-
 #import "XFJPleaseAppraiseViewController.h"
 #import "XFJAssessmentTeamTopView.h"
 #import "XFJOpinionAndSuggestView.h"
@@ -68,7 +67,6 @@
     }
     return _starsDict;
 }
-//------
 - (void)viewDidLoad {
     [super viewDidLoad];
     //获取景区名字的接口调用
@@ -95,10 +93,8 @@
             for (NSInteger i = 0;i < findArray.count ; i++) {
                 NSDictionary *dict = [findArray[0] objectForKey:@"tasks"];
                 wself.TaskRowsItemArray = [XFJTaskRowsItem mj_objectArrayWithKeyValuesArray:dict];
-                NSLog(@"wself.TaskRowsItemArray-------%@",wself.TaskRowsItemArray);
             }
             [wself.signAppraise_tableView reloadData];
-            NSLog(@"------------++++++++++++获取到的值是 :%@",wself.findTeamTasksItem);
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
@@ -152,11 +148,9 @@
         [wself commitEvaluate_buttonClick];
     };
     self.assessmentTeamTopView.commitStarBlock = ^(NSString *startScore){
-        NSLog(@" -------+++++++++=获取到的团队评分是:%zd",[startScore intValue]);
         wself.teamScore = [startScore intValue];
     };
     self.opinionAndSuggestView.textViewTextBlock = ^(NSString *textView_text) {
-        NSLog(@"+++++++++++++++++获取到的结束编辑的内容是 :%@",textView_text);
         wself.commit_text = textView_text;
     };
 }
@@ -190,7 +184,6 @@
                                      @"teamComment":[NSString stringWithFormat:@"%@",self.commit_text],//团队评论
                                      @"attrJson":jsonString//设施设备
                                      };
-        NSLog(@"+++++++++打印的提交评论时候的参数值是 :%@",dictParams);
     } else {
         for (XFJTaskRowsItem *item in self.TaskRowsItemArray) {
             NSDictionary *dict = @{
@@ -214,9 +207,9 @@
     }
     
     __weak __typeof(self)wself = self;
+    NSLog(@"+++++++++>>>>>>>>>>打印的评论的提交参数是 :%@",dictParams);
     [GRNetRequestClass POST:EVALUATEURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
-            NSLog(@"--------评价成功返回的结果是 :%@",responseObject);
             if ([responseObject[@"msg"] isEqualToString:@"success"]) {
                 [MBProgressHUD showHudTipStr:@"评论成功!" contentColor:HidWithColorContentBlack];
             }
@@ -226,8 +219,7 @@
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
-            NSLog(@"+++++++++返回失败的结果是 :%@",error);
-            [MBProgressHUD showHudTipStr:@"评论失败,可能是网络问题!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"评论失败,可能是网络问题" contentColor:HidWithColorContentBlack];
         }
     }];
 }
@@ -302,7 +294,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"---------------总共有多少条评价:%zd",[self.TaskRowsItemArray count]);
     return [self.TaskRowsItemArray count];
 }
 
@@ -321,8 +312,6 @@
         wself.attractionsId = attractionsId1;
         [dic setValue:[NSString stringWithFormat:@"%ld", wself.teamScore1] forKey:@"scoreText1"];
         [dictionary setValue:dic forKey:[NSString stringWithFormat:@"%ld", wself.attractionsId]];
-        NSLog(@"%@", dictionary);
-        NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText1 intValue],wself.teamScore1);
         if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
             [self dictionaryParams];
         }
@@ -338,6 +327,7 @@
         //*********   **********  *********  ********* **********
 //         [wself.starsDict setObject:scoreText1 forKey:@"ssScore"];
 //        [self.starDataArray addObjectsFromArray:self.totalStarArray];
+
     };
     
     cell.teamScoreBlock2 = ^(NSString *scoreText2,NSInteger attractionsId2) {
@@ -345,8 +335,6 @@
         wself.attractionsId = attractionsId2;
         [dic setValue:[NSString stringWithFormat:@"%ld", wself.teamScore2] forKey:@"scoreText2"];
         [dictionary setValue:dic forKey:[NSString stringWithFormat:@"%ld", wself.attractionsId]];
-        NSLog(@"%@", dictionary);
-        NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText2 intValue],wself.teamScore2);
         if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
             [self dictionaryParams];
         }
@@ -362,6 +350,7 @@
         //*********   **********  *********  ********* **********
 //        [wself.starsDict setObject:scoreText2 forKey:@"ehScore"];
 //        [self.starDataArray addObjectsFromArray:self.totalStarArray];
+
     };
     
     cell.teamScoreBlock3 = ^(NSString *scoreText3,NSInteger attractionsId3) {
@@ -369,12 +358,11 @@
         wself.attractionsId = attractionsId3;
         [dic setValue:[NSString stringWithFormat:@"%ld", wself.teamScore3] forKey:@"scoreText3"];
         [dictionary setValue:dic forKey:[NSString stringWithFormat:@"%ld", wself.attractionsId]];
-        NSLog(@"获得到的scoreText3和attractionsId3是:%zd-----%zd",[scoreText3 intValue],wself.teamScore3);
         if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
             [self dictionaryParams];
         }
     };
-    
+
     cell.findTeamTasksItemArray = self.TaskRowsItemArray[indexPath.row];
     return cell;
 }
@@ -388,7 +376,6 @@
                            @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
                            @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3] //设施设备
                            };
-//    NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
     [dictionary setValue:dict forKey:[NSString stringWithFormat:@"%ld", self.attractionsId]];
     [set addObject:dictionary];
 }
