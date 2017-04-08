@@ -45,13 +45,10 @@
 //景区id
 @property (nonatomic, assign) NSInteger attractionsId;
 @property (nonatomic, strong) NSMutableArray *totalStarArray;
-<<<<<<< .merge_file_8T3xR9
 
-=======
 /**  */
 @property (nonatomic, strong) NSMutableArray *starDataArray;
 @property (nonatomic, strong) NSMutableDictionary *starsDict;
->>>>>>> .merge_file_33jBBQ
 @end
 
 @implementation XFJPleaseAppraiseViewController
@@ -172,14 +169,13 @@
 //                           @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
 //                           @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
 //                           };
-<<<<<<< .merge_file_8T3xR9
 //    NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
 //    [self.totalStarArray addObject:dict];
     NSDictionary *dictParams;
+    [self.totalStarArray removeAllObjects];
     if (set.count > 0) {
         NSArray *dataArray = [set allObjects];
         NSDictionary *dictionarys = dataArray[0];
-        [self.totalStarArray removeAllObjects];
         for (NSString *key in [dictionarys allKeys]) {
             [self.totalStarArray addObject:dictionarys[key]];
             NSLog(@"******%@", self.totalStarArray);
@@ -196,45 +192,34 @@
                                      };
         NSLog(@"+++++++++打印的提交评论时候的参数值是 :%@",dictParams);
     } else {
-        NSDictionary *dict = @{
-                               @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
-                               @"ssScore":@10,//景区服务
-                               @"ehScore":@10,//环境卫生
-                               @"feScore":@10 //设施设备
-                               };
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        dictParams = @{
-                                     @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],
-                                     @"teamScore":@5,//团队评分
-                                     @"teamComment":[NSString stringWithFormat:@"%@",self.commit_text],//团队评论
-                                     @"attrJson":jsonString//设施设备
-                                     };
-        NSLog(@"+++++++++打印的提交评论时候的参数值是 :%@",dictParams);
+        for (XFJTaskRowsItem *item in self.TaskRowsItemArray) {
+            NSDictionary *dict = @{
+                                   @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
+                                   @"attractionsId":[NSString stringWithFormat:@"%zd",item.attractionsId],
+                                   @"ssScore":@10,//景区服务
+                                   @"ehScore":@10,//环境卫生
+                                   @"feScore":@10 //设施设备
+                                   };
+            [self.totalStarArray addObject:dict];
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.totalStarArray options:NSJSONWritingPrettyPrinted error:nil];
+            NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            dictParams = @{
+                           @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],
+                           @"teamScore":@5,//团队评分
+                           @"teamComment":[NSString stringWithFormat:@"%@",self.commit_text],//团队评论
+                           @"attrJson":jsonString//设施设备
+                           };
+            NSLog(@"+++++++++打印的提交评论时候的参数值是 :%@",dictParams);
+        }
     }
     
-#warning 提交评价注释了,上传时解除
-=======
-    NSLog(@"+++++++----------+++++最后需要提交的团队的评分参数是 :%@",self.starDataArray);
-//    [self.totalStarArray addObject:dict];
-    //转成json格式给服务器发送
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.starDataArray options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    NSDictionary *dictParams = @{
-                                 @"teamId":[NSString stringWithFormat:@"%zd",self.teamId],
-                                 @"teamScore":[NSString stringWithFormat:@"%zd",self.teamScore],//团队评分
-                                 @"teamComment":[NSString stringWithFormat:@"%@",self.commit_text],//团队评论
-                                 @"attrJson":jsonString//设施设备
-                                 };
-    NSLog(@"+++++++++打印的提交评论时候的参数值是 :%@",dictParams);
->>>>>>> .merge_file_33jBBQ
     __weak __typeof(self)wself = self;
-    
     [GRNetRequestClass POST:EVALUATEURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
             NSLog(@"--------评价成功返回的结果是 :%@",responseObject);
-            [MBProgressHUD showHudTipStr:@"评论成功!" contentColor:HidWithColorContentBlack];
+            if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+                [MBProgressHUD showHudTipStr:@"评论成功!" contentColor:HidWithColorContentBlack];
+            }
             XFJMineTeamViewController *mineTeamViewController = [[XFJMineTeamViewController alloc] init];
             mineTeamViewController.strNumber = 4;
             [wself.navigationController popViewControllerAnimated:YES];
@@ -334,7 +319,6 @@
     cell.teamScoreBlock1 = ^(NSString *scoreText1,NSInteger attractionsId1) {
         wself.teamScore1 = [scoreText1 intValue];
         wself.attractionsId = attractionsId1;
-<<<<<<< .merge_file_8T3xR9
         [dic setValue:[NSString stringWithFormat:@"%ld", wself.teamScore1] forKey:@"scoreText1"];
         [dictionary setValue:dic forKey:[NSString stringWithFormat:@"%ld", wself.attractionsId]];
         NSLog(@"%@", dictionary);
@@ -342,25 +326,23 @@
         if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
             [self dictionaryParams];
         }
-=======
-        NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
-                               @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
-                               @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
-                               @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
-                               @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
-                               };
-        NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
-        [self.totalStarArray addObject:dict];
+//        NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
+//                               @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
+//                               @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
+//                               @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
+//                               @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
+//                               };
+//        NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
+//        [self.totalStarArray addObject:dict];
         NSLog(@"获得到的scoreText1和attractionsId1是:%zd-----%zd",[scoreText1 intValue],wself.teamScore1);
         //*********   **********  *********  ********* **********
 //         [wself.starsDict setObject:scoreText1 forKey:@"ssScore"];
 //        [self.starDataArray addObjectsFromArray:self.totalStarArray];
->>>>>>> .merge_file_33jBBQ
     };
+    
     cell.teamScoreBlock2 = ^(NSString *scoreText2,NSInteger attractionsId2) {
         wself.teamScore2 = [scoreText2 intValue];
         wself.attractionsId = attractionsId2;
-<<<<<<< .merge_file_8T3xR9
         [dic setValue:[NSString stringWithFormat:@"%ld", wself.teamScore2] forKey:@"scoreText2"];
         [dictionary setValue:dic forKey:[NSString stringWithFormat:@"%ld", wself.attractionsId]];
         NSLog(@"%@", dictionary);
@@ -368,54 +350,35 @@
         if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
             [self dictionaryParams];
         }
-=======
-        NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
-                               @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
-                               @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
-                               @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
-                               @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
-                               };
-        NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
-        [self.totalStarArray addObject:dict];
-        NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText2 intValue],wself.teamScore2);
+//        NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
+//                               @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
+//                               @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
+//                               @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
+//                               @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
+//                               };
+//        NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
+//        [self.totalStarArray addObject:dict];
+//        NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText2 intValue],wself.teamScore2);
         //*********   **********  *********  ********* **********
 //        [wself.starsDict setObject:scoreText2 forKey:@"ehScore"];
 //        [self.starDataArray addObjectsFromArray:self.totalStarArray];
->>>>>>> .merge_file_33jBBQ
     };
+    
     cell.teamScoreBlock3 = ^(NSString *scoreText3,NSInteger attractionsId3) {
         wself.teamScore3 = [scoreText3 intValue];
         wself.attractionsId = attractionsId3;
-<<<<<<< .merge_file_8T3xR9
         [dic setValue:[NSString stringWithFormat:@"%ld", wself.teamScore3] forKey:@"scoreText3"];
         [dictionary setValue:dic forKey:[NSString stringWithFormat:@"%ld", wself.attractionsId]];
-        NSLog(@"%@", dictionary);
         NSLog(@"获得到的scoreText3和attractionsId3是:%zd-----%zd",[scoreText3 intValue],wself.teamScore3);
         if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
             [self dictionaryParams];
         }
     };
     
-=======
-        NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
-                               @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
-                               @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
-                               @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
-                               @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
-                               };
-        NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
-        [self.totalStarArray addObject:dict];
-        NSLog(@"获得到的scoreText3和attractionsId3是:%zd-----%zd",[scoreText3 intValue],wself.teamScore3);
-        //*********   **********  *********  ********* **********
-//        [wself.starsDict setObject:scoreText3 forKey:@"feScore"];
-    };
-//    [self.starDataArray addObject:wself.starsDict];
->>>>>>> .merge_file_33jBBQ
     cell.findTeamTasksItemArray = self.TaskRowsItemArray[indexPath.row];
     return cell;
 }
 
-<<<<<<< .merge_file_8T3xR9
 - (void)dictionaryParams
 {
     NSDictionary *dict = @{
@@ -429,8 +392,6 @@
     [dictionary setValue:dict forKey:[NSString stringWithFormat:@"%ld", self.attractionsId]];
     [set addObject:dictionary];
 }
-=======
->>>>>>> .merge_file_33jBBQ
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

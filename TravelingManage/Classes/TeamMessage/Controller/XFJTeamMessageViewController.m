@@ -776,7 +776,6 @@
     NSString *ty_pe = self.attrTypeArray[i];
     if ([ty_pe intValue] == 0) {
         XFJFirestAttributeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJFirestAttributeTableViewCell forIndexPath:indexPath];
-        
         NSLog(@"---------获取的back值是0 :%@",self.findCustomAttrListItemArray[[ty_pe intValue]].teamAttr);
         return cell;
     }else if ([ty_pe intValue] == 1) {
