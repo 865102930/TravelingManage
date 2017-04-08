@@ -735,7 +735,7 @@
             if ([weakself validateCarNo:weakself.strNum]) {//如果为YES就增加
                 [weakself addButtonClick];
             }else {//错误就提示用户
-                [MBProgressHUD showHudTipStr:@"车牌号输入不正确!" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"车牌号输入不正确" contentColor:HidWithColorContentBlack];
                 return ;
             }
         };
