@@ -179,7 +179,7 @@
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
-            [MBProgressHUD showHudTipStr:@"您取消团队失败了,可能是网络问题!!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"您取消团队失败了,可能是网络问题" contentColor:HidWithColorContentBlack];
         }
     }];
 }
