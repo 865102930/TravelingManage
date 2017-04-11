@@ -123,13 +123,14 @@
 
 - (UIButton *)registButton{
     if (!_registButton) {
-        _registButton = [[UIButton alloc] init];
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"< 还没有账号? 立即注册"];
-        [str addAttribute:NSForegroundColorAttributeName value:RedColor range:NSMakeRange(0, [str length])];
+        _registButton = [[UIButton alloc] init];///< 还没有账号? 立即注册
+//        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"导游账号注册"];
+        [_registButton setTitle:@"导游账号注册" forState:UIControlStateNormal];
+//        [str addAttribute:NSForegroundColorAttributeName value:RedColor range:NSMakeRange(0, [str length])];
         [_registButton setTitleColor:RedColor forState:UIControlStateNormal];
-        NSRange strRange = {9, 4};
-        [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
-        [_registButton setAttributedTitle:str forState:UIControlStateNormal];
+//        NSRange strRange = {9, 4};
+//        [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+//        [_registButton setAttributedTitle:str forState:UIControlStateNormal];
         _registButton.titleLabel.font = [UIFont fontWithName:PingFang size:14];
         [_registButton addTarget:self action:@selector(registButtonClick) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_registButton];

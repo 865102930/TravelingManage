@@ -84,6 +84,9 @@
             }
         }
     }
+    
+    //刷新标题
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setAllRequest) name:@"REFRESHCOMMENTNSNOTICA" object:nil];
 }
 
 #pragma mark - 所有的请求接口

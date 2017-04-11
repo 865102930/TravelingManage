@@ -157,14 +157,6 @@
 #pragma mark - 提交评论
 - (void)commitEvaluate_buttonClick
 {
-//    NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
-//                           @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
-//                           @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
-//                           @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
-//                           @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
-//                           };
-//    NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
-//    [self.totalStarArray addObject:dict];
     NSDictionary *dictParams;
     [self.totalStarArray removeAllObjects];
     if (set.count > 0) {
@@ -205,21 +197,23 @@
             NSLog(@"+++++++++打印的提交评论时候的参数值是 :%@",dictParams);
         }
     }
-    
     __weak __typeof(self)wself = self;
     NSLog(@"+++++++++>>>>>>>>>>打印的评论的提交参数是 :%@",dictParams);
     [GRNetRequestClass POST:EVALUATEURL params:dictParams success:^(NSURLSessionDataTask *task, id responseObject) {
-        if (responseObject) {
-            if ([responseObject[@"msg"] isEqualToString:@"success"]) {
-                [MBProgressHUD showHudTipStr:@"评论成功!" contentColor:HidWithColorContentBlack];
-            }
+        if ([responseObject[@"msg"] isEqualToString:@"success"]) {
+            [MBProgressHUD showHudTipStr:@"评论成功!" contentColor:HidWithColorContentBlack];
             XFJMineTeamViewController *mineTeamViewController = [[XFJMineTeamViewController alloc] init];
+            //发送通知刷新标题和评论列表
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHCOMMENTNSNOTICA" object:nil];
             mineTeamViewController.strNumber = 4;
             [wself.navigationController popViewControllerAnimated:YES];
+        }else {
+            [MBProgressHUD showHudTipStr:@"评论失败!" contentColor:HidWithColorContentBlack];
+            return ;
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
-            [MBProgressHUD showHudTipStr:@"评论失败,可能是网络问题" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"评论失败,可能是网络问题!" contentColor:HidWithColorContentBlack];
         }
     }];
 }
@@ -315,19 +309,6 @@
         if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
             [self dictionaryParams];
         }
-//        NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
-//                               @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
-//                               @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
-//                               @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
-//                               @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
-//                               };
-//        NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
-//        [self.totalStarArray addObject:dict];
-        NSLog(@"获得到的scoreText1和attractionsId1是:%zd-----%zd",[scoreText1 intValue],wself.teamScore1);
-        //*********   **********  *********  ********* **********
-//         [wself.starsDict setObject:scoreText1 forKey:@"ssScore"];
-//        [self.starDataArray addObjectsFromArray:self.totalStarArray];
-
     };
     
     cell.teamScoreBlock2 = ^(NSString *scoreText2,NSInteger attractionsId2) {
@@ -338,19 +319,6 @@
         if ([dic objectForKey:@"scoreText1"] != nil && [dic objectForKey:@"scoreText2"] != nil && [dic objectForKey:@"scoreText3"] != nil) {
             [self dictionaryParams];
         }
-//        NSDictionary *dict = @{@"teamId":[NSString stringWithFormat:@"%zd",self.teamId],//团队id
-//                               @"attractionsId":[NSString stringWithFormat:@"%zd",self.attractionsId],//景区id
-//                               @"ssScore":[NSString stringWithFormat:@"%zd",self.teamScore1],//景区服务
-//                               @"ehScore":[NSString stringWithFormat:@"%zd",self.teamScore2],//环境卫生
-//                               @"feScore":[NSString stringWithFormat:@"%zd",self.teamScore3]
-//                               };
-//        NSLog(@"++++++++++++团队的评分参数是 :%@",dict);
-//        [self.totalStarArray addObject:dict];
-//        NSLog(@"获得到的scoreText2和attractionsId2是:%zd-----%zd",[scoreText2 intValue],wself.teamScore2);
-        //*********   **********  *********  ********* **********
-//        [wself.starsDict setObject:scoreText2 forKey:@"ehScore"];
-//        [self.starDataArray addObjectsFromArray:self.totalStarArray];
-
     };
     
     cell.teamScoreBlock3 = ^(NSString *scoreText3,NSInteger attractionsId3) {

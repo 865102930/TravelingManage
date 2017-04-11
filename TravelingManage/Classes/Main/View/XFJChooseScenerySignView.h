@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "XFJFindAttractionsListItem.h"
+#import "XFJTaskRowsItem.h"
 
 
 @interface XFJChooseScenerySignView : UIView
@@ -15,6 +16,7 @@
 @property (nonatomic, strong) NSMutableArray <XFJFindAttractionsListItem *> *scenery_array;
 @property (nonatomic, copy) void (^chooseBlockButtonWithSure)(XFJFindAttractionsListItem *);
 @property (nonatomic, copy) void (^chooseBlockButtonWithCancel)();
+@property (nonatomic, strong) NSMutableArray <XFJTaskRowsItem *> *taskRowsItemArray;
 
 
 @end

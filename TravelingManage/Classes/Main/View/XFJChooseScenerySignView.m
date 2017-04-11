@@ -28,6 +28,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
+        
         self.backgroundColor = [UIColor redColor];
         [self addSubview:self.chooseScenerySign_tableView];
 //        [self addSubview:self.chooseSceneryFooterView];
@@ -54,14 +55,25 @@
                 wself.chooseBlockButtonWithCancel();
             }
         };
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reIndexPath) name:@"INDEXPATHNOTICE" object:nil];
     }
     return self;
+}
+
+- (void)reIndexPath
+{
+    self.selIndex = NULL;
 }
 
 - (void)setScenery_array:(NSMutableArray <XFJFindAttractionsListItem *>*)scenery_array
 {
     _scenery_array = scenery_array;
     [self.chooseScenerySign_tableView reloadData];
+}
+
+- (void)setTaskRowsItemArray:(NSMutableArray<XFJTaskRowsItem *> *)taskRowsItemArray
+{
+    _taskRowsItemArray = taskRowsItemArray;
 }
 
 
@@ -97,6 +109,8 @@
         _chooseScenerySign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
         _chooseScenerySign_tableView.tableHeaderView = self.chooseScreneryTitleTableViewCell;
         _chooseScenerySign_tableView.tableFooterView = self.chooseSceneryFooterView;
+//        _chooseScenerySign_tableView.showsVerticalScrollIndicator = NO;
+//        _chooseScenerySign_tableView.showsHorizontalScrollIndicator = NO;
     }
     return _chooseScenerySign_tableView;
 }
@@ -118,12 +132,33 @@
     if (cell == nil) {
         cell = [[XFJChooseSceneryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:celID];
     }
-    cell.findAttractionsListItem = self.scenery_array[indexPath.row];
     if (_selIndex == indexPath) {
         [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
     }else {
         [cell.sceneryContent_button setImage:[UIImage originalWithImage:@""] forState:UIControlStateNormal];
     }
+    //用景点和传过来的29个接口中的签到的景点来判断cell置灰状态
+    //遍历
+    for (NSInteger i = 0; i < self.scenery_array.count; i++) {
+        //取出景点id
+        NSInteger findAttractions_id = self.scenery_array[i].findAttractions_id;
+        for (NSInteger j = 0; j < self.taskRowsItemArray.count; j++) {
+            //取出已经签到过了的景点id
+            NSInteger alreadyFindAttractions_id = self.taskRowsItemArray[j].attractionsId;
+            //判断景点id是否相等
+            if (findAttractions_id == alreadyFindAttractions_id) {
+                NSLog(@">>>>>>><<<<<<<<<<<<<<这里打印出相同的id的i的值是 :%zd",i);
+                if (indexPath.row == i) {
+                    [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"selected-g"] forState:UIControlStateNormal];
+                    cell.sceneryContent_button.layer.borderColor = [UIColor clearColor].CGColor;
+                    cell.sceneryContent_button.enabled = NO;
+                    cell.userInteractionEnabled = NO;
+                }
+            }
+        }
+    }
+    cell.findAttractionsListItem = self.scenery_array[indexPath.row];
+    NSLog(@">>>>>>>>>>>>>>>选择的是第%zd行----------%zd",self.selIndex,indexPath);
     return cell;
 }
 

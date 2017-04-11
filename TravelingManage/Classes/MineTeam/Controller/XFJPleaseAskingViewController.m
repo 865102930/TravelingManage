@@ -29,6 +29,14 @@
     
     //请求接口
     [self requestAllStates];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshComment) name:@"REFRESHCOMMENTNSNOTICA" object:nil];
+}
+
+- (void)refreshComment
+{
+    [self.findTeamInfoByStateItem_array removeAllObjects];
+    [self requestAllStates];
 }
 
 - (NSMutableArray <XFJFindTeamInfoByStateItem *> *)findTeamInfoByStateItem_array

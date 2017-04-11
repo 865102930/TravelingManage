@@ -50,7 +50,7 @@
         _sceneryContent_button = [UIButton buttonWithType:UIButtonTypeCustom];
         _sceneryContent_button.layer.cornerRadius = 7.0;
         _sceneryContent_button.layer.borderColor = RedColor.CGColor;
-        _sceneryContent_button.layer.borderWidth = 0.5;
+        _sceneryContent_button.layer.borderWidth = 1.0;
         [_sceneryContent_button addTarget:self action:@selector(sceneryContent_buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _sceneryContent_button;
@@ -98,7 +98,7 @@
 - (void)setFindAttractionsListItem2:(XFJFindAttractionsListItem *)findAttractionsListItem2
 {
     _findAttractionsListItem2 = findAttractionsListItem2;
-    [self.sceneryContent_button setImage:[UIImage originalWithImage:@"selected-g"] forState:UIControlStateNormal];
+    [self.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
 }
 
 

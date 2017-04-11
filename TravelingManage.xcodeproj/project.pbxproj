@@ -316,6 +316,7 @@
 		3AFC9A2B1E629D200049A758 /* input-box4-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A281E629D200049A758 /* input-box4-@2x.png */; };
 		3AFC9A2C1E629D200049A758 /* input-box4-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AFC9A291E629D200049A758 /* input-box4-@3x.png */; };
 		3AFC9A2F1E62C4090049A758 /* XFJSignNoHotelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC9A2E1E62C4090049A758 /* XFJSignNoHotelView.m */; };
+		3AFD28891E9B763E006F73BE /* XFJMeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFD28881E9B763E006F73BE /* XFJMeDetailsViewController.m */; };
 		3AFE1F811E88DB0800E05853 /* XFJFindTeamCarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFE1F801E88DB0800E05853 /* XFJFindTeamCarItem.m */; };
 		3AFE1F841E88FC8100E05853 /* XFJFindTeamCarImageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFE1F831E88FC8100E05853 /* XFJFindTeamCarImageItem.m */; };
 		3AFFB2681E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFFB2671E6ED2D10013185F /* XFJFirestAttributeTableViewCell.m */; };
@@ -823,6 +824,8 @@
 		3AFC9A291E629D200049A758 /* input-box4-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input-box4-@3x.png"; sourceTree = "<group>"; };
 		3AFC9A2D1E62C4090049A758 /* XFJSignNoHotelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJSignNoHotelView.h; sourceTree = "<group>"; };
 		3AFC9A2E1E62C4090049A758 /* XFJSignNoHotelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJSignNoHotelView.m; sourceTree = "<group>"; };
+		3AFD28871E9B763E006F73BE /* XFJMeDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJMeDetailsViewController.h; sourceTree = "<group>"; };
+		3AFD28881E9B763E006F73BE /* XFJMeDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJMeDetailsViewController.m; sourceTree = "<group>"; };
 		3AFE1F7F1E88DB0800E05853 /* XFJFindTeamCarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindTeamCarItem.h; sourceTree = "<group>"; };
 		3AFE1F801E88DB0800E05853 /* XFJFindTeamCarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJFindTeamCarItem.m; sourceTree = "<group>"; };
 		3AFE1F821E88FC8100E05853 /* XFJFindTeamCarImageItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJFindTeamCarImageItem.h; sourceTree = "<group>"; };
@@ -1771,6 +1774,8 @@
 				3AE849EA1E543EE500A71C5E /* XFJPleaseCheckViewController.m */,
 				3AE849EC1E543F1300A71C5E /* XFJPleaseAskingViewController.h */,
 				3AE849ED1E543F1300A71C5E /* XFJPleaseAskingViewController.m */,
+				3AFD28871E9B763E006F73BE /* XFJMeDetailsViewController.h */,
+				3AFD28881E9B763E006F73BE /* XFJMeDetailsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2190,6 +2195,7 @@
 				3AA475091E5E8E7700FEB005 /* XFJFindAttractionsListItem.m in Sources */,
 				3A02C0A11E73C03A00966384 /* XFJChooseScenerySignView.m in Sources */,
 				3A8347CD1E4AAD8000693882 /* XFJLeftView.m in Sources */,
+				3AFD28891E9B763E006F73BE /* XFJMeDetailsViewController.m in Sources */,
 				1CB523EA1E51AFF600A205C3 /* AnnouncementDetailViewController.m in Sources */,
 				3A9B890A1E4C0B51004E3B05 /* XFJLeftTableFooterView.m in Sources */,
 				3AFFB2711E6FD61B0013185F /* XFJFourAttributeTableViewCell.m in Sources */,
