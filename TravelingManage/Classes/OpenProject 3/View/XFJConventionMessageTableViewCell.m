@@ -429,6 +429,11 @@
     return 33.0;
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.check_traveView removeFromSuperview];
+}
+
 
 
 

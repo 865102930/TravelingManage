@@ -265,6 +265,7 @@ static BOOL over = NO;
             }else if (self.isTeamId == YES) {//点击侧边栏的时候对时间的调用
                 [self setUpUserTimeWithUseApp:YES];
                 NSDictionary *dict = [self timeStrChangeWithFormatterStr:self.findTeamTaskItem.createtime];
+                NSLog(@"签到时间是 :%@",self.findTeamTaskItem.createtime);
                 NSString *hourTime = [dict objectForKey:@"hourString"];
                 NSString *minteTime = [dict objectForKey:@"minuteString"];
                 NSString *hotelDayTime = [dict objectForKey:@"dayString"];//天数
@@ -274,13 +275,18 @@ static BOOL over = NO;
                 CGFloat allHourTime = [hourTime integerValue] + minteToHour;
                 //将所有的小时累加为天数
                 NSInteger dayTime = [hotelDayTime integerValue] + allHourTime / 24;
+                NSInteger dayTime1 = dayTime * 24;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     wself.signNoPeople_view.hourTeamTime = 0;
                     wself.signNoPeople_view.minteTeamTime = 0;
                     wself.signNoHotel_view.hotelStayDay = 0;
                     wself.signNoHotel_view.hotelStayHour = 0;
                     wself.signNoPeople_view.minteTeamTime = minteTime;
-                    wself.signNoPeople_view.hourTeamTime = hourTime;
+                    if (dayTime1 >= 24) {
+                        wself.signNoPeople_view.hourTeamTime = [NSString stringWithFormat:@"%zd",dayTime1];
+                    }else {
+                        wself.signNoPeople_view.hourTeamTime = hourTime;
+                    }
                     wself.signNoHotel_view.hotelStayDay = dayTime;
                     wself.signNoHotel_view.hotelStayHour = (int)allHourTime;
                 });
@@ -473,6 +479,8 @@ static BOOL over = NO;
                 }
                 NSLog(@"wself.TaskRowsItemArray-------%@",wself.TaskRowsItemArray);
             }
+            wself.chooseScenerySignView.taskRowsItemArray = wself.TaskRowsItemArray;
+            wself.chooseHotelSignView.taskRowsItemArray = wself.TaskRowsItemArray;
             //遍历所有的任务,查看是否正在进行(签到过了或者签退过了)
             //对景点的id遍历并且存起来
             [wself.scArray removeAllObjects];
@@ -705,7 +713,6 @@ static BOOL over = NO;
     };
     //将左侧的内容传到控制器中
     self.leftView.presentToHomeController = ^(XFJLeftFindTeamInfoItem *leftFindTeamInfoItem,BOOL isTeamId,BOOL isEnter) {
-        
         [wself remoSubViews];
         [wself.sign_view removeFromSuperview];
         [wself.view addSubview:wself.homeTopTaskMessageVeiw];
@@ -714,13 +721,15 @@ static BOOL over = NO;
         wself.leftFindTeamInfoItem = leftFindTeamInfoItem;
         wself.isTeamId = isTeamId;
         wself.isSecondTeamId = isTeamId;
+        wself.isSecondProjectItem = NO;
         wself.isEnter = isEnter;
         wself.isTaskTime = NO;
         wself.isHotelSignTime = NO;
+        wself.isProjectItem = NO;
         //请求获取左侧的接口
         [wself requestWithLeftIndexPathOfRows:leftFindTeamInfoItem];
         
-//        [wself.findAttractionsListArray removeAllObjects];
+        [wself.mapView removeAnnotations:wself.annotationArray];
         [wself requestAttractionsListWithProvince:wself.currentProvince city:wself.currentCity];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"INDEXPATHNOTICE" object:nil];
     };
@@ -743,7 +752,7 @@ static BOOL over = NO;
             XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
             teamMessageViewController.findTeamInfoByState_Id = [[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"] intValue];
             [wself.navigationController pushViewController:teamMessageViewController animated:YES];
-            wself.isSecondProjectItem = NO;
+//            wself.isSecondProjectItem = NO;
         }else if (wself.isSecondTeamId == YES){ //如果是侧滑栏传递过来的id
             XFJTeamMessageViewController *teamMessageViewController = [[XFJTeamMessageViewController alloc] init];
             teamMessageViewController.findTeamInfoByState_Id = wself.leftFindTeamInfoItem.findTeamInfoItem_id;
@@ -2061,6 +2070,8 @@ static BOOL over = NO;
     NSLog(@">>>>>>>>>>>>>>>>>>获取到酒店点数量是 :%zd",self.hotel_array.count);
 //    }
 //    self.isFindTeamList == YES ? @"" : [self requestLatelyControl];
+    self.isProjectItem == NO ? @"": [self requestWithInfoTasks];
+
 //    [_mapView showAnnotations:self.annotationArray edgePadding:UIEdgeInsetsMake(80, 80, 80, 80) animated:YES];
 }
 

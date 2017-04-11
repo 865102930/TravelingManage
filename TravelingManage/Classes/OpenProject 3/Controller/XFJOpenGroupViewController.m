@@ -58,6 +58,11 @@
 @property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberArray;
 @property (nonatomic, strong) NSString *strNum;
 @property (nonatomic, strong) NSString *dict1;
+@property (nonatomic, strong) XFJCarNameTableViewCell *cell;
+//提供一个数组用来存用户通过输入框输入的车牌
+@property (nonatomic, strong) NSMutableArray *userCarNumber_array;
+//车牌号的字符串
+@property (nonatomic, strong) NSString *carNumberStr;
 
 @end
 
@@ -95,6 +100,14 @@
         _addArray = [NSMutableArray array];
     }
     return _addArray;
+}
+
+- (NSMutableArray *)userCarNumber_array
+{
+    if (_userCarNumber_array == nil) {
+        _userCarNumber_array = [NSMutableArray array];
+    }
+    return _userCarNumber_array;
 }
 
 - (NSMutableArray *)allRootImage
@@ -360,13 +373,13 @@
 {
     //上传图片
     [self upLoadPic];
-    [self upLoadVoucherPic];
 }
 
 #pragma mark - 图片上传车辆照片
 - (void)upLoadPic
 {
     if (self.dataArr.count == 0) {
+        [self upLoadVoucherPic];
         return;
     }else {
         for (int i = 0; i < _dataArr.count; i++) {
@@ -378,13 +391,17 @@
             [manager POST:UPLOADIMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                 [formData appendPartWithFileData:imageData name:@"file" fileName:@"image.jpg" mimeType:@"image/jpg"];
             } progress:^(NSProgress * _Nonnull uploadProgress) {
-                
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                 NSString *root = dict[@"object"];
                 [wself.allRootImage addObject:root];
                 wself.root = [wself.allRootImage componentsJoinedByString:@","];
-                NSLog(@"上传图片成功后的信息-------%@+++++++%@",root,wself.root);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (wself.allRootImage.count == wself.dataArr.count ) {
+                        [wself upLoadVoucherPic];
+                    }
+                });
+                NSLog(@">>>>>>>>>>>>>上传图片成功后的信息-------%@",wself.root);
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSLog(@"上传图片失败--------%@",error);
             }];
@@ -461,7 +478,7 @@
         [MBProgressHUD showHudTipStr:@"请选择所在的市" contentColor:HidWithColorContentBlack];
         return;
     }
-    if ([paramName1 isEqualToNumber:@0]) {
+    if ([paramName1 isKindOfClass:[NSNull class]]) {
         [MBProgressHUD showHudTipStr:@"请选择目的属性" contentColor:HidWithColorContentBlack];
         return;
     }
@@ -469,7 +486,7 @@
         [MBProgressHUD showHudTipStr:@"请选择开团人数" contentColor:HidWithColorContentBlack];
         return;
     }
-    if ([teamNature isEqualToNumber:@0]) {
+    if ([teamNature isKindOfClass:[NSNull class]]) {
         [MBProgressHUD showHudTipStr:@"请选择团队性质" contentColor:HidWithColorContentBlack];
         return;
     }
@@ -489,11 +506,13 @@
     }else {
         rootStr = [NSString stringWithFormat:@"%@",self.root];
     }
+    self.carNumberStr = [self.userCarNumber_array componentsJoinedByString:@","];
+    NSLog(@"<<<<<<<>>>>>>>>>>>这里打印的是总的车牌的字符串:%@",self.carNumberStr);
     NSDictionary *dictParaments = @{
                                     @"teamNo":self.conventionMessage_view.groupName_text,//团队编号
                                     @"teamDate":self.conventionMessage_view.groupTime_text,//出团日期
                                     @"travelAgencyId":traveName,//旅行社id
-                                    @"teamVehicles":self.strNum,//车牌
+                                    @"teamVehicles":self.carNumberStr,//车牌
                                     @"province":self.guestSourceInformation_view.selectedProvince,//用户所在省
                                     @"city":self.guestSourceInformation_view.selectedCity,//用户所在市
                                     @"area":self.guestSourceInformation_view.selectedArea,//用户所在区
@@ -724,24 +743,28 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if (indexPath.row == 0) {
         XFJCarNameTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kReuseIdentifier_XFJCarNameTableViewCell forIndexPath:indexPath];
+        self.cell = cell;
         cell.carNumberItemArray = self.carNumberArray;
         NSLog(@"self.carNumberArray的值是:%@",self.carNumberArray);
         __weak typeof(self) weakself = self;
         cell.addCellBlock = ^(NSInteger srt,NSString *str1) {
-            //在这里需要判断输入的车牌号是否正确
-            if ([weakself validateCarNo:weakself.strNum]) {//如果为YES就增加
-                [weakself addButtonClick];
-            }else {//错误就提示用户
-                [MBProgressHUD showHudTipStr:@"车牌号输入不正确" contentColor:HidWithColorContentBlack];
-                return ;
-            }
+            //遍历所有的车牌号
+//            for (NSInteger i = 0; i < weakself.userCarNumber_array.count; i++) {
+                //在这里需要判断输入的车牌号是否正确
+                if ([weakself validateCarNo:weakself.strNum]) {//如果为YES就增加
+                    [weakself addButtonClick];
+                }else {//错误就提示用户
+                    [MBProgressHUD showHudTipStr:@"车牌号输入不正确" contentColor:HidWithColorContentBlack];
+                    return ;
+                }
+//            }
         };
         cell.carNumberBlock = ^(NSString *carNum) {
             weakself.strNum = carNum;
-            NSLog(@"接收到的车牌号码是:%@",carNum);
+            [weakself.userCarNumber_array addObject:carNum];
+            NSLog(@">>>>>>>>>>-----接收到的车牌号码是:%@",carNum);
         };
         return cell;
     }else {
@@ -749,7 +772,13 @@
         cell.carNumberItemArray = self.carNumberArray;
         __weak typeof(self) weakself = self;
         cell.minusCarNumBlock = ^() {
+            //删除
             [weakself add];
+        };
+        //这里接收用户在减号的按钮输入框中输入的车牌
+        cell.AllMinusCarNumberBlock = ^ (NSString *carTextStr) {
+            [weakself.userCarNumber_array addObject:carTextStr];
+            NSLog(@"<<<<<<<<+++++++++这里通过block接收到用户输入的值是:%zd",weakself.userCarNumber_array.count);
         };
         return cell;
     }
@@ -779,6 +808,8 @@
         [self.carNumber_tableView reloadData];
         break;
     }
+    self.cell.addStrNumber = self.strNum;
+    self.cell.isAddStrBool = YES;
 }
 
 
@@ -796,6 +827,7 @@
     self.backGroundView.frame = CGRectMake(0, 210 + (self.addArray.count + 1) * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
     [self.carNumber_tableView insertRowsAtIndexPaths:self.addArray withRowAnimation:UITableViewRowAnimationLeft];
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

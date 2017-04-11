@@ -71,7 +71,7 @@
 {
     if (_carName_field == nil) {
         _carName_field = [UITextField textBackGroundImage:@"input-box2-" titleName:@"车    牌    号" rightImage:@"xinghao" placeholder:@"请输入车牌号"];
-        
+        [_carName_field addTarget:self action:@selector(textFieldEditChanged:) forControlEvents:UIControlEventEditingDidEnd];
     }
     return _carName_field;
 }
@@ -84,6 +84,14 @@
         [_carNmae_button addTarget:self action:@selector(minusCarNameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _carNmae_button;
+}
+
+- (void)textFieldEditChanged:(UITextField *)textField
+{
+    NSLog(@"----------->>>>>>>>这里打印的是减号输入框中个的输入内容是:%@",textField.text);
+    if (self.AllMinusCarNumberBlock) {
+        self.AllMinusCarNumberBlock(textField.text);
+    }
 }
 
 - (void)minusCarNameButtonClick:(UIButton *)buttonTag

@@ -37,5 +37,7 @@ typedef NS_ENUM(NSUInteger, XFJStateType) {
 @property (nonatomic, strong) NSString *travelAgencyName;
 //状态：0:任务中 1:待完善 2:待审核 3:已审核 4:审核不通过
 @property (nonatomic, assign) NSInteger teamState;
+//管理员名称
+@property (nonatomic, strong) NSString *userName;
 
 @end

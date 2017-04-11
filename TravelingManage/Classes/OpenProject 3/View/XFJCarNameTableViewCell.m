@@ -96,10 +96,17 @@
     if (carNumberItemArray.count == 0) {
         return;
     }
-    self.carName_field.text = [NSString stringWithFormat:@"%@",carNumberItemArray[0].plateHead];
+    if (self.isAddStrBool) {
+        self.carName_field.text = [NSString stringWithFormat:@"%@",self.addStrNumber];
+    }else {
+        self.carName_field.text = [NSString stringWithFormat:@"%@",carNumberItemArray[0].plateHead];
+    }
 }
 
-
+- (void)setAddStrNumber:(NSString *)addStrNumber
+{
+    _addStrNumber = addStrNumber;
+}
 
 
 

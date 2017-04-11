@@ -9,6 +9,7 @@
 #import "XFJGuestSourceInformationTableViewCell.h"
 #import "LMContainsLMComboxScrollView.h"
 #import "XFJPurposeItem.h"
+#import "ZmjPickView.h"
 
 #define kDropDownListTag 1000
 
@@ -27,24 +28,34 @@
 }
 
 @property (nonatomic, strong) UIView *lineView;
-
 @property (nonatomic, strong) UIImageView *guestSourceInformation_imageVeiw;
-
 @property (nonatomic, strong) UILabel *guestSourceInformation_label;
-
 @property (nonatomic, strong) UIButton *goalAttribute_button;
-
 @property (nonatomic, strong) UILabel *goalAttribute_label;
-
 @property (nonatomic, strong) UIImageView *goalAttribute_imageViewLeft;
-
 @property (nonatomic, strong) UIImageView *goalAttribute_imageViewRight;
-
 @property (nonatomic, strong) UILabel *goalAttributeContent_label;
-
 @property (nonatomic, strong) UITableView *goalAttributeTableView;
-
 @property (nonatomic, strong) NSArray *goalAttributeArray;
+@property (nonatomic, strong) UIButton *province_button;
+@property (nonatomic, strong) UILabel *province_label;
+@property (nonatomic, strong) UIImageView *province_imageViewLeft;
+@property (nonatomic, strong) UIImageView *province_imageViewRight;
+@property (nonatomic, strong) UILabel *provinceContent_label;
+
+@property (nonatomic, strong) UIButton *city_button;
+@property (nonatomic, strong) UILabel *city_label;
+@property (nonatomic, strong) UIImageView *city_imageViewLeft;
+@property (nonatomic, strong) UIImageView *city_imageViewRight;
+@property (nonatomic, strong) UILabel *cityContent_label;
+
+@property (nonatomic, strong) UIButton *area_button;
+@property (nonatomic, strong) UILabel *area_label;
+@property (nonatomic, strong) UIImageView *area_imageViewRight;
+@property (nonatomic, strong) UILabel *areaContent_label;
+
+@property (strong, nonatomic) ZmjPickView *zmjPickView;
+
 
 //创建一个可变数组用来装目的属性的种类
 @property (nonatomic, strong) NSMutableArray <XFJPurposeItem *> *purposeArray;
@@ -58,16 +69,30 @@
 {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
-        [self initShu];
+//        [self initShu];
         [self requestPurposeAttribute];
         [self addSubview:self.lineView];
         [self addSubview:self.guestSourceInformation_imageVeiw];
         [self addSubview:self.guestSourceInformation_label];
-        [bgScrollView addSubview:self.goalAttribute_button];
+        [self addSubview:self.goalAttribute_button];
         [self.goalAttribute_button addSubview:self.goalAttributeContent_label];
         [self.goalAttribute_button addSubview:self.goalAttribute_label];
         [self.goalAttribute_button addSubview:self.goalAttribute_imageViewLeft];
         [self.goalAttribute_button addSubview:self.goalAttribute_imageViewRight];
+        [self addSubview:self.province_button];
+        [self.province_button addSubview:self.province_label];
+        [self.province_button addSubview:self.province_imageViewLeft];
+        [self.province_button addSubview:self.provinceContent_label];
+        [self.province_button addSubview:self.province_imageViewRight];
+        [self addSubview:self.city_button];
+        [self.city_button addSubview:self.city_label];
+        [self.city_button addSubview:self.city_imageViewLeft];
+        [self.city_button addSubview:self.cityContent_label];
+        [self.city_button addSubview:self.city_imageViewRight];
+        [self addSubview:self.area_button];
+        [self.area_button addSubview:self.area_label];
+        [self.area_button addSubview:self.areaContent_label];
+        [self.area_button addSubview:self.area_imageViewRight];
         [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.mas_top);
             make.left.mas_equalTo(self.mas_left);
@@ -110,6 +135,87 @@
             make.left.mas_equalTo(self.goalAttribute_imageViewLeft.mas_right).mas_offset(18.0);
             make.centerY.mas_equalTo(self.goalAttribute_label.mas_centerY);
         }];
+        [self.province_button mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
+            make.top.mas_equalTo(self.guestSourceInformation_imageVeiw.mas_bottom).mas_offset(15.0);
+            make.height.mas_equalTo(38.0);
+            make.width.mas_equalTo((SCREEN_WIDTH - 46) / 3);
+        }];
+        [self.province_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.province_button.mas_centerY);
+            make.left.mas_equalTo(self.province_button.mas_left).mas_offset(15.0);
+        }];
+        [self.province_imageViewLeft mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.province_button.mas_top).mas_offset(13.0);
+            make.left.mas_equalTo(self.province_label.mas_right).mas_offset(5.0);
+            make.height.mas_equalTo(5.0);
+            make.width.mas_equalTo(5.0);
+        }];
+        [self.province_imageViewRight mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.province_button.mas_right).mas_offset(-2);
+            make.centerY.mas_equalTo(self.province_button.mas_centerY);
+            make.height.mas_equalTo(6.0);
+            make.width.mas_equalTo(8.0);
+        }];
+        [self.provinceContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.province_button.mas_left).mas_offset(40);
+            make.centerY.mas_equalTo(self.province_label.mas_centerY);
+            make.right.mas_equalTo(self.province_imageViewRight.mas_left).mas_offset(0);
+        }];
+        [self.city_button mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.province_button.mas_right).mas_offset(5.0);
+            make.top.mas_equalTo(self.guestSourceInformation_imageVeiw.mas_bottom).mas_offset(15.0);
+            make.height.mas_equalTo(38.0);
+            make.width.mas_equalTo((SCREEN_WIDTH - 46) / 3);
+        }];
+        [self.city_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.city_button.mas_centerY);
+            make.left.mas_equalTo(self.city_button.mas_left).mas_offset(15.0);
+        }];
+        [self.city_imageViewLeft mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.city_button.mas_top).mas_offset(13.0);
+            make.left.mas_equalTo(self.city_label.mas_right).mas_offset(5.0);
+            make.height.mas_equalTo(5.0);
+            make.width.mas_equalTo(5.0);
+        }];
+        [self.city_imageViewRight mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.city_button.mas_right).mas_offset(-2);
+            make.centerY.mas_equalTo(self.city_button.mas_centerY);
+            make.height.mas_equalTo(6.0);
+            make.width.mas_equalTo(8.0);
+        }];
+        [self.cityContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.city_button.mas_left).mas_offset(40);
+            make.centerY.mas_equalTo(self.city_label.mas_centerY);
+            make.right.mas_equalTo(self.city_imageViewRight.mas_left).mas_offset(0);
+        }];
+        [self.area_button mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.city_button.mas_right).mas_offset(5.0);
+            make.top.mas_equalTo(self.guestSourceInformation_imageVeiw.mas_bottom).mas_offset(15.0);
+            make.height.mas_equalTo(38.0);
+            make.width.mas_equalTo((SCREEN_WIDTH - 46) / 3);
+        }];
+        [self.area_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.area_button.mas_centerY);
+            make.left.mas_equalTo(self.area_button.mas_left).mas_offset(15.0);
+        }];
+        [self.area_imageViewRight mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.area_button.mas_right).mas_offset(-2);
+            make.centerY.mas_equalTo(self.area_button.mas_centerY);
+            make.height.mas_equalTo(6.0);
+            make.width.mas_equalTo(8.0);
+        }];
+        [self.areaContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.area_button.mas_left).mas_offset(40);
+            make.centerY.mas_equalTo(self.area_label.mas_centerY);
+            make.right.mas_equalTo(self.area_imageViewRight.mas_left).mas_offset(0);
+        }];
+        __weak __typeof(self)wself = self;
+        self.zmjPickView.dismissPickViewBlock = ^() {
+            wself.province_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
+            wself.city_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
+            wself.area_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
+        };
     }
     return self;
 }
@@ -190,6 +296,76 @@
     return _goalAttribute_button;
 }
 
+- (UIButton *)province_button
+{
+    if (_province_button == nil) {
+        _province_button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _province_button.layer.borderColor = kBorderColor.CGColor;
+        _province_button.layer.borderWidth = 0.5;
+        _province_button.layer.cornerRadius = 3.0;
+        _province_button.clipsToBounds = YES;
+        _province_button.layer.masksToBounds = YES;
+        [_province_button addTarget:self action:@selector(provinceButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _province_button;
+}
+
+- (UIButton *)city_button
+{
+    if (_city_button == nil) {
+        _city_button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _city_button.layer.borderColor = kBorderColor.CGColor;
+        _city_button.layer.borderWidth = 0.5;
+        _city_button.layer.cornerRadius = 3.0;
+        _city_button.clipsToBounds = YES;
+        _city_button.layer.masksToBounds = YES;
+        [_city_button addTarget:self action:@selector(provinceButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _city_button;
+}
+
+- (UIButton *)area_button
+{
+    if (_area_button == nil) {
+        _area_button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _area_button.layer.borderColor = kBorderColor.CGColor;
+        _area_button.layer.borderWidth = 0.5;
+        _area_button.layer.cornerRadius = 3.0;
+        _area_button.clipsToBounds = YES;
+        _area_button.layer.masksToBounds = YES;
+        [_area_button addTarget:self action:@selector(provinceButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _area_button;
+}
+
+- (void)provinceButtonClick
+{
+    self.province_imageViewRight.image = [UIImage originalWithImage:@"triangle"];
+    self.city_imageViewRight.image = [UIImage originalWithImage:@"triangle"];
+    self.area_imageViewRight.image = [UIImage originalWithImage:@"triangle"];
+    [self zmjPickView];
+    [self.zmjPickView show];
+    __weak typeof(self) weakSelf = self;
+    self.zmjPickView.determineBtnBlock = ^(NSInteger shengId, NSInteger shiId, NSInteger xianId, NSString *shengName, NSString *shiName, NSString *xianName){
+        __strong typeof(weakSelf)strongSelf = weakSelf;
+        [strongSelf ShengName:shengName ShiName:shiName XianName:xianName];
+    };
+}
+
+- (void)ShengName:(NSString *)shengName ShiName:(NSString *)shiName XianName:(NSString *)xianName
+{
+    self.province_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
+    self.city_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
+    self.area_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
+    self.provinceContent_label.text = shengName;
+    self.cityContent_label.text = shiName;
+    self.areaContent_label.text = xianName;
+    self.selectedProvince = shengName;
+    self.selectedCity = shiName;
+    self.selectedArea = xianName;
+    
+}
+
 - (UILabel *)goalAttribute_label
 {
     if (_goalAttribute_label == nil) {
@@ -201,6 +377,39 @@
     return _goalAttribute_label;
 }
 
+- (UILabel *)province_label
+{
+    if (_province_label == nil) {
+        _province_label = [[UILabel alloc] init];
+        _province_label.text = @"省";
+        _province_label.textColor = kColor2f2f;
+        _province_label.font = [UIFont systemFontOfSize:13.0];
+    }
+    return _province_label;
+}
+
+- (UILabel *)city_label
+{
+    if (_city_label == nil) {
+        _city_label = [[UILabel alloc] init];
+        _city_label.text = @"市";
+        _city_label.textColor = kColor2f2f;
+        _city_label.font = [UIFont systemFontOfSize:13.0];
+    }
+    return _city_label;
+}
+
+- (UILabel *)area_label
+{
+    if (_area_label == nil) {
+        _area_label = [[UILabel alloc] init];
+        _area_label.text = @"区";
+        _area_label.textColor = kColor2f2f;
+        _area_label.font = [UIFont systemFontOfSize:13.0];
+    }
+    return _area_label;
+}
+
 - (UIImageView *)goalAttribute_imageViewLeft
 {
     if (_goalAttribute_imageViewLeft == nil) {
@@ -208,6 +417,24 @@
         _goalAttribute_imageViewLeft.image = [UIImage originalWithImage:@"xinghao"];
     }
     return _goalAttribute_imageViewLeft;
+}
+
+- (UIImageView *)province_imageViewLeft
+{
+    if (_province_imageViewLeft == nil) {
+        _province_imageViewLeft = [[UIImageView alloc] init];
+        _province_imageViewLeft.image = [UIImage originalWithImage:@"xinghao"];
+    }
+    return _province_imageViewLeft;
+}
+
+- (UIImageView *)city_imageViewLeft
+{
+    if (_city_imageViewLeft == nil) {
+        _city_imageViewLeft = [[UIImageView alloc] init];
+        _city_imageViewLeft.image = [UIImage originalWithImage:@"xinghao"];
+    }
+    return _city_imageViewLeft;
 }
 
 - (UIImageView *)goalAttribute_imageViewRight
@@ -230,11 +457,71 @@
     return _goalAttributeContent_label;
 }
 
+- (UILabel *)provinceContent_label
+{
+    if (_provinceContent_label == nil) {
+        _provinceContent_label = [[UILabel alloc] init];
+        _provinceContent_label.textColor = kColor2f2f;
+        _provinceContent_label.font = [UIFont systemFontOfSize:14.0];
+        _provinceContent_label.numberOfLines = 0;
+    }
+    return _provinceContent_label;
+}
+
+- (UILabel *)areaContent_label
+{
+    if (_areaContent_label == nil) {
+        _areaContent_label = [[UILabel alloc] init];
+        _areaContent_label.textColor = kColor2f2f;
+        _areaContent_label.font = [UIFont systemFontOfSize:14.0];
+        _areaContent_label.numberOfLines = 0;
+    }
+    return _areaContent_label;
+}
+
+- (UILabel *)cityContent_label
+{
+    if (_cityContent_label == nil) {
+        _cityContent_label = [[UILabel alloc] init];
+        _cityContent_label.textColor = kColor2f2f;
+        _cityContent_label.font = [UIFont systemFontOfSize:14.0];
+        _cityContent_label.numberOfLines = 0;
+    }
+    return _cityContent_label;
+}
+
+- (UIImageView *)province_imageViewRight
+{
+    if (_province_imageViewRight == nil) {
+        _province_imageViewRight = [[UIImageView alloc] init];
+        _province_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
+    }
+    return _province_imageViewRight;
+}
+
+- (UIImageView *)city_imageViewRight
+{
+    if (_city_imageViewRight == nil) {
+        _city_imageViewRight = [[UIImageView alloc] init];
+        _city_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
+    }
+    return _city_imageViewRight;
+}
+
+- (UIImageView *)area_imageViewRight
+{
+    if (_area_imageViewRight == nil) {
+        _area_imageViewRight = [[UIImageView alloc] init];
+        _area_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
+    }
+    return _area_imageViewRight;
+}
+
 - (void)goalAttributeButtonClick
 {
     NSLog(@"主人,您点击了目的属性~~");
-    bgScrollView.frame = CGRectMake(-30, 0, SCREEN_WIDTH + 30, 350);
-    [bgScrollView addSubview:self.goalAttributeTableView];
+//    bgScrollView.frame = CGRectMake(-30, 0, SCREEN_WIDTH + 30, 350);
+    [self addSubview:self.goalAttributeTableView];
     [self.goalAttributeTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.goalAttribute_button.mas_left).mas_offset(95.0);
         make.right.mas_equalTo(self.goalAttribute_button.mas_right);
@@ -274,6 +561,13 @@
         _goalAttributeTableView.tag = 10001;
     }
     return _goalAttributeTableView;
+}
+
+- (ZmjPickView *)zmjPickView {
+    if (_zmjPickView == nil) {
+        _zmjPickView = [[ZmjPickView alloc]init];
+    }
+    return _zmjPickView;
 }
 
 - (void)initShu
@@ -497,7 +791,11 @@
     self.goalAttributeContent_label.text = indeStr;
     self.paramName1 = self.purposeArray[indexPath.row].paramVal;
     [self.goalAttributeTableView removeFromSuperview];
-    bgScrollView.frame = CGRectMake(-30, 0, SCREEN_WIDTH + 30, 228);
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.goalAttributeTableView removeFromSuperview];
 }
 
 

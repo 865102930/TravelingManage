@@ -231,17 +231,10 @@
     //签到人数
     self.peopleContent_label.text = [NSString stringWithFormat:@"%zd",taskRowsItem.checkinNumber];
     if ([taskRowsItem.attractionsTime intValue] == 0) {
-        self.hourContent_label.text = @"0";
+        self.hourContent_label.text = @"0.0";
     }else {
         self.hourContent_label.text = [NSString stringWithFormat:@"%@",taskRowsItem.attractionsTime];
-//        NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@"."];
-//        self.hourContent_label.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
-        
-//        NSLog(@"=========%f",[teamDateStr floatValue] % i);
-//        self.mintesContent_label.text = [NSString stringWithFormat:@"%d",(int)mintesContent_label * 60];
     }
-    NSLog(@"----------景点信息是 :%@",taskRowsItem.attractionsName);
-    
 }
 
 

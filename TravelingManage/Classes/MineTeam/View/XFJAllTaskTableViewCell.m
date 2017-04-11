@@ -177,7 +177,7 @@
 {
     if (_verifierContent_label == nil) {
         _verifierContent_label = [[UILabel alloc] init];
-        _verifierContent_label.text = [NSString stringWithFormat:@"%@",@"西湖区管理员"];
+//        _verifierContent_label.text = [NSString stringWithFormat:@"%@",@"西湖区管理员"];
         _verifierContent_label.font = [UIFont fontWithName:PingFang size:12.0];
         _verifierContent_label.textColor = kColor2b2b;
     }
@@ -369,22 +369,31 @@
     _findTeamInfoByStateItem = findTeamInfoByStateItem;
     if (findTeamInfoByStateItem.teamState == 0) {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"进行中"];
+        [self.verifier_imageView setHidden:YES];
+        [self.verifier_label setHidden:YES];
+        [self.verifierContent_label setHidden:YES];
         [self.cancel_button setTitle:[NSString stringWithFormat:@"%@",@"取消"] forState:UIControlStateNormal];
         [self.status_button setTitle:[NSString stringWithFormat:@"%@",@"重新开始"] forState:UIControlStateNormal];
     }else if (findTeamInfoByStateItem.teamState == 1) {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"待完善"];
+        [self.verifier_imageView setHidden:YES];
+        [self.verifier_label setHidden:YES];
+        [self.verifierContent_label setHidden:YES];
         [self.status_button setTitle:[NSString stringWithFormat:@"%@",@"完善资料"] forState:UIControlStateNormal];
         [self.cancel_button setHidden:YES];
     }else if (findTeamInfoByStateItem.teamState == 2) {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"待审核"];
+        self.verifierContent_label.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.userName];
         [self.cancel_button setHidden:YES];
         [self.status_button setHidden:YES];
     }else if (findTeamInfoByStateItem.teamState == 3) {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"审核通过"];
+        self.verifierContent_label.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.userName];
         [self.cancel_button setHidden:YES];
         [self.status_button setHidden:YES];
     }else {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"审核不通过"];
+        self.verifierContent_label.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.userName];
         [self.cancel_button setHidden:YES];
         [self.status_button setHidden:YES];
     }
@@ -393,7 +402,7 @@
         self.travelServiceName_label2.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.travelAgencyName];
         NSString *teamDateStr = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
         NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
-        self.startTeamTime_label2.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];    
+        self.startTeamTime_label2.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
 }
 
 @end

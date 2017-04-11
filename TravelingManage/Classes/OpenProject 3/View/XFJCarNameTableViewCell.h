@@ -16,5 +16,7 @@
 @property (nonatomic, copy) void (^carNumberBlock)(NSString *);
 @property (nonatomic, strong) NSString *str;
 @property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberItemArray;
+@property (nonatomic, strong) NSString *addStrNumber;
+@property (nonatomic, assign) BOOL isAddStrBool;
 
 @end

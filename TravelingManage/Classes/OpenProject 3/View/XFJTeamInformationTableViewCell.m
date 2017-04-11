@@ -339,4 +339,9 @@
     return 38.0;
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.teamDescription_tablewView removeFromSuperview];
+}
+
 @end

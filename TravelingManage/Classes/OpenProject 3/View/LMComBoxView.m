@@ -36,8 +36,8 @@
         _listTable.delegate = self;
         _listTable.dataSource = self;
         _listTable.layer.borderWidth = 0.5;
-        _listTable.layer.borderColor = kBorderColor.CGColor;
         _listTable.tag = 100001;
+        _listTable.layer.borderColor = kBorderColor.CGColor;
         [_supView addSubview:_listTable];
     }
     return self;
@@ -252,7 +252,6 @@
         [_delegate selectAtIndex:indexPath.row inCombox:self];
     }
     [self performSelector:@selector(deSelectedRow) withObject:nil afterDelay:0.2];
-    
 }
 
 -(void)deSelectedRow
