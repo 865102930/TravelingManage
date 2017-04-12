@@ -234,6 +234,8 @@
                  [MBProgressHUD showHUDMsg:@"手机号修改成功"];
                 [_user setObject:@""forKey:@"phone"];
                 [_user setObject:self.NewPhoneNum forKey:@"phone"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"PHONENOTIFICA" object:nil userInfo:@{@"phone":self.NewPhoneNum}];
+                
                 [self.navigationController popToViewController:self.navigationController.childViewControllers[0] animated:YES];
             }else if ([responseObject[@"msg"] isEqualToString:@"fail"]){
                 [MBProgressHUD showHUDMsg:@"验证码错误"];
@@ -248,6 +250,12 @@
         if (error.code == NSURLErrorCancelled) return;
         [MBProgressHUD showHUDMsg:@"网络连接错误"];
     }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PHONENOTIFICA" object:nil];
 }
 
 

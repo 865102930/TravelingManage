@@ -68,12 +68,13 @@
         _nameTextF = [UITextField textLeftImage:@"name" placeholder:@"请输入姓名" imageWidth:14 imageHeight:19 lineWidth: SCREEN_WIDTH - 48];
         [_nameTextF addTarget:self action:@selector(textFieldChange:) forControlEvents:UIControlEventEditingChanged];
         [self.view addSubview:_nameTextF];
+        [_nameTextF becomeFirstResponder];
     }
     return _nameTextF;
 }
 - (UITextField *)idTextF{
     if(!_idTextF){
-        _idTextF = [UITextField textLeftImage:@"idNumber" placeholder:@"请输入身份证验证码" imageWidth:14 imageHeight:19 lineWidth: SCREEN_WIDTH - 48];
+        _idTextF = [UITextField textLeftImage:@"idNumber" placeholder:@"请输入身份号码" imageWidth:14 imageHeight:19 lineWidth: SCREEN_WIDTH - 48];
         [_idTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         _idTextF.keyboardType = UIKeyboardTypeNumberPad;
         [_idTextF addTarget:self action:@selector(textFieldChange:) forControlEvents:UIControlEventEditingChanged];
@@ -109,6 +110,15 @@
     _user = [NSUserDefaults standardUserDefaults];
     [_user synchronize];
     [self creatUI];
+    
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
+    tapGestureRecognizer.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapGestureRecognizer];
+}
+
+-(void)keyboardHide:(UITapGestureRecognizer*)tap{
+    [self.phoneTextF resignFirstResponder];
+    [self.idTextF resignFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -167,7 +177,7 @@
 - (void) textFieldDidChange:(UITextField *)sender {
     if (_idTextF.text.length == 0){
         [self.promptL setHidden:NO];
-        self.promptL.text = @"身份证号为空";
+//        self.promptL.text = @"身份证号为空";
         [self.promptL mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.view).offset(24);
             make.top.equalTo(_idTextF.mas_bottom).offset(17);
@@ -198,7 +208,7 @@
 //注册
 - (void)userRegister {
     if ([self isCorrect:self.idTextF.text] == NO) {//如果为YES就是正确的
-        [MBProgressHUD showHudTipStr:@"请输入正确的身份证号码!" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请输入正确的身份证号码" contentColor:HidWithColorContentBlack];
         return;
     }else {
         [self requestIdCardIsRegister];
@@ -243,7 +253,7 @@
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"--------error : %@",error);
-            [MBProgressHUD showHudTipStr:@"可能是网络错误" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"网络原因" contentColor:HidWithColorContentBlack];
         }
     }];
 }
@@ -251,6 +261,8 @@
 #pragma Mark- 注册接口
 - (void)requestWithIdCardRegister
 {
+    //隐藏键盘
+//    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
     NSDictionary *dictParaments = @{
                                     @"userMobile": self.phoneNum_text,
                                     @"idCard"    : self.idTextF.text,
@@ -266,7 +278,7 @@
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error.code == NSURLErrorCancelled) return;
-        [MBProgressHUD showHUDMsg:@"网络连接错误"];
+        [MBProgressHUD showHUDMsg:@"网络原因 "];
     }];
 }
 
@@ -316,6 +328,8 @@
 #pragma mark ----- textFieldDelegate
 - (void)textFieldChange:(UITextField *)sender {
     if (self.nameTextF.text.length > 0 && self.idTextF.text.length == 18) {
+        //隐藏键盘
+        [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
         [self.nextButton setBackgroundImage: [UIImage imageNamed:@"red"] forState:UIControlStateNormal];
         [self.nextButton setTitle:@"马上进入" forState:UIControlStateNormal];
         _nextButton.userInteractionEnabled = YES;

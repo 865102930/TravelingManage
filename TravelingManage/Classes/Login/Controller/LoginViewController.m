@@ -79,6 +79,7 @@
         _phoneTextF = [UITextField textLeftImage:@"phoneNum" placeholder:@"请输入手机号" imageWidth:14 imageHeight:19 lineWidth:SCREEN_WIDTH - 48];
          [_phoneTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         _phoneTextF.keyboardType = UIKeyboardTypeNumberPad;
+        [_phoneTextF becomeFirstResponder];
         [self.view addSubview:_phoneTextF];
     }
     return _phoneTextF;
@@ -285,6 +286,7 @@
                                     @"code" : self.idCodeTextF.text,
                                     @"terminal":@2
                                     };
+    NSLog(@"-------------登录的参数是:%@",dictParaments);
     [GRNetRequestClass POST:LOGINURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         [MBProgressHUD hidenHud];
         if (responseObject) {
@@ -292,7 +294,10 @@
                 NSDictionary *dict = responseObject[@"object"];
                 [_user setObject:dict[@"id"]forKey:@"userId"];
                 [_user setObject:dict[@"userMobile"]forKey:@"phone"];
-                [_user setObject:dict[@"userName"]forKey:@"userName"];
+                if ([[[responseObject objectForKey:@"object"] objectForKey:@"userName"]isEqual:[NSNull null]]) {
+                }else {
+                    [_user setObject:dict[@"userName"]forKey:@"userName"];
+                }
                 [_user setObject:dict[@"idCard"]forKey:@"idCard"];
                 [_user synchronize];
                 NSLog(@"----------------------------登录后得到的返回值------------------------------:%@",responseObject);

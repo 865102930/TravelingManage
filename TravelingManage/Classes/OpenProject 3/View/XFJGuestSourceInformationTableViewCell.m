@@ -359,10 +359,13 @@
     self.area_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
     self.provinceContent_label.text = shengName;
     self.cityContent_label.text = shiName;
-    self.areaContent_label.text = xianName;
     self.selectedProvince = shengName;
     self.selectedCity = shiName;
-    self.selectedArea = xianName;
+    if ([xianName isKindOfClass:[NSNull class]]) {
+    }else {
+        self.selectedArea = xianName;
+        self.areaContent_label.text = xianName;
+    }
     
 }
 
@@ -789,7 +792,7 @@
     self.goalAttribute_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
     NSString *indeStr = [NSString stringWithFormat:@"%@",self.purposeArray[indexPath.row].paramName];
     self.goalAttributeContent_label.text = indeStr;
-    self.paramName1 = self.purposeArray[indexPath.row].paramVal;
+    self.paramName1 = [NSString stringWithFormat:@"%@",self.purposeArray[indexPath.row].paramVal];
     [self.goalAttributeTableView removeFromSuperview];
 }
 

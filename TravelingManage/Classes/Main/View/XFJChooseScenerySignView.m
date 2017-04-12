@@ -74,6 +74,8 @@
 - (void)setTaskRowsItemArray:(NSMutableArray<XFJTaskRowsItem *> *)taskRowsItemArray
 {
     _taskRowsItemArray = taskRowsItemArray;
+    [self.chooseScenerySign_tableView reloadData];
+    self.selIndex = NULL;
 }
 
 
@@ -158,7 +160,7 @@
         }
     }
     cell.findAttractionsListItem = self.scenery_array[indexPath.row];
-    NSLog(@">>>>>>>>>>>>>>>选择的是第%zd行----------%zd",self.selIndex,indexPath);
+//    NSLog(@">>>>>>>>>>>>>>>选择的是第%zd行----------%zd",self.selIndex,indexPath);
     return cell;
 }
 

@@ -1386,13 +1386,9 @@ static BOOL over = NO;
         [MBProgressHUD showHudTipStr:@"请输入正确的房间数" contentColor:HidWithColorContentBlack];
         return;
     }
-    [self.hotel_view removeFromSuperview];
-    [self.maskView1 removeFromSuperview];
-    [self.view addSubview:self.signNoHotel_view];
-    self.signNoHotel_view.hotelSignPeopleCount = self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
-    self.signNoHotel_view.hotelSignRoomCount = self.signRoomCount;
     [self hotelSignRequest:userId];
 }
+
 
 - (void)isTrueHotelSign
 {
@@ -1413,10 +1409,24 @@ static BOOL over = NO;
         [[NSString stringWithFormat:@"%zd",self.leftFindTeamInfoItem.findTeamInfoItem_id] intValue] :
         [[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"] intValue];
     }
+    //[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]
     NSString *checkinNumber = self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
+    //刚创建完团队,直接拿
+    NSLog(@"<<<<<<<<=========刚进来的酒店的创建团队的人数是1:%zd",self.laterTeamControlItem.checkinNumber);
+    NSLog(@"<<<<<<<<=========刚进来的酒店的创建团队的人数是2:%@",self.leftFindTeamInfoItem.teamNum);
+    NSString *teamNumber;
+    if (self.isEnter == YES) {//如果是刚进来就显示此刻的团队人数
+        teamNumber = [NSString stringWithFormat:@"%zd",self.laterTeamControlItem.checkinNumber];
+    }else {
+        teamNumber = self.isTeamId == YES ? [NSString stringWithFormat:@"%d",[self.leftFindTeamInfoItem.teamNum intValue]] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
+    }
     //对参数的判断
     if ([checkinNumber intValue] == 0) {
-        [MBProgressHUD showHudTipStr:@"请输入正确的签到人数" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请填写正确的签到人数" contentColor:HidWithColorContentBlack];
+        return;
+    }
+    if ([checkinNumber intValue] > [teamNumber intValue]) {
+        [MBProgressHUD showHudTipStr:@"签到人数不能大于开团人数" contentColor:HidWithColorContentBlack];
         return;
     }
     NSLog(@"=====+++++++-------->>>>>管理员的值是 :%@",userId);
@@ -1424,7 +1434,7 @@ static BOOL over = NO;
                                     @"teamId": [NSString stringWithFormat:@"%zd",findTeamInfoByState_Id],//团队
                                     @"attractionsId":[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],//景区id
                                     @"userIdList":[NSString stringWithFormat:@"%@",userId],//管理员id(可能是多个)
-                                    @"checkinNumber":self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"],//签到人数
+                                    @"checkinNumber":checkinNumber,//签到人数
                                     @"rooms":[NSString stringWithFormat:@"%@",self.signRoomCount]//房间数(可以不传)
                                     };
     NSLog(@"+++++++++++++提交的酒店签到的参数是 :%@",dictParaments);
@@ -1433,6 +1443,11 @@ static BOOL over = NO;
         if (object) {
             [wself setUpUserTimeWithUseApp:NO];
             [MBProgressHUD showHudTipStr:@"签到成功" contentColor:HidWithColorContentBlack];
+            [wself.hotel_view removeFromSuperview];
+            [wself.maskView1 removeFromSuperview];
+            [wself.view addSubview:self.signNoHotel_view];
+            wself.signNoHotel_view.hotelSignPeopleCount = self.isHotelSign ? self.hotelSignPeople : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
+            wself.signNoHotel_view.hotelSignRoomCount = self.signRoomCount;
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
@@ -1478,10 +1493,26 @@ static BOOL over = NO;
     }
     //用户的签到人数
     NSString *checkinNumber = self.isSignModify ?self.signModifyCount :[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
+    
+    NSString *teamNumber1;
+    if (self.isEnter == YES) {//如果是刚进来就显示此刻的团队人数
+        teamNumber1 = [NSString stringWithFormat:@"%zd",self.laterTeamControlItem.checkinNumber];
+    }else {
+        teamNumber1 = self.isTeamId == YES ? [NSString stringWithFormat:@"%d",[self.leftFindTeamInfoItem.teamNum intValue]] : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
+    }
+    //对参数的判断
     if ([checkinNumber intValue] == 0) {
-        [MBProgressHUD showHudTipStr:@"请输入正确的签到人数" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请填写正确的签到人数" contentColor:HidWithColorContentBlack];
         return;
     }
+    if ([checkinNumber intValue] > [teamNumber1 intValue]) {
+        [MBProgressHUD showHudTipStr:@"签到人数不能大于开团人数" contentColor:HidWithColorContentBlack];
+        return;
+    }
+//    if ([checkinNumber intValue] == 0) {
+//        [MBProgressHUD showHudTipStr:@"请输入正确的签到人数" contentColor:HidWithColorContentBlack];
+//        return;
+//    }
     NSDictionary *dictParaments = @{
                                     @"teamId":[NSString stringWithFormat:@"%zd",findTeamInfoByState_Id],//团队
                                     @"attractionsId":[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],//景区id

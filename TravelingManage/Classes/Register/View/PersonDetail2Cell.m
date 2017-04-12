@@ -40,10 +40,9 @@ static NSString * const PersonDetail2CellID= @"PersonDetail2CellID";
     }];
    
     [self.rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(18);
         make.right.equalTo(self.contentView).offset(-24);
         make.centerY.mas_equalTo(self.contentView);
-        make.width.mas_equalTo(10);
+        make.width.height.mas_equalTo(10);
     }];
     
     [self.content mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -76,7 +75,7 @@ static NSString * const PersonDetail2CellID= @"PersonDetail2CellID";
 
 - (UIImageView *)rightImage{
     if (!_rightImage){
-        _rightImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"getInto"]];
+        _rightImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"xiugai"]];
     }
     return _rightImage;
 }

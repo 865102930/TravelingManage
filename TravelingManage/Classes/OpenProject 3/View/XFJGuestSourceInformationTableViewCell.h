@@ -22,7 +22,7 @@
 @property (nonatomic, strong) NSString *selectedArea;
 
 //目的属性
-@property (nonatomic, assign) NSInteger paramName1;
+@property (nonatomic, strong) NSString *paramName1;
 
 
 @end

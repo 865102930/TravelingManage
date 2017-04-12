@@ -451,15 +451,18 @@
 #pragma mark - 开始任务
 - (void)startTaskButtonClick
 {
+    [MBProgressHUD hidenHud];
     NSNumber *traveName = [NSNumber numberWithInteger:self.conventionMessage_view.travelName];
-    NSNumber *paramName1 = [NSNumber numberWithInteger:self.guestSourceInformation_view.paramName1];
-    NSNumber *teamNature = [NSNumber numberWithInteger:self.teamInformation_view.teamNature];
+//    NSNumber *paramName1 = [NSNumber numberWithInteger:self.guestSourceInformation_view.paramName1];
+    NSString *paramName1 = self.guestSourceInformation_view.paramName1;
+//    NSNumber *teamNature = [NSNumber numberWithInteger:self.teamInformation_view.teamNature];
+    NSString *teamNature = self.teamInformation_view.teamNature;
     if (self.conventionMessage_view.groupName_text == nil) {
         [MBProgressHUD showHudTipStr:@"请填写团队编号" contentColor:HidWithColorContentBlack];
         return;
     }
     if (self.conventionMessage_view.groupTime_text == nil) {
-        [MBProgressHUD showHudTipStr:@"请填写出团日期" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请选择出团日期" contentColor:HidWithColorContentBlack];
         return;
     }
     if ([traveName isEqualToNumber:@0]) {
@@ -478,20 +481,20 @@
         [MBProgressHUD showHudTipStr:@"请选择所在的市" contentColor:HidWithColorContentBlack];
         return;
     }
-    if ([paramName1 isKindOfClass:[NSNull class]]) {
+    if (paramName1 == nil) {
         [MBProgressHUD showHudTipStr:@"请选择目的属性" contentColor:HidWithColorContentBlack];
         return;
     }
     if (self.teamInformation_view.teamPeople_number == nil) {
-        [MBProgressHUD showHudTipStr:@"请选择开团人数" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请填写开团人数" contentColor:HidWithColorContentBlack];
         return;
     }
-    if ([teamNature isKindOfClass:[NSNull class]]) {
+    if (teamNature == nil) {
         [MBProgressHUD showHudTipStr:@"请选择团队性质" contentColor:HidWithColorContentBlack];
         return;
     }
     if (self.teamInformation_view.teamDay == nil) {
-        [MBProgressHUD showHudTipStr:@"请选择行程天数" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请填写行程天数" contentColor:HidWithColorContentBlack];
         return;
     }
     NSString *voucherPicRootStr;

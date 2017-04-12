@@ -284,9 +284,9 @@
     NSInteger xianRow  = [_pickerView selectedRowInComponent:2];
     
     _addressLb.text = [NSString stringWithFormat:@"%@%@%@",_shengArray[shengRow][@"name"],
-                       _shiArr.count > 0? _shiArr[shiRow][@"name"]:0,
-                       _xianArr.count > 0? _xianArr[xianRow][@"name"]:0];
-    ;
+                       _shiArr.count > 0? _shiArr[shiRow][@"name"]:@"",
+                       _xianArr.count > 0? _xianArr[xianRow][@"name"]:@""];
+
 }
 
 - (id)JsonObject:(NSString *)jsonStr {

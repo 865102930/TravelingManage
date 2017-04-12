@@ -55,8 +55,15 @@
             make.height.mas_equalTo(15.0);
         }];
         
+        NSLog(@"<<<<<<<<<+++++++++++++这里能拿到的修改的手机号码是 :%@",[_user objectForKey:@"phone"]);
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNumberStr) name:@"PHONENOTIFICA" object:nil];
     }
     return self;
+}
+
+- (void)userNumberStr
+{
+    [self.phoneNumber_label setTitle:[_user objectForKey:@"phone"] forState:UIControlStateNormal];
 }
 
 #pragma mark - 头像

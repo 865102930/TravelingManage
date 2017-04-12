@@ -69,22 +69,25 @@
         if (object) {
             NSLog(@"+++++++++++获取到的团队状态数字是 :%@",object);
             [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[object objectForKey:@"rows"]]];
+            [wself.firestMenuButton setTitle:[NSString stringWithFormat:@"待完善"] forState:UIControlStateNormal];
+             [wself.secondMenuButton setTitle:[NSString stringWithFormat:@"待审核"] forState:UIControlStateNormal];
+            [wself.thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价"] forState:UIControlStateNormal];
             for (NSInteger i = 0; i < wself.findTeamInFoStateItemArray.count; i++) {
                 XFJFindTeamInFoStateItem *findTeamInFoStateItem = wself.findTeamInFoStateItemArray[i];
                 if (findTeamInFoStateItem.state == 0) {
                 }else if (findTeamInFoStateItem.state == 1) {
                     [wself.firestMenuButton setTitle:[NSString stringWithFormat:@"待完善(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
                 }else if (findTeamInFoStateItem.state == 2) {
-                    [_secondMenuButton setTitle:[NSString stringWithFormat:@"待审核(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
+                    [wself.secondMenuButton setTitle:[NSString stringWithFormat:@"待审核(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
                 }else {
-                    [_thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
+                    [wself.thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
                 }
             }
         }
     } withFailureBlock:^(NSError *error) {
         if (error) {
             NSLog(@"++=========获取到的团队状态数字失败的是:%@",error);
-            [MBProgressHUD showHudTipStr:@"主人~~网络君错误啦!!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"网络君错误啦" contentColor:HidWithColorContentBlack];
         }
     } progress:^(float progress) {
     }];

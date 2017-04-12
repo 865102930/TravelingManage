@@ -116,7 +116,16 @@
         }]];
         [wself presentViewController:alertVc animated:NO completion:nil];
     };
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificiation:) name:@"PHONENOTIFICA" object:nil];
 }
+- (void)receiveNotificiation:(NSNotification *)notic
+{
+    NSString *phone = [notic.userInfo objectForKey:@"phone"];
+    NSLog(@">>>>>>>>>>>>>>通知传过来的值是:%@",phone);
+    [self.tableView reloadData];
+}
+
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

@@ -73,7 +73,10 @@
 - (void)setTaskRowsItemArray:(NSMutableArray<XFJTaskRowsItem *> *)taskRowsItemArray
 {
     _taskRowsItemArray = taskRowsItemArray;
+    [self.chooseHotelSign_tableView reloadData];
+    self.selIndex = NULL;
 }
+
 
 - (XFJChooseHotelFooterView *)chooseHotelFooterView
 {
