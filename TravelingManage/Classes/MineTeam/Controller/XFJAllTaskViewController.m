@@ -124,6 +124,7 @@
         NSLog(@"----------+++++++-------index row%zd", [path row]);
         //点击重新开始后,跳转到开团界面
         XFJOpenGroupViewController *openGroupViewController = [[XFJOpenGroupViewController alloc] init];
+        openGroupViewController.findTeamInfoByStateItem = wself.findTeamInfoByStateItem_array[path.row];
         [wself.navigationController pushViewController:openGroupViewController animated:YES];
     };
     cell.pleasePerfectDataBlock = ^(UIButton *button) {

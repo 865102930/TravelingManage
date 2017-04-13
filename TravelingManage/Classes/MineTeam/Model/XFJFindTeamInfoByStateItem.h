@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, XFJStateType) {
     XFJStateTypePleaseAsking = 5,
 };
 
+
 @interface XFJFindTeamInfoByStateItem : NSObject
 
 //团队编号
@@ -39,5 +40,23 @@ typedef NS_ENUM(NSUInteger, XFJStateType) {
 @property (nonatomic, assign) NSInteger teamState;
 //管理员名称
 @property (nonatomic, strong) NSString *userName;
+
+//创建团队的省份
+@property (nonatomic, strong) NSString *province;
+//创建团队的市
+@property (nonatomic, strong) NSString *city;
+//创建团队的区
+@property (nonatomic, strong) NSString *area;
+//创建团队选择的目的属性
+@property (nonatomic, strong) NSString *teamAttr;
+//创建团队选择的团队性质
+@property (nonatomic, strong) NSString *teamNature;
+//创建团队填写的行程天数
+@property (nonatomic, strong) NSString *teamDay;
+
+//旅行社id
+@property (nonatomic, assign) NSInteger travelAgencyId;
+
+
 
 @end

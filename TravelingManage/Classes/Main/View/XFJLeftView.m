@@ -95,20 +95,19 @@
                                     @"teamState":@0
                                     };
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:LEFTFINDTEAMINFOLISTURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if (object) {
-            NSLog(@"+++++++++侧滑栏的数据是:%@",object);
-            NSString *strArray = [object objectForKey:@"rows"];
+    [GRNetRequestClass POST:LEFTFINDTEAMINFOLISTURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++侧滑栏的数据是:%@",responseObject);
+            NSString *strArray = [responseObject objectForKey:@"rows"];
             [wself.leftFindTeamInfoItem_array addObjectsFromArray:[XFJLeftFindTeamInfoItem mj_objectArrayWithKeyValuesArray:strArray]];
             [wself.leftTableView reloadData];
             [wself.leftTableView.mj_footer endRefreshing];
         }
-    } withFailureBlock:^(NSError *error) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"_______未请求到侧滑栏的数据是:%@",error);
             [wself.leftTableView.mj_footer endRefreshing];
         }
-    } progress:^(float progress) {
     }];
 }
 

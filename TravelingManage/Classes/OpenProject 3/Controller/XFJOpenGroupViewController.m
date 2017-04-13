@@ -25,6 +25,7 @@
 #import "JTNavigationController.h"
 #import "XFJHeaderView.h"
 #import "XFJCarNumberItem.h"
+#import "XFJFindTeamCarItem.h"
 
 @interface XFJOpenGroupViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJUploadPhotosTableViewCellDelegate,UIScrollViewDelegate,XFJVoucherPhotosViewDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UIBarButtonItem *pushToLeftViewButton;
@@ -63,6 +64,10 @@
 @property (nonatomic, strong) NSMutableArray *userCarNumber_array;
 //车牌号的字符串
 @property (nonatomic, strong) NSString *carNumberStr;
+//车辆信息数组
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamCarItem *> *findTeamCarItem_array;
+@property (nonatomic, strong) NSIndexPath *indexPath;
+@property (nonatomic, assign) BOOL isSecondOpenNumber;
 
 @end
 
@@ -92,6 +97,14 @@
         _carNumberArray = [NSMutableArray array];
     }
     return _carNumberArray;
+}
+
+- (NSMutableArray <XFJFindTeamCarItem *> *)findTeamCarItem_array
+{
+    if (_findTeamCarItem_array == nil) {
+        _findTeamCarItem_array = [NSMutableArray array];
+    }
+    return _findTeamCarItem_array;
 }
 
 - (NSMutableArray *)addArray
@@ -329,19 +342,75 @@
     }];
     __weak __typeof(self)wself = self;
     self.starTask_view.startTaskButtonBlock = ^() {
-        //该处提交用户填写的创建团队时候的参数
-        [wself requestWithOpenTeam];
+        if (self.isSecondOpenNumber == YES) {//如果是yes,就表示是从我的团队中点击进入的,此时先调取消接口,在调开团接口
+            //调用取消团队的接口
+            [wself cancelTeam];
+        }else {
+            //该处提交用户填写的创建团队时候的参数
+            [wself requestWithOpenTeam];
+        }
     };
     [self requestFindCarNumberWithUserlocation:self.locationWithUser];
     self.carName_view.userLocation = self.locationWithUser;
 }
 
-//- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
-//{
-//    _findTeamInfoByStateItem = findTeamInfoByStateItem;
-//    self.conventionMessage_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
-//    self.teamInformation_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
-//}
+#pragma mark - 取消团队
+- (void)cancelTeam
+{
+    __weak __typeof(self)wself = self;
+    NSLog(@"<<<<<<<<---------获取到的重新开团的id是:%@",[NSString stringWithFormat:@"%zd",wself.findTeamInfoByStateItem.findTeamInfoByState_Id]);
+    [GRNetRequestClass POST:DELETETEAMINFOURL params:@{@"id":[NSString stringWithFormat:@"%zd",wself.findTeamInfoByStateItem.findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
+                //这里表示取消团队成功,立刻调用开团接口
+                [wself requestWithOpenTeam];
+            }else {
+                [MBProgressHUD showHudTipStr:@"重新开团失败,请重试!" contentColor:HidWithColorContentBlack];
+                return ;
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"您取消团队失败了,可能是网络问题" contentColor:HidWithColorContentBlack];
+        }
+    }];
+}
+
+- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    _findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.conventionMessage_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.teamInformation_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.guestSourceInformation_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.teamInformation_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.isSecondOpenNumber = YES;
+    [self checkCarNumberWithTeamId];
+}
+
+#pragma makr - 查询车辆图片
+- (void)checkCarNumberWithTeamId
+{
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDTEAMVEHICLESURL params:@{@"teamId":[NSString stringWithFormat:@"%zd",self.findTeamInfoByStateItem.findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++获取到的车牌的信息是 :%@",responseObject);
+            wself.findTeamCarItem_array = [XFJFindTeamCarItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]];
+            [wself.userCarNumber_array removeAllObjects];
+            for (NSInteger i = 0; i < wself.findTeamCarItem_array.count; i++) {
+                NSString *carNameStr = wself.findTeamCarItem_array[i].vehicleNo;
+                [wself.userCarNumber_array addObject:carNameStr];
+                wself.strNum = carNameStr;
+            }
+            NSLog(@">>>>>>>+++++++++++++车辆是:%zd",wself.userCarNumber_array.count);
+            wself.cell.findTeamCarItem = self.findTeamCarItem_array[wself.indexPath.row];
+            [wself.carNumber_tableView reloadData];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"网络君错误!" contentColor:HidWithColorContentBlack];
+        }
+    }];
+}
 
 - (void)requestFindCarNumberWithUserlocation:(NSString *)userLocation;
 {
@@ -453,9 +522,7 @@
 {
     [MBProgressHUD hidenHud];
     NSNumber *traveName = [NSNumber numberWithInteger:self.conventionMessage_view.travelName];
-//    NSNumber *paramName1 = [NSNumber numberWithInteger:self.guestSourceInformation_view.paramName1];
     NSString *paramName1 = self.guestSourceInformation_view.paramName1;
-//    NSNumber *teamNature = [NSNumber numberWithInteger:self.teamInformation_view.teamNature];
     NSString *teamNature = self.teamInformation_view.teamNature;
     if (self.conventionMessage_view.groupName_text == nil) {
         [MBProgressHUD showHudTipStr:@"请填写团队编号" contentColor:HidWithColorContentBlack];
@@ -530,11 +597,11 @@
                                     };
     NSLog(@"++++++++++++++开团传递的参数是 :%@",dictParaments);
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:MODIFYTEAMINFOURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if (object) {
+    [GRNetRequestClass POST:MODIFYTEAMINFOURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
             [MBProgressHUD hidenHud];
-            NSLog(@"+++++======---------团队创建成功,成功信息是:%@",object);
-            NSDictionary *dict = [object objectForKey:@"object"];
+            NSLog(@"+++++======---------团队创建成功,成功信息是:%@",responseObject);
+            NSDictionary *dict = [responseObject objectForKey:@"object"];
             self.dict1 = [dict objectForKey:@"id"];
             NSLog(@"+++++===========提取到的id是:%@",self.dict1);
             HomeViewController *homeController = [[HomeViewController alloc] init];
@@ -552,17 +619,18 @@
             homeController.isFindTeamList = YES;
             [wself presentViewController:navVC animated:YES completion:nil];
         }
-    } withFailureBlock:^(NSError *error) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"+++++++++++++++++++++_______团队创建失败,失败信息是:%@",error);
             [MBProgressHUD showHudTipStr:@"网络请求失败~~" contentColor:HidWithColorContentBlack];
         }
-    } progress:^(float progress) {
     }];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.isSecondOpenNumber = NO;
     if (self.signViewBlock != nil) {
         self.signViewBlock(self.teamInformation_view.teamPeople_number,self.dict1);
     }
@@ -741,11 +809,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSLog(@"能到这的cell个数是:%zd",1 + [self.addArray count]);
+    //self.isSecondOpenNumber == YES ? [self.findTeamCarItem_array count] : 
     return 1 + [self.addArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.indexPath = indexPath;
     if (indexPath.row == 0) {
         XFJCarNameTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kReuseIdentifier_XFJCarNameTableViewCell forIndexPath:indexPath];
         self.cell = cell;

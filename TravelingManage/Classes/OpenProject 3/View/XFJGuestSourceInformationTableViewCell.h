@@ -9,6 +9,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LMComBoxView.h"
+#import "XFJFindTeamInfoByStateItem.h"
 
 @interface XFJGuestSourceInformationTableViewCell : UIView <LMComBoxViewDelegate>
 
@@ -24,5 +25,6 @@
 //目的属性
 @property (nonatomic, strong) NSString *paramName1;
 
+@property (nonatomic, strong) XFJFindTeamInfoByStateItem *findTeamInfoByStateItem;
 
 @end

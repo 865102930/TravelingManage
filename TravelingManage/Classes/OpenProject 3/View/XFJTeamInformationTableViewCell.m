@@ -120,18 +120,17 @@
                                     @"state":@"1"
                                     };
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMNUMBERQUERYURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if (object) {
-            NSLog(@"++++++==========----获取到的团队性质的值是:%@",object);
-            NSMutableArray *teamArray = [object objectForKey:@"rows"];
+    [GRNetRequestClass POST:TEAMNUMBERQUERYURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"++++++==========----获取到的团队性质的值是:%@",responseObject);
+            NSMutableArray *teamArray = [responseObject objectForKey:@"rows"];
             wself.teamDescriptionArray = [XFJTeamPropertiesItem mj_objectArrayWithKeyValuesArray:teamArray];
             [wself.teamDescription_tablewView reloadData];
         }
-    } withFailureBlock:^(NSError *error) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             [MBProgressHUD showHudTipStr:@"网络错误" contentColor:HidWithColorContentBlack];
         }
-    } progress:^(float progress) {
     }];
 }
 
@@ -298,6 +297,39 @@
 {
     _findTeamInfoByStateItem = findTeamInfoByStateItem;
     self.teamNumber_field.text = [NSString stringWithFormat:@"%zd",findTeamInfoByStateItem.teamNum];
+    self.journeyDay_field.text = findTeamInfoByStateItem.teamDay;
+    self.teamPeople_number = [NSString stringWithFormat:@"%zd",findTeamInfoByStateItem.teamNum];
+    self.teamDay = findTeamInfoByStateItem.teamDay;
+    [self alreadyOpenWithFindTeamInfoByStateItem:findTeamInfoByStateItem];
+}
+
+#pragma mark - 重新开团中的团队性质
+- (void)alreadyOpenWithFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    NSDictionary *dictParaments = @{
+                                    @"state":@"1"
+                                    };
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:TEAMNUMBERQUERYURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"++++++==========----获取到的团队性质的值是:%@",responseObject);
+            NSMutableArray *teamArray = [responseObject objectForKey:@"rows"];
+            wself.teamDescriptionArray = [XFJTeamPropertiesItem mj_objectArrayWithKeyValuesArray:teamArray];
+            for (NSInteger i = 0; i < wself.teamDescriptionArray.count; i++) {
+                NSString *paramVal = [NSString stringWithFormat:@"%zd",wself.teamDescriptionArray[i].paramVal];
+                if (paramVal == findTeamInfoByStateItem.teamNature) {
+                    self.teamPropertiesContent_label.text = self.teamDescriptionArray[i].paramName;
+                    self.teamNature = [NSString stringWithFormat:@"%zd",wself.teamDescriptionArray[i].paramVal];
+                    return;
+                }
+            }
+            [wself.teamDescription_tablewView reloadData];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"网络错误" contentColor:HidWithColorContentBlack];
+        }
+    }];
 }
 
 #pragma mark - 组数

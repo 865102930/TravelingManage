@@ -980,6 +980,7 @@ static BOOL over = NO;
     }];
 }
 
+
 #pragma mark - 改变按钮的状态
 - (void)statusHomeTopButtonClickRequest
 {
@@ -1037,6 +1038,9 @@ static BOOL over = NO;
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FRESHENLEFTREQUEST" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"INDEXPATHNOTICE" object:nil];
+    self.isProjectItem = NO;
+    self.isSecondProjectItem = NO;
+    self.isFindTeamList = NO;
 }
 
 #pragma mark - 初始化签到view

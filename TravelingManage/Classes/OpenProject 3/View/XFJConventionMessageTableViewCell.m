@@ -234,7 +234,7 @@
         [wself.maskView1 removeFromSuperview];
         NSLog(@"----------------选择的时间是 :%zd/%zd/%zd",year, month, day);
         wself.groupTime_text = [NSString stringWithFormat:@"%zd/%zd/%zd",year,month,day];
-        wself.goalAttributeContent_label.text = [NSString stringWithFormat:@"%zd/%zd/%zd",year,month,day];
+        wself.goalAttributeContent_label.text = [NSString stringWithFormat:@"%zd-%zd-%zd",year,month,day];
     };
     [[UIApplication sharedApplication].keyWindow addSubview:self.maskView1];
     [self.maskView1 addSubview:calendar];
@@ -274,7 +274,7 @@
 - (UITextField *)groupTime_field
 {
     if (_groupTime_field == nil) {
-        _groupTime_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"出 团 日 期" rightImage:@"xinghao" placeholder:@"2017/02/23"];
+        _groupTime_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"出 团 日 期" rightImage:@"xinghao" placeholder:@"2017-02-23"];
         [_groupTime_field addTarget:self action:@selector(groupText_endText:) forControlEvents:UIControlEventEditingChanged];
         _groupTime_field.tag = 10001;
     }
@@ -302,9 +302,16 @@
 - (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
 {
     _findTeamInfoByStateItem = findTeamInfoByStateItem;
+    NSString *teamDateStr = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
+    NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
+    self.goalAttributeContent_label.text = timeDateArray[0];
     self.groupText_field.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamNo];
     self.groupTime_field.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
     self.travelServiceName_field.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.travelAgencyName];
+    self.groupName_text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamNo];
+    NSString *str3 = [timeDateArray[0] stringByReplacingOccurrencesOfString:@"-" withString:@"/"];
+    self.groupTime_text = str3;
+    self.travelName = findTeamInfoByStateItem.travelAgencyId;
 }
 
 - (UITableView *)check_traveView
@@ -326,7 +333,8 @@
 - (void)textField_change:(UITextField *)text_field
 {
     NSDictionary *dictParaments = @{
-                                    @"taName":text_field.text
+                                    @"taName":text_field.text,
+                                    @"checkState":@1
                                     };
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:CHECKOUTTRAVENAMEURL withParaments:dictParaments withSuccessBlock:^(id object) {
@@ -349,6 +357,7 @@
 -(void)searchBarTextDidChange:(NSString *)searchText
 {
     self.result = nil;
+    [self.check_traveView removeFromSuperview];
     for (int i = 0; i < self.findTravelAgencyList_array.count; i++) {
         NSString *string = self.findTravelAgencyList_array[i].taName;
         if (string.length >= searchText.length) {

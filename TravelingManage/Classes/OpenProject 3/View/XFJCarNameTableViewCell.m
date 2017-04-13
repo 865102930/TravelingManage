@@ -108,6 +108,19 @@
     _addStrNumber = addStrNumber;
 }
 
+- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    _findTeamInfoByStateItem = findTeamInfoByStateItem;
+}
+
+
+- (void)setFindTeamCarItem:(XFJFindTeamCarItem *)findTeamCarItem
+{
+    _findTeamCarItem = findTeamCarItem;
+    self.carName_field.text = findTeamCarItem.vehicleNo;
+}
+
+
 
 
 @end

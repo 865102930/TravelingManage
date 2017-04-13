@@ -235,19 +235,17 @@
                                     @"state":@"0"
                                     };
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:TEAMNUMBERQUERYURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        NSLog(@"+++++++获取到的目的属性的值是 :%@",object);
-        if (object) {
+    [GRNetRequestClass POST:TEAMNUMBERQUERYURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
             //取出
-            NSMutableArray *purposeRows = [object objectForKey:@"rows"];
+            NSMutableArray *purposeRows = [responseObject objectForKey:@"rows"];
             wself.purposeArray = [XFJPurposeItem mj_objectArrayWithKeyValuesArray:purposeRows];
             [wself.goalAttributeTableView reloadData];
         }
-    } withFailureBlock:^(NSError *error) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             [MBProgressHUD showHudTipStr:@"请求出错" contentColor:HidWithColorContentBlack];
         }
-    } progress:^(float progress) {
     }];
 }
 
@@ -362,11 +360,58 @@
     self.selectedProvince = shengName;
     self.selectedCity = shiName;
     if ([xianName isKindOfClass:[NSNull class]]) {
+        self.selectedArea = @"";
     }else {
         self.selectedArea = xianName;
         self.areaContent_label.text = xianName;
     }
-    
+}
+
+
+#pragma mark - 给重新开团的地区赋值
+- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    _findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.provinceContent_label.text = findTeamInfoByStateItem.province;
+    self.cityContent_label.text = findTeamInfoByStateItem.city;
+    self.selectedProvince = findTeamInfoByStateItem.province;
+    self.selectedCity = findTeamInfoByStateItem.city;
+    //判断区是不是没有
+    if ([findTeamInfoByStateItem.area isKindOfClass:[NSNull class]]) {
+    }else {
+        self.areaContent_label.text = findTeamInfoByStateItem.area;
+        self.selectedArea = findTeamInfoByStateItem.area;
+    }
+    NSLog(@"<<<<<<<<<----------这里打印的目的属性的列表是:%zd",self.purposeArray.count);
+    [self alreadyTaskRequestWithFindTeamInfoByStateItem:findTeamInfoByStateItem];
+}
+
+#pragma mark - 重新开始后的调用
+- (void)alreadyTaskRequestWithFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    NSDictionary *dictParaments = @{
+                                    @"state":@"0"
+                                    };
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:TEAMNUMBERQUERYURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            //取出
+            NSMutableArray *purposeRows = [responseObject objectForKey:@"rows"];
+            wself.purposeArray = [XFJPurposeItem mj_objectArrayWithKeyValuesArray:purposeRows];
+            for (NSInteger i = 0; i < self.purposeArray.count; i++) {
+                NSString *paramVal = self.purposeArray[i].paramVal;
+                if (paramVal == findTeamInfoByStateItem.teamAttr) {
+                    self.goalAttributeContent_label.text = self.purposeArray[i].paramName;
+                    self.paramName1 = [NSString stringWithFormat:@"%@",self.purposeArray[i].paramVal];
+                    return;
+                }
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"请求出错" contentColor:HidWithColorContentBlack];
+        }
+    }];
 }
 
 - (UILabel *)goalAttribute_label
@@ -571,186 +616,6 @@
         _zmjPickView = [[ZmjPickView alloc]init];
     }
     return _zmjPickView;
-}
-
-- (void)initShu
-{
-    //解析全国省市区信息
-    NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"area" ofType:@"plist"];
-    areaDic = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-    NSArray *components = [areaDic allKeys];
-    NSArray *sortedArray = [components sortedArrayUsingComparator: ^(id obj1, id obj2) {
-        
-        if ([obj1 integerValue] > [obj2 integerValue]) {
-            return (NSComparisonResult)NSOrderedDescending;
-        }
-        
-        if ([obj1 integerValue] < [obj2 integerValue]) {
-            return (NSComparisonResult)NSOrderedAscending;
-        }
-        return (NSComparisonResult)NSOrderedSame;
-    }];
-    
-    NSMutableArray *provinceTmp = [NSMutableArray array];
-    for (int i=0; i<[sortedArray count]; i++) {
-        NSString *index = [sortedArray objectAtIndex:i];
-        NSArray *tmp = [[areaDic objectForKey: index] allKeys];
-        [provinceTmp addObject: [tmp objectAtIndex:0]];
-    }
-    NSLog(@"%s",__func__);
-    province = [NSArray arrayWithArray:provinceTmp];
-    
-    NSString *index = [sortedArray objectAtIndex:0];
-    NSString *selected = [province objectAtIndex:0];
-    NSDictionary *dic = [NSDictionary dictionaryWithDictionary: [[areaDic objectForKey:index]objectForKey:selected]];
-    
-    NSArray *cityArray = [dic allKeys];
-    NSDictionary *cityDic = [NSDictionary dictionaryWithDictionary: [dic objectForKey: [cityArray objectAtIndex:0]]];
-    city = [NSArray arrayWithArray:[cityDic allKeys]];
-    
-    selectedCity = [city objectAtIndex:0];
-    district = [NSArray arrayWithArray:[cityDic objectForKey:selectedCity]];
-    
-    addressDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                   province,@"province",
-                   city,@"city",
-                   district,@"area",nil];
-    
-    selectedProvince = [province objectAtIndex:0];
-    selectedArea = [district objectAtIndex:0];
-    
-    bgScrollView = [[LMContainsLMComboxScrollView alloc]initWithFrame:CGRectMake(-30, 0, SCREEN_WIDTH + 30, 250)];
-    bgScrollView.backgroundColor = [UIColor clearColor];
-    bgScrollView.showsVerticalScrollIndicator = NO;
-    bgScrollView.showsHorizontalScrollIndicator = NO;
-    bgScrollView.tag = 1000;
-    [self addSubview:bgScrollView];
-    
-    [self setUpBgScrollView];
-}
-
-- (void)setUpBgScrollView
-{
-    NSArray *keys = [NSArray arrayWithObjects:@"province",@"city",@"area", nil];
-    for(NSInteger i = 0; i < 3; i++)
-    {
-        LMComBoxView *comBox = [[LMComBoxView alloc]initWithFrame:CGRectMake(50+((SCREEN_WIDTH - 44) / 3 + 3) * i, 60, (SCREEN_WIDTH - 44) / 3, 38.0)];
-        comBox.backgroundColor = [UIColor whiteColor];
-        if (i == 0) {
-            comBox.ButtonTypeNum = 1;
-        }else if (i == 1) {
-            comBox.ButtonTypeNum = 2;
-        }else {
-            comBox.ButtonTypeNum = 3;
-        }
-        comBox.arrowImgName = @"down_dark0.png";
-        NSMutableArray *itemsArray = [NSMutableArray arrayWithArray:[addressDict objectForKey:[keys objectAtIndex:i]]];
-        comBox.titlesList = itemsArray;
-        comBox.delegate = self;
-        comBox.supView = bgScrollView;
-        [comBox defaultSettings];
-        comBox.tag = kDropDownListTag + i;
-        [bgScrollView addSubview:comBox];
-    }
-}
-
-#pragma mark -LMComBoxViewDelegate
--(void)selectAtIndex:(NSInteger)index inCombox:(LMComBoxView *)_combox
-{
-    NSInteger tag = _combox.tag - kDropDownListTag;
-    switch (tag) {
-        case 0:
-        {
-            selectedProvince =  [[addressDict objectForKey:@"province"]objectAtIndex:index];
-            //字典操作
-            NSDictionary *tmp = [NSDictionary dictionaryWithDictionary: [areaDic objectForKey: [NSString stringWithFormat:@"%ld", index]]];
-            NSDictionary *dic = [NSDictionary dictionaryWithDictionary: [tmp objectForKey: selectedProvince]];
-            NSArray *cityArray = [dic allKeys];
-            NSArray *sortedArray = [cityArray sortedArrayUsingComparator: ^(id obj1, id obj2) {
-                
-                if ([obj1 integerValue] > [obj2 integerValue]) {
-                    return (NSComparisonResult)NSOrderedDescending;//递减
-                }
-                
-                if ([obj1 integerValue] < [obj2 integerValue]) {
-                    return (NSComparisonResult)NSOrderedAscending;//上升
-                }
-                return (NSComparisonResult)NSOrderedSame;
-            }];
-            
-            NSMutableArray *array = [[NSMutableArray alloc] init];
-            for (int i=0; i<[sortedArray count]; i++) {
-                NSString *index = [sortedArray objectAtIndex:i];
-                NSArray *temp = [[dic objectForKey: index] allKeys];
-                [array addObject: [temp objectAtIndex:0]];
-            }
-            city = [NSArray arrayWithArray:array];
-            
-            NSDictionary *cityDic = [dic objectForKey: [sortedArray objectAtIndex: 0]];
-            district = [NSArray arrayWithArray:[cityDic objectForKey:[city objectAtIndex:0]]];
-            //刷新市、区
-            addressDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                           province,@"province",
-                           city,@"city",
-                           district,@"area",nil];
-            LMComBoxView *cityCombox = (LMComBoxView *)[bgScrollView viewWithTag:tag + 1 + kDropDownListTag];
-            cityCombox.titlesList = [NSMutableArray arrayWithArray:[addressDict objectForKey:@"city"]];
-            [cityCombox reloadData];
-            LMComBoxView *areaCombox = (LMComBoxView *)[bgScrollView viewWithTag:tag + 2 + kDropDownListTag];
-            areaCombox.titlesList = [NSMutableArray arrayWithArray:[addressDict objectForKey:@"area"]];
-            [areaCombox reloadData];
-            
-            selectedCity = [city objectAtIndex:0];
-            selectedArea = [district objectAtIndex:0];
-            break;
-        }
-        case 1:
-        {
-            selectedCity = [[addressDict objectForKey:@"city"]objectAtIndex:index];
-            
-            NSString *provinceIndex = [NSString stringWithFormat: @"%ld", [province indexOfObject: selectedProvince]];
-            NSDictionary *tmp = [NSDictionary dictionaryWithDictionary: [areaDic objectForKey: provinceIndex]];
-            NSDictionary *dic = [NSDictionary dictionaryWithDictionary: [tmp objectForKey: selectedProvince]];
-            NSArray *dicKeyArray = [dic allKeys];
-            NSArray *sortedArray = [dicKeyArray sortedArrayUsingComparator: ^(id obj1, id obj2) {
-                
-                if ([obj1 integerValue] > [obj2 integerValue]) {
-                    return (NSComparisonResult)NSOrderedDescending;
-                }
-                
-                if ([obj1 integerValue] < [obj2 integerValue]) {
-                    return (NSComparisonResult)NSOrderedAscending;
-                }
-                return (NSComparisonResult)NSOrderedSame;
-            }];
-            
-            NSDictionary *cityDic = [NSDictionary dictionaryWithDictionary: [dic objectForKey: [sortedArray objectAtIndex: index]]];
-            NSArray *cityKeyArray = [cityDic allKeys];
-            district = [NSArray arrayWithArray:[cityDic objectForKey:[cityKeyArray objectAtIndex:0]]];
-            //刷新区
-            addressDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                           province,@"province",
-                           city,@"city",
-                           district,@"area",nil];
-            LMComBoxView *areaCombox = (LMComBoxView *)[bgScrollView viewWithTag:tag + 1 + kDropDownListTag];
-            areaCombox.titlesList = [NSMutableArray arrayWithArray:[addressDict objectForKey:@"area"]];
-            [areaCombox reloadData];
-            
-            selectedArea = [district objectAtIndex:0];
-            break;
-        }
-        case 2:
-        {
-            selectedArea = [[addressDict objectForKey:@"area"]objectAtIndex:index];
-            break;
-        }
-        default:
-            break;
-    }
-    NSLog(@"===%@===%@===%@",selectedProvince,selectedCity,selectedArea);
-    self.selectedProvince = selectedProvince;
-    self.selectedCity = selectedCity;
-    self.selectedArea = selectedArea;
 }
 
 #pragma mark - 组数

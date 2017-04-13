@@ -64,14 +64,14 @@
     NSDictionary *dictParaments = @{
                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]
                                     };
-    __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDTEAMINFOSTATEURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if (object) {
-            NSLog(@"+++++++++++获取到的团队状态数字是 :%@",object);
-            [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[object objectForKey:@"rows"]]];
-            [wself.firestMenuButton setTitle:[NSString stringWithFormat:@"待完善"] forState:UIControlStateNormal];
-             [wself.secondMenuButton setTitle:[NSString stringWithFormat:@"待审核"] forState:UIControlStateNormal];
-            [wself.thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价"] forState:UIControlStateNormal];
+    __weak __typeof(self)wself = self;    
+    [GRNetRequestClass POST:FINDTEAMINFOSTATEURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++获取到的团队状态数字是 :%@",responseObject);
+            [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]]];
+            [wself.firestMenuButton setTitle:[NSString stringWithFormat:@"待完善(0)"] forState:UIControlStateNormal];
+            [wself.secondMenuButton setTitle:[NSString stringWithFormat:@"待审核(0)"] forState:UIControlStateNormal];
+            [wself.thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价(0)"] forState:UIControlStateNormal];
             for (NSInteger i = 0; i < wself.findTeamInFoStateItemArray.count; i++) {
                 XFJFindTeamInFoStateItem *findTeamInFoStateItem = wself.findTeamInFoStateItemArray[i];
                 if (findTeamInFoStateItem.state == 0) {
@@ -84,12 +84,11 @@
                 }
             }
         }
-    } withFailureBlock:^(NSError *error) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"++=========获取到的团队状态数字失败的是:%@",error);
             [MBProgressHUD showHudTipStr:@"网络君错误啦" contentColor:HidWithColorContentBlack];
         }
-    } progress:^(float progress) {
     }];
 }
 
