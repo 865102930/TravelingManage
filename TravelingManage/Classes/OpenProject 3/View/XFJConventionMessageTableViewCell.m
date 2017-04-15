@@ -133,6 +133,24 @@
         make.left.mas_equalTo(self.goalAttribute_imageViewLeft.mas_right).mas_offset(18.0);
         make.centerY.mas_equalTo(self.goalAttribute_label.mas_centerY);
     }];
+    
+    [self getAlreadyTimeWithFirest];
+}
+
+#pragma mark - 提供一个方法获取当前的时间并且显示在文本框中
+- (void)getAlreadyTimeWithFirest
+{
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:@"YYYY/MM/dd hh:mm:ss"];
+    NSString *dateTime = [formatter stringFromDate:date];
+    NSString *teamDateStr = [NSString stringWithFormat:@"%@",dateTime];
+    NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
+    NSString *str3 = [timeDateArray[0] stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+    self.goalAttributeContent_label.text = [NSString stringWithFormat:@"%@",str3];
+    self.groupTime_text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
 }
 
 - (UIView *)line_view
@@ -264,7 +282,7 @@
 {
     if (_goalAttributeContent_label == nil) {
         _goalAttributeContent_label = [[UILabel alloc] init];
-        _goalAttributeContent_label.text = @"请选择出团日期";
+//        _goalAttributeContent_label.text = @"请选择出团日期";
         _goalAttributeContent_label.textColor = kColor2f2f;
         _goalAttributeContent_label.font = [UIFont systemFontOfSize:14.0];
     }

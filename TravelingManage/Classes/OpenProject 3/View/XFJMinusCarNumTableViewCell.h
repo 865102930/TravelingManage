@@ -14,7 +14,7 @@
 
 @interface XFJMinusCarNumTableViewCell : UITableViewCell
 
-@property (nonatomic, copy) void (^minusCarNumBlock)();
+@property (nonatomic, copy) void (^minusCarNumBlock)(UITableViewCell *);
 //传递用户输入的车辆
 @property (nonatomic, copy) void (^AllMinusCarNumberBlock)(NSString *);
 @property (nonatomic, strong) NSString *textFieldStr;

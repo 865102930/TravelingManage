@@ -1041,6 +1041,10 @@ static BOOL over = NO;
     self.isProjectItem = NO;
     self.isSecondProjectItem = NO;
     self.isFindTeamList = NO;
+    self.isHotelSignTime = NO;
+    self.isTaskTime = NO;
+    self.isTeamId = NO;
+    self.isFirestEnterSignTime = NO;
 }
 
 #pragma mark - 初始化签到view
@@ -1782,6 +1786,7 @@ static BOOL over = NO;
         [self.leftView setCenter:CGPointMake(self.leftView.bounds.size.width * 0.5 - width, SCREEN_HEIGHT * 0.5)];
     }
 }
+
 
 #pragma mark - 显示或者隐藏侧滑栏
 - (void)openLeftView:(BOOL)open

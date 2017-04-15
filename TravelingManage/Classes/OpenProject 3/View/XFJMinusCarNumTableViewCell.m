@@ -97,7 +97,7 @@
 - (void)minusCarNameButtonClick:(UIButton *)buttonTag
 {
     if (self.minusCarNumBlock) {
-        self.minusCarNumBlock();
+        self.minusCarNumBlock(self);
     }
 }
 

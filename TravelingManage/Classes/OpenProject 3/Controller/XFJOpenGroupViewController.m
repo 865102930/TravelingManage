@@ -68,6 +68,10 @@
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamCarItem *> *findTeamCarItem_array;
 @property (nonatomic, strong) NSIndexPath *indexPath;
 @property (nonatomic, assign) BOOL isSecondOpenNumber;
+//定义一个BOOL值,用来规定是否点击了删除行的按钮
+@property (nonatomic, assign) BOOL isDeleteCell;
+//设置一个BOOL值,用来判断是否输入了内容
+@property (nonatomic, assign) BOOL isSureEnterContent;
 
 @end
 
@@ -634,6 +638,7 @@
     if (self.signViewBlock != nil) {
         self.signViewBlock(self.teamInformation_view.teamPeople_number,self.dict1);
     }
+    self.isSureEnterContent = NO;
 }
 
 
@@ -823,15 +828,21 @@
         NSLog(@"self.carNumberArray的值是:%@",self.carNumberArray);
         __weak typeof(self) weakself = self;
         cell.addCellBlock = ^(NSInteger srt,NSString *str1) {
-            //遍历所有的车牌号
+            weakself.isDeleteCell = NO;
+            weakself.isSureEnterContent = NO;
+            //判断车牌号是否可以
+            if ([weakself validateCarNo:weakself.strNum]) {//如果为YES就增加
+                [weakself addButtonClick];
+            }else {//错误就提示用户
+                [MBProgressHUD showHudTipStr:@"车牌号输入不正确" contentColor:HidWithColorContentBlack];
+                return ;
+            }
 //            for (NSInteger i = 0; i < weakself.userCarNumber_array.count; i++) {
-                //在这里需要判断输入的车牌号是否正确
-                if ([weakself validateCarNo:weakself.strNum]) {//如果为YES就增加
-                    [weakself addButtonClick];
-                }else {//错误就提示用户
-                    [MBProgressHUD showHudTipStr:@"车牌号输入不正确" contentColor:HidWithColorContentBlack];
-                    return ;
-                }
+//                //取出数组中的车牌号
+//                NSString *carNumber = weakself.userCarNumber_array[i];
+//                if (<#condition#>) {
+//
+//                }
 //            }
         };
         cell.carNumberBlock = ^(NSString *carNum) {
@@ -842,14 +853,19 @@
         return cell;
     }else {
         XFJMinusCarNumTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kReuseIdentifier_XFJMinusCarNumTableViewCell forIndexPath:indexPath];
-        cell.carNumberItemArray = self.carNumberArray;
+        if (self.isDeleteCell == YES) {//如果是YES就说明点击了删除cell的按钮
+            NSLog(@"这里用户点击了删除行cell的按钮.......");
+        }else {
+            cell.carNumberItemArray = self.carNumberArray;
+        }
         __weak typeof(self) weakself = self;
-        cell.minusCarNumBlock = ^() {
+        cell.minusCarNumBlock = ^(UITableViewCell *cell) {
             //删除
-            [weakself add];
+            [weakself addWithCell:cell];
         };
         //这里接收用户在减号的按钮输入框中输入的车牌
         cell.AllMinusCarNumberBlock = ^ (NSString *carTextStr) {
+            weakself.isSureEnterContent = YES;
             [weakself.userCarNumber_array addObject:carTextStr];
             NSLog(@"<<<<<<<<+++++++++这里通过block接收到用户输入的值是:%zd",weakself.userCarNumber_array.count);
         };
@@ -870,25 +886,25 @@
     }
 }
 
-- (void)add
+
+- (void)addWithCell:(UITableViewCell *)cell
 {
-    NSArray *visibleCells = [self.carNumber_tableView visibleCells];
+    self.isDeleteCell = YES;
     self.carNumber_tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, self.addArray.count * 45);
     self.backGroundView.frame = CGRectMake(0, 210 + self.addArray.count * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
-    for (XFJMinusCarNumTableViewCell *cell in visibleCells) {
-        [self.addArray removeObjectAtIndex:cell.tag];
-        NSLog(@"cell的tag值是 :%zd",cell.tag);
-        [self.carNumber_tableView reloadData];
-        break;
-    }
+    NSIndexPath *indexpath = [self.carNumber_tableView indexPathForCell:cell];
+    [self.addArray removeObjectAtIndex:indexpath.row - 1];
+    [self.userCarNumber_array removeObjectAtIndex:self.userCarNumber_array.count - indexpath.row];
+    NSLog(@"得到的行的indexPath是 :%zd-------%zd",indexpath.row - 1,indexpath.row);
+    NSLog(@">>>>>>>+++++++++++来到这里说明删除了车牌号最后的总数是:%zd",self.userCarNumber_array.count);
+    NSLog(@"<<<<<<<<>>>>>>>>>>数组中的个数是:%zd",self.addArray.count);
+    [self.carNumber_tableView deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationLeft];
     self.cell.addStrNumber = self.strNum;
     self.cell.isAddStrBool = YES;
 }
 
-
 - (void)addButtonClick
 {
-    
     NSArray *visibleCells = [self.carNumber_tableView visibleCells];
     if (visibleCells.count > 5) {
         return;
