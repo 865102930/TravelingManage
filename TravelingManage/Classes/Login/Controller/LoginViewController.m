@@ -376,10 +376,12 @@
 
 }
 
+
 #pragma mark ----- textFieldDelegate
 - (void)textFieldDidChange:(UITextField *)sender {
     NSLog(@"------------sender的内容是 :%@", self.phoneTextF.text);
-    if (self.phoneTextF.text.length == 11) {
+    if (self.phoneTextF.text.length > 11) {
+        self.phoneTextF.text = [self.phoneTextF.text substringToIndex:11];
         [self.isGuideBtn setHidden:NO];
         [self.isTravelAgencyBtn setHidden:NO];
         [self checkUserRole];

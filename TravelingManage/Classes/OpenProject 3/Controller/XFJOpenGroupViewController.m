@@ -639,6 +639,7 @@
         self.signViewBlock(self.teamInformation_view.teamPeople_number,self.dict1);
     }
     self.isSureEnterContent = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"ADDCARNUMBERNOTIFI" object:@"button"];
 }
 
 
@@ -827,9 +828,11 @@
         cell.carNumberItemArray = self.carNumberArray;
         NSLog(@"self.carNumberArray的值是:%@",self.carNumberArray);
         __weak typeof(self) weakself = self;
-        cell.addCellBlock = ^(NSInteger srt,NSString *str1) {
+        cell.addCellBlock = ^(NSInteger srt, NSString *str1, UIButton *button) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ADDCARNUMBERNOTIFI" object:@"button" userInfo:@{@"button":button}];
             weakself.isDeleteCell = NO;
             weakself.isSureEnterContent = NO;
+            NSLog(@"<<<<<<<<<<++++++++++=这里能拿到的车牌号是 :%@",weakself.strNum);
             //判断车牌号是否可以
             if ([weakself validateCarNo:weakself.strNum]) {//如果为YES就增加
                 [weakself addButtonClick];
@@ -837,17 +840,15 @@
                 [MBProgressHUD showHudTipStr:@"车牌号输入不正确" contentColor:HidWithColorContentBlack];
                 return ;
             }
-//            for (NSInteger i = 0; i < weakself.userCarNumber_array.count; i++) {
-//                //取出数组中的车牌号
-//                NSString *carNumber = weakself.userCarNumber_array[i];
-//                if (<#condition#>) {
-//
-//                }
-//            }
         };
+        
         cell.carNumberBlock = ^(NSString *carNum) {
             weakself.strNum = carNum;
-            [weakself.userCarNumber_array addObject:carNum];
+            if ([weakself validateCarNo:weakself.strNum]) {//如果是正确的才添加
+                [weakself.userCarNumber_array addObject:carNum];
+            }else {
+                NSLog(@"能来到这,说明第一个输入框中的内容就是错误的,直接不添加到数组中....");
+            }
             NSLog(@">>>>>>>>>>-----接收到的车牌号码是:%@",carNum);
         };
         return cell;
@@ -866,7 +867,12 @@
         //这里接收用户在减号的按钮输入框中输入的车牌
         cell.AllMinusCarNumberBlock = ^ (NSString *carTextStr) {
             weakself.isSureEnterContent = YES;
-            [weakself.userCarNumber_array addObject:carTextStr];
+            weakself.strNum = carTextStr;
+            if ([weakself validateCarNo:weakself.strNum]) {//如果车牌是正确的就加入到数组中
+                [weakself.userCarNumber_array addObject:carTextStr];
+            }else {
+                NSLog(@"能来到这,说明车牌号是错误的,不需要添加到数组中....");
+            }
             NSLog(@"<<<<<<<<+++++++++这里通过block接收到用户输入的值是:%zd",weakself.userCarNumber_array.count);
         };
         return cell;
@@ -894,9 +900,9 @@
     self.backGroundView.frame = CGRectMake(0, 210 + self.addArray.count * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
     NSIndexPath *indexpath = [self.carNumber_tableView indexPathForCell:cell];
     [self.addArray removeObjectAtIndex:indexpath.row - 1];
-    [self.userCarNumber_array removeObjectAtIndex:self.userCarNumber_array.count - indexpath.row];
     NSLog(@"得到的行的indexPath是 :%zd-------%zd",indexpath.row - 1,indexpath.row);
     NSLog(@">>>>>>>+++++++++++来到这里说明删除了车牌号最后的总数是:%zd",self.userCarNumber_array.count);
+    [self.userCarNumber_array removeObjectAtIndex:self.userCarNumber_array.count - indexpath.row];
     NSLog(@"<<<<<<<<>>>>>>>>>>数组中的个数是:%zd",self.addArray.count);
     [self.carNumber_tableView deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationLeft];
     self.cell.addStrNumber = self.strNum;

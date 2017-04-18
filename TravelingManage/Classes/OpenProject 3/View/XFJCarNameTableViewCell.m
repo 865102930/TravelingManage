@@ -27,8 +27,23 @@
         self.backgroundColor = [UIColor whiteColor];
         [self initControlWithCarName];
         [self setUpConventionCarNameWithMas];
+        [self tapkeyboardHide];
     }
     return self;
+}
+
+#pragma mark - 添加收拾来隐藏键盘
+- (void)tapkeyboardHide
+{
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
+    //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
+    tapGestureRecognizer.cancelsTouchesInView = NO;
+    //将触摸事件添加到当前view
+    [self.carNmae_button addGestureRecognizer:tapGestureRecognizer];
+}
+
+-(void)keyboardHide:(UITapGestureRecognizer *)tap{
+    [self.carName_field resignFirstResponder];
 }
 
 - (void)initControlWithCarName
@@ -56,7 +71,7 @@
 {
     if (_carName_field == nil) {
         _carName_field = [UITextField textBackGroundImage:@"input-box2-" titleName:@"车    牌    号" rightImage:@"xinghao" placeholder:@"请输入车牌号"];
-        [_carName_field addTarget:self action:@selector(textFieldEditChanged:) forControlEvents:UIControlEventEditingChanged];
+        [_carName_field addTarget:self action:@selector(textFieldEditChanged:) forControlEvents:UIControlEventEditingDidEnd];
     }
     return _carName_field;
 }
@@ -84,8 +99,9 @@
 - (void)addCarNameButtonClick:(UIButton *)buttonTag
 {
     NSLog(@"添加一行车牌号码~~");
+    
     if (self.addCellBlock) {
-        self.addCellBlock(buttonTag.tag,self.carName_field.text);
+        self.addCellBlock(buttonTag.tag,self.carName_field.text,buttonTag);
     }
 }
 

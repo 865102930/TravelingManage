@@ -175,7 +175,6 @@
 {
     if (_romeText_field == nil) {
         _romeText_field = [[UITextField alloc] init];
-        _romeText_field.text = @"0";
         _romeText_field.textAlignment = NSTextAlignmentCenter;
         _romeText_field.textColor = kColor8383;
         _romeText_field.font = [UIFont systemFontOfSize:14.0];

@@ -69,6 +69,7 @@
 		3A07C9041E481A70008A838D /* UIBarButtonItem+XFJItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C8FF1E481A70008A838D /* UIBarButtonItem+XFJItem.m */; };
 		3A07C9051E481A70008A838D /* UIImage+XFJColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C9011E481A70008A838D /* UIImage+XFJColor.m */; };
 		3A07C9061E481A70008A838D /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07C9031E481A70008A838D /* UIView+Frame.m */; };
+		3A086CA91EA4B14500F7A168 /* XFJUpLoadPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A086CA81EA4B14500F7A168 /* XFJUpLoadPhotosView.m */; };
 		3A0C818D1E7BAF9500920F2C /* GFCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C81841E7BAF9400920F2C /* GFCalendarCell.m */; };
 		3A0C818E1E7BAF9500920F2C /* GFCalendarMonth.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C81861E7BAF9400920F2C /* GFCalendarMonth.m */; };
 		3A0C818F1E7BAF9500920F2C /* GFCalendarScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C81881E7BAF9400920F2C /* GFCalendarScrollView.m */; };
@@ -461,6 +462,8 @@
 		3A07C9011E481A70008A838D /* UIImage+XFJColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+XFJColor.m"; sourceTree = "<group>"; };
 		3A07C9021E481A70008A838D /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
 		3A07C9031E481A70008A838D /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
+		3A086CA71EA4B14500F7A168 /* XFJUpLoadPhotosView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJUpLoadPhotosView.h; sourceTree = "<group>"; };
+		3A086CA81EA4B14500F7A168 /* XFJUpLoadPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJUpLoadPhotosView.m; sourceTree = "<group>"; };
 		3A0C81821E7BAF9400920F2C /* GFCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFCalendar.h; sourceTree = "<group>"; };
 		3A0C81831E7BAF9400920F2C /* GFCalendarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFCalendarCell.h; sourceTree = "<group>"; };
 		3A0C81841E7BAF9400920F2C /* GFCalendarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFCalendarCell.m; sourceTree = "<group>"; };
@@ -926,6 +929,8 @@
 				1C210C701E558B0600689677 /* PersonalDetailCell.m */,
 				1C210C721E559BDB00689677 /* PersonDetail2Cell.h */,
 				1C210C731E559BDB00689677 /* PersonDetail2Cell.m */,
+				3A086CA71EA4B14500F7A168 /* XFJUpLoadPhotosView.h */,
+				3A086CA81EA4B14500F7A168 /* XFJUpLoadPhotosView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2163,6 +2168,7 @@
 				3A4E704F1E60345D00547BCD /* XFJSignNoPeopleView.m in Sources */,
 				1C1939BE1E4DC1E600882B8C /* MessageViewController.m in Sources */,
 				3AC803261E6D51CF005D2B71 /* UIImage+Tint.m in Sources */,
+				3A086CA91EA4B14500F7A168 /* XFJUpLoadPhotosView.m in Sources */,
 				3A9EB5D51E5C64750064E61B /* XFJCarNumberItem.m in Sources */,
 				3A51D15B1E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.m in Sources */,
 				3A9474971E4D9137002F1F9B /* PersonalDataViewController.m in Sources */,
