@@ -16,7 +16,7 @@
 @interface XFJCarNameTableViewCell : UITableViewCell
 @property (nonatomic, strong) NSString *userLocation;
 @property (nonatomic, copy) void (^addCellBlock)(NSInteger,NSString *,UIButton *);
-@property (nonatomic, copy) void (^carNumberBlock)(NSString *);
+@property (nonatomic, copy) void (^carNumberBlock)(NSString *, UITableViewCell *);
 @property (nonatomic, strong) NSString *str;
 @property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberItemArray;
 @property (nonatomic, strong) NSString *addStrNumber;

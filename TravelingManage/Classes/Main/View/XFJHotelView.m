@@ -116,7 +116,7 @@
 {
     if (_hotelText_field == nil) {
         _hotelText_field = [[UITextField alloc] init];
-        _hotelText_field.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
+//        _hotelText_field.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
         [_hotelText_field addTarget:self action:@selector(hotelSignPeopleNumber:) forControlEvents:UIControlEventEditingChanged];
         _hotelText_field.textAlignment = NSTextAlignmentCenter;
         _hotelText_field.textColor = kColor8383;
@@ -225,6 +225,12 @@
     if (self.hotelSignButtonClickBlock) {
         self.hotelSignButtonClickBlock();
     }
+}
+
+- (void)setPeopleNumberStr:(NSString *)peopleNumberStr
+{
+    _peopleNumberStr = peopleNumberStr;
+    self.hotelText_field.text = [NSString stringWithFormat:@"%@",peopleNumberStr];
 }
 
 @end

@@ -30,4 +30,6 @@
 
 @property (nonatomic, weak) id <XFJLeftTableFooterViewDelegate> delegate;
 
+@property (nonatomic, strong) NSString *currentCity;
+
 @end

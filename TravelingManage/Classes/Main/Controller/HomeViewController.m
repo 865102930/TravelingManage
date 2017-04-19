@@ -603,10 +603,12 @@ static BOOL over = NO;
                         [wself.view addSubview:wself.hotel_view];
                         wself.isOnlyUserSign = NO;
                         wself.isChooseSign = NO;
+//                        wself.hotel_view.peopleNumberStr = [NSString stringWithFormat:@"%zd",wself.findTeamTasksItem[0].teamNum];
                     }else {//景区
                         [wself.signTeamTwoView removeFromSuperview];
                         [wself.maskView1 removeFromSuperview];
                         [wself.view addSubview:wself.sign_view];
+//                        wself.sign_view.peopleNumberStr = [NSString stringWithFormat:@"%zd",wself.findTeamTasksItem[0].teamNum];
                     }
                 }else {//如果存在多个管理员(需要让用户选择)
                     [wself.maskView1 addSubview:wself.findAttracUserListView];
@@ -688,6 +690,7 @@ static BOOL over = NO;
     self.leftView.pushAllTeamTaskBlock = ^() {
         [wself remoSubViews];
         XFJMineTeamViewController *mineTeamController = [[XFJMineTeamViewController alloc] init];
+        mineTeamController.currentCity = wself.currentCity;
         [wself.navigationController pushViewController:mineTeamController animated:YES];
     };
     //待完善
@@ -852,7 +855,6 @@ static BOOL over = NO;
         MessageListViewController *announcementController = [[MessageListViewController alloc] init];
         [wself.navigationController pushViewController:announcementController animated:YES];
     };
-    
     //用来接收传过来的管理员id
     self.findAttracUserListView.sureUserButtonClickBlock = ^(NSMutableArray <XFJFindAttracUserListItem *> *indexPathArray_id) {
         if (wself.isChooseSign == YES) {
@@ -869,6 +871,7 @@ static BOOL over = NO;
             [wself.signTeamTwoView removeFromSuperview];
             [wself.maskView1 removeFromSuperview];
             [wself.view addSubview:wself.hotel_view];
+//            wself.hotel_view.peopleNumberStr = [NSString stringWithFormat:@"%zd",wself.findTeamTasksItem[0].teamNum];
             wself.isChooseSign = NO;
         }else {
             //遍历所有的管理员,取出选择的管理员id
@@ -884,6 +887,7 @@ static BOOL over = NO;
             [wself.signTeamTwoView removeFromSuperview];
             [wself.maskView1 removeFromSuperview];
             [wself.view addSubview:wself.sign_view];
+//            wself.sign_view.peopleNumberStr = [NSString stringWithFormat:@"%zd",wself.findTeamTasksItem[0].teamNum];
         }
     };
     self.chooseScenerySignView.chooseBlockButtonWithCancel= ^() {
@@ -1387,6 +1391,7 @@ static BOOL over = NO;
     return _signNoPeople_array;
 }
 
+
 #pragma mark - 酒店签到任务
 - (void)hotelSignButtonWithPeopleAllUserId:(NSString *)userId
 {
@@ -1500,7 +1505,7 @@ static BOOL over = NO;
         [[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMID"] intValue];
     }
     //用户的签到人数
-    NSString *checkinNumber = self.isSignModify ?self.signModifyCount :[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
+    NSString *checkinNumber = self.isSignModify ? self.signModifyCount : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
     
     NSString *teamNumber1;
     if (self.isEnter == YES) {//如果是刚进来就显示此刻的团队人数
@@ -1517,10 +1522,6 @@ static BOOL over = NO;
         [MBProgressHUD showHudTipStr:@"签到人数不能大于开团人数" contentColor:HidWithColorContentBlack];
         return;
     }
-//    if ([checkinNumber intValue] == 0) {
-//        [MBProgressHUD showHudTipStr:@"请输入正确的签到人数" contentColor:HidWithColorContentBlack];
-//        return;
-//    }
     NSDictionary *dictParaments = @{
                                     @"teamId":[NSString stringWithFormat:@"%zd",findTeamInfoByState_Id],//团队
                                     @"attractionsId":[NSString stringWithFormat:@"%zd",self.FindAttractionsListItem.findAttractions_id],//景区id
@@ -1840,6 +1841,7 @@ static BOOL over = NO;
     self.sign_view.peopleNumberStr = peopleNumber;
     
 }
+
 - (XFJSignView *)sign_view
 {
     if (_sign_view == nil) {
@@ -1969,6 +1971,7 @@ static BOOL over = NO;
         if (placemarks.count > 0) {
             CLPlacemark *placeMark = placemarks[0];
             wself.currentCity = placeMark.locality;
+            wself.leftView.currentCity = placeMark.locality;
             wself.currentProvince = placeMark.administrativeArea;
             if (!wself.currentCity) {
                 wself.currentCity = @"无法定位当前城市";

@@ -60,6 +60,7 @@
 @property (nonatomic, strong) NSString *strNum;
 @property (nonatomic, strong) NSString *dict1;
 @property (nonatomic, strong) XFJCarNameTableViewCell *cell;
+@property (nonatomic, strong) XFJMinusCarNumTableViewCell *cell2;
 //提供一个数组用来存用户通过输入框输入的车牌
 @property (nonatomic, strong) NSMutableArray *userCarNumber_array;
 //车牌号的字符串
@@ -67,11 +68,14 @@
 //车辆信息数组
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamCarItem *> *findTeamCarItem_array;
 @property (nonatomic, strong) NSIndexPath *indexPath;
+@property (nonatomic, strong) NSIndexPath *indexPath2;
 @property (nonatomic, assign) BOOL isSecondOpenNumber;
 //定义一个BOOL值,用来规定是否点击了删除行的按钮
 @property (nonatomic, assign) BOOL isDeleteCell;
 //设置一个BOOL值,用来判断是否输入了内容
 @property (nonatomic, assign) BOOL isSureEnterContent;
+//定义一个BOOL值,用来判断是否在减号的输入框中输入了内容
+@property (nonatomic, assign) BOOL isInputCarNumberBool;
 
 @end
 
@@ -83,6 +87,8 @@
     
     [self setUpOpenGroup];
 }
+
+
 
 - (UILabel *)title_label
 {
@@ -402,16 +408,26 @@
             [wself.userCarNumber_array removeAllObjects];
             for (NSInteger i = 0; i < wself.findTeamCarItem_array.count; i++) {
                 NSString *carNameStr = wself.findTeamCarItem_array[i].vehicleNo;
-                [wself.userCarNumber_array addObject:carNameStr];
+                NSLog(@">>>>>>>--------车辆图片是 :%@",carNameStr);
+                [self.userCarNumber_array addObject:carNameStr];
                 wself.strNum = carNameStr;
+                if (i == 0 ) {
+                }else {
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+                    [self.addArray addObject: indexPath];
+                }
             }
+            NSLog(@">>>>>>>-------------这里打印出addArray的值是 :%zd",wself.addArray.count);
             NSLog(@">>>>>>>+++++++++++++车辆是:%zd",wself.userCarNumber_array.count);
-            wself.cell.findTeamCarItem = self.findTeamCarItem_array[wself.indexPath.row];
+            //这个是将第一个的值赋给带有加号的输入框
+            wself.cell.findTeamCarItem = wself.findTeamCarItem_array[wself.indexPath.row];
+            self.carNumber_tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, (self.addArray.count + 1) * 45);
+            self.backGroundView.frame = CGRectMake(0, 210 + (self.addArray.count + 1) * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
             [wself.carNumber_tableView reloadData];
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
-            [MBProgressHUD showHudTipStr:@"网络君错误!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"网络错误" contentColor:HidWithColorContentBlack];
         }
     }];
 }
@@ -524,6 +540,7 @@
 #pragma mark - 开始任务
 - (void)startTaskButtonClick
 {
+    NSLog(@"<<<<<<<<------------self.userCarNumber_array的值是 :%@",self.userCarNumber_array);
     [MBProgressHUD hidenHud];
     NSNumber *traveName = [NSNumber numberWithInteger:self.conventionMessage_view.travelName];
     NSString *paramName1 = self.guestSourceInformation_view.paramName1;
@@ -580,6 +597,7 @@
     }else {
         rootStr = [NSString stringWithFormat:@"%@",self.root];
     }
+    
     self.carNumberStr = [self.userCarNumber_array componentsJoinedByString:@","];
     NSLog(@"<<<<<<<>>>>>>>>>>>这里打印的是总的车牌的字符串:%@",self.carNumberStr);
     NSDictionary *dictParaments = @{
@@ -639,6 +657,7 @@
         self.signViewBlock(self.teamInformation_view.teamPeople_number,self.dict1);
     }
     self.isSureEnterContent = NO;
+    self.isDeleteCell = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"ADDCARNUMBERNOTIFI" object:@"button"];
 }
 
@@ -812,12 +831,14 @@
     return 1;
 }
 
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSLog(@"能到这的cell个数是:%zd",1 + [self.addArray count]);
     //self.isSecondOpenNumber == YES ? [self.findTeamCarItem_array count] : 
     return 1 + [self.addArray count];
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -832,6 +853,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ADDCARNUMBERNOTIFI" object:@"button" userInfo:@{@"button":button}];
             weakself.isDeleteCell = NO;
             weakself.isSureEnterContent = NO;
+            weakself.isSecondOpenNumber = NO;
             NSLog(@"<<<<<<<<<<++++++++++=这里能拿到的车牌号是 :%@",weakself.strNum);
             //判断车牌号是否可以
             if ([weakself validateCarNo:weakself.strNum]) {//如果为YES就增加
@@ -841,21 +863,34 @@
                 return ;
             }
         };
-        
-        cell.carNumberBlock = ^(NSString *carNum) {
+        cell.carNumberBlock = ^(NSString *carNum, UITableViewCell *cell) {
             weakself.strNum = carNum;
-            if ([weakself validateCarNo:weakself.strNum]) {//如果是正确的才添加
-                [weakself.userCarNumber_array addObject:carNum];
-            }else {
-                NSLog(@"能来到这,说明第一个输入框中的内容就是错误的,直接不添加到数组中....");
+            if (self.isSecondOpenNumber == YES) {//这里是重新开团
+                NSIndexPath *indexpath = [self.carNumber_tableView indexPathForCell:cell];
+                [weakself.userCarNumber_array removeObjectAtIndex:indexpath.row];
+                if ([weakself validateCarNo:weakself.strNum]) {//如果是正确的才添加
+                    [weakself.userCarNumber_array addObject:carNum];
+                }
+            }else {//这里是直接开团
+                if ([weakself validateCarNo:weakself.strNum]) {//如果是正确的才添加
+                    [weakself.userCarNumber_array addObject:carNum];
+                }
             }
-            NSLog(@">>>>>>>>>>-----接收到的车牌号码是:%@",carNum);
         };
         return cell;
     }else {
+        self.indexPath2 = indexPath;
         XFJMinusCarNumTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kReuseIdentifier_XFJMinusCarNumTableViewCell forIndexPath:indexPath];
+        if (self.isSecondOpenNumber == YES) {
+            //这里会崩,是因为只有一个的时候,减号的输入框中并没有内容
+            cell.findTeamCarItem = self.userCarNumber_array[indexPath.row];
+        }else {
+//            cell.carNumberItemArray = self.carNumberArray;
+        }
+        self.cell2 = cell;
         if (self.isDeleteCell == YES) {//如果是YES就说明点击了删除cell的按钮
             NSLog(@"这里用户点击了删除行cell的按钮.......");
+//            self.isSecondOpenNumber = YES;
         }else {
             cell.carNumberItemArray = self.carNumberArray;
         }
@@ -865,14 +900,21 @@
             [weakself addWithCell:cell];
         };
         //这里接收用户在减号的按钮输入框中输入的车牌
-        cell.AllMinusCarNumberBlock = ^ (NSString *carTextStr) {
+        cell.AllMinusCarNumberBlock = ^ (NSString *carTextStr, UITableViewCell *cell) {
             weakself.isSureEnterContent = YES;
             weakself.strNum = carTextStr;
-            if ([weakself validateCarNo:weakself.strNum]) {//如果车牌是正确的就加入到数组中
-                [weakself.userCarNumber_array addObject:carTextStr];
+            if (self.isSecondOpenNumber == YES) {//这里表示重新开团
+                NSIndexPath *indexpath = [self.carNumber_tableView indexPathForCell:cell];
+                [weakself.userCarNumber_array removeObjectAtIndex:indexpath.row];
+                if ([weakself validateCarNo:weakself.strNum]) {
+                    [weakself.userCarNumber_array addObject:carTextStr];
+                }
             }else {
-                NSLog(@"能来到这,说明车牌号是错误的,不需要添加到数组中....");
+                if ([weakself validateCarNo:weakself.strNum]) {//如果车牌是正确的就加入到数组中(这里表示直接开团)
+                    [weakself.userCarNumber_array addObject:carTextStr];
+                }
             }
+            
             NSLog(@"<<<<<<<<+++++++++这里通过block接收到用户输入的值是:%zd",weakself.userCarNumber_array.count);
         };
         return cell;
@@ -892,7 +934,6 @@
     }
 }
 
-
 - (void)addWithCell:(UITableViewCell *)cell
 {
     self.isDeleteCell = YES;
@@ -901,8 +942,12 @@
     NSIndexPath *indexpath = [self.carNumber_tableView indexPathForCell:cell];
     [self.addArray removeObjectAtIndex:indexpath.row - 1];
     NSLog(@"得到的行的indexPath是 :%zd-------%zd",indexpath.row - 1,indexpath.row);
+    if (self.isSecondOpenNumber == YES) {
+        [self.userCarNumber_array removeObjectAtIndex:indexpath.row];
+    }else {
+        [self.userCarNumber_array removeObjectAtIndex:self.userCarNumber_array.count - indexpath.row];
+    }
     NSLog(@">>>>>>>+++++++++++来到这里说明删除了车牌号最后的总数是:%zd",self.userCarNumber_array.count);
-    [self.userCarNumber_array removeObjectAtIndex:self.userCarNumber_array.count - indexpath.row];
     NSLog(@"<<<<<<<<>>>>>>>>>>数组中的个数是:%zd",self.addArray.count);
     [self.carNumber_tableView deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationLeft];
     self.cell.addStrNumber = self.strNum;
@@ -912,6 +957,7 @@
 - (void)addButtonClick
 {
     NSArray *visibleCells = [self.carNumber_tableView visibleCells];
+    NSLog(@">>>>>>>>>>>---------cell的数组是 :%@",visibleCells);
     if (visibleCells.count > 5) {
         return;
     }

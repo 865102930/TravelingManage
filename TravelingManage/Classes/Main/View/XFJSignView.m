@@ -84,7 +84,7 @@
         _signPeople_text.background = [UIImage originalWithImage:@"shurukuang"];
         [_signPeople_text setFont:[UIFont fontWithName:PingFang size:14.0]];
         [_signPeople_text addTarget:self action:@selector(signPeopleText:) forControlEvents:UIControlEventEditingChanged];
-        _signPeople_text.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
+//        _signPeople_text.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
         _signPeople_text.keyboardType = UIKeyboardTypeNumberPad;
         _signPeople_text.textAlignment = NSTextAlignmentCenter;
     }

@@ -664,6 +664,7 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self.goalAttributeTableView removeFromSuperview];
+    self.goalAttribute_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
 }
 
 

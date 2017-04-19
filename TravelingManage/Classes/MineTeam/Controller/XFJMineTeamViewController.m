@@ -193,7 +193,9 @@
 - (void)setUpAllVeiwController
 {
     XFJTaskingViewController *taskingViewController = [[XFJTaskingViewController alloc] init];
-    [self addChildViewController:[[XFJAllTaskViewController alloc] init]];
+    XFJAllTaskViewController *allTaskViewController = [[XFJAllTaskViewController alloc] init];
+    allTaskViewController.currentCity = self.currentCity;
+    [self addChildViewController:allTaskViewController];
     [self addChildViewController:taskingViewController];
     [self addChildViewController:[[XFJPleaseDoITViewController alloc] init]];
     [self addChildViewController:[[XFJPleaseCheckViewController alloc] init]];

@@ -371,9 +371,11 @@
     return 38.0;
 }
 
+
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self.teamDescription_tablewView removeFromSuperview];
+    self.teamProperties_imageViewRight.image = [UIImage originalWithImage:@"Triangle-"];
 }
 
 @end

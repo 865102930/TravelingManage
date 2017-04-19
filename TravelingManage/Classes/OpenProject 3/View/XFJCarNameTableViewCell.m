@@ -81,7 +81,7 @@
     NSLog(@"主人,您获取到的输入框的值是 : %@",textField.text);
     self.str = textField.text;
     if (self.carNumberBlock) {
-        self.carNumberBlock(textField.text);
+        self.carNumberBlock(textField.text, self);
     }
 }
 

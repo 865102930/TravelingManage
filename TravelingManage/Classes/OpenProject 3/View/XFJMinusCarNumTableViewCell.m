@@ -114,7 +114,7 @@
 {
     NSLog(@"----------->>>>>>>>这里打印的是减号输入框中个的输入内容是:%@",textField.text);
     if (self.AllMinusCarNumberBlock) {
-        self.AllMinusCarNumberBlock(textField.text);
+        self.AllMinusCarNumberBlock(textField.text, self);
     }
 }
 
@@ -141,6 +141,12 @@
         return;
     }
     self.carName_field.text = [NSString stringWithFormat:@"%@",carNumberItemArray[0].plateHead];
+}
+
+- (void)setFindTeamCarItem:(XFJFindTeamCarItem *)findTeamCarItem
+{
+    _findTeamCarItem = findTeamCarItem;
+    self.carName_field.text = [NSString stringWithFormat:@"%@",findTeamCarItem];
 }
 
 

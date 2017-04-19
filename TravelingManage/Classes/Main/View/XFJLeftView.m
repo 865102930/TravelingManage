@@ -61,6 +61,7 @@
         [self requestViewContent];
         self.leftTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(requestLeftView)];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestSecondLeftContent) name:@"FRESHENLEFTREQUEST" object:nil];
+        self.leftTableFooterView.currentCity = self.currentCity;
     }
     return self;
 }
