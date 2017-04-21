@@ -143,10 +143,17 @@
     self.carName_field.text = [NSString stringWithFormat:@"%@",carNumberItemArray[0].plateHead];
 }
 
+
 - (void)setFindTeamCarItem:(XFJFindTeamCarItem *)findTeamCarItem
 {
     _findTeamCarItem = findTeamCarItem;
     self.carName_field.text = [NSString stringWithFormat:@"%@",findTeamCarItem];
+}
+
+- (void)setCarNum:(NSString *)carNum
+{
+    _carNum = carNum;
+    self.carName_field.text = [NSString stringWithFormat:@"%@",carNum];
 }
 
 

@@ -40,22 +40,29 @@
         [self addSubview:self.backGroundView];
         [self addSubview:self.leftTableHeaderView];
         [self addSubview:self.leftTableView];
+        //添加底部的footerView
         [self addSubview:self.leftTableFooterView];
         [self.leftTableView registerClass:[XFJLeftViewTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJLeftViewTableViewCell];
         __weak __typeof(self)wself = self;
         self.leftTableHeaderView.changeUserInformationBlock = ^(){
-            NSLog(@"您点击了修改资料按钮~~");
             if ([wself.delegate respondsToSelector:@selector(pushPersonalDataController)]) {
                 [wself.delegate pushPersonalDataController];
             }
         };
         self.leftTableFooterView.addFooterViewHeightBlock = ^(){
-            NSLog(@"增加了footerView的高度");
+            [UIView animateWithDuration:0.3 animations:^{
+                wself.leftTableView.frame = CGRectMake(0, 85, wself.XFJ_Width, wself.XFJ_Height - 185 - 85);
+                wself.leftTableFooterView.frame = CGRectMake(0, SCREEN_HEIGHT - 185, wself.XFJ_Width, 185);
+            } completion:^(BOOL finished) {
+            }];
         };
         self.leftTableFooterView.reduceFooterViewHeightBlock = ^(){
-            NSLog(@"减少了footerView的高度");
-//            wself.leftTableFooterView.frame = CGRectMake(0, SCREEN_HEIGHT - 100, wself.XFJ_Width, 100);
-//            wself.leftTableFooterView = [[XFJLeftTableFooterView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 100, wself.XFJ_Width, 100)];
+            [UIView animateWithDuration:0.3 animations:^{
+                wself.leftTableFooterView.frame = CGRectMake(0, SCREEN_HEIGHT - 85, wself.XFJ_Width, 100);
+                wself.leftTableView.frame = CGRectMake(0, 85, wself.XFJ_Width, wself.XFJ_Height - 85 - 85);
+            } completion:^(BOOL finished) {
+            }];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"REDUCEFOOTERVIEWHEIGHT" object:nil];
         };
         //请求数据
         [self requestViewContent];
@@ -71,6 +78,11 @@
     self.newPage = 1;
     [self.leftFindTeamInfoItem_array removeAllObjects];
     [self requestViewContent];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"REDUCEFOOTERVIEWHEIGHT" object:nil];
 }
 
 - (void)requestViewContent
@@ -124,13 +136,25 @@
 - (UITableView *)leftTableView
 {
     if (_leftTableView == nil) {
-        _leftTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 85, self.XFJ_Width, self.XFJ_Height - 185 - 85) style:UITableViewStylePlain];
+        _leftTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 85, self.XFJ_Width, self.XFJ_Height - 85 - 85) style:UITableViewStylePlain];
         _leftTableView.delegate = self;
         _leftTableView.dataSource = self;
         _leftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _leftTableView.contentInset = UIEdgeInsetsMake(0, 0, 185, 0);
     }
     return _leftTableView;
 }
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    CGFloat sectionHeaderHeight = 185;//设置你footer高度
+    if (scrollView.contentOffset.y <= sectionHeaderHeight&&scrollView.contentOffset.y >= 0) {
+        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
+    } else if (scrollView.contentOffset.y >= sectionHeaderHeight) {
+        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+    }
+    
+}
+
 
 - (XFJLeftTableHeaderView *)leftTableHeaderView
 {
@@ -144,11 +168,8 @@
 - (XFJLeftTableFooterView *)leftTableFooterView
 {
     if (_leftTableFooterView == nil) {
-
-//        if (iphone5) {
-            _leftTableFooterView = [[XFJLeftTableFooterView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 185, self.XFJ_Width, 185)];
+            _leftTableFooterView = [[XFJLeftTableFooterView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 85, self.XFJ_Width, 100)];
         _leftTableFooterView.delegate = self;
-//        }
         _leftTableFooterView.backgroundColor = [UIColor whiteColor];
     }
     return _leftTableFooterView;
@@ -301,12 +322,6 @@
     return [XFJLeftViewTableViewCell cellHeight];
 }
 
-
-
-- (void)dealloc
-{
-    NSLog(@"侧滑view销毁了...");
-}
 
 
 

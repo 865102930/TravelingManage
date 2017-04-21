@@ -15,9 +15,8 @@
     if (self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier]) {
         self.bounds = CGRectMake(0.f, 0.f, 13, 31);
         self.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
-        
-        UIImage * qiImage = [UIImage imageNamed:@"location-map"];
-        UIImageView * activityPopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 13, 31)];
+        UIImage *qiImage = [UIImage imageNamed:@"location-map"];
+        UIImageView *activityPopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 13, 31)];
         [activityPopView setImage:qiImage];
         [activityPopView setContentMode:UIViewContentModeScaleAspectFill];
         [self addSubview:activityPopView];

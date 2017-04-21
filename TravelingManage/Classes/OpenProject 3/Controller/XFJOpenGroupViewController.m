@@ -76,6 +76,7 @@
 @property (nonatomic, assign) BOOL isSureEnterContent;
 //定义一个BOOL值,用来判断是否在减号的输入框中输入了内容
 @property (nonatomic, assign) BOOL isInputCarNumberBool;
+@property (nonatomic, assign) BOOL isOpenCarNum;
 
 @end
 
@@ -894,6 +895,7 @@
         }else {
             cell.carNumberItemArray = self.carNumberArray;
         }
+        
         __weak typeof(self) weakself = self;
         cell.minusCarNumBlock = ^(UITableViewCell *cell) {
             //删除
@@ -954,6 +956,7 @@
     self.cell.isAddStrBool = YES;
 }
 
+
 - (void)addButtonClick
 {
     NSArray *visibleCells = [self.carNumber_tableView visibleCells];
@@ -963,7 +966,7 @@
     }
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
     [self.addArray addObject: indexPath];
-    NSLog(@"后面添加的数组个数是 :%zd",self.addArray.count);
+    NSLog(@"后面添加的数组个数是 :%zd------------%@",self.addArray.count,indexPath);
     self.carNumber_tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, (self.addArray.count + 1) * 45);
     self.backGroundView.frame = CGRectMake(0, 210 + (self.addArray.count + 1) * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
     [self.carNumber_tableView insertRowsAtIndexPaths:self.addArray withRowAnimation:UITableViewRowAnimationLeft];

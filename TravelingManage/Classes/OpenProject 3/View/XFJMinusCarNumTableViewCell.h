@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberItemArray;
 @property (nonatomic, strong) XFJFindTeamCarItem *findTeamCarItem;
 
+@property (nonatomic, strong) NSString *carNum;
 
 
 @end

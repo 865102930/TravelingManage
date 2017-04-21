@@ -542,6 +542,7 @@ static BOOL over = NO;
     }];
 }
 
+
 #warning view将要现实的时候调用
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -684,6 +685,7 @@ static BOOL over = NO;
     self.announcementView.clickAnnouncementBlock = ^(){
         NSLog(@"点击了图片block~~");
         MessageListViewController *announcementController = [[MessageListViewController alloc] init];
+        announcementController.strNum = 2;
         [wself.navigationController pushViewController:announcementController animated:YES];
     };
     //全部任务
@@ -1130,12 +1132,13 @@ static BOOL over = NO;
         [self isTrueSignOutButtonClick];
     }
 }
+
 #pragma mark - 不在范围内的签退
 - (void)isTrueSignOutButtonClick
 {
     //弹出提示框
     __weak __typeof(self)wself = self;
-    UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"不在区域范围内,是否签退?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"您未在该景点签到区域内签退，是否签退?" preferredStyle:UIAlertControllerStyleAlert];
     [alertVc addAction:[UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
     }]];
     [alertVc addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -1456,6 +1459,8 @@ static BOOL over = NO;
         if (object) {
             [wself setUpUserTimeWithUseApp:NO];
             [MBProgressHUD showHudTipStr:@"签到成功" contentColor:HidWithColorContentBlack];
+            //将景区的BOOL值置为NO
+            wself.isTaskTime = NO;
             [wself.hotel_view removeFromSuperview];
             [wself.maskView1 removeFromSuperview];
             [wself.view addSubview:self.signNoHotel_view];
@@ -1595,7 +1600,8 @@ static BOOL over = NO;
 - (void)setUpSignNoWithPeople
 {
     [self.view addSubview:self.signNoPeople_view];
-    self.signNoPeople_view.teamNum = [self.leftFindTeamInfoItem.teamNum intValue];
+    NSString *checkinNumber = self.isSignModify ? self.signModifyCount : [[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"];
+    self.signNoPeople_view.teamNum = [checkinNumber integerValue];
 }
 
 - (void)panHandle:(UIPanGestureRecognizer *)panGesture
@@ -2114,7 +2120,6 @@ static BOOL over = NO;
 //    }
 //    self.isFindTeamList == YES ? @"" : [self requestLatelyControl];
     self.isProjectItem == NO ? @"": [self requestWithInfoTasks];
-
 //    [_mapView showAnnotations:self.annotationArray edgePadding:UIEdgeInsetsMake(80, 80, 80, 80) animated:YES];
 }
 
@@ -2217,6 +2222,7 @@ static BOOL over = NO;
         annotationView.canShowCallout = YES;
         annotationView.draggable = YES;
         annotationView.enabled = YES;
+        
         return annotationView;
     }else {
         //用户的大头针
@@ -2234,6 +2240,14 @@ static BOOL over = NO;
         return annotationView;
     }
     return nil;
+}
+
+#pragma mark - 点击大头针的时候调用
+-(void)mapView:(MAMapView *)mapView didSelectAnnotationView:(MAAnnotationView *)view
+{
+    CGRect rectInTableView = view.frame;
+    CGRect rectInSuperview = [mapView convertRect:rectInTableView toView:[mapView superview]];
+    
 }
 
 

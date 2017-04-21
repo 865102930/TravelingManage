@@ -56,6 +56,14 @@
     [self.firestBackGroundView addSubview:self.secondMenuButton];
     [self.firestBackGroundView addSubview:self.thirdMenuButton];
     [self lineCountRequest];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reduceFooterViewHeight) name:@"REDUCEFOOTERVIEWHEIGHT" object:nil];
+}
+
+#pragma mark - 减少高度
+- (void)reduceFooterViewHeight
+{
+    
 }
 
 #pragma mark - 每个标题中有多少为查看的数字接口
@@ -104,7 +112,7 @@
 - (void)setUpMasControl
 {
     [self.backGroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.mas_top).mas_offset(100.0);
+        make.top.mas_equalTo(self.mas_top).mas_offset(0.0);
         make.left.mas_equalTo(self.mas_left);
         make.right.mas_equalTo(self.mas_right);
         make.height.mas_equalTo(100.0);
@@ -142,6 +150,7 @@
 {
     if (_backGroundView == nil) {
         _backGroundView = [[UIView alloc] init];
+//        _backGroundView.backgroundColor = [UIColor yellowColor];
     }
     return _backGroundView;
 }
@@ -208,6 +217,7 @@
 {
     if (_bottomMenuView == nil) {
         _bottomMenuView = [[UIView alloc] init];
+//        _bottomMenuView.backgroundColor = [UIColor blueColor];
     }
     return _bottomMenuView;
 }
@@ -271,7 +281,7 @@
 {
     [self.change_menu setImage:[UIImage originalWithImage:@"triangle"] forState:UIControlStateNormal];
     [self.backGroundView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.mas_top).mas_offset(100.0);
+        make.top.mas_equalTo(self.mas_top).mas_offset(0.0);
         make.left.mas_equalTo(self.mas_left);
         make.right.mas_equalTo(self.mas_right);
         make.height.mas_equalTo(100.0);
