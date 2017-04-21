@@ -7,10 +7,20 @@
 //
 
 #import <MAMapKit/MAMapKit.h>
+#import "XFJCustomCalloutView.h"
+#import "XFJSceneryAnnotation.h"
 
 
 @interface XFJSceneryAnnotationView : MAAnnotationView
 
-- (instancetype)initWithAnnotation:(id<MAAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier;
+//- (instancetype)initWithAnnotation:(id<MAAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier;
+
+@property (nonatomic, readonly) XFJCustomCalloutView *calloutView;
+
+@property (nonatomic, strong) XFJSceneryAnnotation *sceneryAnnotation;
+
+@property (nonatomic, assign) BOOL isMineLocation;
+
+@property (nonatomic, strong) NSMutableArray *screen_array;
 
 @end

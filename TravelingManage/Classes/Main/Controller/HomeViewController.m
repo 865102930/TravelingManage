@@ -147,6 +147,9 @@
 @property (nonatomic, assign) BOOL isEnter;
 @property (nonatomic, strong) NSMutableArray *allAnnotationArray;
 @property (nonatomic, strong) XFJSceneryAnnotation *sceneryAnnotation;
+@property (nonatomic, strong) XFJSceneryAnnotationView *annotationView;
+@property (nonatomic, strong) CLGeocoder *geocoder;
+@property (nonatomic, strong) CLPlacemark *firstPlacemark;
 
 @end
 
@@ -162,6 +165,13 @@ static BOOL over = NO;
     
     [self setUpNavigation];
 }
+- (CLGeocoder *)geocoder
+{
+    if (_geocoder == nil) {
+        _geocoder = [[CLGeocoder alloc] init];
+    }
+     return _geocoder;
+ }
 
 - (void)setUpNavigation
 {
@@ -1961,7 +1971,6 @@ static BOOL over = NO;
     NSString *longitude = [NSString stringWithFormat:@"%.6f",(float)self.manager.location.coordinate.longitude];
     self.longitude = longitude;
     NSLog(@"获取到用户的纬度是 : %@---------精度是:%@",latitude,longitude);
-    
 }
 
 #pragma mark - 获取到用户的精度和纬度转换为具体的位置信息
@@ -2044,10 +2053,8 @@ static BOOL over = NO;
             NSInteger attractions_id = findAttractionsListItem.findAttractions_id;
             self.stateType = stateType;
             self.attractions_id = attractions_id;
-            NSLog(@"-----------每一个景区的id是:%zd",self.attractions_id);
             //先按分号截取并且装入数组中
             NSArray *strarray = [locationPoint componentsSeparatedByString:@";"];
-            NSLog(@"按分号截取的字符串 组成数组是:%@",strarray);
              CLLocationCoordinate2D commonPolylineCoords[strarray.count + 1];//这是第一个折线对象i = 0;i = 1;i = 2
             //这是一个景点的所有坐标
             for (NSInteger i = 0; i < strarray.count; i++) {
@@ -2061,28 +2068,22 @@ static BOOL over = NO;
                 if (i == 0) {
                     self.str1 = [str1 floatValue];
                     self.str2 = [str2 floatValue];
-//                    NSLog(@"当为第0个元素的时候纬度是 : %f--------精度是 : %f",self.str2,self.str1);
                 }
-//                NSLog(@"-------------遍历获取出来景点的坐标信息是 : %@--------%@",str1,str2);
                 CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([str2 floatValue], [str1 floatValue]);
-//                NSLog(@"截取完毕后的字符串是 :%f--------%f------是第%ld个坐标",[str2 floatValue],[str1 floatValue],i);
                 //纬度和精度的赋值
                 sceneryAnnotation.coordinate = coordinate;
                 sceneryAnnotation.attractionsName = findAttractionsListItem.attractionsName;
                 //将景点的大头针数组添加到数组中
                 [self.annotationArray addObject:sceneryAnnotation];
-//                NSLog(@"添加的大头针数组总共有%zd个",self.annotationArray.count);
                 [self.mapView addAnnotation:sceneryAnnotation];
                 //获取到景点所有的精度和纬度
                 //构造折线对象strarray.count有这么多折线对象(5)
                 commonPolylineCoords[i].latitude = [str2 floatValue];//0;1;2折线的纬度
                 commonPolylineCoords[i].longitude = [str1 floatValue];//0;1;2折线的精度
-                NSLog(@"折线的纬度是:%f-----------折线的精度是:%f------第%zd个坐标",[str2 floatValue],[str1 floatValue],i);
             }
             //构造折线对象
             commonPolylineCoords[strarray.count + 1].latitude = self.str2;//0;1;2折线的纬度
             commonPolylineCoords[strarray.count + 1].longitude = self.str1;
-            NSLog(@"这是将数组中第0个纬度%f-----------和精度提取出来了-------------%f",self.str2,self.str1);
             MAPolyline *commonPolyline = [MAPolyline polylineWithCoordinates:commonPolylineCoords count:strarray.count];
             [self.mapView addOverlay:commonPolyline];
             //判断是否在范围内
@@ -2095,7 +2096,6 @@ static BOOL over = NO;
             }else {
                 NSLog(@"-----------这里表示不在范围内,可以直接给用户提示框");
             }
-            NSLog(@"一个景点的点数数量是:%zd--------",strarray.count);
         }
     }
     [self.scenery_array removeAllObjects];
@@ -2111,16 +2111,10 @@ static BOOL over = NO;
             self.FindAttractionsListItem = findAttractionsListItem;
         }
     }
-//    if (self.isContains) {//如果是yes就创建
-//        self.isProjectItem == NO ? @"" : [self.view addSubview:self.signTeamTwoView];//[self.view addSubview:self.task_view]
         self.chooseScenerySignView.scenery_array = self.scenery_array;
-    NSLog(@"<<<<<<<<>>>>>>>>>>获取到的景区点数量是 :%zd",self.scenery_array.count);
         self.chooseHotelSignView.hotel_array = self.hotel_array;
-    NSLog(@">>>>>>>>>>>>>>>>>>获取到酒店点数量是 :%zd",self.hotel_array.count);
-//    }
-//    self.isFindTeamList == YES ? @"" : [self requestLatelyControl];
-    self.isProjectItem == NO ? @"": [self requestWithInfoTasks];
-//    [_mapView showAnnotations:self.annotationArray edgePadding:UIEdgeInsetsMake(80, 80, 80, 80) animated:YES];
+        self.isProjectItem == NO ? @"": [self requestWithInfoTasks];
+//        self.annotationView.sceneryAnnotation = self.isYes_array[0];
 }
 
 #pragma mark - 随时更新用户的位子
@@ -2211,18 +2205,27 @@ static BOOL over = NO;
 #pragma mark - 标注点的代理方法(大头针类型)
 - (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id <MAAnnotation>)annotation
 {
+    XFJSceneryAnnotation *sceneryAnnotation = (XFJSceneryAnnotation *)annotation;
     if ([annotation isKindOfClass:[XFJSceneryAnnotation class]]) {
         //创建用户的自定义大头针
         static NSString *sceneryReuseIdentifier = @"loctionUserAnnotation";
         XFJSceneryAnnotationView *annotationView = (XFJSceneryAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:sceneryReuseIdentifier];
-        XFJSceneryAnnotation *sceneryAnnotation = (XFJSceneryAnnotation *)annotation;
+        NSLog(@">>>>>>------------打印出大头针的地址是 :%@",sceneryAnnotation);
         if (annotationView == nil) {
             annotationView = [[XFJSceneryAnnotationView alloc] initWithAnnotation:sceneryAnnotation reuseIdentifier:sceneryReuseIdentifier];
         }
-        annotationView.canShowCallout = YES;
+        //设置为NO,就是加载自己定义的calloutView
+        annotationView.canShowCallout = NO;
         annotationView.draggable = YES;
         annotationView.enabled = YES;
-        
+        annotationView.sceneryAnnotation = sceneryAnnotation;
+        annotationView.bounds = CGRectMake(0.f, 0.f, 13, 31);
+        annotationView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
+        UIImage *qiImage = [UIImage imageNamed:@"location-map"];
+        UIImageView *activityPopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 13, 31)];
+        [activityPopView setImage:qiImage];
+        [activityPopView setContentMode:UIViewContentModeScaleAspectFill];
+        [annotationView addSubview:activityPopView];
         return annotationView;
     }else {
         //用户的大头针
@@ -2231,6 +2234,13 @@ static BOOL over = NO;
         if (!annotationView) {
             annotationView = [[MAAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:trackingReuseIndetifier];
         }
+//        annotationView.canShowCallout = YES;
+        annotationView.draggable = YES;
+        annotationView.enabled = YES;
+        NSLog(@"打印出来可签到的景区和酒店是 :%@",self.isYes_array);
+        NSLog(@">>>>>>>>>>>用户的经度是:%@-------纬度是:%@",self.longitude,self.latitude);
+//        annotationView.annotation.title = [NSString stringWithFormat:@"%@",self.firstPlacemark];
+//        NSLog(@"<<<<<<------------地理位置是 :%@",longLat);
         annotationView.bounds = CGRectMake(0.f, 0.f, 40, 40);
         UIImageView * myLoctionView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 13, 31)];
         [myLoctionView setCenter:CGPointMake(20, 10)];
@@ -2242,13 +2252,25 @@ static BOOL over = NO;
     return nil;
 }
 
-#pragma mark - 点击大头针的时候调用
--(void)mapView:(MAMapView *)mapView didSelectAnnotationView:(MAAnnotationView *)view
+- (void)latitudeStr:(NSString *)Latitude LongitudeStr:(NSString *)Longitude
 {
-    CGRect rectInTableView = view.frame;
-    CGRect rectInSuperview = [mapView convertRect:rectInTableView toView:[mapView superview]];
-    
+    CLLocationDegrees latitude = [Latitude doubleValue];
+    CLLocationDegrees longitude = [Longitude doubleValue];
+    CLLocation *location = [[CLLocation alloc]initWithLatitude:latitude longitude:longitude];
+    //2.反地理编码
+    __weak __typeof(self)wself = self;
+     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+         if (error || placemarks.count == 0) {
+             [MBProgressHUD showHudTipStr:@"您所在的位置不确定" contentColor:HidWithColorContentBlack];
+             }else{
+                //显示最前面的地标信息
+                CLPlacemark *firstPlacemark = [placemarks firstObject];
+                 wself.firstPlacemark = firstPlacemark;
+                NSLog(@">>>>>>>>地点名称是 :%@",firstPlacemark.locality);
+        }
+    }];
 }
+
 
 
 
