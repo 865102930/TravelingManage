@@ -27,4 +27,11 @@
 
 @property (nonatomic, assign) NSInteger maxImageCount;
 
+@property (nonatomic, copy) void (^addPhotos_photosImageViewBlock)(NSInteger);
+
+@property (nonatomic, strong) UIImage *addPhotos_imageView1;
+
+
+
+
 @end

@@ -34,6 +34,7 @@
 #import "CoverView.h"
 #import "AlertView.h"
 #import "AlertView1.h"
+#import "AlertView3.h"
 #import "XFJAllTaskViewController.h"
 #import "JTNavigationController.h"
 #import "XFJSignMessageViewController.h"
@@ -50,7 +51,7 @@
 #import "XFJFindAttracUserListView.h"
 #import "XFJChooseHotelSignView.h"
 
-@interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate>
+@interface HomeViewController ()<MAMapViewDelegate,XFJLeftViewDelegate,CLLocationManagerDelegate,XFJOpenGroupViewControllerDelegate,XFJSignViewDelegate,AlertViewDelegate,AlertView1Delegate,AlertView3Delegate>
 @property (nonatomic, strong) MAMapView *mapView;
 @property (nonatomic, strong) UILabel *title_label;
 @property (nonatomic, strong) UIBarButtonItem *user_SttingButtonItem;
@@ -209,7 +210,7 @@ static BOOL over = NO;
     
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
-    keyboardManager.keyboardDistanceFromTextField = 50;
+    keyboardManager.keyboardDistanceFromTextField = 100;
     
     [self.thread start];
 }
@@ -883,7 +884,6 @@ static BOOL over = NO;
             [wself.signTeamTwoView removeFromSuperview];
             [wself.maskView1 removeFromSuperview];
             [wself.view addSubview:wself.hotel_view];
-//            wself.hotel_view.peopleNumberStr = [NSString stringWithFormat:@"%zd",wself.findTeamTasksItem[0].teamNum];
             wself.isChooseSign = NO;
         }else {
             //遍历所有的管理员,取出选择的管理员id
@@ -899,8 +899,8 @@ static BOOL over = NO;
             [wself.signTeamTwoView removeFromSuperview];
             [wself.maskView1 removeFromSuperview];
             [wself.view addSubview:wself.sign_view];
-//            wself.sign_view.peopleNumberStr = [NSString stringWithFormat:@"%zd",wself.findTeamTasksItem[0].teamNum];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"FRESHENOTIFICATION" object:nil];
     };
     self.chooseScenerySignView.chooseBlockButtonWithCancel= ^() {
         [wself.maskView1 removeFromSuperview];
@@ -1054,6 +1054,7 @@ static BOOL over = NO;
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FRESHENLEFTREQUEST" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"INDEXPATHNOTICE" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FRESHENOTIFICATION" object:nil];
     self.isProjectItem = NO;
     self.isSecondProjectItem = NO;
     self.isFindTeamList = NO;
@@ -1144,18 +1145,56 @@ static BOOL over = NO;
 }
 
 #pragma mark - 不在范围内的签退
+//- (void)isTrueSignOutButtonClick
+//{
+//    //弹出提示框
+//    __weak __typeof(self)wself = self;
+//    UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"您未在该景点签到区域内签退，是否签退?" preferredStyle:UIAlertControllerStyleAlert];
+//    [alertVc addAction:[UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
+//    }]];
+//    [alertVc addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        [wself signOutButtonClick];
+//    }]];
+//    [wself presentViewController:alertVc animated:NO completion:nil];
+//}
+
+#warning 这里表示未在该景区内签到
 - (void)isTrueSignOutButtonClick
 {
-    //弹出提示框
-    __weak __typeof(self)wself = self;
-    UIAlertController *alertVc =[UIAlertController alertControllerWithTitle:@"提示" message:@"您未在该景点签到区域内签退，是否签退?" preferredStyle:UIAlertControllerStyleAlert];
-    [alertVc addAction:[UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleDefault handler:^(UIAlertAction*action) {
-    }]];
-    [alertVc addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [wself signOutButtonClick];
-    }]];
-    [wself presentViewController:alertVc animated:NO completion:nil];
+    [CoverView show];
+    //显示popView
+    AlertView3 *popV =  [AlertView3 showInPoint:self.view.center];
+    popV.delegate = self;
 }
+
+#pragma mark - 确定
+- (void)presentViewClickBtn3:(AlertView3 *)alertView3
+{
+    [alertView3 hiddenInPoint:CGPointMake(187.5, 210) completion:^{
+        //移除遮盖
+        for (UIView *view in [UIApplication sharedApplication].keyWindow.subviews) {
+            //判断当前View是否是遮盖
+            if([view isKindOfClass:[CoverView class]]) {
+                [view removeFromSuperview];
+            }
+        }
+    }];
+    [self signOutButtonClick];
+}
+#pragma mark - 取消
+- (void)popViewClickBtn3:(AlertView3 *)alertView3
+{
+    [alertView3 hiddenInPoint:CGPointMake(187.5, 210) completion:^{
+        //移除遮盖
+        for (UIView *view in [UIApplication sharedApplication].keyWindow.subviews) {
+            //判断当前View是否是遮盖
+            if([view isKindOfClass:[CoverView class]]) {
+                [view removeFromSuperview];
+            }
+        }
+    }];
+}
+
 #warning 时间小于景点签退的时间显示错误的签退框(错误的提示框)
 #pragma mark - showErrorHidView
 - (void)showErrorHidView
@@ -1236,7 +1275,6 @@ static BOOL over = NO;
 - (void)popViewClickBtn:(AlertView *)alertView3
 {
     //决定隐藏到哪个位置
-    __weak __typeof(self)wself = self;
     [alertView3 hiddenInPoint:CGPointMake(187.5, 210) completion:^{
         //移除遮盖
         for (UIView *view in [UIApplication sharedApplication].keyWindow.subviews) {
@@ -2024,7 +2062,7 @@ static BOOL over = NO;
         if (responseObject) {
             NSMutableArray *findAttractionArray = [responseObject objectForKey:@"rows"];
             wself.findAttractionsListArray = [XFJFindAttractionsListItem mj_objectArrayWithKeyValuesArray:findAttractionArray];
-            NSLog(@"=======++++++++------------获取到的景点列表模型是:%zd",wself.findAttractionsListArray.count);
+            NSLog(@"=======++++++++------------获取到的景点列表模型是:%zd",responseObject);
             //获取周围景点的数据,并用大头针显示出来
             [wself setSceneryInToMapView:wself.findAttractionsListArray];
         }
@@ -2044,9 +2082,13 @@ static BOOL over = NO;
     for (NSInteger i = 0; i < findAttractionsListArray.count; i++) {
         @autoreleasepool {
             //取出每个景点
-            XFJFindAttractionsListItem *findAttractionsListItem = [findAttractionsListArray objectAtIndex:i];
+            XFJFindAttractionsListItem *findAttractionsListItem = findAttractionsListArray[i];
             //定义一个字符串用来接收遍历的景点精度和纬度
             NSString *locationPoint = findAttractionsListItem.locationPoints;
+            if (locationPoint.length == 0) {
+                NSLog(@"景点坐标错误!");
+                return;
+            }
             //获取每个景点的景点类型值
             NSInteger stateType = findAttractionsListItem.typeState;
             //这里获取到了每一个景点的id
@@ -2114,7 +2156,6 @@ static BOOL over = NO;
         self.chooseScenerySignView.scenery_array = self.scenery_array;
         self.chooseHotelSignView.hotel_array = self.hotel_array;
         self.isProjectItem == NO ? @"": [self requestWithInfoTasks];
-//        self.annotationView.sceneryAnnotation = self.isYes_array[0];
 }
 
 #pragma mark - 随时更新用户的位子
@@ -2187,12 +2228,10 @@ static BOOL over = NO;
     return isContains;
 }
 
-- (MAOverlayRenderer *)mapView:(MAMapView *)mapView rendererForOverlay:(id<MAOverlay>)overlay
+- (MAOverlayRenderer *)mapView:(MAMapView *)mapView rendererForOverlay:(id <MAOverlay>)overlay
 {
-    if ([overlay isKindOfClass:[MAPolyline class]])
-    {
-        MAPolylineRenderer *polylineRenderer = [[MAPolylineRenderer alloc] initWithPolyline:overlay];
-        
+    if ([overlay isKindOfClass:[MAPolyline class]]){
+        MAPolylineRenderer *polylineRenderer = [[MAPolylineRenderer alloc] init];
         polylineRenderer.lineWidth    = 3.f;
         polylineRenderer.strokeColor  = [UIColor clearColor];
         polylineRenderer.lineJoinType = kMALineJoinMiter;
@@ -2205,11 +2244,11 @@ static BOOL over = NO;
 #pragma mark - 标注点的代理方法(大头针类型)
 - (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id <MAAnnotation>)annotation
 {
-    XFJSceneryAnnotation *sceneryAnnotation = (XFJSceneryAnnotation *)annotation;
     if ([annotation isKindOfClass:[XFJSceneryAnnotation class]]) {
         //创建用户的自定义大头针
         static NSString *sceneryReuseIdentifier = @"loctionUserAnnotation";
         XFJSceneryAnnotationView *annotationView = (XFJSceneryAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:sceneryReuseIdentifier];
+        XFJSceneryAnnotation *sceneryAnnotation = (XFJSceneryAnnotation *)annotation;
         NSLog(@">>>>>>------------打印出大头针的地址是 :%@",sceneryAnnotation);
         if (annotationView == nil) {
             annotationView = [[XFJSceneryAnnotationView alloc] initWithAnnotation:sceneryAnnotation reuseIdentifier:sceneryReuseIdentifier];
@@ -2219,13 +2258,6 @@ static BOOL over = NO;
         annotationView.draggable = YES;
         annotationView.enabled = YES;
         annotationView.sceneryAnnotation = sceneryAnnotation;
-        annotationView.bounds = CGRectMake(0.f, 0.f, 13, 31);
-        annotationView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
-        UIImage *qiImage = [UIImage imageNamed:@"location-map"];
-        UIImageView *activityPopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 13, 31)];
-        [activityPopView setImage:qiImage];
-        [activityPopView setContentMode:UIViewContentModeScaleAspectFill];
-        [annotationView addSubview:activityPopView];
         return annotationView;
     }else {
         //用户的大头针
@@ -2234,7 +2266,6 @@ static BOOL over = NO;
         if (!annotationView) {
             annotationView = [[MAAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:trackingReuseIndetifier];
         }
-//        annotationView.canShowCallout = YES;
         annotationView.draggable = YES;
         annotationView.enabled = YES;
         NSLog(@"打印出来可签到的景区和酒店是 :%@",self.isYes_array);

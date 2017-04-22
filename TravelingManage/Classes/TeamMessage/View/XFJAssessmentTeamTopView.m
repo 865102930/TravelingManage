@@ -86,7 +86,6 @@
 #pragma mark - 评星的代理方法
 -(void)starRatingView:(SYStarRatingView *)view score:(float)score
 {
-    NSLog(@"+++++++++++++用户的评价分数是 :%@",[NSString stringWithFormat:@"%0.2f",score * 10 ]);
     if (self.commitStarBlock) {
         self.commitStarBlock([NSString stringWithFormat:@"%0.2f",score * 10 ]);
     }

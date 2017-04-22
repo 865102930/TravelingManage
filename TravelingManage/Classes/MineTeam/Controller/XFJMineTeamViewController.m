@@ -107,6 +107,10 @@
         if (object) {
             NSLog(@"+++++++++++获取到的团队状态数字是 :%@",object);
             [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[object objectForKey:@"rows"]]];
+            wself.firest_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.second_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.third_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.four_label.text = [NSString stringWithFormat:@"(%@)",@0];
             for (NSInteger i = 0; i < wself.findTeamInFoStateItemArray.count; i++) {
                 XFJFindTeamInFoStateItem *findTeamInFoStateItem = wself.findTeamInFoStateItemArray[i];
                 if (findTeamInFoStateItem.state == 0) {
@@ -124,6 +128,10 @@
         if (error) {
             NSLog(@"++=========获取到的团队状态数字失败的是:%@",error);
             [MBProgressHUD showHudTipStr:@"主人~~网络君错误啦!!" contentColor:HidWithColorContentBlack];
+            wself.firest_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.second_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.third_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.four_label.text = [NSString stringWithFormat:@"(%@)",@0];
         }
     } progress:^(float progress) {
     }];

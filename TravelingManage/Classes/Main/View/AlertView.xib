@@ -159,6 +159,80 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-1664" y="324"/>
         </view>
+        <view contentMode="scaleToFill" id="lPR-BX-3jh" customClass="AlertView3">
+            <rect key="frame" x="0.0" y="0.0" width="288" height="172"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tishi.png" translatesAutoresizingMaskIntoConstraints="NO" id="ERh-6K-RId">
+                    <rect key="frame" x="125.5" y="24" width="37" height="37"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="37" id="6GI-OX-BB9"/>
+                        <constraint firstAttribute="height" constant="37" id="Uln-8N-a7Y"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="您未在该景点签到区域内签退，是否签退?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ke1-CX-6Fk">
+                    <rect key="frame" x="11.5" y="86" width="265" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HYK-MU-dgD">
+                    <rect key="frame" x="0.0" y="128" width="288" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="eWN-l7-0qY"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0KS-Ve-yJi">
+                    <rect key="frame" x="0.0" y="129" width="143.5" height="43"/>
+                    <state key="normal" title="取消">
+                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="sureBtn:" destination="lPR-BX-3jh" eventType="touchUpInside" id="zkE-hq-fbc"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5i5-ec-bFs">
+                    <rect key="frame" x="143.5" y="129" width="1" height="43"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1" id="2x9-VQ-K8M"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Goe-L4-cOV">
+                    <rect key="frame" x="144.5" y="129" width="143.5" height="43"/>
+                    <state key="normal" title="确认">
+                        <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="cancelBtn:" destination="lPR-BX-3jh" eventType="touchUpInside" id="GXc-bN-ykR"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="0KS-Ve-yJi" firstAttribute="top" secondItem="HYK-MU-dgD" secondAttribute="bottom" id="0Eh-WA-Pgr"/>
+                <constraint firstItem="Goe-L4-cOV" firstAttribute="leading" secondItem="5i5-ec-bFs" secondAttribute="trailing" id="0Z9-Wu-c14"/>
+                <constraint firstAttribute="trailing" secondItem="Goe-L4-cOV" secondAttribute="trailing" id="8x4-rs-pXz"/>
+                <constraint firstItem="5i5-ec-bFs" firstAttribute="leading" secondItem="0KS-Ve-yJi" secondAttribute="trailing" id="BEk-ib-TA1"/>
+                <constraint firstItem="Ke1-CX-6Fk" firstAttribute="centerX" secondItem="ERh-6K-RId" secondAttribute="centerX" id="K3t-go-3Ie"/>
+                <constraint firstItem="0KS-Ve-yJi" firstAttribute="leading" secondItem="lPR-BX-3jh" secondAttribute="leading" id="OCr-4v-B5c"/>
+                <constraint firstItem="ERh-6K-RId" firstAttribute="centerX" secondItem="lPR-BX-3jh" secondAttribute="centerX" id="RGE-zc-ffU"/>
+                <constraint firstItem="5i5-ec-bFs" firstAttribute="centerX" secondItem="ERh-6K-RId" secondAttribute="centerX" id="Uja-tt-sXo"/>
+                <constraint firstItem="HYK-MU-dgD" firstAttribute="top" secondItem="Ke1-CX-6Fk" secondAttribute="bottom" constant="25" id="dwd-bT-OPh"/>
+                <constraint firstAttribute="bottom" secondItem="0KS-Ve-yJi" secondAttribute="bottom" id="g4q-jb-o8g"/>
+                <constraint firstAttribute="bottom" secondItem="Goe-L4-cOV" secondAttribute="bottom" id="hOr-xv-gfU"/>
+                <constraint firstAttribute="trailing" secondItem="HYK-MU-dgD" secondAttribute="trailing" id="poM-R9-tBI"/>
+                <constraint firstItem="ERh-6K-RId" firstAttribute="top" secondItem="lPR-BX-3jh" secondAttribute="top" constant="24" id="qH6-63-cxJ"/>
+                <constraint firstItem="HYK-MU-dgD" firstAttribute="leading" secondItem="lPR-BX-3jh" secondAttribute="leading" id="sHQ-UL-eQ3"/>
+                <constraint firstItem="Goe-L4-cOV" firstAttribute="top" secondItem="HYK-MU-dgD" secondAttribute="bottom" id="tht-uF-l4N"/>
+                <constraint firstItem="5i5-ec-bFs" firstAttribute="top" secondItem="HYK-MU-dgD" secondAttribute="bottom" id="tys-bJ-eR2"/>
+                <constraint firstAttribute="bottom" secondItem="5i5-ec-bFs" secondAttribute="bottom" id="wKx-mQ-m7e"/>
+                <constraint firstItem="Ke1-CX-6Fk" firstAttribute="top" secondItem="ERh-6K-RId" secondAttribute="bottom" constant="25" id="zaO-q1-jbB"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-1657" y="590"/>
+        </view>
     </objects>
     <resources>
         <image name="tishi.png" width="37" height="37"/>

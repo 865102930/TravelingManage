@@ -238,6 +238,7 @@
 		3ACCE39E1E6A841F00B3526B /* XFJTeamMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACCE39D1E6A841F00B3526B /* XFJTeamMessageViewController.m */; };
 		3AD3372A1EA9A0C9006955AE /* XFJCustomCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD337291EA9A0C9006955AE /* XFJCustomCalloutView.m */; };
 		3AD3372C1EA9E144006955AE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD3372B1EA9E144006955AE /* Images.xcassets */; };
+		3AD337321EAAE2EC006955AE /* AlertView3.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD337311EAAE2EC006955AE /* AlertView3.m */; };
 		3ADDF0101E4DAD02003C838F /* add-.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFEF1E4DAD02003C838F /* add-.png */; };
 		3ADDF0111E4DAD02003C838F /* add-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFF01E4DAD02003C838F /* add-@2x.png */; };
 		3ADDF0121E4DAD02003C838F /* add-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADDEFF11E4DAD02003C838F /* add-@3x.png */; };
@@ -737,6 +738,8 @@
 		3AD337281EA9A0C9006955AE /* XFJCustomCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJCustomCalloutView.h; sourceTree = "<group>"; };
 		3AD337291EA9A0C9006955AE /* XFJCustomCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJCustomCalloutView.m; sourceTree = "<group>"; };
 		3AD3372B1EA9E144006955AE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		3AD337301EAAE2EC006955AE /* AlertView3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertView3.h; sourceTree = "<group>"; };
+		3AD337311EAAE2EC006955AE /* AlertView3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertView3.m; sourceTree = "<group>"; };
 		3ADDEFEF1E4DAD02003C838F /* add-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-.png"; sourceTree = "<group>"; };
 		3ADDEFF01E4DAD02003C838F /* add-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-@2x.png"; sourceTree = "<group>"; };
 		3ADDEFF11E4DAD02003C838F /* add-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-@3x.png"; sourceTree = "<group>"; };
@@ -1527,6 +1530,8 @@
 				3A756F1D1E657D03005D2C02 /* AlertView.m */,
 				3A756F221E658C80005D2C02 /* AlertView1.h */,
 				3A756F231E658C80005D2C02 /* AlertView1.m */,
+				3AD337301EAAE2EC006955AE /* AlertView3.h */,
+				3AD337311EAAE2EC006955AE /* AlertView3.m */,
 				3A756F1E1E657D03005D2C02 /* AlertView.xib */,
 				3ACCE3871E684B6800B3526B /* XFJSignMessageTopVeiw.h */,
 				3ACCE3881E684B6800B3526B /* XFJSignMessageTopVeiw.m */,
@@ -2153,6 +2158,7 @@
 				1C210C741E559BDB00689677 /* PersonDetail2Cell.m in Sources */,
 				3A9474A61E4D91BE002F1F9B /* UITextField+textField.m in Sources */,
 				3AC803271E6D51CF005D2B71 /* SYStarRatingView.m in Sources */,
+				3AD337321EAAE2EC006955AE /* AlertView3.m in Sources */,
 				3A993FE01E49711E00F898D2 /* UIColor+expanded.m in Sources */,
 				3A51D16B1E6CF814005B86F6 /* XFJPleasePerfectMessageViewController.m in Sources */,
 				3AF0C5FB1E67F840002900B1 /* XFJLeftFindTeamInfoItem.m in Sources */,

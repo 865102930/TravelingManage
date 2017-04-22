@@ -77,6 +77,8 @@
 //定义一个BOOL值,用来判断是否在减号的输入框中输入了内容
 @property (nonatomic, assign) BOOL isInputCarNumberBool;
 @property (nonatomic, assign) BOOL isOpenCarNum;
+@property (nonatomic, strong) UIImagePickerController *imageController;
+@property (nonatomic, assign) NSInteger strAdds_number;
 
 @end
 
@@ -225,6 +227,7 @@
 {
     if (_voucherPhotos_view == nil) {
         _voucherPhotos_view = [[XFJVoucherPhotosView alloc] init];
+        _voucherPhotos_view.backgroundColor = [UIColor whiteColor];
         _voucherPhotos_view.delegate = self;
     }
     return _voucherPhotos_view;
@@ -363,6 +366,13 @@
     };
     [self requestFindCarNumberWithUserlocation:self.locationWithUser];
     self.carName_view.userLocation = self.locationWithUser;
+    
+    self.voucherPhotos_view.addPhotos_photosImageViewBlock = ^(NSInteger addStrNum) {
+        NSLog(@"<<<<<<<<-----------接收到的数字是 :%zd",addStrNum);
+        wself.strAdds_number = addStrNum;
+        UIActionSheet *sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:wself cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"从手机相册选择",@"拍照", nil];
+        [sheet showInView:wself.view];
+    };
 }
 
 #pragma mark - 取消团队
@@ -679,19 +689,11 @@
 - (void)chooseImage:(XFJUploadPhotosTableViewCell *)SerPhotoCell
 {
     self.maxImageCount = 6;
+    self.strAdds_number = 0;
     UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:@"请选择相机或者相册" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选择",nil];
     [action showInView:self.view];
     
 }
-
-- (void)chooseVoucherPhotosImage:(XFJVoucherPhotosView *)voucherPhotos
-{
-    self.maxImageCount = 1;
-    UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:@"请选择相机或者相册" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选择",nil];
-    [action showInView:self.view];
-}
-
-
 
 - (void)jumpCell:(XFJUploadPhotosTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
@@ -721,45 +723,42 @@
     }
 }
 
-- (void)jumpToCell:(XFJVoucherPhotosView *)cell indexPath:(NSIndexPath *)indexPath
-{
-    NSMutableArray *tmpArray = [[NSMutableArray alloc] init];
-    if(indexPath.row < _dataArray.count) {
-        for (UIImage *image in _dataArray) {
-            WSImageModel *model = [[WSImageModel alloc] init];
-            model.image = image;
-            [tmpArray addObject:model];
-        }
-        WSPhotosBroseVC *vc = [[WSPhotosBroseVC alloc] init];;
-        vc.imageArray = tmpArray;
-        vc.showIndex = indexPath.row;
-        __weak typeof (self)weakself = self;
-        vc.completion = ^ (NSArray *array){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [_dataArray removeAllObjects];
-                [_dataArray addObjectsFromArray:array];
-                weakself.voucherPhotos_view.dataArr = _dataArray;
-                //                if (_dataArr.count <= 4) {
-                //                    self.uploadPhotos_view.frame = CGRectMake(0, 728, SCREEN_WIDTH, 200);
-                //                }
-            });
-        };
-        
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-}
-
-
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            [self openCamera];
-            break;
-        case 1:
-            [self openAlbum];
-            break;
-        default:
-            break;
+    if (self.strAdds_number == 1) {
+        self.imageController = [[UIImagePickerController alloc]init];
+        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+            self.imageController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        }
+        self.imageController.delegate = self;
+        self.imageController.allowsEditing = YES;
+        switch (buttonIndex) {
+            case 1:
+            {
+                self.imageController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                [self presentViewController:self.imageController animated:YES completion:nil];
+            }
+                break;
+            case 0:
+            {
+                self.imageController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                [self presentViewController:self.imageController animated:YES completion:nil];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }else {
+        switch (buttonIndex) {
+            case 0:
+                [self openCamera];
+                break;
+            case 1:
+                [self openAlbum];
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -794,13 +793,12 @@
         [picker dismissViewControllerAnimated:YES completion:nil];
         self.uploadPhotos_view.dataArr = self.dataArr;
         self.uploadPhotos_view.maxImageCount = 6;
-    }else {
-        NSLog(@"self.maxImageCount == 1");
-        UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    }
+    if (self.strAdds_number == 1) {
+        [self.imageController dismissViewControllerAnimated:YES completion:nil];
+        UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+        self.voucherPhotos_view.addPhotos_imageView1 = image;
         [self.dataArray addObject:image];
-        [picker dismissViewControllerAnimated:YES completion:nil];
-        self.voucherPhotos_view.dataArr = self.dataArray;
-        self.voucherPhotos_view.maxImageCount = 1;
     }
 }
 

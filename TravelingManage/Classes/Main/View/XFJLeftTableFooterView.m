@@ -56,8 +56,8 @@
     [self.firestBackGroundView addSubview:self.secondMenuButton];
     [self.firestBackGroundView addSubview:self.thirdMenuButton];
     [self lineCountRequest];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reduceFooterViewHeight) name:@"REDUCEFOOTERVIEWHEIGHT" object:nil];
+    
 }
 
 #pragma mark - 减少高度
@@ -96,6 +96,9 @@
         if (error) {
             NSLog(@"++=========获取到的团队状态数字失败的是:%@",error);
             [MBProgressHUD showHudTipStr:@"网络君错误啦" contentColor:HidWithColorContentBlack];
+            [wself.firestMenuButton setTitle:[NSString stringWithFormat:@"待完善(0)"] forState:UIControlStateNormal];
+            [wself.secondMenuButton setTitle:[NSString stringWithFormat:@"待审核(0)"] forState:UIControlStateNormal];
+            [wself.thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价(0)"] forState:UIControlStateNormal];
         }
     }];
 }
@@ -146,11 +149,12 @@
     }];
 }
 
+
+
 - (UIView *)backGroundView
 {
     if (_backGroundView == nil) {
         _backGroundView = [[UIView alloc] init];
-//        _backGroundView.backgroundColor = [UIColor yellowColor];
     }
     return _backGroundView;
 }
@@ -172,7 +176,7 @@
     }
     return _firestBackGroundView;
 }
-
+//kColor5858
 - (UIButton *)firestMenuButton
 {
     if (_firestMenuButton == nil) {

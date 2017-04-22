@@ -13,7 +13,7 @@
 
 @interface XFJSceneryAnnotationView : MAAnnotationView
 
-//- (instancetype)initWithAnnotation:(id<MAAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier;
+- (instancetype)initWithAnnotation:(id<MAAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier;
 
 @property (nonatomic, readonly) XFJCustomCalloutView *calloutView;
 
