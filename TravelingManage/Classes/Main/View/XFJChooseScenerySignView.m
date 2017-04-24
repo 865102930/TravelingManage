@@ -28,22 +28,14 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        
         self.backgroundColor = [UIColor redColor];
         [self addSubview:self.chooseScenerySign_tableView];
-//        [self addSubview:self.chooseSceneryFooterView];
         [self.chooseScenerySign_tableView registerClass:[XFJChooseSceneryTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell];
-//        [self.chooseSceneryFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(self.mas_left);
-//            make.right.mas_equalTo(self.mas_right);
-//            make.height.mas_equalTo(60.0);
-//            make.bottom.mas_equalTo(self.mas_bottom);
-//        }];
         __weak __typeof(self)wself = self;
         self.chooseSceneryFooterView.sureChoose_buttonClickBlock = ^() {
             if (wself.findAttractionsListItem == nil) {
-                [MBProgressHUD showHudTipStr:@"请选择签到的景区!" contentColor:HidWithColorContentBlack];
-                return ;
+                [MBProgressHUD showHudTipStr:@"请选择签到的景区" contentColor:HidWithColorContentBlack];
+                return;
             }else {
                 if (wself.chooseBlockButtonWithSure) {
                     wself.chooseBlockButtonWithSure(wself.findAttractionsListItem);
@@ -111,8 +103,6 @@
         _chooseScenerySign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
         _chooseScenerySign_tableView.tableHeaderView = self.chooseScreneryTitleTableViewCell;
         _chooseScenerySign_tableView.tableFooterView = self.chooseSceneryFooterView;
-//        _chooseScenerySign_tableView.showsVerticalScrollIndicator = NO;
-//        _chooseScenerySign_tableView.showsHorizontalScrollIndicator = NO;
     }
     return _chooseScenerySign_tableView;
 }
@@ -160,7 +150,6 @@
         }
     }
     cell.findAttractionsListItem = self.scenery_array[indexPath.row];
-//    NSLog(@">>>>>>>>>>>>>>>选择的是第%zd行----------%zd",self.selIndex,indexPath);
     return cell;
 }
 

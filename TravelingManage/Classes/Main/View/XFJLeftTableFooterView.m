@@ -221,7 +221,6 @@
 {
     if (_bottomMenuView == nil) {
         _bottomMenuView = [[UIView alloc] init];
-//        _bottomMenuView.backgroundColor = [UIColor blueColor];
     }
     return _bottomMenuView;
 }
@@ -255,7 +254,6 @@
 
 - (void)changeMenu
 {
-    NSLog(@"主人,您点击了切换菜单按钮~~");
     if (!self.isclickMenuButton) {
         [self setUpStartMenuButtonClick];
     }else {
@@ -337,7 +335,6 @@
 
 - (void)pleasePerfected
 {
-    NSLog(@"主人,您点击了待完善按钮~~");
     NSInteger strNumber = 2;
     if ([self.delegate respondsToSelector:@selector(pushMineTeamController:)]) {
         [self.delegate pushMineTeamController:strNumber];
@@ -346,7 +343,6 @@
 
 - (void)checkPending
 {
-    NSLog(@"主人,您点击了待审核按钮~~");
     NSInteger strNumber = 3;
     if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseCheckTeamController:)]) {
         [self.delegate pushToPleaseCheckTeamController:strNumber];
@@ -355,7 +351,6 @@
 
 - (void)pleaseAppraise
 {
-    NSLog(@"主人,您点击了待评价按钮~~");
     NSInteger strNumber = 4;
     if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseAskingTeamController:)]) {
         [self.delegate pushToPleaseAskingTeamController:strNumber];
@@ -364,7 +359,6 @@
 
 - (void)allAssignmentClick
 {
-    NSLog(@"主人,您点击了全部任务按钮~~");
     if ([self.delegate respondsToSelector:@selector(pushToAllTaskingTeamController)]) {
         [self.delegate pushToAllTaskingTeamController];
     }
@@ -372,7 +366,6 @@
 
 - (void)exitButtonClick
 {
-    NSLog(@"主人,您点击了退出按钮~~");
     if (self.delegate && [self.delegate respondsToSelector:@selector(exitButtonClick:)]) {
         [self.delegate exitButtonClick:self];
     }

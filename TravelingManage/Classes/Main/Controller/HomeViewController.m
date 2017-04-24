@@ -744,7 +744,6 @@ static BOOL over = NO;
         wself.isProjectItem = NO;
         //请求获取左侧的接口
         [wself requestWithLeftIndexPathOfRows:leftFindTeamInfoItem];
-        
         [wself.mapView removeAnnotations:wself.annotationArray];
         [wself requestAttractionsListWithProvince:wself.currentProvince city:wself.currentCity];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"INDEXPATHNOTICE" object:nil];
@@ -833,6 +832,7 @@ static BOOL over = NO;
     self.signTeamTwoView.scenerySign_Block = ^() {
       //添加遮盖
         [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
+        NSLog(@"<<<<<<<<--------------可签到的景区是 %@",wself.scenery_array);
         //添加选择景点框
         [wself.maskView1 addSubview:wself.chooseScenerySignView];
     };
@@ -840,6 +840,7 @@ static BOOL over = NO;
     self.signTeamTwoView.hotelSign_block = ^() {
         //添加遮盖
         [[UIApplication sharedApplication].keyWindow addSubview:wself.maskView1];
+        NSLog(@"<<<<<<<<--------------可签到的酒店是 %@",wself.hotel_array);
         //添加选择景点框
         [wself.maskView1 addSubview:wself.chooseHotelSignView];
     };

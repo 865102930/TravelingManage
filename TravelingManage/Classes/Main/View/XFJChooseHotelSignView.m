@@ -30,18 +30,11 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor redColor];
         [self addSubview:self.chooseHotelSign_tableView];
-//        [self addSubview:self.chooseHotelFooterView];
         [self.chooseHotelSign_tableView registerClass:[XFJChooseSceneryTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell];
-//        [self.chooseHotelFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(self.mas_left);
-//            make.right.mas_equalTo(self.mas_right);
-//            make.height.mas_equalTo(60.0);
-//            make.bottom.mas_equalTo(self.mas_bottom);
-//        }];
         __weak __typeof(self)wself = self;
         self.chooseHotelFooterView.sureChoose_buttonClickBlock = ^() {
             if (wself.findAttractionsListItem == nil) {
-                [MBProgressHUD showHudTipStr:@"请选择签到的酒店!" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"请选择签到的酒店" contentColor:HidWithColorContentBlack];
                 return ;
             }else {
                 if (wself.chooseBlockButtonWithSure) {
@@ -111,8 +104,6 @@
         _chooseHotelSign_tableView.layer.borderColor = [UIColor whiteColor].CGColor;
         _chooseHotelSign_tableView.tableFooterView = self.chooseHotelFooterView;
         _chooseHotelSign_tableView.tableHeaderView = self.chooseScreneryTitleTableViewCell;
-//        _chooseHotelSign_tableView.showsVerticalScrollIndicator = NO;
-//        _chooseHotelSign_tableView.showsHorizontalScrollIndicator = NO;
     }
     return _chooseHotelSign_tableView;
 }
