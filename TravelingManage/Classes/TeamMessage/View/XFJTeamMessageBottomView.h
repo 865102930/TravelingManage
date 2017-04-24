@@ -17,5 +17,6 @@
 @property (nonatomic, copy) void (^sureCommitBlock)(NSInteger);
 @property (nonatomic, copy) void (^taskRowsItemArrayItemBlock)(XFJTaskRowsItem *);
 
+@property (nonatomic, strong) UITableView *visitMessage_tableView;
 
 @end

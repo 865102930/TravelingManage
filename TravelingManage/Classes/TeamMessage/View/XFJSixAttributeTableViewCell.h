@@ -9,8 +9,14 @@
 //时间选择
 #define KCellIdentifier_XFJSixAttributeTableViewCell @"XFJSixAttributeTableViewCell"
 
+typedef void(^ReturnDateBlock)(NSString *, NSString *);
+
 #import <UIKit/UIKit.h>
 
 @interface XFJSixAttributeTableViewCell : UITableViewCell
+
+@property (nonatomic, copy) NSString *teamAtt;
+@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) ReturnDateBlock dateBlock;
 
 @end

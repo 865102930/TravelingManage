@@ -17,9 +17,10 @@
 @property (nonatomic, copy) void (^presentMaskViewBlock)(NSString *);
 
 @property (nonatomic, strong) NSString *teamAttr;
+@property (nonatomic, copy) NSString *userId;
 
 @property (nonatomic, strong) XFJFindCustomAttrListItem *findCustomAttrListItemArray;
 
-@property (nonatomic, strong) NSString * attributeStr;
+@property (nonatomic, strong) UILabel *qualityContent_label;
 
 @end

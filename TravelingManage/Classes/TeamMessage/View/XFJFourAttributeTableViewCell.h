@@ -11,9 +11,10 @@
 #import <UIKit/UIKit.h>
 
 @interface XFJFourAttributeTableViewCell : UITableViewCell
-
+@property (nonatomic, strong) UITextField *quality_field;
 @property (nonatomic, copy) void (^presentMaskViewBlock)(NSString *);
 
 @property (nonatomic, strong) NSString *teamAttr;
+@property (nonatomic, copy) NSString *userId;
 
 @end

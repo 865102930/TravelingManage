@@ -6,7 +6,14 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+/*
+ *  时间选择
+ *  时间选择
+ *  时间选择
+ */
+
 #import "XFJSixAttributeTableViewCell.h"
+#import "GFCalendar.h"
 
 @interface XFJSixAttributeTableViewCell()
 
@@ -73,13 +80,26 @@
 - (void)teamPropertiesButtonClick
 {
     NSLog(@"主人~~您点击了请输入日期框!!");
+    CGFloat width = self.bounds.size.width - 20.0;
+    CGPoint origin = CGPointMake(10.0, 64.0 + 70.0);
+    GFCalendarView *calendar = [[GFCalendarView alloc] initWithFrameOrigin:origin width:width];
+    calendar.backgroundColor = [UIColor whiteColor];
+    // 点击某一天的回调
+    __weak __typeof(self)wself = self;
+    __weak typeof(GFCalendarView *)weakSelf = calendar;
+    calendar.didSelectDayHandler = ^(NSInteger year, NSInteger month, NSInteger day) {
+        [weakSelf removeFromSuperview];
+        wself.teamPropertiesContent_label.text = [NSString stringWithFormat:@"%zd-%zd-%zd",year,month,day];
+        self.dateBlock(self.teamAtt, wself.teamPropertiesContent_label.text);
+    };
+    [[UIApplication sharedApplication].keyWindow addSubview:calendar];
 }
 
 - (UILabel *)teamProperties_label
 {
     if (_teamProperties_label == nil) {
         _teamProperties_label = [[UILabel alloc] init];
-        _teamProperties_label.text = @"属          性";
+        _teamProperties_label.text = @"日期选择";
         _teamProperties_label.textColor = kColor2f2f;
         _teamProperties_label.font = [UIFont systemFontOfSize:13.0];
     }

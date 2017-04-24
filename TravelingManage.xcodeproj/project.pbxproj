@@ -55,6 +55,14 @@
 		1CFDFE5F1E542D09001D6300 /* dele@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFDFE5C1E542D09001D6300 /* dele@2x.png */; };
 		1CFDFE601E542D09001D6300 /* dele@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFDFE5D1E542D09001D6300 /* dele@3x.png */; };
 		1CFDFE6C1E5571B1001D6300 /* AnnouncementdetailImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFDFE6B1E5571B1001D6300 /* AnnouncementdetailImageCell.m */; };
+		2526A1331E9F995F003C1499 /* MulitSelectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2526A1321E9F995F003C1499 /* MulitSelectTableViewCell.m */; };
+		2537CD8A1E9E206600699EFC /* SingleListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2537CD891E9E206600699EFC /* SingleListModel.m */; };
+		2537CD8D1E9E207F00699EFC /* SingleListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2537CD8C1E9E207F00699EFC /* SingleListTableViewCell.m */; };
+		2537CD8F1E9E2A2800699EFC /* cycle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2537CD8E1E9E2A2800699EFC /* cycle@2x.png */; };
+		2559F26E1EA0CD8600A12B5C /* DropDownTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2559F26D1EA0CD8600A12B5C /* DropDownTableViewCell.m */; };
+		256C0CB31EAC6AE900EE4307 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 256C0CB21EAC6AE900EE4307 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		256C0CB51EAC6BC600EE4307 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 256C0CB41EAC6BC600EE4307 /* libz.tbd */; };
+		25DFEC8D1E98E34F009F9D3C /* FindTeamTaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DFEC8C1E98E34F009F9D3C /* FindTeamTaskModel.m */; };
 		3A00E3141E545DE200525150 /* XFJAllTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A00E3131E545DE200525150 /* XFJAllTaskTableViewCell.m */; };
 		3A02C09B1E7152C900966384 /* XFJAloneCheckView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C09A1E7152C900966384 /* XFJAloneCheckView.m */; };
 		3A02C09E1E727B7200966384 /* XFJSignTeamTwoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A02C09D1E727B7200966384 /* XFJSignTeamTwoView.m */; };
@@ -428,6 +436,20 @@
 		1CFDFE5D1E542D09001D6300 /* dele@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dele@3x.png"; sourceTree = "<group>"; };
 		1CFDFE6A1E5571B1001D6300 /* AnnouncementdetailImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnnouncementdetailImageCell.h; path = TravelingManage/Classes/Notice/AnnouncementdetailImageCell.h; sourceTree = SOURCE_ROOT; };
 		1CFDFE6B1E5571B1001D6300 /* AnnouncementdetailImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnnouncementdetailImageCell.m; path = TravelingManage/Classes/Notice/AnnouncementdetailImageCell.m; sourceTree = SOURCE_ROOT; };
+		2526A1311E9F995F003C1499 /* MulitSelectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MulitSelectTableViewCell.h; sourceTree = "<group>"; };
+		2526A1321E9F995F003C1499 /* MulitSelectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MulitSelectTableViewCell.m; sourceTree = "<group>"; };
+		2537CD881E9E206600699EFC /* SingleListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleListModel.h; sourceTree = "<group>"; };
+		2537CD891E9E206600699EFC /* SingleListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleListModel.m; sourceTree = "<group>"; };
+		2537CD8B1E9E207F00699EFC /* SingleListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleListTableViewCell.h; sourceTree = "<group>"; };
+		2537CD8C1E9E207F00699EFC /* SingleListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleListTableViewCell.m; sourceTree = "<group>"; };
+		2537CD8E1E9E2A2800699EFC /* cycle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cycle@2x.png"; sourceTree = "<group>"; };
+		2559F26C1EA0CD8600A12B5C /* DropDownTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownTableViewCell.h; sourceTree = "<group>"; };
+		2559F26D1EA0CD8600A12B5C /* DropDownTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownTableViewCell.m; sourceTree = "<group>"; };
+		256C0CB11EAC6AE900EE4307 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		256C0CB21EAC6AE900EE4307 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		256C0CB41EAC6BC600EE4307 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		25DFEC8B1E98E34F009F9D3C /* FindTeamTaskModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindTeamTaskModel.h; sourceTree = "<group>"; };
+		25DFEC8C1E98E34F009F9D3C /* FindTeamTaskModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindTeamTaskModel.m; sourceTree = "<group>"; };
 		3A00E3121E545DE200525150 /* XFJAllTaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJAllTaskTableViewCell.h; sourceTree = "<group>"; };
 		3A00E3131E545DE200525150 /* XFJAllTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFJAllTaskTableViewCell.m; sourceTree = "<group>"; };
 		3A02C0991E7152C900966384 /* XFJAloneCheckView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFJAloneCheckView.h; sourceTree = "<group>"; };
@@ -865,6 +887,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				256C0CB51EAC6BC600EE4307 /* libz.tbd in Frameworks */,
 				3A993FD01E48778C00F898D2 /* MapKit.framework in Frameworks */,
 				D2818BC1C16899123CFFEBFB /* libPods-TravelingManage.a in Frameworks */,
 			);
@@ -1124,6 +1147,8 @@
 		3A1B7AD71E48053C00A5B22D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				256C0CB11EAC6AE900EE4307 /* JSONKit.h */,
+				256C0CB21EAC6AE900EE4307 /* JSONKit.m */,
 				1CFDFDF01E542C65001D6300 /* TZImagePickerController */,
 				1CFDFE3F1E542C84001D6300 /* JFImagePickerController */,
 				1CFDFE2E1E542C78001D6300 /* WSImagebroswerVC */,
@@ -1325,6 +1350,12 @@
 				3A02C09A1E7152C900966384 /* XFJAloneCheckView.m */,
 				3A03A4B81E79150100AADD4D /* XFJSureCommitView.h */,
 				3A03A4B91E79150100AADD4D /* XFJSureCommitView.m */,
+				2537CD8B1E9E207F00699EFC /* SingleListTableViewCell.h */,
+				2537CD8C1E9E207F00699EFC /* SingleListTableViewCell.m */,
+				2526A1311E9F995F003C1499 /* MulitSelectTableViewCell.h */,
+				2526A1321E9F995F003C1499 /* MulitSelectTableViewCell.m */,
+				2559F26C1EA0CD8600A12B5C /* DropDownTableViewCell.h */,
+				2559F26D1EA0CD8600A12B5C /* DropDownTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1332,6 +1363,8 @@
 		3A51D1621E6ADC8C005B86F6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2537CD881E9E206600699EFC /* SingleListModel.h */,
+				2537CD891E9E206600699EFC /* SingleListModel.m */,
 				3A51D1631E6ADCB8005B86F6 /* XFJFindTeamTasksItem.h */,
 				3A51D1641E6ADCB8005B86F6 /* XFJFindTeamTasksItem.m */,
 				3A51D1661E6AE4F3005B86F6 /* XFJTaskRowsItem.h */,
@@ -1352,6 +1385,8 @@
 				3AFE1F801E88DB0800E05853 /* XFJFindTeamCarItem.m */,
 				3AFE1F821E88FC8100E05853 /* XFJFindTeamCarImageItem.h */,
 				3AFE1F831E88FC8100E05853 /* XFJFindTeamCarImageItem.m */,
+				25DFEC8B1E98E34F009F9D3C /* FindTeamTaskModel.h */,
+				25DFEC8C1E98E34F009F9D3C /* FindTeamTaskModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1734,6 +1769,7 @@
 		3AE7FA351E555059003E3505 /* MineTeam */ = {
 			isa = PBXGroup;
 			children = (
+				2537CD8E1E9E2A2800699EFC /* cycle@2x.png */,
 				3AFFB27E1E6FFA9D0013185F /* AlbumAddBtn@2x.png */,
 				3AFFB27F1E6FFA9D0013185F /* photo_delete@2x.png */,
 				3AE7FA361E55506C003E3505 /* hongse.png */,
@@ -1791,6 +1827,7 @@
 		C8B9EF9DE0A037E95C4B58DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				256C0CB41EAC6BC600EE4307 /* libz.tbd */,
 				3A993FCF1E48778C00F898D2 /* MapKit.framework */,
 				3A993FAC1E48500100F898D2 /* MAMapKit.framework */,
 				B55613806B12752B343871BD /* libPods-TravelingManage.a */,
@@ -1880,6 +1917,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2537CD8F1E9E2A2800699EFC /* cycle@2x.png in Resources */,
 				3ADDF02C1E4DAD02003C838F /* Triangle-@2x.png in Resources */,
 				3AE2FF3E1E4D491600E380F9 /* xinjianrenwukuang.png in Resources */,
 				3AEE6C0D1E641F6F00410412 /* house-@3x.png in Resources */,
@@ -2112,6 +2150,7 @@
 				3A9EB5D21E5C50C90064E61B /* XFJTeamPropertiesItem.m in Sources */,
 				1CFDFE3A1E542C78001D6300 /* WSImageBroserCell.m in Sources */,
 				3A7A51281E4B1C72004FFB0F /* XFJLeftViewTableViewCell.m in Sources */,
+				2537CD8A1E9E206600699EFC /* SingleListModel.m in Sources */,
 				3A9474991E4D9137002F1F9B /* RegistViewController.m in Sources */,
 				3A756F241E658C80005D2C02 /* AlertView1.m in Sources */,
 				1CFDFE571E542C84001D6300 /* JFPhotoView.m in Sources */,
@@ -2146,12 +2185,14 @@
 				3AC803261E6D51CF005D2B71 /* UIImage+Tint.m in Sources */,
 				3A9EB5D51E5C64750064E61B /* XFJCarNumberItem.m in Sources */,
 				3A51D15B1E6ABF76005B86F6 /* XFJTeamMessagePerfectCollectionViewCell.m in Sources */,
+				2537CD8D1E9E207F00699EFC /* SingleListTableViewCell.m in Sources */,
 				3A9474971E4D9137002F1F9B /* PersonalDataViewController.m in Sources */,
 				3AE849E81E543E9B00A71C5E /* XFJPleaseDoITViewController.m in Sources */,
 				3A1B7AEA1E48053C00A5B22D /* AppDelegate.m in Sources */,
 				3A9474A41E4D91BE002F1F9B /* UIButton+button.m in Sources */,
 				3A51D1651E6ADCB8005B86F6 /* XFJFindTeamTasksItem.m in Sources */,
 				3A18E5561E5D807900BFE891 /* XFJFindTravelAgencyListItem.m in Sources */,
+				2526A1331E9F995F003C1499 /* MulitSelectTableViewCell.m in Sources */,
 				3A9A2DA71E49A99100D89639 /* XFJMaskView.m in Sources */,
 				3AE2FF5A1E4D613B00E380F9 /* HyperlinksButton.m in Sources */,
 				1CFDFE1F1E542C65001D6300 /* TZPhotoPickerController.m in Sources */,
@@ -2171,6 +2212,7 @@
 				3A0C81901E7BAF9500920F2C /* GFCalendarView.m in Sources */,
 				3AC803381E6D7CEB005D2B71 /* XFJSignAppraiseTableViewCell.m in Sources */,
 				1C06E0891E73C1540019FF1F /* PhotoModel.m in Sources */,
+				2559F26E1EA0CD8600A12B5C /* DropDownTableViewCell.m in Sources */,
 				1CFDFE221E542C65001D6300 /* TZVideoPlayerController.m in Sources */,
 				1CFDFE3C1E542C78001D6300 /* WSImageModel.m in Sources */,
 				3A18E54A1E5D6FB400BFE891 /* XFJMinusCarNumTableViewCell.m in Sources */,
@@ -2230,6 +2272,7 @@
 				1CFDFE5A1E542CD3001D6300 /* UIBarButtonItem+Item.m in Sources */,
 				3AFFB27D1E6FFA810013185F /* CollectionViewCell.m in Sources */,
 				3A700D911E811422008A2ADE /* XFJFindAttracUserListView.m in Sources */,
+				25DFEC8D1E98E34F009F9D3C /* FindTeamTaskModel.m in Sources */,
 				3AF0D39A1E61FC4200EDECD1 /* XFJHotelView.m in Sources */,
 				3AFFB26B1E6EDBBA0013185F /* XFJSecondAttributeTableViewCell.m in Sources */,
 				3A51D1581E6ABCDE005B86F6 /* XFJUpPhotosOpenTeamMessageView.m in Sources */,
@@ -2240,6 +2283,7 @@
 				3AFFB28A1E701E7F0013185F /* XFJCheckBoxTableViewCell.m in Sources */,
 				3A18E5471E5D6FB400BFE891 /* LMComBoxView.m in Sources */,
 				3AC803201E6D4D82005D2B71 /* XFJAssessmentTeamTopView.m in Sources */,
+				256C0CB31EAC6AE900EE4307 /* JSONKit.m in Sources */,
 				3A07C9061E481A70008A838D /* UIView+Frame.m in Sources */,
 				3AE2FF431E4D4E4300E380F9 /* XFJAnnouncementView.m in Sources */,
 				1CA681BE1E680240007B6751 /* GRNetRequestClass.m in Sources */,

@@ -21,7 +21,7 @@
 @property (nonatomic, strong) UILabel *mintesContent_label;
 @property (nonatomic, strong) UILabel *mintes_label;
 @property (nonatomic, strong) UIButton *return_button;
-@property (nonatomic, strong) UIView *redCicle_view;
+
 
 @end
 

@@ -6,6 +6,12 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+/*  下拉框
+ *  下拉框
+ *  下拉框
+ *  下拉框
+ */
+
 #import "XFJFiveAttributeTableViewCell.h"
 
 @interface XFJFiveAttributeTableViewCell()
@@ -16,9 +22,11 @@
 
 @property (nonatomic, strong) UIImageView *teamProperties_imageViewLeft;
 
-@property (nonatomic, strong) UILabel *teamPropertiesContent_label;
+
 
 @property (nonatomic, strong) UIImageView *teamProperties_imageViewRight;
+
+@property (nonatomic, strong) UITableView *dropDownTableView;
 
 @end
 
@@ -80,6 +88,8 @@
 
 - (void)teamPropertiesButtonClick
 {
+    self.myBlock(self.teamAttr);
+    
     NSLog(@"主人~~您点击了选择属性值!!");
 }
 
@@ -87,7 +97,7 @@
 {
     if (_teamProperties_label == nil) {
         _teamProperties_label = [[UILabel alloc] init];
-        _teamProperties_label.text = @"属          性";
+        _teamProperties_label.text = @"下拉框";
         _teamProperties_label.textColor = kColor2f2f;
         _teamProperties_label.font = [UIFont systemFontOfSize:13.0];
     }

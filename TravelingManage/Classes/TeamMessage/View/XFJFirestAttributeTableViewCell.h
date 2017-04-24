@@ -12,6 +12,22 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^ReturnTextFieldBlock)(NSString *, NSString *);
+
+typedef void(^ReturnSecondTextBlock)(NSString *, NSString *, NSString *);
+
 @interface XFJFirestAttributeTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) UITextField *quality_field;
+
+@property (nonatomic, assign) NSInteger isRequire;
+
+@property (nonatomic, copy) NSString *userId;
+
+@property (nonatomic, copy) ReturnTextFieldBlock textFieldBlock;
+
+@property (nonatomic, copy) NSString *teamAttr;
+
+@property (nonatomic, copy) ReturnSecondTextBlock secondTextBlock;
 
 @end

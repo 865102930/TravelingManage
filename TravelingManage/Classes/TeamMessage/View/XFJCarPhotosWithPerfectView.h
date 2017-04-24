@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "XFJFindTeamCarImageItem.h"
 
+typedef void(^returnHeightBlock)(float height);
+
 @class XFJCarPhotosWithPerfectView;
 @protocol XFJCarPhotosWithPerfectViewDelegate  <NSObject>
 
@@ -28,5 +30,9 @@
 @property (nonatomic, strong) NSIndexPath *selectIndexPath;
 
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamCarImageItem *> *carImageView_array;
+
+@property (nonatomic, copy) returnHeightBlock heightBlock;
+
+@property (nonatomic, strong) UICollectionView *collectionView;
 
 @end

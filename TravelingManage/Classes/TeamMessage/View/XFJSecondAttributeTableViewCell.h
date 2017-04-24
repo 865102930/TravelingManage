@@ -11,6 +11,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XFJSecondAttributeTableViewCell : UITableViewCell
+typedef void(^ReturnTextFieldBlock)(NSString *, NSString *);
+
+@interface XFJSecondAttributeTableViewCell : UITableViewCell <UITextFieldDelegate>
+
+@property (nonatomic, copy) ReturnTextFieldBlock numberTextBlock;
+
+@property (nonatomic, copy) NSString *teamAttr;
+@property (nonatomic, copy) NSString *userId;
 
 @end

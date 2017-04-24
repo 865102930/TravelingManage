@@ -25,9 +25,14 @@
 //签退时间
 @property (nonatomic, strong) NSString *signoutTime;
 
+// teamID
+@property (nonatomic, assign) NSInteger teamId;
 
+// 凭证图片
+@property (nonatomic, copy) NSString *taskImg;
 
+@property (nonatomic, assign) NSInteger isRequire;
 
-
+@property (nonatomic, assign) NSInteger finishState;
 
 @end

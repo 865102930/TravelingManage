@@ -6,6 +6,11 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+/*  输入数字
+ *  输入数字
+ *  输入数字
+ */
+
 #import "XFJSecondAttributeTableViewCell.h"
 
 @interface XFJSecondAttributeTableViewCell()
@@ -20,6 +25,7 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.quality_field.delegate = self;
         [self addSubview:self.quality_field];
         
         [self.quality_field mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -35,9 +41,15 @@
 - (UITextField *)quality_field
 {
     if (_quality_field == nil) {
-        _quality_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"属          性" rightImage:@"xinghao" placeholder:@"只可输入数字"];
+        _quality_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"数字" rightImage:@"xinghao" placeholder:@"只可输入数字"];
     }
     return _quality_field;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.numberTextBlock(textField.text, self.teamAttr);
 }
 
 @end

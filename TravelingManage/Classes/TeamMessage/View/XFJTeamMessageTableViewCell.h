@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) XFJTaskRowsItem *taskRowsItem;
 
+@property (nonatomic, strong) UIView *redCicle_view;
+
 @end

@@ -7,6 +7,13 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+/*  选择照片
+ *  选择照片
+ *  选择照片
+ *  选择照片
+ */
+
+
 #import "XFJSevenTableViewCell.h"
 #import "TZImagePickerController.h"
 #import "CollectionViewCell.h"
@@ -92,7 +99,7 @@
         UICollectionViewFlowLayout *flowLayOut = [[UICollectionViewFlowLayout alloc] init];
         flowLayOut.itemSize = CGSizeMake(((Kwidth - 2 * 18) - 40)/4, ((Kwidth - 2 * 18) - 40)/4);
 //        flowLayOut.sectionInset = UIEdgeInsetsMake(5, 1, 5, 10);
-        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(18, 40, Kwidth - 2 * 18, 200) collectionViewLayout:flowLayOut];
+        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(18, 40, Kwidth - 2 * 18, 185) collectionViewLayout:flowLayOut];
         _collectionView.backgroundColor = [UIColor whiteColor];
         self.collectionView.delegate = self;
         self.collectionView.dataSource = self;
@@ -111,10 +118,12 @@
     }
     
 }
+// 选取照片之后的回调
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto{
     self.photosArray = [NSMutableArray arrayWithArray:photos];
     self.assestArray = [NSMutableArray arrayWithArray:assets];
     _isSelectOriginalPhoto = isSelectOriginalPhoto;
+    self.pictureArrayBlock(self.teamAttr, self.photosArray, YES);
     [_collectionView reloadData];
     
     
@@ -140,7 +149,7 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return _photosArray.count+1;
+    return _photosArray.count + 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -148,7 +157,7 @@
     
     if (indexPath.row == _photosArray.count) {
         cell.imagev.image = [UIImage imageNamed:@"s-add-img-"];
-        //        cell.imagev.backgroundColor = [UIColor redColor];
+    
         cell.deleteButton.hidden = YES;
         
     }else{
@@ -164,6 +173,7 @@
 - (void)deletePhotos:(UIButton *)sender{
     [_photosArray removeObjectAtIndex:sender.tag - 100];
     [_assestArray removeObjectAtIndex:sender.tag - 100];
+    self.pictureArrayBlock(self.teamAttr, self.photosArray, NO);
     [_collectionView performBatchUpdates:^{
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:sender.tag-100 inSection:0];
         [_collectionView deleteItemsAtIndexPaths:@[indexPath]];

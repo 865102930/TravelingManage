@@ -140,8 +140,10 @@
 #define FINDNEWTEAMINFOURL (BASEURL@"/app/teamInfo/findNewTeamInfo")
 //团队信息查看(自定义属性)
 #define FINDTEAMINFOTASKSURL (BASEURL@"/app/teamInfo/findTeamInfoTasks")
-//任务信息完善
+//任务信息完善单个管理员
 #define TASKPERFECTURL (BASEURL@"/app/teamTask/taskPerfect")
+//任务信息完善多个管理员
+#define TASKSPERFECTURL (BASEURL@"/app/teamTask/taskesPerfect")
 //团队评价
 #define EVALUATEURL (BASEURL@"/app/teamTask/evaluate")
 //中间部分自定义字段查询
@@ -168,6 +170,7 @@
 #define TEAMVEHICLEIMAGESURL (BASEURL@"/app/teamTask/teamVehicleImages")
 //根据团队id查询景区自定义字段
 #define FINDCUSTOMESURL (BASEURL@"/app/teamTask/findCustomes")
+
 
 
 

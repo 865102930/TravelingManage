@@ -18,7 +18,7 @@
 @property (nonatomic, strong) UIImageView *carPhotosStar_imageView;
 @property (nonatomic, strong) UILabel *carPhotosMessage_label;
 
-@property (nonatomic, strong) UICollectionView *collectionView;
+
 
 @property (nonatomic, strong) UICollectionViewFlowLayout *layout;
 

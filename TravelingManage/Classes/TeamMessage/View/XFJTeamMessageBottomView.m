@@ -17,8 +17,6 @@
 
 @property (nonatomic, strong) UIImageView *carPhotos_imageView;
 @property (nonatomic, strong) UILabel *carPhotos_label;
-
-@property (nonatomic, strong) UITableView *visitMessage_tableView;
 @property (nonatomic, strong) UIButton *sureButton;
 
 @property (nonatomic, strong) NSMutableArray <XFJFindTeamTasksItem *> *arrayTask;

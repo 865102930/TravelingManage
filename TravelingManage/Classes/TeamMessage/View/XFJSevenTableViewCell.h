@@ -9,6 +9,7 @@
 //选择照片
 #define KCellIdentifier_XFJSevenTableViewCell @"XFJSevenTableViewCell"
 
+typedef void(^ReturnPictureArrayBlock)(NSString *, NSArray *, BOOL);
 
 #import <UIKit/UIKit.h>
 
@@ -17,5 +18,9 @@
 
 @property (nonatomic, copy) void (^presentPickPhotosBlock)(TZImagePickerController *);
 
+@property (nonatomic, copy) NSString *teamAttr;
+@property (nonatomic, copy) NSString *userId;
+
+@property (nonatomic, copy) ReturnPictureArrayBlock pictureArrayBlock;
 
 @end

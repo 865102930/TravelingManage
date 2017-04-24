@@ -19,4 +19,6 @@
 //不是;是
 @property (nonatomic, assign) BOOL isRequire;
 
+@property (nonatomic, assign) NSInteger finishState;
+
 @end

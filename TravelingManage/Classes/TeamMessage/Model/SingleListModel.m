@@ -1,18 +1,17 @@
 //
-//  XFJTaskRowsItem.m
+//  SingleListModel.m
 //  TravelingManage
 //
-//  Created by 肖锋 on 2017/3/4.
+//  Created by gz on 17/4/12.
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
-#import "XFJTaskRowsItem.h"
+#import "SingleListModel.h"
 
-@implementation XFJTaskRowsItem
+@implementation SingleListModel
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key {
     
 }
-
 
 @end

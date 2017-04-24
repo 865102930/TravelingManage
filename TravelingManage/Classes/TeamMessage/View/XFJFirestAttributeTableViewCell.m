@@ -6,11 +6,17 @@
 //  Copyright © 2017年 xiaoFeng. All rights reserved.
 //
 
+/*
+ * 单行输入
+ * 单行输入
+ * 单行输入
+ */
+
+
 #import "XFJFirestAttributeTableViewCell.h"
 
 @interface XFJFirestAttributeTableViewCell()
 
-@property (nonatomic, strong) UITextField *quality_field;
 
 @end
 
@@ -35,14 +41,16 @@
 - (UITextField *)quality_field
 {
     if (_quality_field == nil) {
-        _quality_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"属          性" rightImage:@"xinghao" placeholder:@"单行输入"];
+        _quality_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"单行文本" rightImage:@"xinghao" placeholder:@"单行输入"];
         [_quality_field addTarget:self action:@selector(firestTextField:) forControlEvents:UIControlEventEditingDidEnd];
     }
     return _quality_field;
 }
 
-- (void)firestTextField:(UITextField *)textField
-{
+- (void)firestTextField:(UITextField *)textField {
+
+//    self.textFieldBlock(textField.text, self.teamAttr);
+    self.secondTextBlock(textField.text, self.teamAttr, self.userId);
     NSLog(@"这是获取到的用户的单行输入的最终值:%@",textField.text);
 }
 
