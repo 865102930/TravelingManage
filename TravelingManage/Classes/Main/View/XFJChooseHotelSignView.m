@@ -30,18 +30,11 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor redColor];
         [self addSubview:self.chooseHotelSign_tableView];
-//        [self addSubview:self.chooseHotelFooterView];
         [self.chooseHotelSign_tableView registerClass:[XFJChooseSceneryTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell];
-//        [self.chooseHotelFooterView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(self.mas_left);
-//            make.right.mas_equalTo(self.mas_right);
-//            make.height.mas_equalTo(60.0);
-//            make.bottom.mas_equalTo(self.mas_bottom);
-//        }];
         __weak __typeof(self)wself = self;
         self.chooseHotelFooterView.sureChoose_buttonClickBlock = ^() {
             if (wself.findAttractionsListItem == nil) {
-                [MBProgressHUD showHudTipStr:@"请选择签到的酒店!" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"请选择签到的酒店" contentColor:HidWithColorContentBlack];
                 return ;
             }else {
                 if (wself.chooseBlockButtonWithSure) {
@@ -54,15 +47,29 @@
                 wself.chooseBlockButtonWithCancel();
             }
         };
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reHotelSelecIndex) name:@"INDEXPATHNOTICE" object:nil];
     }
     return self;
 }
 
-- (void)setHotel_array:(NSMutableArray *)hotel_array
+- (void)reHotelSelecIndex
+{
+    self.selIndex = NULL;
+}
+
+- (void)setHotel_array:(NSMutableArray <XFJFindAttractionsListItem *> *)hotel_array
 {
     _hotel_array = hotel_array;
     [self.chooseHotelSign_tableView reloadData];
 }
+
+- (void)setTaskRowsItemArray:(NSMutableArray<XFJTaskRowsItem *> *)taskRowsItemArray
+{
+    _taskRowsItemArray = taskRowsItemArray;
+    [self.chooseHotelSign_tableView reloadData];
+    self.selIndex = NULL;
+}
+
 
 - (XFJChooseHotelFooterView *)chooseHotelFooterView
 {
@@ -113,19 +120,36 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    XFJChooseSceneryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier_XFJChooseSceneryTableViewCell forIndexPath:indexPath];
     static NSString *const celID = @"cellID";
     XFJChooseSceneryTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell == nil) {
         cell = [[XFJChooseSceneryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:celID];
     }
-    NSLog(@"-----------这里获取到的值是 :%@",self.hotel_array[indexPath.row]);
-    cell.findAttractionsListItem = self.hotel_array[indexPath.row];
     if (_selIndex == indexPath) {
         [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
     }else {
         [cell.sceneryContent_button setImage:[UIImage originalWithImage:@""] forState:UIControlStateNormal];
     }
+    NSLog(@"-----------这里获取到的值是 :%@",self.hotel_array[indexPath.row]);
+    for (NSInteger i = 0; i < self.hotel_array.count; i++) {
+        //取出景点id
+        NSInteger findAttractions_id = self.hotel_array[i].findAttractions_id;
+        for (NSInteger j = 0; j < self.taskRowsItemArray.count; j++) {
+            //取出已经签到过了的景点id
+            NSInteger alreadyFindAttractions_id = self.taskRowsItemArray[j].attractionsId;
+            //判断景点id是否相等
+            if (findAttractions_id == alreadyFindAttractions_id) {
+                NSLog(@">>>>>>><<<<<<<<<<<<<<这里打印出相同的id的i的值是 :%zd",i);
+                if (indexPath.row == i) {
+                    [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"selected-g"] forState:UIControlStateNormal];
+                    cell.sceneryContent_button.layer.borderColor = [UIColor clearColor].CGColor;
+                    cell.sceneryContent_button.enabled = NO;
+                    cell.userInteractionEnabled = NO;
+                }
+            }
+        }
+    }
+    cell.findAttractionsListItem = self.hotel_array[indexPath.row];
     return cell;
 }
 
@@ -139,7 +163,6 @@
     //当前选择的打勾
     XFJChooseSceneryTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell.sceneryContent_button setImage:[UIImage originalWithImage:@"choice"] forState:UIControlStateNormal];
-    NSLog(@"-------------选择的是第%@个内容",self.hotel_array[indexPath.row]);
     XFJFindAttractionsListItem *findAttractionsListItem = self.hotel_array[indexPath.row];
     self.findAttractionsListItem = findAttractionsListItem;
 }

@@ -29,6 +29,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
+        [self.hotelText_field becomeFirstResponder];
         [self addSubview:self.redCircel_view];
         [self addSubview:self.hotelName_label];
         [self addSubview:self.peopleName_label];
@@ -116,10 +117,11 @@
 {
     if (_hotelText_field == nil) {
         _hotelText_field = [[UITextField alloc] init];
-        _hotelText_field.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
+//        _hotelText_field.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"TEAMPEOPLENUMBER"]];
         [_hotelText_field addTarget:self action:@selector(hotelSignPeopleNumber:) forControlEvents:UIControlEventEditingChanged];
         _hotelText_field.textAlignment = NSTextAlignmentCenter;
         _hotelText_field.textColor = kColor8383;
+        _hotelText_field.tintColor = kColor8383;
         _hotelText_field.keyboardType = UIKeyboardTypeNumberPad;
         _hotelText_field.font = [UIFont systemFontOfSize:14.0];
         _hotelText_field.background = [UIImage originalWithImage:@"input-box4-"];
@@ -175,9 +177,9 @@
 {
     if (_romeText_field == nil) {
         _romeText_field = [[UITextField alloc] init];
-        _romeText_field.text = @"0";
         _romeText_field.textAlignment = NSTextAlignmentCenter;
         _romeText_field.textColor = kColor8383;
+        _romeText_field.tintColor = kColor8383;
         _romeText_field.font = [UIFont systemFontOfSize:14.0];
         [_romeText_field addTarget:self action:@selector(hotelSignRoomCount:) forControlEvents:UIControlEventEditingChanged];
         _romeText_field.keyboardType = UIKeyboardTypeNumberPad;
@@ -226,6 +228,12 @@
     if (self.hotelSignButtonClickBlock) {
         self.hotelSignButtonClickBlock();
     }
+}
+
+- (void)setPeopleNumberStr:(NSString *)peopleNumberStr
+{
+    _peopleNumberStr = peopleNumberStr;
+    self.hotelText_field.text = [NSString stringWithFormat:@"%@",peopleNumberStr];
 }
 
 @end

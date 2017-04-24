@@ -22,5 +22,5 @@
 
 @property (nonatomic, weak) id <XFJOpenGroupViewControllerDelegate>delegate;
 
-//@property (nonatomic, strong) XFJFindTeamInfoByStateItem *findTeamInfoByStateItem;
+@property (nonatomic, strong) XFJFindTeamInfoByStateItem *findTeamInfoByStateItem;
 @end

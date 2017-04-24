@@ -84,6 +84,9 @@
             }
         }
     }
+    
+    //刷新标题
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setAllRequest) name:@"REFRESHCOMMENTNSNOTICA" object:nil];
 }
 
 #pragma mark - 所有的请求接口
@@ -104,6 +107,10 @@
         if (object) {
             NSLog(@"+++++++++++获取到的团队状态数字是 :%@",object);
             [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[object objectForKey:@"rows"]]];
+            wself.firest_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.second_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.third_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.four_label.text = [NSString stringWithFormat:@"(%@)",@0];
             for (NSInteger i = 0; i < wself.findTeamInFoStateItemArray.count; i++) {
                 XFJFindTeamInFoStateItem *findTeamInFoStateItem = wself.findTeamInFoStateItemArray[i];
                 if (findTeamInFoStateItem.state == 0) {
@@ -121,6 +128,10 @@
         if (error) {
             NSLog(@"++=========获取到的团队状态数字失败的是:%@",error);
             [MBProgressHUD showHudTipStr:@"主人~~网络君错误啦!!" contentColor:HidWithColorContentBlack];
+            wself.firest_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.second_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.third_label.text = [NSString stringWithFormat:@"(%@)",@0];
+            wself.four_label.text = [NSString stringWithFormat:@"(%@)",@0];
         }
     } progress:^(float progress) {
     }];
@@ -190,7 +201,9 @@
 - (void)setUpAllVeiwController
 {
     XFJTaskingViewController *taskingViewController = [[XFJTaskingViewController alloc] init];
-    [self addChildViewController:[[XFJAllTaskViewController alloc] init]];
+    XFJAllTaskViewController *allTaskViewController = [[XFJAllTaskViewController alloc] init];
+    allTaskViewController.currentCity = self.currentCity;
+    [self addChildViewController:allTaskViewController];
     [self addChildViewController:taskingViewController];
     [self addChildViewController:[[XFJPleaseDoITViewController alloc] init]];
     [self addChildViewController:[[XFJPleaseCheckViewController alloc] init]];

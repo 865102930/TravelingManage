@@ -10,4 +10,6 @@
 
 @interface MessageListViewController : UIViewController
 
+@property (nonatomic, assign) NSInteger strNum;
+
 @end

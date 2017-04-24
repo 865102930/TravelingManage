@@ -137,6 +137,7 @@
     return _carPhotosMessage_label;
 }
 
+
 - (UICollectionView *)collectionView
 {
     if (_collectionView == nil) {

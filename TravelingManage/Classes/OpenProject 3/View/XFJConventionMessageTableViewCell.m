@@ -133,6 +133,24 @@
         make.left.mas_equalTo(self.goalAttribute_imageViewLeft.mas_right).mas_offset(18.0);
         make.centerY.mas_equalTo(self.goalAttribute_label.mas_centerY);
     }];
+    
+    [self getAlreadyTimeWithFirest];
+}
+
+#pragma mark - 提供一个方法获取当前的时间并且显示在文本框中
+- (void)getAlreadyTimeWithFirest
+{
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:@"YYYY/MM/dd hh:mm:ss"];
+    NSString *dateTime = [formatter stringFromDate:date];
+    NSString *teamDateStr = [NSString stringWithFormat:@"%@",dateTime];
+    NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
+    NSString *str3 = [timeDateArray[0] stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+    self.goalAttributeContent_label.text = [NSString stringWithFormat:@"%@",str3];
+    self.groupTime_text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
 }
 
 - (UIView *)line_view
@@ -234,7 +252,7 @@
         [wself.maskView1 removeFromSuperview];
         NSLog(@"----------------选择的时间是 :%zd/%zd/%zd",year, month, day);
         wself.groupTime_text = [NSString stringWithFormat:@"%zd/%zd/%zd",year,month,day];
-        wself.goalAttributeContent_label.text = [NSString stringWithFormat:@"%zd/%zd/%zd",year,month,day];
+        wself.goalAttributeContent_label.text = [NSString stringWithFormat:@"%zd-%zd-%zd",year,month,day];
     };
     [[UIApplication sharedApplication].keyWindow addSubview:self.maskView1];
     [self.maskView1 addSubview:calendar];
@@ -264,7 +282,7 @@
 {
     if (_goalAttributeContent_label == nil) {
         _goalAttributeContent_label = [[UILabel alloc] init];
-        _goalAttributeContent_label.text = @"请选择出团日期";
+//        _goalAttributeContent_label.text = @"请选择出团日期";
         _goalAttributeContent_label.textColor = kColor2f2f;
         _goalAttributeContent_label.font = [UIFont systemFontOfSize:14.0];
     }
@@ -274,7 +292,7 @@
 - (UITextField *)groupTime_field
 {
     if (_groupTime_field == nil) {
-        _groupTime_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"出 团 日 期" rightImage:@"xinghao" placeholder:@"2017/02/23"];
+        _groupTime_field = [UITextField textBackGroundImage:@"input-box-" titleName:@"出 团 日 期" rightImage:@"xinghao" placeholder:@"2017-02-23"];
         [_groupTime_field addTarget:self action:@selector(groupText_endText:) forControlEvents:UIControlEventEditingChanged];
         _groupTime_field.tag = 10001;
     }
@@ -302,9 +320,16 @@
 - (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
 {
     _findTeamInfoByStateItem = findTeamInfoByStateItem;
+    NSString *teamDateStr = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
+    NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
+    self.goalAttributeContent_label.text = timeDateArray[0];
     self.groupText_field.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamNo];
     self.groupTime_field.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
     self.travelServiceName_field.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.travelAgencyName];
+    self.groupName_text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamNo];
+    NSString *str3 = [timeDateArray[0] stringByReplacingOccurrencesOfString:@"-" withString:@"/"];
+    self.groupTime_text = str3;
+    self.travelName = findTeamInfoByStateItem.travelAgencyId;
 }
 
 - (UITableView *)check_traveView
@@ -326,7 +351,8 @@
 - (void)textField_change:(UITextField *)text_field
 {
     NSDictionary *dictParaments = @{
-                                    @"taName":text_field.text
+                                    @"taName":text_field.text,
+                                    @"checkState":@1
                                     };
     __weak __typeof(self)wself = self;
     [[NetWorkManager shareManager] requestWithType:HttpRequestTypePost withUrlString:CHECKOUTTRAVENAMEURL withParaments:dictParaments withSuccessBlock:^(id object) {
@@ -349,6 +375,7 @@
 -(void)searchBarTextDidChange:(NSString *)searchText
 {
     self.result = nil;
+    [self.check_traveView removeFromSuperview];
     for (int i = 0; i < self.findTravelAgencyList_array.count; i++) {
         NSString *string = self.findTravelAgencyList_array[i].taName;
         if (string.length >= searchText.length) {
@@ -427,6 +454,11 @@
 {
     
     return 33.0;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.check_traveView removeFromSuperview];
 }
 
 

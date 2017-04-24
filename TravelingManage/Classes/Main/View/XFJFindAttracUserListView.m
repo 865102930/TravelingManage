@@ -20,6 +20,7 @@
 //定义一个可变数组用来装点击的cell
 @property (nonatomic, strong) NSMutableArray *indexPathArray;
 @property (nonatomic, strong) NSMutableArray *indexPath_array;
+@property (nonatomic, strong) XFJFindAttracUserListTableViewCell *cell;
 @end
 
 @implementation XFJFindAttracUserListView
@@ -28,6 +29,7 @@
 {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor redColor];
+//        [self.indexPath_array removeAllObjects];
         [self addSubview:self.findAttracUserList_tableView];
 //        [self.findAttracUserList_tableView addSubview:self.findAttracUserListFooterView];
         [self.findAttracUserList_tableView registerClass:[XFJFindAttracUserListTableViewCell class] forCellReuseIdentifier:KCellIdentifier_XFJFindAttracUserListTableViewCell];
@@ -53,8 +55,16 @@
                 wself.cancelUserButtonClickBlock();
             }
         };
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(freshenTableView) name:@"FRESHENOTIFICATION" object:nil];
     }
     return self;
+}
+
+- (void)freshenTableView
+{
+    [self.indexPath_array removeAllObjects];
+    self.contacts = nil;
+    [self.findAttracUserList_tableView reloadData];
 }
 
 - (NSMutableArray *)indexPathArray
@@ -137,15 +147,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * identifier = @"Cell";
-    XFJFindAttracUserListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    XFJFindAttracUserListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[XFJFindAttracUserListTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    self.cell = cell;
     cell.findAttracUserListItem = self.findAttracUserListItem[indexPath.row];
     for (int i = 0; i < [self.findAttracUserListItem count]; i++) {
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         [dic setValue:@"NO" forKey:@"checked"];
         [self.contacts addObject:dic];
+        NSLog(@"<<<<<<<-------------字典的值是 :%@",dic);
     }
     NSUInteger row = [indexPath row];
     NSMutableDictionary *dic = [self.contacts objectAtIndex:row];
@@ -163,9 +175,10 @@
 #pragma mark - cell得到点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.indexPath_array removeAllObjects];
+//    [self.indexPath_array removeAllObjects];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     XFJFindAttracUserListTableViewCell *cell = (XFJFindAttracUserListTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    self.cell = cell;
     NSUInteger row = [indexPath row];
     NSMutableDictionary *dic = [self.contacts objectAtIndex:row];
     if ([[dic objectForKey:@"checked"] isEqualToString:@"NO"]) {
@@ -186,5 +199,7 @@
 {
     return [XFJFindAttracUserListTableViewCell cellHeight];
 }
+
+
 
 @end

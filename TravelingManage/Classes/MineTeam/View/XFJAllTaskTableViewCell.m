@@ -35,6 +35,12 @@
 @property (nonatomic, strong) UIButton *status_button;
 
 @property (nonatomic, strong) UIButton *cancel_button;
+//审核人
+@property (nonatomic, strong) UIImageView *verifier_imageView;
+//审核人标题
+@property (nonatomic, strong) UILabel *verifier_label;
+//审核人的内容
+@property (nonatomic, strong) UILabel *verifierContent_label;
 
 @end
 
@@ -65,6 +71,9 @@
     [self addSubview:self.taskStatus_label];
     [self addSubview:self.status_button];
     [self addSubview:self.cancel_button];
+    [self addSubview:self.verifier_imageView];
+    [self addSubview:self.verifier_label];
+    [self addSubview:self.verifierContent_label];
 }
 
 - (void)setUpContentAllTaskWithMas
@@ -78,7 +87,6 @@
     [self.teamNumber_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.line_view.mas_bottom).mas_offset(14.0);
         make.left.mas_equalTo(self.mas_left).mas_offset(17.0);
-//        make.width.mas_equalTo(80.0);
     }];
     [self.teamNumber_label2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.teamNumber_label.mas_right).mas_offset(5.0);
@@ -93,7 +101,6 @@
     [self.teamPeople_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.contentBackGround_view.mas_top).mas_offset(13.0);
         make.left.mas_equalTo(self.contentBackGround_view.mas_left).mas_offset(17.0);
-//        make.width.mas_equalTo(80.0);
     }];
     [self.teamPeople_label2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.teamPeople_label.mas_right).mas_offset(5.0);
@@ -102,7 +109,6 @@
     [self.travelServiceName_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.teamPeople_label.mas_bottom).mas_offset(16.0);
         make.left.mas_equalTo(self.contentBackGround_view.mas_left).mas_offset(17.0);
-//        make.width.mas_equalTo(80.0);
     }];
     [self.travelServiceName_label2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.travelServiceName_label.mas_right).mas_offset(5.0);
@@ -111,7 +117,6 @@
     [self.startTeamTime_label2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.contentBackGround_view.mas_top).mas_offset(13.0);
         make.right.mas_equalTo(self.contentBackGround_view.mas_right).mas_offset(-17.0);
-//        make.width.mas_equalTo(120.0);
     }];
     [self.startTeamTime_label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.startTeamTime_label2.mas_top);
@@ -133,6 +138,50 @@
         make.width.mas_equalTo(self.status_button.mas_width);
         make.top.mas_equalTo(self.status_button.mas_top);
     }];
+    [self.verifier_imageView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.contentBackGround_view.mas_bottom).mas_offset(19.0);
+        make.left.mas_equalTo(self.mas_left).mas_offset(19.0);
+        make.height.width.mas_equalTo(11.0);
+    }];
+    [self.verifier_label mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.verifier_imageView.mas_right).mas_offset(9.0);
+        make.centerY.mas_equalTo(self.verifier_imageView.mas_centerY);
+    }];
+    [self.verifierContent_label mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.verifier_label.mas_right).mas_offset(10.0);
+        make.centerY.mas_equalTo(self.verifier_imageView.mas_centerY);
+    }];
+}
+
+- (UIImageView *)verifier_imageView
+{
+    if (_verifier_imageView == nil) {
+        _verifier_imageView = [[UIImageView alloc] init];
+        _verifier_imageView.image = [UIImage originalWithImage:@"admin"];
+    }
+    return _verifier_imageView;
+}
+
+- (UILabel *)verifier_label
+{
+    if (_verifier_label == nil) {
+        _verifier_label = [[UILabel alloc] init];
+        _verifier_label.text = [NSString stringWithFormat:@"审核人:"];
+        _verifier_label.font = [UIFont fontWithName:PingFang size:12.0];
+        _verifier_label.textColor = kColor5858;
+    }
+    return _verifier_label;
+}
+
+- (UILabel *)verifierContent_label
+{
+    if (_verifierContent_label == nil) {
+        _verifierContent_label = [[UILabel alloc] init];
+//        _verifierContent_label.text = [NSString stringWithFormat:@"%@",@"西湖区管理员"];
+        _verifierContent_label.font = [UIFont fontWithName:PingFang size:12.0];
+        _verifierContent_label.textColor = kColor2b2b;
+    }
+    return _verifierContent_label;
 }
 
 - (UIView *)line_view
@@ -161,7 +210,6 @@
     if (_teamNumber_label2 == nil) {
         _teamNumber_label2 = [[UILabel alloc] init];
         _teamNumber_label2.textAlignment = NSTextAlignmentLeft;
-//        _teamNumber_label2.text = [NSString stringWithFormat:@"0000"];
         _teamNumber_label2.textColor = kColor2b2b;
         _teamNumber_label2.font = [UIFont systemFontOfSize:13.0];
     }
@@ -194,7 +242,6 @@
     if (_teamPeople_label2 == nil) {
         _teamPeople_label2 = [[UILabel alloc] init];
         _teamPeople_label2.textAlignment = NSTextAlignmentLeft;
-//        _teamPeople_label2.text = [NSString stringWithFormat:@"22人"];
         _teamPeople_label2.textColor = kColor2b2b;
         _teamPeople_label2.font = [UIFont systemFontOfSize:13.0];
     }
@@ -218,7 +265,6 @@
     if (_travelServiceName_label2 == nil) {
         _travelServiceName_label2 = [[UILabel alloc] init];
         _travelServiceName_label2.textAlignment = NSTextAlignmentLeft;
-//        _travelServiceName_label2.text = [NSString stringWithFormat:@"张全蛋旅社"];
         _travelServiceName_label2.textColor = kColor2b2b;
         _travelServiceName_label2.font = [UIFont systemFontOfSize:13.0];
     }
@@ -230,7 +276,6 @@
     if (_startTeamTime_label2 == nil) {
         _startTeamTime_label2 = [[UILabel alloc] init];
         _startTeamTime_label2.textAlignment = NSTextAlignmentLeft;
-//        _startTeamTime_label2.text = [NSString stringWithFormat:@"2017-02-23"];
         _startTeamTime_label2.textColor = kColor2b2b;
         _startTeamTime_label2.font = [UIFont systemFontOfSize:13.0];
     }
@@ -324,22 +369,31 @@
     _findTeamInfoByStateItem = findTeamInfoByStateItem;
     if (findTeamInfoByStateItem.teamState == 0) {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"进行中"];
+        [self.verifier_imageView setHidden:YES];
+        [self.verifier_label setHidden:YES];
+        [self.verifierContent_label setHidden:YES];
         [self.cancel_button setTitle:[NSString stringWithFormat:@"%@",@"取消"] forState:UIControlStateNormal];
         [self.status_button setTitle:[NSString stringWithFormat:@"%@",@"重新开始"] forState:UIControlStateNormal];
     }else if (findTeamInfoByStateItem.teamState == 1) {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"待完善"];
+        [self.verifier_imageView setHidden:YES];
+        [self.verifier_label setHidden:YES];
+        [self.verifierContent_label setHidden:YES];
         [self.status_button setTitle:[NSString stringWithFormat:@"%@",@"完善资料"] forState:UIControlStateNormal];
         [self.cancel_button setHidden:YES];
     }else if (findTeamInfoByStateItem.teamState == 2) {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"待审核"];
+        self.verifierContent_label.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.userName];
         [self.cancel_button setHidden:YES];
         [self.status_button setHidden:YES];
     }else if (findTeamInfoByStateItem.teamState == 3) {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"审核通过"];
+        self.verifierContent_label.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.userName];
         [self.cancel_button setHidden:YES];
         [self.status_button setHidden:YES];
     }else {
         self.taskStatus_label.text = [NSString stringWithFormat:@"%@",@"审核不通过"];
+        self.verifierContent_label.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.userName];
         [self.cancel_button setHidden:YES];
         [self.status_button setHidden:YES];
     }
@@ -348,7 +402,7 @@
         self.travelServiceName_label2.text = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.travelAgencyName];
         NSString *teamDateStr = [NSString stringWithFormat:@"%@",findTeamInfoByStateItem.teamDate];
         NSArray *timeDateArray = [teamDateStr componentsSeparatedByString:@" "];
-        self.startTeamTime_label2.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];    
+        self.startTeamTime_label2.text = [NSString stringWithFormat:@"%@",timeDateArray[0]];
 }
 
 @end

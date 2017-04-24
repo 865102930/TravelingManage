@@ -16,5 +16,7 @@
 @property (nonatomic, copy) void (^HotelSignRoomCountBlock)(NSString *);
 //是否改动了人数
 @property (nonatomic, assign) BOOL isHotelCount;
+@property (nonatomic, strong) NSString *peopleNumberStr;
+
 
 @end

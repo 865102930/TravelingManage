@@ -9,15 +9,14 @@
 #import "XFJVoucherPhotosView.h"
 #import "XFJVoucherPhotosCollectionViewCell.h"
 
-@interface XFJVoucherPhotosView() <UICollectionViewDelegate,UICollectionViewDataSource>
+@interface XFJVoucherPhotosView()
 
 @property (nonatomic, strong) UIImageView *star_imageView;
 
 @property (nonatomic, strong) UILabel *showPhotos_label;
 
-@property (nonatomic, strong) UICollectionView *collectionView;
 
-@property (nonatomic, strong) UICollectionViewFlowLayout *layout;
+@property (nonatomic, strong) UIImageView *addPhotos_imageView;
 
 @end
 
@@ -27,38 +26,32 @@
 {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
-//        [self addSubview:self.star_imageView];
         [self addSubview:self.showPhotos_label];
-        [self addSubview:self.collectionView];
         self.dataArr = [NSMutableArray array];
-//        [self.star_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(18.0);
-//            make.bottom.mas_equalTo(-25.0);
-//            make.height.width.mas_equalTo(5.0);
-//        }];
+        [self addSubview:self.addPhotos_imageView];
         [self.showPhotos_label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
             make.bottom.mas_equalTo(self.mas_bottom).mas_equalTo(-25.0);
         }];
-        [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(15.0);
-            make.left.mas_equalTo(18.0);
-            make.right.mas_equalTo(-18.0);
-            make.bottom.mas_equalTo(self.showPhotos_label.mas_top).mas_offset(-20);
+        [self.addPhotos_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.mas_left).mas_offset(18.0);
+            make.height.mas_equalTo((SCREEN_WIDTH - 2 * 18) / 4 - 10);
+            make.width.mas_equalTo((SCREEN_WIDTH - 2 * 18) / 4 - 10);
+            make.top.mas_equalTo(self.mas_top).mas_offset(15.0);
         }];
-        [self.collectionView registerClass:[XFJVoucherPhotosCollectionViewCell class] forCellWithReuseIdentifier:KCellIdentifier_XFJVoucherPhotosCollectionViewCell];
+        UITapGestureRecognizer *front_tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addPhotos_choosePhotoImage:)];
+        [self.addPhotos_imageView addGestureRecognizer:front_tap];
     }
     return self;
 }
 
-//- (UIImageView *)star_imageView
-//{
-//    if (_star_imageView == nil) {
-//        _star_imageView = [[UIImageView alloc] init];
-//        _star_imageView.image = [UIImage originalWithImage:@"xinghao"];
-//    }
-//    return _star_imageView;
-//}
+- (void)addPhotos_choosePhotoImage:(UITapGestureRecognizer *)tap
+{
+    NSInteger addPhotosStr = 1;
+    if (self.addPhotos_photosImageViewBlock) {
+        self.addPhotos_photosImageViewBlock(addPhotosStr);
+    }
+}
 
 - (UILabel *)showPhotos_label
 {
@@ -72,108 +65,22 @@
     return _showPhotos_label;
 }
 
-- (UICollectionView *)collectionView
+- (UIImageView *)addPhotos_imageView
 {
-    if (_collectionView == nil) {
-        _collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
-        _collectionView.delegate = self;
-        _collectionView.dataSource = self;
-        _collectionView.backgroundColor = [UIColor clearColor];
+    if (_addPhotos_imageView == nil) {
+        _addPhotos_imageView = [[UIImageView alloc] init];
+        _addPhotos_imageView.image = [UIImage originalWithImage:@"add-img-"];
+        _addPhotos_imageView.userInteractionEnabled = YES;
     }
-    return _collectionView;
+    return _addPhotos_imageView;
 }
 
-#pragma mark - cell的个数
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (void)setAddPhotos_imageView1:(UIImage *)addPhotos_imageView1
 {
-    if (self.dataArr.count < 1) {
-        return self.dataArr.count + 1;
-    }else {
-        if (self.dataArr.count >= self.maxImageCount) {
-            return self.maxImageCount;
-        }
-    }
-    return self.dataArr.count + 1 ;
+    _addPhotos_imageView1 = addPhotos_imageView1;
+    self.addPhotos_imageView.image = addPhotos_imageView1;
 }
 
-#pragma mark - cell的内容(自定义cell)
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    XFJVoucherPhotosCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:KCellIdentifier_XFJVoucherPhotosCollectionViewCell forIndexPath:indexPath];
-    if(self.dataArr.count == 0){
-        cell.photoImg = nil;
-    }else{
-        cell.photoImg = indexPath.item <= self.dataArr.count - 1 ? self.dataArr[indexPath.item] : nil;
-    }
-    return cell;
-}
-
-#pragma mark - cell的点击
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSInteger index = 0;
-    if (self.dataArr.count == 0) {
-        index = 0;
-    }else if (self.dataArr.count < 2 && self.dataArr.count > 0) {
-        index = self.dataArr.count + 1;
-    }else {
-        index = 2;
-    }
-    if (index == 0) {
-        if (indexPath.row < index ) {
-            if([self.delegate respondsToSelector:@selector(jumpToCell:indexPath:)]) {
-                [self.delegate jumpToCell:self indexPath:indexPath];
-            }
-            return;
-        }
-        self.selectIndexPath = indexPath;
-        if(self.dataArr.count < 2 && [self.delegate respondsToSelector:@selector(chooseVoucherPhotosImage:)]) {
-            [self.delegate chooseVoucherPhotosImage:self];
-        }
-    }else if (index == 2){
-        if(self.dataArr.count < 2 && [self.delegate respondsToSelector:@selector(chooseVoucherPhotosImage:)]) {
-            [self.delegate chooseVoucherPhotosImage:self];
-        }else
-        {
-            if([self.delegate respondsToSelector:@selector(jumpToCell:indexPath:)]) {
-                [self.delegate jumpToCell:self indexPath:indexPath];
-            }
-            return;
-        }
-    }else {
-        if (indexPath.row + 1 < index ) {
-            if([self.delegate respondsToSelector:@selector(jumpToCell:indexPath:)]) {
-                [self.delegate jumpToCell:self indexPath:indexPath];
-            }
-            return;
-        }
-        self.selectIndexPath = indexPath;
-        if(self.dataArr.count < 2 && [self.delegate respondsToSelector:@selector(chooseVoucherPhotosImage:)]) {
-            [self.delegate chooseVoucherPhotosImage:self];
-        }}
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    if (iphone5) {
-        return CGSizeMake(60, 60);
-    }else if (iphone6) {
-        return CGSizeMake(74, 74);
-    }else
-    {
-        return CGSizeMake(82, 82);
-    }
-}
-
-- (void)setDataArr:(NSMutableArray *)dataArr {
-    _dataArr = dataArr;
-    [self.collectionView reloadData];
-}
-
-
-- (void)setMaxImageCount:(NSInteger)maxImageCount
-{
-    _maxImageCount = maxImageCount;
-}
 
 
 

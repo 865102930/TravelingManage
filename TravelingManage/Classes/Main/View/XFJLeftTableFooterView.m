@@ -56,6 +56,14 @@
     [self.firestBackGroundView addSubview:self.secondMenuButton];
     [self.firestBackGroundView addSubview:self.thirdMenuButton];
     [self lineCountRequest];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reduceFooterViewHeight) name:@"REDUCEFOOTERVIEWHEIGHT" object:nil];
+    
+}
+
+#pragma mark - 减少高度
+- (void)reduceFooterViewHeight
+{
+    
 }
 
 #pragma mark - 每个标题中有多少为查看的数字接口
@@ -64,29 +72,34 @@
     NSDictionary *dictParaments = @{
                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"]
                                     };
-    __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:FINDTEAMINFOSTATEURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if (object) {
-            NSLog(@"+++++++++++获取到的团队状态数字是 :%@",object);
-            [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[object objectForKey:@"rows"]]];
+    __weak __typeof(self)wself = self;    
+    [GRNetRequestClass POST:FINDTEAMINFOSTATEURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++获取到的团队状态数字是 :%@",responseObject);
+            [wself.findTeamInFoStateItemArray addObjectsFromArray: [XFJFindTeamInFoStateItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]]];
+            [wself.firestMenuButton setTitle:[NSString stringWithFormat:@"待完善(0)"] forState:UIControlStateNormal];
+            [wself.secondMenuButton setTitle:[NSString stringWithFormat:@"待审核(0)"] forState:UIControlStateNormal];
+            [wself.thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价(0)"] forState:UIControlStateNormal];
             for (NSInteger i = 0; i < wself.findTeamInFoStateItemArray.count; i++) {
                 XFJFindTeamInFoStateItem *findTeamInFoStateItem = wself.findTeamInFoStateItemArray[i];
                 if (findTeamInFoStateItem.state == 0) {
                 }else if (findTeamInFoStateItem.state == 1) {
                     [wself.firestMenuButton setTitle:[NSString stringWithFormat:@"待完善(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
                 }else if (findTeamInFoStateItem.state == 2) {
-                    [_secondMenuButton setTitle:[NSString stringWithFormat:@"待审核(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
+                    [wself.secondMenuButton setTitle:[NSString stringWithFormat:@"待审核(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
                 }else {
-                    [_thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
+                    [wself.thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价(%zd)",findTeamInFoStateItem.total] forState:UIControlStateNormal];
                 }
             }
         }
-    } withFailureBlock:^(NSError *error) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"++=========获取到的团队状态数字失败的是:%@",error);
-            [MBProgressHUD showHudTipStr:@"主人~~网络君错误啦!!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"网络君错误啦" contentColor:HidWithColorContentBlack];
+            [wself.firestMenuButton setTitle:[NSString stringWithFormat:@"待完善(0)"] forState:UIControlStateNormal];
+            [wself.secondMenuButton setTitle:[NSString stringWithFormat:@"待审核(0)"] forState:UIControlStateNormal];
+            [wself.thirdMenuButton setTitle:[NSString stringWithFormat:@"待评价(0)"] forState:UIControlStateNormal];
         }
-    } progress:^(float progress) {
     }];
 }
 
@@ -102,7 +115,7 @@
 - (void)setUpMasControl
 {
     [self.backGroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.mas_top).mas_offset(100.0);
+        make.top.mas_equalTo(self.mas_top).mas_offset(0.0);
         make.left.mas_equalTo(self.mas_left);
         make.right.mas_equalTo(self.mas_right);
         make.height.mas_equalTo(100.0);
@@ -136,6 +149,8 @@
     }];
 }
 
+
+
 - (UIView *)backGroundView
 {
     if (_backGroundView == nil) {
@@ -161,7 +176,7 @@
     }
     return _firestBackGroundView;
 }
-
+//kColor5858
 - (UIButton *)firestMenuButton
 {
     if (_firestMenuButton == nil) {
@@ -239,7 +254,6 @@
 
 - (void)changeMenu
 {
-    NSLog(@"主人,您点击了切换菜单按钮~~");
     if (!self.isclickMenuButton) {
         [self setUpStartMenuButtonClick];
     }else {
@@ -269,7 +283,7 @@
 {
     [self.change_menu setImage:[UIImage originalWithImage:@"triangle"] forState:UIControlStateNormal];
     [self.backGroundView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.mas_top).mas_offset(100.0);
+        make.top.mas_equalTo(self.mas_top).mas_offset(0.0);
         make.left.mas_equalTo(self.mas_left);
         make.right.mas_equalTo(self.mas_right);
         make.height.mas_equalTo(100.0);
@@ -321,7 +335,6 @@
 
 - (void)pleasePerfected
 {
-    NSLog(@"主人,您点击了待完善按钮~~");
     NSInteger strNumber = 2;
     if ([self.delegate respondsToSelector:@selector(pushMineTeamController:)]) {
         [self.delegate pushMineTeamController:strNumber];
@@ -330,7 +343,6 @@
 
 - (void)checkPending
 {
-    NSLog(@"主人,您点击了待审核按钮~~");
     NSInteger strNumber = 3;
     if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseCheckTeamController:)]) {
         [self.delegate pushToPleaseCheckTeamController:strNumber];
@@ -339,7 +351,6 @@
 
 - (void)pleaseAppraise
 {
-    NSLog(@"主人,您点击了待评价按钮~~");
     NSInteger strNumber = 4;
     if (self.delegate && [self.delegate respondsToSelector:@selector(pushToPleaseAskingTeamController:)]) {
         [self.delegate pushToPleaseAskingTeamController:strNumber];
@@ -348,7 +359,6 @@
 
 - (void)allAssignmentClick
 {
-    NSLog(@"主人,您点击了全部任务按钮~~");
     if ([self.delegate respondsToSelector:@selector(pushToAllTaskingTeamController)]) {
         [self.delegate pushToAllTaskingTeamController];
     }
@@ -356,7 +366,6 @@
 
 - (void)exitButtonClick
 {
-    NSLog(@"主人,您点击了退出按钮~~");
     if (self.delegate && [self.delegate respondsToSelector:@selector(exitButtonClick:)]) {
         [self.delegate exitButtonClick:self];
     }

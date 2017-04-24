@@ -52,6 +52,16 @@
     [self setupScrollView];
     [self setupTitlesView];
     [self addChildVcViewIntoScrollView:0];
+    if (self.strNum == 2) {
+        for (UIView *subView in self.titlesView.subviews) {
+            if ([subView isKindOfClass:[UIButton class]]) {
+                if (subView.tag == 1) {
+                    NSLog(@"subview==%@",subView);
+                    [self titleButtonClick:(PageButton *)subView];
+                }
+            }
+        }
+    }
     [self loadData];
 }
 
@@ -187,8 +197,14 @@
     
     // 下划线
     [UIView animateWithDuration:0.25 animations:^{
-        self.titleUnderline.XFJ_Width = titleButton.titleLabel.XFJ_Width + 10;
-        self.titleUnderline.XFJ_centerX = titleButton.XFJ_centerX;
+        if (self.strNum == 2) {
+            self.titleUnderline.XFJ_Width = 43.0;
+            self.titleUnderline.XFJ_centerX = titleButton.XFJ_centerX;
+        }else {
+            self.titleUnderline.XFJ_Width = titleButton.titleLabel.XFJ_Width + 10;
+            NSLog(@">>>>>>>>--------标题下划线的宽度是 :%f",self.titleUnderline.XFJ_Width);
+            self.titleUnderline.XFJ_centerX = titleButton.XFJ_centerX;
+        }
         // 滑动scrollView到对应的子控制器界面
         CGPoint offset = self.scrollView.contentOffset;
         offset.x = index * self.scrollView.XFJ_Width;

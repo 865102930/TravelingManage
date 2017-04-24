@@ -29,8 +29,32 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self initControlWithCarName];
         [self setUpConventionCarNameWithMas];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifiCarNumberWithButton:) name:@"ADDCARNUMBERNOTIFI" object:@"button"];
     }
     return self;
+}
+
+- (void)notifiCarNumberWithButton:(NSNotification *)notifi
+{
+//    UIButton *button = [notifi.userInfo objectForKey:@"button"];
+//    [self tapkeyboardHideWithButton:button];
+    [self endEditing:YES];
+}
+
+
+#pragma mark - 添加收拾来隐藏键盘
+- (void)tapkeyboardHideWithButton:(UIButton *)button
+{
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
+    //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
+//    tapGestureRecognizer.cancelsTouchesInView = NO;
+    //将触摸事件添加到当前view
+    [button addGestureRecognizer:tapGestureRecognizer];
+}
+
+- (void)keyboardHide:(UITapGestureRecognizer *)tap{
+    [self.carName_field resignFirstResponder];
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
@@ -71,7 +95,7 @@
 {
     if (_carName_field == nil) {
         _carName_field = [UITextField textBackGroundImage:@"input-box2-" titleName:@"车    牌    号" rightImage:@"xinghao" placeholder:@"请输入车牌号"];
-        
+        [_carName_field addTarget:self action:@selector(textFieldEditChanged:) forControlEvents:UIControlEventEditingDidEnd];
     }
     return _carName_field;
 }
@@ -86,10 +110,18 @@
     return _carNmae_button;
 }
 
+- (void)textFieldEditChanged:(UITextField *)textField
+{
+    NSLog(@"----------->>>>>>>>这里打印的是减号输入框中个的输入内容是:%@",textField.text);
+    if (self.AllMinusCarNumberBlock) {
+        self.AllMinusCarNumberBlock(textField.text, self);
+    }
+}
+
 - (void)minusCarNameButtonClick:(UIButton *)buttonTag
 {
     if (self.minusCarNumBlock) {
-        self.minusCarNumBlock();
+        self.minusCarNumBlock(self);
     }
 }
 
@@ -109,6 +141,19 @@
         return;
     }
     self.carName_field.text = [NSString stringWithFormat:@"%@",carNumberItemArray[0].plateHead];
+}
+
+
+- (void)setFindTeamCarItem:(XFJFindTeamCarItem *)findTeamCarItem
+{
+    _findTeamCarItem = findTeamCarItem;
+    self.carName_field.text = [NSString stringWithFormat:@"%@",findTeamCarItem];
+}
+
+- (void)setCarNum:(NSString *)carNum
+{
+    _carNum = carNum;
+    self.carName_field.text = [NSString stringWithFormat:@"%@",carNum];
 }
 
 

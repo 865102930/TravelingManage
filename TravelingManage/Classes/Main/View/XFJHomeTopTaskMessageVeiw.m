@@ -26,6 +26,8 @@
 
 @property (nonatomic, strong) UIButton *state_button;
 
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+
 @end
 
 @implementation XFJHomeTopTaskMessageVeiw
@@ -40,6 +42,21 @@
     return self;
 }
 
+- (UITapGestureRecognizer *)tapGesture
+{
+    if (_tapGesture == nil) {
+        _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToView)];
+    }
+    return _tapGesture;
+}
+
+- (void)tapToView
+{
+    if (self.jumpWithTeamMessageBlock) {
+        self.jumpWithTeamMessageBlock(self.laterTeamControlItem.findNewTeamInfo_Id);
+    }
+}
+
 #pragma mark - 添加控件
 - (void)setUpContentControl
 {
@@ -51,6 +68,7 @@
     [self addSubview:self.openTeamContent_label];
     [self addSubview:self.arrow_button];
     [self addSubview:self.state_button];
+    [self addGestureRecognizer:self.tapGesture];
 }
 
 - (UILabel *)carNumber_label

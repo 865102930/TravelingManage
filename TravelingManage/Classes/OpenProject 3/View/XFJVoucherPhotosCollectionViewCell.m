@@ -46,13 +46,4 @@
 }
 
 
-- (void)setPhotoImg:(UIImage *)photoImg{
-    _photoImg = photoImg;
-    if (photoImg == nil) {
-        self.addPhotos_imageView.image = [UIImage originalWithImage:@"add-img-"];
-    }else{
-        self.addPhotos_imageView.image = photoImg;
-    }
-}
-
 @end

@@ -16,7 +16,7 @@
 //城市
 @property (nonatomic, strong) NSString *city;
 
-//车牌钱两个数字
+//车牌前两个数字
 @property (nonatomic, strong) NSString *plateHead;
 
 @end

@@ -11,6 +11,7 @@
 #import "XFJFindTeamInfoByStateItem.h"
 #import "XFJTeamMessageViewController.h"
 #import "XFJOpenGroupViewController.h"
+#import "XFJMeDetailsViewController.h"
 
 @interface XFJAllTaskViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *allTaskTableView;
@@ -50,6 +51,7 @@
 {
     //取消任务后删除之前所有的数组,然后添加
     [self.findTeamInfoByStateItem_array removeAllObjects];
+    [MBProgressHUD showLoadHUD];
     NSDictionary *dictParaments = @{
                                     @"userId":[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"],
                                     @"teamState":(self.type == -1) ? @"" : @(self.type)
@@ -120,8 +122,10 @@
         NSIndexPath *path = [self.allTaskTableView indexPathForCell:cell];
         //这里可以获取到cell是具体是哪一个,就可以传相应的id
         NSLog(@"----------+++++++-------index row%zd", [path row]);
-        //点击冲洗开始后,跳转到开团界面
+        //点击重新开始后,跳转到开团界面
         XFJOpenGroupViewController *openGroupViewController = [[XFJOpenGroupViewController alloc] init];
+        openGroupViewController.findTeamInfoByStateItem = wself.findTeamInfoByStateItem_array[path.row];
+//        openGroupViewController.locationWithUser = self.currentCity;
         [wself.navigationController pushViewController:openGroupViewController animated:YES];
     };
     cell.pleasePerfectDataBlock = ^(UIButton *button) {
@@ -154,7 +158,9 @@
 #pragma mark - cell的点击
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"点击了第%zd个cell",indexPath.row);
+    NSLog(@"------点击了第%zd个cell",indexPath.row);
+    XFJMeDetailsViewController *meDetailsViewController = [[XFJMeDetailsViewController alloc] init];
+    [self.navigationController pushViewController:meDetailsViewController animated:YES];
 }
 
 #pragma mark - cell的高度
@@ -170,7 +176,6 @@
     [GRNetRequestClass POST:DELETETEAMINFOURL params:@{@"id":[NSString stringWithFormat:@"%zd",findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
         if (responseObject) {
             if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
-                [MBProgressHUD showLoadHUD];
                 [wself requestAllStates];
                 if (wself.requestTitleBolock) {
                     wself.requestTitleBolock();
@@ -179,7 +184,7 @@
         }
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
-            [MBProgressHUD showHudTipStr:@"您取消团队失败了,可能是网络问题!!" contentColor:HidWithColorContentBlack];
+            [MBProgressHUD showHudTipStr:@"您取消团队失败了,可能是网络问题" contentColor:HidWithColorContentBlack];
         }
     }];
 }

@@ -44,4 +44,7 @@
 
 @property (nonatomic, assign) BOOL isEnter;
 
+//定义一个字符串,用来接收地理位置
+@property (nonatomic, strong) NSString *currentCity;
+
 @end

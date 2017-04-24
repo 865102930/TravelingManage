@@ -27,8 +27,23 @@
         self.backgroundColor = [UIColor whiteColor];
         [self initControlWithCarName];
         [self setUpConventionCarNameWithMas];
+        [self tapkeyboardHide];
     }
     return self;
+}
+
+#pragma mark - 添加收拾来隐藏键盘
+- (void)tapkeyboardHide
+{
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
+    //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
+    tapGestureRecognizer.cancelsTouchesInView = NO;
+    //将触摸事件添加到当前view
+    [self.carNmae_button addGestureRecognizer:tapGestureRecognizer];
+}
+
+-(void)keyboardHide:(UITapGestureRecognizer *)tap{
+    [self.carName_field resignFirstResponder];
 }
 
 - (void)initControlWithCarName
@@ -66,7 +81,7 @@
     NSLog(@"主人,您获取到的输入框的值是 : %@",textField.text);
     self.str = textField.text;
     if (self.carNumberBlock) {
-        self.carNumberBlock(textField.text);
+        self.carNumberBlock(textField.text, self);
     }
 }
 
@@ -84,8 +99,9 @@
 - (void)addCarNameButtonClick:(UIButton *)buttonTag
 {
     NSLog(@"添加一行车牌号码~~");
+    
     if (self.addCellBlock) {
-        self.addCellBlock(buttonTag.tag,self.carName_field.text);
+        self.addCellBlock(buttonTag.tag,self.carName_field.text,buttonTag);
     }
 }
 
@@ -96,9 +112,29 @@
     if (carNumberItemArray.count == 0) {
         return;
     }
-    self.carName_field.text = [NSString stringWithFormat:@"%@",carNumberItemArray[0].plateHead];
+    if (self.isAddStrBool) {
+        self.carName_field.text = [NSString stringWithFormat:@"%@",self.addStrNumber];
+    }else {
+        self.carName_field.text = [NSString stringWithFormat:@"%@",carNumberItemArray[0].plateHead];
+    }
 }
 
+- (void)setAddStrNumber:(NSString *)addStrNumber
+{
+    _addStrNumber = addStrNumber;
+}
+
+- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    _findTeamInfoByStateItem = findTeamInfoByStateItem;
+}
+
+
+- (void)setFindTeamCarItem:(XFJFindTeamCarItem *)findTeamCarItem
+{
+    _findTeamCarItem = findTeamCarItem;
+    self.carName_field.text = findTeamCarItem.vehicleNo;
+}
 
 
 

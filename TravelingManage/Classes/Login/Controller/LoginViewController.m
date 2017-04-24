@@ -79,6 +79,7 @@
         _phoneTextF = [UITextField textLeftImage:@"phoneNum" placeholder:@"请输入手机号" imageWidth:14 imageHeight:19 lineWidth:SCREEN_WIDTH - 48];
          [_phoneTextF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         _phoneTextF.keyboardType = UIKeyboardTypeNumberPad;
+        [_phoneTextF becomeFirstResponder];
         [self.view addSubview:_phoneTextF];
     }
     return _phoneTextF;
@@ -123,13 +124,14 @@
 
 - (UIButton *)registButton{
     if (!_registButton) {
-        _registButton = [[UIButton alloc] init];
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"< 还没有账号? 立即注册"];
-        [str addAttribute:NSForegroundColorAttributeName value:RedColor range:NSMakeRange(0, [str length])];
+        _registButton = [[UIButton alloc] init];///< 还没有账号? 立即注册
+//        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"导游账号注册"];
+        [_registButton setTitle:@"导游账号注册" forState:UIControlStateNormal];
+//        [str addAttribute:NSForegroundColorAttributeName value:RedColor range:NSMakeRange(0, [str length])];
         [_registButton setTitleColor:RedColor forState:UIControlStateNormal];
-        NSRange strRange = {9, 4};
-        [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
-        [_registButton setAttributedTitle:str forState:UIControlStateNormal];
+//        NSRange strRange = {9, 4};
+//        [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+//        [_registButton setAttributedTitle:str forState:UIControlStateNormal];
         _registButton.titleLabel.font = [UIFont fontWithName:PingFang size:14];
         [_registButton addTarget:self action:@selector(registButtonClick) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_registButton];
@@ -284,6 +286,7 @@
                                     @"code" : self.idCodeTextF.text,
                                     @"terminal":@2
                                     };
+    NSLog(@"-------------登录的参数是:%@",dictParaments);
     [GRNetRequestClass POST:LOGINURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
         [MBProgressHUD hidenHud];
         if (responseObject) {
@@ -291,7 +294,10 @@
                 NSDictionary *dict = responseObject[@"object"];
                 [_user setObject:dict[@"id"]forKey:@"userId"];
                 [_user setObject:dict[@"userMobile"]forKey:@"phone"];
-                [_user setObject:dict[@"userName"]forKey:@"userName"];
+                if ([[[responseObject objectForKey:@"object"] objectForKey:@"userName"]isEqual:[NSNull null]]) {
+                }else {
+                    [_user setObject:dict[@"userName"]forKey:@"userName"];
+                }
                 [_user setObject:dict[@"idCard"]forKey:@"idCard"];
                 [_user synchronize];
                 NSLog(@"----------------------------登录后得到的返回值------------------------------:%@",responseObject);
@@ -370,10 +376,12 @@
 
 }
 
+
 #pragma mark ----- textFieldDelegate
 - (void)textFieldDidChange:(UITextField *)sender {
     NSLog(@"------------sender的内容是 :%@", self.phoneTextF.text);
-    if (self.phoneTextF.text.length == 11) {
+    if (self.phoneTextF.text.length > 11) {
+        self.phoneTextF.text = [self.phoneTextF.text substringToIndex:11];
         [self.isGuideBtn setHidden:NO];
         [self.isTravelAgencyBtn setHidden:NO];
         [self checkUserRole];

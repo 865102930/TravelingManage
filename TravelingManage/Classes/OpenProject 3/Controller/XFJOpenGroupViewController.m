@@ -25,6 +25,7 @@
 #import "JTNavigationController.h"
 #import "XFJHeaderView.h"
 #import "XFJCarNumberItem.h"
+#import "XFJFindTeamCarItem.h"
 
 @interface XFJOpenGroupViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,TZImagePickerControllerDelegate,XFJUploadPhotosTableViewCellDelegate,UIScrollViewDelegate,XFJVoucherPhotosViewDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UIBarButtonItem *pushToLeftViewButton;
@@ -58,6 +59,26 @@
 @property (nonatomic, strong) NSMutableArray<XFJCarNumberItem *> *carNumberArray;
 @property (nonatomic, strong) NSString *strNum;
 @property (nonatomic, strong) NSString *dict1;
+@property (nonatomic, strong) XFJCarNameTableViewCell *cell;
+@property (nonatomic, strong) XFJMinusCarNumTableViewCell *cell2;
+//提供一个数组用来存用户通过输入框输入的车牌
+@property (nonatomic, strong) NSMutableArray *userCarNumber_array;
+//车牌号的字符串
+@property (nonatomic, strong) NSString *carNumberStr;
+//车辆信息数组
+@property (nonatomic, strong) NSMutableArray <XFJFindTeamCarItem *> *findTeamCarItem_array;
+@property (nonatomic, strong) NSIndexPath *indexPath;
+@property (nonatomic, strong) NSIndexPath *indexPath2;
+@property (nonatomic, assign) BOOL isSecondOpenNumber;
+//定义一个BOOL值,用来规定是否点击了删除行的按钮
+@property (nonatomic, assign) BOOL isDeleteCell;
+//设置一个BOOL值,用来判断是否输入了内容
+@property (nonatomic, assign) BOOL isSureEnterContent;
+//定义一个BOOL值,用来判断是否在减号的输入框中输入了内容
+@property (nonatomic, assign) BOOL isInputCarNumberBool;
+@property (nonatomic, assign) BOOL isOpenCarNum;
+@property (nonatomic, strong) UIImagePickerController *imageController;
+@property (nonatomic, assign) NSInteger strAdds_number;
 
 @end
 
@@ -69,6 +90,8 @@
     
     [self setUpOpenGroup];
 }
+
+
 
 - (UILabel *)title_label
 {
@@ -89,12 +112,28 @@
     return _carNumberArray;
 }
 
+- (NSMutableArray <XFJFindTeamCarItem *> *)findTeamCarItem_array
+{
+    if (_findTeamCarItem_array == nil) {
+        _findTeamCarItem_array = [NSMutableArray array];
+    }
+    return _findTeamCarItem_array;
+}
+
 - (NSMutableArray *)addArray
 {
     if (_addArray == nil) {
         _addArray = [NSMutableArray array];
     }
     return _addArray;
+}
+
+- (NSMutableArray *)userCarNumber_array
+{
+    if (_userCarNumber_array == nil) {
+        _userCarNumber_array = [NSMutableArray array];
+    }
+    return _userCarNumber_array;
 }
 
 - (NSMutableArray *)allRootImage
@@ -188,6 +227,7 @@
 {
     if (_voucherPhotos_view == nil) {
         _voucherPhotos_view = [[XFJVoucherPhotosView alloc] init];
+        _voucherPhotos_view.backgroundColor = [UIColor whiteColor];
         _voucherPhotos_view.delegate = self;
     }
     return _voucherPhotos_view;
@@ -316,19 +356,92 @@
     }];
     __weak __typeof(self)wself = self;
     self.starTask_view.startTaskButtonBlock = ^() {
-        //该处提交用户填写的创建团队时候的参数
-        [wself requestWithOpenTeam];
+        if (self.isSecondOpenNumber == YES) {//如果是yes,就表示是从我的团队中点击进入的,此时先调取消接口,在调开团接口
+            //调用取消团队的接口
+            [wself cancelTeam];
+        }else {
+            //该处提交用户填写的创建团队时候的参数
+            [wself requestWithOpenTeam];
+        }
     };
     [self requestFindCarNumberWithUserlocation:self.locationWithUser];
     self.carName_view.userLocation = self.locationWithUser;
+    
+    self.voucherPhotos_view.addPhotos_photosImageViewBlock = ^(NSInteger addStrNum) {
+        NSLog(@"<<<<<<<<-----------接收到的数字是 :%zd",addStrNum);
+        wself.strAdds_number = addStrNum;
+        UIActionSheet *sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:wself cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"从手机相册选择",@"拍照", nil];
+        [sheet showInView:wself.view];
+    };
 }
 
-//- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
-//{
-//    _findTeamInfoByStateItem = findTeamInfoByStateItem;
-//    self.conventionMessage_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
-//    self.teamInformation_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
-//}
+#pragma mark - 取消团队
+- (void)cancelTeam
+{
+    __weak __typeof(self)wself = self;
+    NSLog(@"<<<<<<<<---------获取到的重新开团的id是:%@",[NSString stringWithFormat:@"%zd",wself.findTeamInfoByStateItem.findTeamInfoByState_Id]);
+    [GRNetRequestClass POST:DELETETEAMINFOURL params:@{@"id":[NSString stringWithFormat:@"%zd",wself.findTeamInfoByStateItem.findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            if ([[responseObject objectForKey:@"msg"] isEqualToString:@"success"]) {
+                //这里表示取消团队成功,立刻调用开团接口
+                [wself requestWithOpenTeam];
+            }else {
+                [MBProgressHUD showHudTipStr:@"重新开团失败,请重试!" contentColor:HidWithColorContentBlack];
+                return ;
+            }
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"您取消团队失败了,可能是网络问题" contentColor:HidWithColorContentBlack];
+        }
+    }];
+}
+
+- (void)setFindTeamInfoByStateItem:(XFJFindTeamInfoByStateItem *)findTeamInfoByStateItem
+{
+    _findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.conventionMessage_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.teamInformation_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.guestSourceInformation_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.teamInformation_view.findTeamInfoByStateItem = findTeamInfoByStateItem;
+    self.isSecondOpenNumber = YES;
+    [self checkCarNumberWithTeamId];
+}
+
+#pragma makr - 查询车辆图片
+- (void)checkCarNumberWithTeamId
+{
+    __weak __typeof(self)wself = self;
+    [GRNetRequestClass POST:FINDTEAMVEHICLESURL params:@{@"teamId":[NSString stringWithFormat:@"%zd",self.findTeamInfoByStateItem.findTeamInfoByState_Id]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
+            NSLog(@"+++++++++++获取到的车牌的信息是 :%@",responseObject);
+            wself.findTeamCarItem_array = [XFJFindTeamCarItem mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"rows"]];
+            [wself.userCarNumber_array removeAllObjects];
+            for (NSInteger i = 0; i < wself.findTeamCarItem_array.count; i++) {
+                NSString *carNameStr = wself.findTeamCarItem_array[i].vehicleNo;
+                NSLog(@">>>>>>>--------车辆图片是 :%@",carNameStr);
+                [self.userCarNumber_array addObject:carNameStr];
+                wself.strNum = carNameStr;
+                if (i == 0 ) {
+                }else {
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+                    [self.addArray addObject: indexPath];
+                }
+            }
+            NSLog(@">>>>>>>-------------这里打印出addArray的值是 :%zd",wself.addArray.count);
+            NSLog(@">>>>>>>+++++++++++++车辆是:%zd",wself.userCarNumber_array.count);
+            //这个是将第一个的值赋给带有加号的输入框
+            wself.cell.findTeamCarItem = wself.findTeamCarItem_array[wself.indexPath.row];
+            self.carNumber_tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, (self.addArray.count + 1) * 45);
+            self.backGroundView.frame = CGRectMake(0, 210 + (self.addArray.count + 1) * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
+            [wself.carNumber_tableView reloadData];
+        }
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        if (error) {
+            [MBProgressHUD showHudTipStr:@"网络错误" contentColor:HidWithColorContentBlack];
+        }
+    }];
+}
 
 - (void)requestFindCarNumberWithUserlocation:(NSString *)userLocation;
 {
@@ -360,13 +473,13 @@
 {
     //上传图片
     [self upLoadPic];
-    [self upLoadVoucherPic];
 }
 
 #pragma mark - 图片上传车辆照片
 - (void)upLoadPic
 {
     if (self.dataArr.count == 0) {
+        [self upLoadVoucherPic];
         return;
     }else {
         for (int i = 0; i < _dataArr.count; i++) {
@@ -378,13 +491,17 @@
             [manager POST:UPLOADIMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                 [formData appendPartWithFileData:imageData name:@"file" fileName:@"image.jpg" mimeType:@"image/jpg"];
             } progress:^(NSProgress * _Nonnull uploadProgress) {
-                
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                 NSString *root = dict[@"object"];
                 [wself.allRootImage addObject:root];
                 wself.root = [wself.allRootImage componentsJoinedByString:@","];
-                NSLog(@"上传图片成功后的信息-------%@+++++++%@",root,wself.root);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (wself.allRootImage.count == wself.dataArr.count ) {
+                        [wself upLoadVoucherPic];
+                    }
+                });
+                NSLog(@">>>>>>>>>>>>>上传图片成功后的信息-------%@",wself.root);
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSLog(@"上传图片失败--------%@",error);
             }];
@@ -434,15 +551,17 @@
 #pragma mark - 开始任务
 - (void)startTaskButtonClick
 {
+    NSLog(@"<<<<<<<<------------self.userCarNumber_array的值是 :%@",self.userCarNumber_array);
+    [MBProgressHUD hidenHud];
     NSNumber *traveName = [NSNumber numberWithInteger:self.conventionMessage_view.travelName];
-    NSNumber *paramName1 = [NSNumber numberWithInteger:self.guestSourceInformation_view.paramName1];
-    NSNumber *teamNature = [NSNumber numberWithInteger:self.teamInformation_view.teamNature];
+    NSString *paramName1 = self.guestSourceInformation_view.paramName1;
+    NSString *teamNature = self.teamInformation_view.teamNature;
     if (self.conventionMessage_view.groupName_text == nil) {
         [MBProgressHUD showHudTipStr:@"请填写团队编号" contentColor:HidWithColorContentBlack];
         return;
     }
     if (self.conventionMessage_view.groupTime_text == nil) {
-        [MBProgressHUD showHudTipStr:@"请填写出团日期" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请选择出团日期" contentColor:HidWithColorContentBlack];
         return;
     }
     if ([traveName isEqualToNumber:@0]) {
@@ -461,20 +580,20 @@
         [MBProgressHUD showHudTipStr:@"请选择所在的市" contentColor:HidWithColorContentBlack];
         return;
     }
-    if ([paramName1 isEqualToNumber:@0]) {
+    if (paramName1 == nil) {
         [MBProgressHUD showHudTipStr:@"请选择目的属性" contentColor:HidWithColorContentBlack];
         return;
     }
     if (self.teamInformation_view.teamPeople_number == nil) {
-        [MBProgressHUD showHudTipStr:@"请选择开团人数" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请填写开团人数" contentColor:HidWithColorContentBlack];
         return;
     }
-    if ([teamNature isEqualToNumber:@0]) {
+    if (teamNature == nil) {
         [MBProgressHUD showHudTipStr:@"请选择团队性质" contentColor:HidWithColorContentBlack];
         return;
     }
     if (self.teamInformation_view.teamDay == nil) {
-        [MBProgressHUD showHudTipStr:@"请选择行程天数" contentColor:HidWithColorContentBlack];
+        [MBProgressHUD showHudTipStr:@"请填写行程天数" contentColor:HidWithColorContentBlack];
         return;
     }
     NSString *voucherPicRootStr;
@@ -489,11 +608,14 @@
     }else {
         rootStr = [NSString stringWithFormat:@"%@",self.root];
     }
+    
+    self.carNumberStr = [self.userCarNumber_array componentsJoinedByString:@","];
+    NSLog(@"<<<<<<<>>>>>>>>>>>这里打印的是总的车牌的字符串:%@",self.carNumberStr);
     NSDictionary *dictParaments = @{
                                     @"teamNo":self.conventionMessage_view.groupName_text,//团队编号
                                     @"teamDate":self.conventionMessage_view.groupTime_text,//出团日期
                                     @"travelAgencyId":traveName,//旅行社id
-                                    @"teamVehicles":self.strNum,//车牌
+                                    @"teamVehicles":self.carNumberStr,//车牌
                                     @"province":self.guestSourceInformation_view.selectedProvince,//用户所在省
                                     @"city":self.guestSourceInformation_view.selectedCity,//用户所在市
                                     @"area":self.guestSourceInformation_view.selectedArea,//用户所在区
@@ -508,11 +630,11 @@
                                     };
     NSLog(@"++++++++++++++开团传递的参数是 :%@",dictParaments);
     __weak __typeof(self)wself = self;
-    [[NetWorkManager shareManager] requestWithType:HttpRequestTypeGet withUrlString:MODIFYTEAMINFOURL withParaments:dictParaments withSuccessBlock:^(id object) {
-        if (object) {
+    [GRNetRequestClass POST:MODIFYTEAMINFOURL params:dictParaments success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (responseObject) {
             [MBProgressHUD hidenHud];
-            NSLog(@"+++++======---------团队创建成功,成功信息是:%@",object);
-            NSDictionary *dict = [object objectForKey:@"object"];
+            NSLog(@"+++++======---------团队创建成功,成功信息是:%@",responseObject);
+            NSDictionary *dict = [responseObject objectForKey:@"object"];
             self.dict1 = [dict objectForKey:@"id"];
             NSLog(@"+++++===========提取到的id是:%@",self.dict1);
             HomeViewController *homeController = [[HomeViewController alloc] init];
@@ -530,20 +652,24 @@
             homeController.isFindTeamList = YES;
             [wself presentViewController:navVC animated:YES completion:nil];
         }
-    } withFailureBlock:^(NSError *error) {
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
         if (error) {
             NSLog(@"+++++++++++++++++++++_______团队创建失败,失败信息是:%@",error);
             [MBProgressHUD showHudTipStr:@"网络请求失败~~" contentColor:HidWithColorContentBlack];
         }
-    } progress:^(float progress) {
     }];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.isSecondOpenNumber = NO;
     if (self.signViewBlock != nil) {
         self.signViewBlock(self.teamInformation_view.teamPeople_number,self.dict1);
     }
+    self.isSureEnterContent = NO;
+    self.isDeleteCell = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"ADDCARNUMBERNOTIFI" object:@"button"];
 }
 
 
@@ -563,19 +689,11 @@
 - (void)chooseImage:(XFJUploadPhotosTableViewCell *)SerPhotoCell
 {
     self.maxImageCount = 6;
+    self.strAdds_number = 0;
     UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:@"请选择相机或者相册" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选择",nil];
     [action showInView:self.view];
     
 }
-
-- (void)chooseVoucherPhotosImage:(XFJVoucherPhotosView *)voucherPhotos
-{
-    self.maxImageCount = 1;
-    UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:@"请选择相机或者相册" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选择",nil];
-    [action showInView:self.view];
-}
-
-
 
 - (void)jumpCell:(XFJUploadPhotosTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
@@ -605,45 +723,42 @@
     }
 }
 
-- (void)jumpToCell:(XFJVoucherPhotosView *)cell indexPath:(NSIndexPath *)indexPath
-{
-    NSMutableArray *tmpArray = [[NSMutableArray alloc] init];
-    if(indexPath.row < _dataArray.count) {
-        for (UIImage *image in _dataArray) {
-            WSImageModel *model = [[WSImageModel alloc] init];
-            model.image = image;
-            [tmpArray addObject:model];
-        }
-        WSPhotosBroseVC *vc = [[WSPhotosBroseVC alloc] init];;
-        vc.imageArray = tmpArray;
-        vc.showIndex = indexPath.row;
-        __weak typeof (self)weakself = self;
-        vc.completion = ^ (NSArray *array){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [_dataArray removeAllObjects];
-                [_dataArray addObjectsFromArray:array];
-                weakself.voucherPhotos_view.dataArr = _dataArray;
-                //                if (_dataArr.count <= 4) {
-                //                    self.uploadPhotos_view.frame = CGRectMake(0, 728, SCREEN_WIDTH, 200);
-                //                }
-            });
-        };
-        
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-}
-
-
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            [self openCamera];
-            break;
-        case 1:
-            [self openAlbum];
-            break;
-        default:
-            break;
+    if (self.strAdds_number == 1) {
+        self.imageController = [[UIImagePickerController alloc]init];
+        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+            self.imageController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        }
+        self.imageController.delegate = self;
+        self.imageController.allowsEditing = YES;
+        switch (buttonIndex) {
+            case 1:
+            {
+                self.imageController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                [self presentViewController:self.imageController animated:YES completion:nil];
+            }
+                break;
+            case 0:
+            {
+                self.imageController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                [self presentViewController:self.imageController animated:YES completion:nil];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }else {
+        switch (buttonIndex) {
+            case 0:
+                [self openCamera];
+                break;
+            case 1:
+                [self openAlbum];
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -678,13 +793,12 @@
         [picker dismissViewControllerAnimated:YES completion:nil];
         self.uploadPhotos_view.dataArr = self.dataArr;
         self.uploadPhotos_view.maxImageCount = 6;
-    }else {
-        NSLog(@"self.maxImageCount == 1");
-        UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    }
+    if (self.strAdds_number == 1) {
+        [self.imageController dismissViewControllerAnimated:YES completion:nil];
+        UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+        self.voucherPhotos_view.addPhotos_imageView1 = image;
         [self.dataArray addObject:image];
-        [picker dismissViewControllerAnimated:YES completion:nil];
-        self.voucherPhotos_view.dataArr = self.dataArray;
-        self.voucherPhotos_view.maxImageCount = 1;
     }
 }
 
@@ -716,40 +830,92 @@
     return 1;
 }
 
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSLog(@"能到这的cell个数是:%zd",1 + [self.addArray count]);
+    //self.isSecondOpenNumber == YES ? [self.findTeamCarItem_array count] : 
     return 1 + [self.addArray count];
 }
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    self.indexPath = indexPath;
     if (indexPath.row == 0) {
         XFJCarNameTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kReuseIdentifier_XFJCarNameTableViewCell forIndexPath:indexPath];
+        self.cell = cell;
         cell.carNumberItemArray = self.carNumberArray;
         NSLog(@"self.carNumberArray的值是:%@",self.carNumberArray);
         __weak typeof(self) weakself = self;
-        cell.addCellBlock = ^(NSInteger srt,NSString *str1) {
-            //在这里需要判断输入的车牌号是否正确
+        cell.addCellBlock = ^(NSInteger srt, NSString *str1, UIButton *button) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ADDCARNUMBERNOTIFI" object:@"button" userInfo:@{@"button":button}];
+            weakself.isDeleteCell = NO;
+            weakself.isSureEnterContent = NO;
+            weakself.isSecondOpenNumber = NO;
+            NSLog(@"<<<<<<<<<<++++++++++=这里能拿到的车牌号是 :%@",weakself.strNum);
+            //判断车牌号是否可以
             if ([weakself validateCarNo:weakself.strNum]) {//如果为YES就增加
                 [weakself addButtonClick];
             }else {//错误就提示用户
-                [MBProgressHUD showHudTipStr:@"车牌号输入不正确!" contentColor:HidWithColorContentBlack];
+                [MBProgressHUD showHudTipStr:@"车牌号输入不正确" contentColor:HidWithColorContentBlack];
                 return ;
             }
         };
-        cell.carNumberBlock = ^(NSString *carNum) {
+        cell.carNumberBlock = ^(NSString *carNum, UITableViewCell *cell) {
             weakself.strNum = carNum;
-            NSLog(@"接收到的车牌号码是:%@",carNum);
+            if (self.isSecondOpenNumber == YES) {//这里是重新开团
+                NSIndexPath *indexpath = [self.carNumber_tableView indexPathForCell:cell];
+                [weakself.userCarNumber_array removeObjectAtIndex:indexpath.row];
+                if ([weakself validateCarNo:weakself.strNum]) {//如果是正确的才添加
+                    [weakself.userCarNumber_array addObject:carNum];
+                }
+            }else {//这里是直接开团
+                if ([weakself validateCarNo:weakself.strNum]) {//如果是正确的才添加
+                    [weakself.userCarNumber_array addObject:carNum];
+                }
+            }
         };
         return cell;
     }else {
+        self.indexPath2 = indexPath;
         XFJMinusCarNumTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kReuseIdentifier_XFJMinusCarNumTableViewCell forIndexPath:indexPath];
-        cell.carNumberItemArray = self.carNumberArray;
+        if (self.isSecondOpenNumber == YES) {
+            //这里会崩,是因为只有一个的时候,减号的输入框中并没有内容
+            cell.findTeamCarItem = self.userCarNumber_array[indexPath.row];
+        }else {
+//            cell.carNumberItemArray = self.carNumberArray;
+        }
+        self.cell2 = cell;
+        if (self.isDeleteCell == YES) {//如果是YES就说明点击了删除cell的按钮
+            NSLog(@"这里用户点击了删除行cell的按钮.......");
+//            self.isSecondOpenNumber = YES;
+        }else {
+            cell.carNumberItemArray = self.carNumberArray;
+        }
+        
         __weak typeof(self) weakself = self;
-        cell.minusCarNumBlock = ^() {
-            [weakself add];
+        cell.minusCarNumBlock = ^(UITableViewCell *cell) {
+            //删除
+            [weakself addWithCell:cell];
+        };
+        //这里接收用户在减号的按钮输入框中输入的车牌
+        cell.AllMinusCarNumberBlock = ^ (NSString *carTextStr, UITableViewCell *cell) {
+            weakself.isSureEnterContent = YES;
+            weakself.strNum = carTextStr;
+            if (self.isSecondOpenNumber == YES) {//这里表示重新开团
+                NSIndexPath *indexpath = [self.carNumber_tableView indexPathForCell:cell];
+                [weakself.userCarNumber_array removeObjectAtIndex:indexpath.row];
+                if ([weakself validateCarNo:weakself.strNum]) {
+                    [weakself.userCarNumber_array addObject:carTextStr];
+                }
+            }else {
+                if ([weakself validateCarNo:weakself.strNum]) {//如果车牌是正确的就加入到数组中(这里表示直接开团)
+                    [weakself.userCarNumber_array addObject:carTextStr];
+                }
+            }
+            
+            NSLog(@"<<<<<<<<+++++++++这里通过block接收到用户输入的值是:%zd",weakself.userCarNumber_array.count);
         };
         return cell;
     }
@@ -768,34 +934,42 @@
     }
 }
 
-- (void)add
+- (void)addWithCell:(UITableViewCell *)cell
 {
-    NSArray *visibleCells = [self.carNumber_tableView visibleCells];
+    self.isDeleteCell = YES;
     self.carNumber_tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, self.addArray.count * 45);
     self.backGroundView.frame = CGRectMake(0, 210 + self.addArray.count * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
-    for (XFJMinusCarNumTableViewCell *cell in visibleCells) {
-        [self.addArray removeObjectAtIndex:cell.tag];
-        NSLog(@"cell的tag值是 :%zd",cell.tag);
-        [self.carNumber_tableView reloadData];
-        break;
+    NSIndexPath *indexpath = [self.carNumber_tableView indexPathForCell:cell];
+    [self.addArray removeObjectAtIndex:indexpath.row - 1];
+    NSLog(@"得到的行的indexPath是 :%zd-------%zd",indexpath.row - 1,indexpath.row);
+    if (self.isSecondOpenNumber == YES) {
+        [self.userCarNumber_array removeObjectAtIndex:indexpath.row];
+    }else {
+        [self.userCarNumber_array removeObjectAtIndex:self.userCarNumber_array.count - indexpath.row];
     }
+    NSLog(@">>>>>>>+++++++++++来到这里说明删除了车牌号最后的总数是:%zd",self.userCarNumber_array.count);
+    NSLog(@"<<<<<<<<>>>>>>>>>>数组中的个数是:%zd",self.addArray.count);
+    [self.carNumber_tableView deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationLeft];
+    self.cell.addStrNumber = self.strNum;
+    self.cell.isAddStrBool = YES;
 }
 
 
 - (void)addButtonClick
 {
-    
     NSArray *visibleCells = [self.carNumber_tableView visibleCells];
+    NSLog(@">>>>>>>>>>>---------cell的数组是 :%@",visibleCells);
     if (visibleCells.count > 5) {
         return;
     }
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
     [self.addArray addObject: indexPath];
-    NSLog(@"后面添加的数组个数是 :%zd",self.addArray.count);
+    NSLog(@"后面添加的数组个数是 :%zd------------%@",self.addArray.count,indexPath);
     self.carNumber_tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, (self.addArray.count + 1) * 45);
     self.backGroundView.frame = CGRectMake(0, 210 + (self.addArray.count + 1) * 45, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
     [self.carNumber_tableView insertRowsAtIndexPaths:self.addArray withRowAnimation:UITableViewRowAnimationLeft];
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

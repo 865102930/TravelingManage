@@ -12,6 +12,6 @@
 
 @property (nonatomic, assign) NSInteger strNumber;
 
-
+@property (nonatomic, strong) NSString *currentCity;
 
 @end
