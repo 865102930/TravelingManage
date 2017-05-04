@@ -136,6 +136,14 @@
 
 @implementation XFJTeamMessageViewController
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.backgroundTableView reloadData];
+    [self.visitMessage_tableView reloadData];
+    
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     isSelect = NO;

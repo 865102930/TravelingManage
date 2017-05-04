@@ -1316,7 +1316,6 @@
             [MBProgressHUD hidenHud];
         });
     } else {
-        [MBProgressHUD showLoadHUD];
         [self upLoadPic];
         [self upLoadVoucherPic];
         
@@ -1328,6 +1327,7 @@
 #pragma mark - 图片上传车辆照片
 - (void)upLoadPic {
     if (self.certifierArray.count > 0) {
+        [MBProgressHUD showLoadHUD];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
         [manager POST:UPLOADIMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
@@ -1337,7 +1337,7 @@
         } progress:^(NSProgress * _Nonnull uploadProgress) {
             NSLog(@"%f", uploadProgress.fractionCompleted);
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            
+            [MBProgressHUD hidenHud];
             // 获取的凭证图片参数
             self.taskImg = responseObject[@"object"];
             
@@ -1367,6 +1367,7 @@
     
 
     for (NSString *key in self.cachePicArray) {
+        [MBProgressHUD showLoadHUD];
         NSMutableArray *imgObjArray = [NSMutableArray array];
         for (NSString *picImgPath in self.imgPathDic[key]) {
             UIImage *image = [UIImage imageWithContentsOfFile:picImgPath];
@@ -1376,6 +1377,7 @@
             } progress:^(NSProgress * _Nonnull uploadProgress) {
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                [MBProgressHUD hidenHud];
                 NSString *objectImg = responseObject[@"object"];
                 [imgObjArray addObject:objectImg];
                 if (imgObjArray.count == [self.imgPathDic[key] count]) {
@@ -1445,6 +1447,7 @@
                                @"taskBack": [NSString stringWithFormat:@"%@", self.finalStr]};
     
     if (self.sectionArray.count == 1) {
+        [MBProgressHUD showLoadHUD];
         // 单个管理员的数据上传
         [manager POST:TASKPERFECTURL parameters:paramDic progress:^(NSProgress * _Nonnull uploadProgress) {
             
@@ -1457,6 +1460,7 @@
             NSLog(@"%@", error);
         }];
     } else if(self.sectionArray.count > 1){
+        [MBProgressHUD showLoadHUD];
         // 多个管理员的数据上传
         [manager POST:TASKSPERFECTURL parameters:paramDic progress:^(NSProgress * _Nonnull uploadProgress) {
             
@@ -1472,6 +1476,4 @@
     
 }
 
-
 @end
-//TASKSPERFECTURL
